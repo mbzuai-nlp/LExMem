@@ -1,0 +1,1047 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop selective language-model unlearning that removes source-specific information while preserving independently supported facts shared with the removed source.",
+      "requirements": [
+        "Adaptive source-exclusive extraction success stays within 2 percentage points of retraining without the source.",
+        "Independently supported shared-fact accuracy drops at most 2 percentage points versus the original model."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use provenance-gated gradient editing to suppress adaptive source-exclusive extraction while distilling original-model predictions on independently corroborated facts."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can original-model prediction distillation prevent collateral forgetting of independently corroborated facts during provenance-gated gradient editing?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "At matched source-exclusive extraction rates, corroboration-filtered distillation keeps shared-fact accuracy loss ≤2 points; omission exceeds 2 points."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "On SourceSplit-1K, compare gated-editing distillation ablations at matched extraction rates, checking shared-fact accuracy against original and extraction against retraining."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run SourceSplit-1K gated-editing ablations with and without corroboration-filtered distillation; compare 500-fact accuracy at matched 200-prompt adaptive extraction rates."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On SourceSplit-1K, at 11% extraction (retraining: 10%), distillation retained 84% shared-fact accuracy versus 81% without; original: 88%."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Conflict-weighted distillation of corroborated facts raises shared-fact accuracy from 84% to ≥86% while keeping adaptive extraction ≤12%."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Using the 84% baseline, double distillation weights where forgetting and retention gradients conflict; rerun SourceSplit-1K accuracy and extraction tests."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "On SourceSplit-1K, conflict-weighted distillation achieved 87% shared-fact accuracy and 11% extraction, versus 88% original and 10% retraining."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt conflict-weighted distillation over uniform weighting: shared-fact accuracy rose from 84% to 87%, with extraction unchanged at 11%."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Audit adopted conflict-weighted distillation on 300 held-out SourceSplit-1K adaptive prompts and 500 corroborated facts against retraining and original baselines."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "SourceSplit-1K audit bundle containing held-out prompt outputs, corroboration labels, baseline comparisons, and scripts checking both two-point tolerances."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can the provenance gate distinguish source-exclusive claims from independently corroborated facts when paraphrases omit explicit attribution?"
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Construct 400 unattributed SourceSplit-1K paraphrases of exclusive and corroborated claims; measure gate misrouting and downstream extraction and accuracy."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "On 400 unattributed paraphrases, provenance gating misrouted 18% of exclusive claims; adaptive extraction reached 16% versus 10% retraining."
+    },
+    {
+      "id": "n17",
+      "type": "decision",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Retain conflict-weighted distillation’s 87% shared-fact accuracy, but reject the current provenance gate: unattributed extraction exceeds retraining by six points."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Replace attribution gating with claim-level semantic provenance retrieval calibrated using the SourceSplit-1K audit bundle’s corroboration labels; retain conflict-weighted distillation."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Calibrate semantic provenance retrieval on audit labels; apply conflict-weighted distillation; compare unattributed extraction against retraining and shared-fact accuracy against original."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Calibrate semantic-provenance retrieval on audit-bundle corroboration labels; test disjoint unattributed paraphrases using conflict-weighted distillation."
+    },
+    {
+      "id": "n21",
+      "type": "artifact",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "SemanticGate-v2 checkpoint with calibrated claim-retrieval thresholds, conflict-weighted distillation weights, and disjoint-paraphrase evaluation scripts."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Check audit-bundle corroboration labels against independent citations; evaluate SemanticGate-v2 extraction and shared-fact accuracy on disjoint prompts and facts."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Citation checks validated 97% of audit labels; SemanticGate-v2 achieved 11% disjoint-paraphrase extraction (retraining: 10%) and 87% shared-fact accuracy (original: 88%)."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Adopt SemanticGate-v2: unattributed extraction fell from 16% to 11% (retraining: 10%); shared-fact accuracy stayed 87% (original: 88%)."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n19",
+      "content": "Run 1,000 multi-turn adaptive probes against attribution-gated editing and SemanticGate-v2; compare source-exclusive extraction with retraining and shared-fact accuracy with original."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Across 1,000 multi-turn probes, attribution gating extracted 12%, SemanticGate-v2 11%, retraining 10%; both scored 87% shared-fact accuracy."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 27,
+      "exploration_parent_id": "p2",
+      "content": "Can SemanticGate-v2 suppress source-exclusive claims when multi-turn prompts blend them with independently corroborated facts?"
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "On blended-claim prompts, SemanticGate-v2 keeps adaptive extraction ≤12% (retraining: 10%) and shared-fact accuracy ≥86% (original: 88%)."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Test SemanticGate-v2 on 600 blended-claim multi-turn prompts and 500 independently corroborated facts; compare extraction and accuracy with retraining and original."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "On 600 blended-claim prompts, SemanticGate-v2 extracted 15% versus retraining’s 10%; shared-fact accuracy stayed 87% versus original’s 88%."
+    },
+    {
+      "id": "n31",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Defer SemanticGate-v2 release: blended extraction rose from 11% on general probes to 15%, five points above retraining."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Add claim-level response masking to SemanticGate-v2, suppressing retrieved source-exclusive spans while preserving corroborated spans through conflict-weighted distillation."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "In ≥95% of blended SourceSplit-1K answers, source-exclusive and corroborated claims occupy separately annotatable spans, making selective masking possible."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Using audit-bundle corroboration labels, double-annotate 600 blended-claim answers; measure the fraction with separately annotatable exclusive and corroborated spans."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Only 82% of 600 blended answers had separable exclusive and corroborated spans; 18% fused both claims within one phrase."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Can claim-level rewriting replace span masking for the 18% of blended answers whose source-exclusive and corroborated claims are fused?"
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Route fused answers through provenance-constrained rewriting rather than span masking; compare blended extraction against retraining and shared-fact accuracy against original."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Annotate 600 fresh blended answers for separability; test SemanticGate-v2 with and without fused-claim rewriting against both baselines."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Among 600 fresh blended answers, 96% had separable spans; unmodified SemanticGate-v2 extracted 12% (retraining: 10%) with 87% shared-fact accuracy."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Defer release pending stratified replication: fresh blended extraction met 12%, but the earlier cohort reached 15%."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Stratify both blended cohorts by claim fusion; compare masked, rewritten, and unmodified SemanticGate-v2 extraction and shared-fact accuracy."
+    },
+    {
+      "id": "n42",
+      "type": "artifact",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "SemanticGate-v3 bundle updates v2 with fusion-aware masking and constrained rewriting, plus cohort-stratified extraction and shared-fact comparisons."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "p3",
+      "content": "Evaluate SemanticGate-v3 masking and rewriting on 1,000 held-out blended prompts and 500 shared facts against retraining and original baselines."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "On 1,000 held-out blended prompts, SemanticGate-v3 extracted 11% versus retraining’s 10%; shared-fact accuracy was 87% versus original’s 88%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Train a low-rank adapter matching leave-source-out teacher logits on exclusive claims and original-model logits on corroborated claims."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Can a rank-16 dual-teacher adapter preserve corroborated facts when they share token representations with source-exclusive claims?"
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "On blended-claim prompts, a rank-16 dual-teacher adapter achieves ≤12% extraction and ≥86% shared-fact accuracy despite overlapping tokens."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Train a rank-16 dual-teacher adapter using audit-bundle corroboration labels; evaluate blended-claim extraction and shared-fact accuracy against both baselines."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "On 1,000 blended prompts, the rank-16 adapter extracted 12% versus retraining’s 10%; shared-fact accuracy reached 86% versus original’s 88%."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n47",
+      "content": "Following the adapter’s 12% extraction and 86% accuracy result, test 400 audit-labeled high-overlap blends against both baselines."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "On 400 high-overlap blends, adapter extraction rose to 18% versus retraining’s 11%; shared-fact accuracy fell to 83% versus original’s 88%."
+    },
+    {
+      "id": "n52",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Does teacher-logit conflict on overlapping tokens explain the adapter’s high-overlap extraction and accuracy failures?"
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "On high-overlap blends, teacher-logit Jensen–Shannon divergence >0.25 bits predicts failure; lower divergence yields ≤12% extraction and ≥86% shared-fact accuracy."
+    },
+    {
+      "id": "n54",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Stratify prior blended and high-overlap adapter results by teacher divergence; compare extraction and shared-fact accuracy across 0.25 bits."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Compute teacher-logit Jensen–Shannon divergence on prior audit-labeled blends; stratify extraction and shared-fact accuracy above and below 0.25 bits."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Across prior blends, teacher divergence >0.25 bits corresponded to 19% extraction and 82% shared-fact accuracy; ≤0.25 bits: 10% and 87%."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Restrict adapter trials to ≤0.25-bit teacher divergence: general blends met thresholds, but high-overlap failures concentrated above that threshold."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n54",
+      "content": "Using audit labels, test the restricted adapter on 300 held-out ≤0.25-bit blends and 500 shared facts against both baselines."
+    },
+    {
+      "id": "n59",
+      "type": "artifact",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "RestrictedAdapter-r16 bundle with divergence-based eligibility checks, held-out extraction and shared-fact score tables, and comparison scripts."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "p4",
+      "content": "Audit RestrictedAdapter-r16 coverage on high-divergence blends; compare end-to-end adaptive extraction with retraining and shared-fact accuracy with original."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "RestrictedAdapter-r16 routed 29% of high-divergence blends to SemanticGate-v3; end-to-end extraction was 12% (retraining: 10%), shared-fact accuracy 87% (original: 88%)."
+    },
+    {
+      "id": "n62",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Prefer SemanticGate-v3 over the restricted adapter and earlier gates: eligibility routing adds complexity without improving 11% extraction or 87% accuracy."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "revive",
+      "target": "n28"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "refute",
+      "target": "n47"
+    },
+    {
+      "source": "n53",
+      "relation": "revise",
+      "target": "n47"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n44"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop selective language-model unlearning that removes source-specific information while preserving independently supported facts shared with the removed source.",
+    "requirements": [
+      "Adaptive source-exclusive extraction success stays within 2 percentage points of retraining without the source.",
+      "Independently supported shared-fact accuracy drops at most 2 percentage points versus the original model."
+    ]
+  }
+}

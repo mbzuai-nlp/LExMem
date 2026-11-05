@@ -1,0 +1,147 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Cluster-conditioned invariance and the Waterbirds accuracy test",
+      "boundary_reason": "Waterbirds results support advancing the approach to multi-dataset validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "h2",
+        "a3",
+        "e2"
+      ],
+      "topic": "CelebA edit audit and a test of within-cluster shortcut identification",
+      "boundary_reason": "The identification test falls short, prompting a different approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "l2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Independent-edit paired loss compared with cluster invariance and ERM",
+      "boundary_reason": "The CelebA comparison establishes the paired-loss result and raises a new robustness question."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "h3",
+        "a5",
+        "e4",
+        "a6",
+        "e5",
+        "h4",
+        "a7",
+        "e6",
+        "d2"
+      ],
+      "topic": "Paired-loss sensitivity to edit artifacts correlated with minority cues",
+      "boundary_reason": "Held-out tests establish a crossover and a conditional decision to advance paired loss."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "l3",
+        "a8",
+        "r2"
+      ],
+      "topic": "Audit of paired loss under low artifact–minority-cue correlation",
+      "boundary_reason": "The stratified CelebA audit is produced before the discussion shifts to correcting higher-correlation artifacts."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "l4",
+        "a9",
+        "e7"
+      ],
+      "topic": "Sham-edit subtraction for correlated artifacts",
+      "boundary_reason": "The CelebA comparison reports the correction’s accuracy before a distinct mask-based proposal begins."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "q3",
+        "h5",
+        "a10",
+        "e8",
+        "a11",
+        "e9",
+        "h6",
+        "a12",
+        "e10",
+        "d3"
+      ],
+      "topic": "Tuning sham-calibrated masks to preserve minority cues and suppress shortcuts",
+      "boundary_reason": "Held-out attribution results support adopting validation-tuned masks."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "l5",
+        "a13",
+        "r3"
+      ],
+      "topic": "Extending tuned-mask edit audits to Waterbirds",
+      "boundary_reason": "The expanded audit is produced before a new orbit-prototype approach is proposed."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "l6",
+        "a14",
+        "e11"
+      ],
+      "topic": "Orbit prototypes and their initial Waterbirds evaluation",
+      "boundary_reason": "The initial accuracy result leads to a question about sparse rare-cluster edit orbits."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "q4",
+        "h7",
+        "a15",
+        "e12",
+        "h8",
+        "a16",
+        "e13",
+        "d4"
+      ],
+      "topic": "Rare-cluster orbit counts and cross-cluster shrinkage",
+      "boundary_reason": "The evidence yields a minimum-orbit decision and rejects shrinkage on cue-retention grounds."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "l7",
+        "a17",
+        "r4",
+        "a18",
+        "e14",
+        "d5"
+      ],
+      "topic": "Expanded Waterbirds orbit audit and certification gates",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

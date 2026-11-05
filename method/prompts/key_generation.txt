@@ -1,0 +1,18 @@
+Write the Key for a memory unit that has just closed in an ongoing conversation.
+
+{{INPUT_JSON}}
+
+messages lists this unit's turns in order.
+
+Produce a title, summary, and key facts that let this unit be recognized and searched for later without rereading its original text.
+
+- title: one line, a few words naming what this unit is about.
+- summary: 1-2 sentences covering what was discussed and, if applicable, what was concluded or decided.
+- key_facts: short, independent statements. Preserve every specific number, name, identifier, condition, and conclusion stated in the unit; do not round, generalize, or paraphrase them away. Use only the supplied messages.
+
+Return JSON only:
+{
+  "title": "...",
+  "summary": "...",
+  "key_facts": ["..."]
+}

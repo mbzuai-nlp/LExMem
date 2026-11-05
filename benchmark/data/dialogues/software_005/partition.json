@@ -1,0 +1,114 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Prevent ACKed-byte loss and duplicate delivery during TCP-state migration",
+      "boundary_reason": "Atomic cross-leg WAL is adopted after crash-boundary testing; the discussion shifts to route withdrawal."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11"
+      ],
+      "topic": "Test tuple continuity, byte ordering, and stalls during anycast route withdrawal",
+      "boundary_reason": "The route-withdrawal report is complete; the next discussion examines split-route convergence."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Test epoch fencing during asymmetric anycast convergence",
+      "boundary_reason": "Split-route testing reveals stale forwards and stalls above the target; the focus shifts to replication congestion."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Bound replication backlog with a 64-KiB ACK-gated WAL",
+      "boundary_reason": "The WAL cap is retained, while split-route forwarding remains to be addressed by a new ownership design."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Evaluate quorum-leased ownership and gateway epoch fencing",
+      "boundary_reason": "Gateway fencing is retained, but expiry-gated takeover is rejected for exceeding the stall target."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Replace lease-expiry waits with BFD-triggered quorum CAS",
+      "boundary_reason": "The split-route CAS rerun meets the target; the next discussion tests coordinator failure during handoff."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Recover quorum-CAS grants after post-fence coordinator crashes",
+      "boundary_reason": "Persisted fence acknowledgments and standby retries are adopted after coordinator-kill testing."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Evaluate dual-anchor replacement as a fallback",
+      "boundary_reason": "Dual-anchor mapping is retained as a fallback; the remaining node synthesizes the overall design."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n42"
+      ],
+      "topic": "Select the final proxy design",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

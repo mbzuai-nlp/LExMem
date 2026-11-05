@@ -1,0 +1,1021 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn audio–video temporal alignment that separates clock drift from genuine event delays despite missing and repeated events.",
+      "requirements": [
+        "Reduce median clock-offset estimation error by 25% versus global-offset alignment under matched missing-event conditions.",
+        "State identifiability assumptions and flag timing ambiguities that cannot be resolved from observed modalities."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Infer piecewise-affine clock drift using probabilistic skip/repeat matching and known-median event-delay priors; flag nonidentifiable offsets with posterior intervals."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When do missing or repeated anchors make piecewise clock drift indistinguishable from changing event delays?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "With stationary known-median delays, three distinctive, time-spread anchors per segment constrain drift; sparse anchors broaden intervals, periodic repeats induce modes."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Simulate missing/repeated anchors and stationary versus drifting delays in SyncGap-v1; benchmark offset error against global alignment and posterior ambiguity coverage."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run SyncGap-v1 sweeps over 1–5 anchors, 0–40% omissions, repeats, and known-median/drifting delays; compare global-offset error and ambiguity coverage."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On SyncGap-v1, 42% of segments with three distinctive, time-spread anchors retained ≥95% prior drift-interval width under stationary known-median delays."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "With known-median delays, three distinctive anchors spanning ≥10 minutes should constrain drift at ≤10 ms jitter; otherwise flag ambiguity."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Stratify SyncGap-v1 known-median-delay segments with three distinctive anchors by span and jitter; measure drift-interval contraction and ambiguity-flag recall."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "On SyncGap-v1, three-anchor, ≥10-minute, ≤10-ms-jitter segments narrowed prior drift intervals 72%; flags detected 91% of unconstrained cases."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Gate three-anchor drift estimation by ≥10-minute span and ≤10-ms jitter; check posterior ambiguity otherwise, given 72% contraction versus 42% unconstrained."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Benchmark the gated matcher against global-offset alignment on SyncGap-v1 with matched omissions/repeats; measure median clock-offset error and ambiguity-flag recall."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "SyncGap-v1 report tabulates median clock-offset error versus global-offset alignment under matched omissions/repeats, ambiguity-flag recall, and identifiability assumptions."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Do near-identical repeated events make probabilistic matching overconfident in incorrect clock offsets despite posterior ambiguity flags?"
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Near-identical repeats cause >20% overconfident offset errors when match permutations collapse; retaining multimodal posteriors should flag these ambiguities."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Estimate drift from matched same-class event spacings, calibrate offset with zero-delay anchors, and flag aliased repeats or absent calibration."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Benchmark anchor-calibrated event-spacing fits against global offsets on SyncGap-v1; test 25% median-error reduction under matched omissions/repeats and flag aliases."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Using SyncGap-v1 report’s matched omission/repeat conditions and global-offset baseline, test anchor-calibrated spacing fits for ≥25% median-error reduction and alias recall."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "AnchorSpacing-v1 results table records matched-condition median offset errors, 25% improvement status, repeat-alias recall, and no-anchor identifiability failures."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Audit AnchorSpacing-v1 by zero-delay-anchor availability and repeat periodicity; check ≥25% median-offset-error reduction, alias-flag recall, and ambiguity disclosure."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "On SyncGap-v1, with matched 30% omissions and one zero-delay anchor, periodic repeats caused 38-ms median error versus 29-ms global."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Are periodic-repeat errors caused by unresolved cycle-count aliases between the lone zero-delay anchor and distant event matches?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Incorrect cycle counts dominate periodic-repeat errors; adding a second distinctive zero-delay anchor should resolve aliases and halve median offset error."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Rerun SyncGap-v1 periodic-repeat trials at 30% omissions with one versus two distinctive zero-delay anchors; compare cycle-count failures and offset error."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "On SyncGap-v1 at 30% omissions, two anchors cut cycle-count failures 31%→8% and median offset error 38→17 ms."
+    },
+    {
+      "id": "n23",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Revive anchor-calibrated spacing with two distinctive zero-delay anchors: 17-ms median error versus 29-ms global; flag single-anchor cycle aliases."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n14",
+      "content": "Using SyncGap-v1 report baselines, compare collapsed versus multimodal anchor-spacing posteriors with one/two anchors; measure overconfident-error rate, alias recall, offset error."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "On SyncGap-v1, collapsed near-identical repeats yielded 12% overconfident errors, below 20%; multimodal two-anchor spacing flagged 93% aliases."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Fuse exposure-flicker/audio-hum harmonics for drift with zero-delay anchors for offset; fit event-delay mixtures and flag phase aliases."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "Can shared mains harmonics constrain drift when flicker and hum have unequal dropouts and ambiguous harmonic phase?"
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Using SyncGap-v1 report conditions, compare harmonic fusion against probabilistic event matching under unequal dropouts; measure drift error and phase-alias flags."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "SyncGap-v1 unequal-dropout trials: harmonic fusion achieved 18-ms median offset error versus 34-ms event matching and 29-ms global; 90% phase-alias recall."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Does harmonic fusion remain identifiable when hum and flicker arise from different electrical sources with drifting phase?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Independent-source phase drift at coherence <0.6 raises harmonic-fusion median offset error above the 29-ms global baseline; flag phase ambiguity."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Simulate independent-source hum/flicker phase drift across coherence bins in SyncGap-v1; measure median offset error against 29-ms global and ambiguity-flag recall."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Sweep SyncGap-v1 independent-source phase coherence below 0.6; compare harmonic fusion, event matching, and reported global baseline on error and flags."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "On SyncGap-v1 below 0.6 coherence, harmonic/event-matching/global median offset errors were 36/20/29 ms; event-posterior phase-ambiguity recall reached 91%."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n31",
+      "content": "Given 36-ms harmonic error below 0.6 coherence, test coherence-gated fusion versus event matching; compare offset error and ambiguity recall."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Across SyncGap-v1 source-mixed trials, coherence-gated fusion yielded 19-ms median offset error versus 29-ms global; phase-alias recall reached 92%."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Adopt harmonic fusion at ≥0.6 coherence, otherwise event matching; require zero-delay anchors and flag phase aliases (19 versus 29 ms)."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Can the event-delay mixture distinguish genuine late impacts from missed repeated events when harmonic drift is well constrained?"
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Using AnchorSpacing-v1 alias cases, inject delayed impacts and missed repeats; compare two-anchor spacing with harmonic-delay mixtures on classification accuracy."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "On AnchorSpacing-v1 alias cases, two-anchor spacing classified delayed impacts versus missed repeats at 86% accuracy; harmonic-delay mixtures reached 61%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Gate harmonic drift by coherence; fall back to two-anchor event spacing, classify delays, and flag cycle aliases or unanchored offsets."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Does the hybrid remain calibrated when only one zero-delay anchor survives and repeated events create cycle aliases?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "With one surviving anchor, multimodal cycle-count posteriors should keep 90% offset intervals calibrated and flag ≥85% periodic aliases."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Stress-test one-anchor SyncGap-v1 periodic repeats across coherence and 30% omissions; measure 90% offset-interval coverage and alias-flag recall."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Recreate SyncGap-v1 report’s 30%-omission trials and AnchorSpacing-v1 alias cases; sweep coherence, measuring one-anchor 90%-interval coverage and alias recall."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "OneAnchor-Calib-v1 table records coherence-stratified 90% offset-interval coverage, cycle-alias recall, and single-anchor identifiability warnings at 30% omissions."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Audit OneAnchor-Calib-v1 across coherence bins: check gated hybrid’s ≥90% interval coverage, ≥85% alias recall, and identifiability warnings."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "OneAnchor-Calib-v1 at 30% omissions: one-anchor 90% intervals covered 71% of offsets; periodic-alias recall was 82%, below 85%."
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Coherence-stratified conformal cycle-mode unions should restore ≥90% one-anchor coverage; multimodality flags should raise alias recall above 85%."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Calibrate cycle-mode unions by OneAnchor-Calib-v1 coherence bins; reevaluate one-anchor 90%-set coverage and multimodality-flag recall at 30% omissions."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "On OneAnchor-Calib-v1 at 30% omissions, coherence-stratified cycle-mode unions reached 92% coverage; multimodality flags detected 89% of aliases."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n42",
+      "content": "Benchmark coherence-gated, cycle-mode-calibrated hybrid against event matching across SyncGap-v1 coherence bins; measure median offset error, 90%-set coverage, alias recall."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "SyncGap-v1 across coherence bins: hybrid/event/global median offset errors were 18/24/29 ms; 90%-set coverage reached 92%, alias recall 89%."
+    },
+    {
+      "id": "n52",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Gate harmonic drift by coherence; use two-anchor spacing for delays and calibrated one-anchor ambiguity sets: 18 versus 29 ms."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Implement coherence-gated hybrid using OneAnchor-Calib-v1; test ≥25% median-offset-error reduction on held-out SyncGap-v1 with matched omissions and audit no-anchor flags."
+    },
+    {
+      "id": "n54",
+      "type": "artifact",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "SyncAlign-Hybrid-v1 provides a coherence-gated aligner, held-out offset-error benchmarks, calibrated alias sets, and explicit no-anchor identifiability flags."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "revive",
+      "target": "p2"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "revise",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn audio–video temporal alignment that separates clock drift from genuine event delays despite missing and repeated events.",
+    "requirements": [
+      "Reduce median clock-offset estimation error by 25% versus global-offset alignment under matched missing-event conditions.",
+      "State identifiability assumptions and flag timing ambiguities that cannot be resolved from observed modalities."
+    ]
+  }
+}

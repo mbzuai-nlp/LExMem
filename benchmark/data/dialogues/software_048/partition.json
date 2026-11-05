@@ -1,0 +1,132 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Quorum leases, key pre-staging, and partitioned-rotation testing",
+      "boundary_reason": "The lease regression is recorded, and the discussion turns to a regional HSM gateway design."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "HSM gateway epoch handling and comparison with TPM-pinned brokers",
+      "boundary_reason": "The revised gateway is tested and compared; the next proposal combines the approaches."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Combined broker design, HSM queue sharding, and SecretBroker v1.0",
+      "boundary_reason": "The combined design is implemented; the next discussion evaluates a software-verification alternative."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p4",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Software-verified capabilities versus SecretBroker v1.0",
+      "boundary_reason": "The software alternative is rejected on login-success results, leading to a revised canary plan."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "SecretBroker canary gates and retesting batched TPM-clock reads",
+      "boundary_reason": "The retest reports improved software-capability results; the next discussion examines clock accuracy."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n45",
+        "n46",
+        "p5",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Batched TPM and secure-NIC expiry-clock accuracy",
+      "boundary_reason": "The clock comparison reports batched-TPM error, prompting a primary-and-fallback decision."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "HSM primary, batched-TPM fallback, and SecretBroker v1.2 canaries",
+      "boundary_reason": "The failover canary report is produced; testing then shifts to secure-NIC expiry."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Secure-NIC canary replay and optional fast-path pilot",
+      "boundary_reason": "The pilot decision is made; the next discussion tests secure-NIC expiry at 20,000 logins per second."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Secure-NIC expiry under high-load partition and rollback replay",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

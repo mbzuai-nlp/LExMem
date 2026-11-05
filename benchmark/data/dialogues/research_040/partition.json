@@ -1,0 +1,120 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Test speaker-adversarial, relevance-gated grounding on unseen speakers and timing offsets",
+      "boundary_reason": "The initial evaluations end; the next question investigates the substitution failures."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Investigate gesture–speech mismatch failures and build a failure atlas",
+      "boundary_reason": "The failure atlas is produced; the next discussion introduces a new model."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Train and evaluate a referent-consistency critic",
+      "boundary_reason": "The critic evaluation concludes; the next proposal takes a geometry-based approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Evaluate geometry fallback and identify its occluded-object weakness",
+      "boundary_reason": "The ablation exposes an occlusion failure that motivates a focused fallback question."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Calibrate visibility-triggered speech fallback",
+      "boundary_reason": "The visibility-fallback report completes this investigation; the next proposal introduces a counterfactual scorer."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Evaluate a counterfactual scorer and its temporal-pooling weakness",
+      "boundary_reason": "The ablation identifies overlapping-pointing substitution losses; the next proposal targets event-level matching."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Test event-level matching across timing, stroke duration, and occlusion",
+      "boundary_reason": "Stress testing reveals long-stroke and occlusion failures, prompting a calibration question."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Calibrate event-matching fallback by occlusion and stroke duration",
+      "boundary_reason": "Calibration thresholds are documented; the next step validates the frozen thresholds on a new speaker fold."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Validate calibrated event matching and decide whether to adopt it",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

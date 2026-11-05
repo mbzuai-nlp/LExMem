@@ -1,0 +1,138 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial replicated commit barriers for atomic multi-shard visibility",
+      "boundary_reason": "CommitBarrier v1 is implemented and adopted; the next nodes begin a stress test of it."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Leader-transfer failures and replay-applied acknowledgments",
+      "boundary_reason": "The recovery change eliminates partial snapshots in the rerun; the next discussion integrates it into a new version."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "CommitBarrier v2 validation and overlapping-transfer failure",
+      "boundary_reason": "EpochStorm100K exposes superseded acknowledgments, prompting a different publication mechanism."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Digest-bound, generation-fenced apply certificates",
+      "boundary_reason": "ApplyCert v1 passes the overlapping-failover test; the discussion shifts to join lineage."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Per-key outer-join lineage and recovery defects",
+      "boundary_reason": "Tests identify unaffected-partition rescans and duplicate WAL-replay deltas, leading to a revised recovery approach."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Checkpointed, deduplicated lineage replay",
+      "boundary_reason": "LineageStore v2 is validated and adopted; the next discussion moves to aggregate indexes."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Counted extrema indexes and cross-shard aggregate publication",
+      "boundary_reason": "The aggregate index works for extrema retractions, but group moves reveal a certificate gap that motivates the next proposal."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Group-complete certificates and late aggregate replay",
+      "boundary_reason": "A passing group-move test is followed by late-replay mismatches, prompting version fencing."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Aggregate-version fencing, checkpoint recovery, and durable certification",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

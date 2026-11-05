@@ -1,0 +1,1352 @@
+[
+ {
+  "task_id": "task_001",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop knowledge editing that propagates temporally scoped factual changes through multi-hop reasoning without overwriting valid historical knowledge.",
+  "requirements": [
+   "Achieve at least 90% accuracy on held-out multi-hop questions requiring temporally scoped edited facts.",
+   "Keep historical and unrelated factual accuracy within one percentage point of the unedited model."
+  ]
+ },
+ {
+  "task_id": "task_002",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable long-document reasoning that resolves conflicting, temporally scoped claims while preserving auditable evidence for multi-hop conclusions.",
+  "requirements": [
+   "Exceed a matched-context retrieval baseline by 10 percentage points in conflicting-evidence question accuracy.",
+   "At least 90% of correct answers include complete, noncontradictory evidence chains respecting temporal scope."
+  ]
+ },
+ {
+  "task_id": "task_003",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a semantic parser that distinguishes genuine utterance ambiguity from model uncertainty under unseen compositional structures.",
+  "requirements": [
+   "Achieve ambiguity-detection F1 ≥0.85 on unseen compositions, using independently annotated sets of valid interpretations.",
+   "Match unambiguous-input execution accuracy of a single-output parser trained on identical data."
+  ]
+ },
+ {
+  "task_id": "task_004",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop selective language-model unlearning that removes source-specific information while preserving independently supported facts shared with the removed source.",
+  "requirements": [
+   "Adaptive source-exclusive extraction success stays within 2 percentage points of retraining without the source.",
+   "Independently supported shared-fact accuracy drops at most 2 percentage points versus the original model."
+  ]
+ },
+ {
+  "task_id": "task_005",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a semantic parser that generalizes variable binding and quantifier scope to unseen compositions without sacrificing familiar-construction accuracy.",
+  "requirements": [
+   "Achieve ≥90% logical-form exact match on withheld scope–binding combinations with matched vocabulary and length distributions.",
+   "Keep familiar-construction exact-match accuracy within two percentage points of an equally sized supervised baseline."
+  ]
+ },
+ {
+  "task_id": "task_006",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop cross-lingual semantic role labeling that transfers across divergent word orders while preserving language-specific argument distinctions.",
+  "requirements": [
+   "Achieve ≥5 absolute macro-F1 points over matched multilingual fine-tuning on five zero-shot target languages.",
+   "Maintain source-language F1 within one point while distinguishing target-specific roles without target-language training annotations."
+  ]
+ },
+ {
+  "task_id": "task_007",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop retrieval-augmented reasoning that revises multi-hop conclusions under corrected evidence while preserving conclusions unaffected by the correction.",
+  "requirements": [
+   "Improve corrected-answer accuracy by 10 percentage points over standard RAG given identical updated evidence.",
+   "Preserve at least 95% of previously correct answers whose supporting evidence remains valid."
+  ]
+ },
+ {
+  "task_id": "task_008",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop textual entailment models that generalize to unseen quantifier scope compositions while distinguishing semantic changes from paraphrases.",
+  "requirements": [
+   "Achieve at least 85% balanced accuracy on entailment, contradiction, and neutrality across unseen scope compositions.",
+   "Preserve predictions across 95% of meaning-preserving paraphrases while detecting 90% of label-changing scope reversals."
+  ]
+ },
+ {
+  "task_id": "task_009",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable cross-lingual morphological inflection transfer to low-resource languages with grammatical feature combinations absent from source languages.",
+  "requirements": [
+   "Use at most 200 labeled inflections per target language; evaluate on unseen lemmas.",
+   "Exceed matched-budget multilingual fine-tuning exact-match accuracy by five percentage points on source-absent feature combinations."
+  ]
+ },
+ {
+  "task_id": "task_010",
+  "task_type": "research_idea_exploration",
+  "task_description": "Investigate whether language models can revise temporal inferences under corrected narratives while preserving uncertainty about underspecified event order.",
+  "requirements": [
+   "Achieve macro-F1 ≥0.85 classifying temporal claims as entailed, contradicted, or undetermined on unseen event structures.",
+   "Preserve ≥95% of previously correct temporal judgments unaffected by narrative corrections while updating affected judgments."
+  ]
+ },
+ {
+  "task_id": "task_011",
+  "task_type": "research_idea_exploration",
+  "task_description": "Reconstruct sparse-view 3D geometry with calibrated uncertainty distinguishing unobserved structure from ambiguities caused by reflective surfaces.",
+  "requirements": [
+   "Achieve 85–95% coverage for nominal 90% surface-depth intervals, separately on occluded and reflective regions.",
+   "Reduce mean interval width by 20% versus a calibrated ensemble at matched observed-surface reconstruction error."
+  ]
+ },
+ {
+  "task_id": "task_012",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop an open-world visual recognizer that distinguishes novel classes from domain shifts while learning new classes without forgetting.",
+  "requirements": [
+   "Achieve ≥80% novel-class recall at ≤5% false rejection of domain-shifted known classes.",
+   "After ten class additions, retain ≥95% initial known-class accuracy and achieve ≥70% added-class accuracy."
+  ]
+ },
+ {
+  "task_id": "task_013",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop an image segmentation model that distinguishes genuine boundary ambiguity from unfamiliar anatomy under acquisition-domain shift.",
+  "requirements": [
+   "Achieve unfamiliar-anatomy detection AUROC ≥0.85 on held-out acquisition domains.",
+   "Achieve boundary-uncertainty Spearman correlation ≥0.6 with inter-annotator disagreement while matching a supervised baseline’s Dice."
+  ]
+ },
+ {
+  "task_id": "task_014",
+  "task_type": "research_idea_exploration",
+  "task_description": "Recover metrically consistent video depth despite unknown changing focal lengths and independently moving objects.",
+  "requirements": [
+   "With one initial metric scale anchor, keep median sequence scale drift below 5%.",
+   "Reduce moving-object depth AbsRel by 15% versus a fixed-intrinsics baseline on held-out cameras."
+  ]
+ },
+ {
+  "task_id": "task_015",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop visual anomaly detection that separates novel manufacturing defects from unseen illumination and camera shifts using only defect-free training images.",
+  "requirements": [
+   "Under unseen benign shifts, achieve ≥90% defect recall at ≤5% image-level false-positive rate.",
+   "Meet targets separately for structural and texture defects without anomalous calibration data."
+  ]
+ },
+ {
+  "task_id": "task_016",
+  "task_type": "research_idea_exploration",
+  "task_description": "Infer calibrated, multimodal 3D human motion from monocular video despite occlusion and previously unseen camera viewpoints.",
+  "requirements": [
+   "Attain 87–93% empirical coverage for nominal 90% motion regions under occlusion and unseen viewpoints.",
+   "Reduce prediction-region volume by 20% versus a calibrated unimodal predictor at matched coverage."
+  ]
+ },
+ {
+  "task_id": "task_017",
+  "task_type": "research_idea_exploration",
+  "task_description": "Recover relightable geometry and materials from three images under unknown illumination while quantifying ambiguity between shape, reflectance, and lighting.",
+  "requirements": [
+   "Reduce held-out relighting LPIPS by 15% versus a matched point-estimate inverse renderer.",
+   "Achieve 85–95% coverage for nominal 90% predictive intervals on held-out relighting intensities."
+  ]
+ },
+ {
+  "task_id": "task_018",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop continual visual recognition that distinguishes novel classes from recurring appearance shifts without task boundaries or stored images.",
+  "requirements": [
+   "Achieve novelty-detection AUROC ≥0.90 when unseen classes and recurring appearance shifts coexist.",
+   "Limit mean old-class accuracy decline from post-acquisition performance to ≤5 percentage points."
+  ]
+ },
+ {
+  "task_id": "task_019",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop blind image restoration that distinguishes recoverable detail from ambiguity under unseen, spatially varying blur and noise.",
+  "requirements": [
+   "Achieve 87–93% pixel coverage with 90% intervals narrower than globally calibrated residual intervals.",
+   "Remain within 0.3 dB PSNR of a capacity-matched supervised baseline on unseen degradation families."
+  ]
+ },
+ {
+  "task_id": "task_020",
+  "task_type": "research_idea_exploration",
+  "task_description": "Recover camera motion and independently moving rigid-object geometry from monocular video while distinguishing focal-length changes from scene motion.",
+  "requirements": [
+   "Reduce scale-aligned reconstruction error by 20% versus fixed-intrinsics multibody reconstruction on variable-focal-length sequences.",
+   "Characterize observational ambiguities and achieve 90% empirical coverage for predicted geometry confidence regions."
+  ]
+ },
+ {
+  "task_id": "task_021",
+  "task_type": "research_idea_exploration",
+  "task_description": "Predict specific protein molecular functions in unseen families while distinguishing genuine functional novelty from incomplete annotations.",
+  "requirements": [
+   "Achieve ≥10% relative macro-AUPRC improvement over sequence-only transfer on family-disjoint, temporally held-out annotations.",
+   "Distinguish novel functions from missing annotations with ≥0.80 AUROC on independently adjudicated proteins."
+  ]
+ },
+ {
+  "task_id": "task_022",
+  "task_type": "research_idea_exploration",
+  "task_description": "Infer calibrated cell ancestry from incomplete lineage barcodes and transcriptional states despite state convergence and biased lineage sampling.",
+  "requirements": [
+   "Improve ancestral-pair AUROC by ≥0.05 over barcode-only inference with 30% barcode dropout.",
+   "Achieve ancestry-probability expected calibration error ≤0.05 under convergent states and uneven lineage sampling."
+  ]
+ },
+ {
+  "task_id": "task_023",
+  "task_type": "research_idea_exploration",
+  "task_description": "Infer directed cell–cell signaling from spatial transcriptomics while distinguishing shared microenvironment effects under incomplete molecular observation.",
+  "requirements": [
+   "Specify identifiability assumptions and flag observationally indistinguishable signaling and environmental explanations.",
+   "On synthetic confounded tissues, achieve ≥80% precision at 50% recall for identifiable directed signaling edges."
+  ]
+ },
+ {
+  "task_id": "task_024",
+  "task_type": "research_idea_exploration",
+  "task_description": "Infer identifiable direct regulatory edges from incomplete single-cell perturbations despite latent confounding and compensatory feedback.",
+  "requirements": [
+   "Achieve ≥80% direct-edge precision at 30% recall on ground-truth networks containing confounding and feedback.",
+   "Specify identifiability assumptions and distinguish unsupported edges from evidence of regulatory absence."
+  ]
+ },
+ {
+  "task_id": "task_025",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop single-cell integration that aligns shared cell states while preserving condition-specific states under partial batch–condition confounding.",
+  "requirements": [
+   "Reduce false cross-batch matches by 30% versus mutual-nearest-neighbor integration at matched shared-state recall.",
+   "Specify identifiability assumptions and flag alignments unsupported by biological overlap across batches."
+  ]
+ },
+ {
+  "task_id": "task_026",
+  "task_type": "research_idea_exploration",
+  "task_description": "Predict yeast growth effects of unseen mutation combinations across genetic backgrounds while distinguishing transferable epistasis from background-specific interactions.",
+  "requirements": [
+   "Reduce combination-level RMSE by 10% versus background-aware additive models on unseen genetic backgrounds.",
+   "Exceed 75% accuracy identifying epistasis sign changes across backgrounds for independently measurable nonadditive effects."
+  ]
+ },
+ {
+  "task_id": "task_027",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable identifiable species-removal predictions from compositional microbial time series despite environmental confounding and sparse absolute-abundance measurements.",
+  "requirements": [
+   "Specify sufficient identifiability assumptions and characterize observationally indistinguishable communities with different removal responses.",
+   "Reduce held-out post-removal log-abundance RMSE by 20% versus generalized Lotka–Volterra models using identical observations."
+  ]
+ },
+ {
+  "task_id": "task_028",
+  "task_type": "research_idea_exploration",
+  "task_description": "Infer cell-type-specific effects of splicing-factor perturbations on splice-site selection while disentangling splicing regulation from isoform degradation.",
+  "requirements": [
+   "Reduce nascent-RNA ΔPSI prediction MAE by 20% versus an abundance-only baseline on held-out perturbations.",
+   "Characterize when splicing and degradation effects are identifiable, explicitly representing ambiguity when they are not."
+  ]
+ },
+ {
+  "task_id": "task_029",
+  "task_type": "research_idea_exploration",
+  "task_description": "Infer mutation-dependent protein conformational transition rates from sparse equilibrium measurements and short trajectories while quantifying kinetic nonidentifiability.",
+  "requirements": [
+   "Predict at least 80% of independently measured, held-out mutant transition rates within twofold error.",
+   "Distinguish data-constrained rates from nonidentifiable rates without treating equilibrium populations as sufficient kinetic evidence."
+  ]
+ },
+ {
+  "task_id": "task_030",
+  "task_type": "research_idea_exploration",
+  "task_description": "Determine when unpaired RNA and chromatin accessibility measurements support transferable perturbation-response prediction despite donor–batch confounding.",
+  "requirements": [
+   "Reduce perturbation-response RMSE by 15% versus RNA-only models on unseen donors and perturbations.",
+   "Characterize identifiability assumptions separating biological coupling from batch effects, including cases where separation is impossible."
+  ]
+ },
+ {
+  "task_id": "task_031",
+  "task_type": "research_idea_exploration",
+  "task_description": "Learn classifiers that reject shifting spurious cues without environment labels while preserving stable predictive features specific to minority groups.",
+  "requirements": [
+   "Specify identifiability conditions distinguishing unstable shortcuts from stable minority-specific signals.",
+   "Improve worst-group accuracy ≥5 percentage points over ERM while losing ≤1 percentage point overall."
+  ]
+ },
+ {
+  "task_id": "task_032",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop domain-generalization methods that distinguish transferable predictive features from spurious features without source-domain annotations or target-domain data.",
+  "requirements": [
+   "Achieve ≥5 percentage points higher worst-domain accuracy than ERM under unseen combinations of spurious correlations.",
+   "Keep average source-domain accuracy within one percentage point of ERM while preserving genuinely predictive features."
+  ]
+ },
+ {
+  "task_id": "task_033",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop out-of-distribution detection that separates unseen semantic classes from nuisance shifts using unlabeled deployment mixtures with unknown novelty prevalence.",
+  "requirements": [
+   "Achieve ≥80% unseen-class recall while rejecting ≤5% of known-class inputs under predefined nuisance shifts.",
+   "Use labeled source classes and unlabeled deployment data, without unseen-class examples during training or calibration."
+  ]
+ },
+ {
+  "task_id": "task_034",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a classifier robust to instance-dependent label noise without discarding difficult examples from underrepresented groups.",
+  "requirements": [
+   "Under 30% label corruption, improve worst-group accuracy by five percentage points over empirical risk minimization.",
+   "Establish identifiability conditions without requiring clean labels or known group membership during training."
+  ]
+ },
+ {
+  "task_id": "task_035",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop image classifiers whose adversarial robustness generalizes to unseen corruption distributions while preserving clean accuracy.",
+  "requirements": [
+   "At ℓ∞ ε=8/255, exceed matched adversarial training’s worst-corruption CIFAR-10-C robust accuracy by ≥5 percentage points.",
+   "Keep clean CIFAR-10 accuracy within 1 percentage point of baseline, without corruption-specific training or adaptation."
+  ]
+ },
+ {
+  "task_id": "task_036",
+  "task_type": "research_idea_exploration",
+  "task_description": "Characterize when unlabeled target data enables selective prediction with nontrivial coverage under bounded conditional-label shift.",
+  "requirements": [
+   "Identify shift assumptions permitting positive coverage and establish impossibility boundaries when those assumptions fail.",
+   "Guarantee target selective error below 5% with 95% confidence uniformly over the specified shift family."
+  ]
+ },
+ {
+  "task_id": "task_037",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop long-tail image recognition that preserves rare-class accuracy when predictive background correlations reverse without target-domain labels.",
+  "requirements": [
+   "Improve bottom-quintile class macro-accuracy by 5 percentage points over empirical risk minimization under background reversals.",
+   "Keep top-quintile class macro-accuracy within 1 percentage point of that baseline using identical training data."
+  ]
+ },
+ {
+  "task_id": "task_038",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop training-example valuations that distinguish transferable rare-group signal from spurious correlations under previously unseen distribution shifts.",
+  "requirements": [
+   "At 20% data retention, exceed random selection’s worst-group accuracy by ≥2 percentage points.",
+   "Meet this target on three unseen shifts without accessing target-domain samples during valuation."
+  ]
+ },
+ {
+  "task_id": "task_039",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop semantic parsers that generalize to unseen operator compositions despite training correlations between linguistic templates and program structure.",
+  "requirements": [
+   "Achieve 80% exact-match accuracy on held-out operator compositions under reversed template–structure correlations.",
+   "Retain in-distribution exact-match accuracy within two percentage points of an identically sized, conventionally trained parser."
+  ]
+ },
+ {
+  "task_id": "task_040",
+  "task_type": "research_idea_exploration",
+  "task_description": "Determine when black-box language-model evaluations can distinguish paraphrased benchmark contamination from genuine generalization under unknown training distributions.",
+  "requirements": [
+   "Achieve at least 80% detection power at 5% false positives against uncontaminated, capability-matched models.",
+   "Specify identifiability assumptions and characterize contamination regimes observationally indistinguishable from genuine generalization."
+  ]
+ },
+ {
+  "task_id": "task_041",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop streaming speech recognition that handles temporarily ambiguous speech accurately while committing words irreversibly with low latency.",
+  "requirements": [
+   "Achieve word error rate within 5% relative of an equally trained revisable streaming baseline.",
+   "Keep 95th-percentile word-end-to-commit latency below 800 milliseconds, with zero revisions after commitment."
+  ]
+ },
+ {
+  "task_id": "task_042",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop streaming speaker diarization that preserves speaker identities through overlap and long absences without revising committed labels.",
+  "requirements": [
+   "Achieve 15% lower overlap-inclusive diarization error than an equally latency-constrained baseline on held-out conversational audio.",
+   "Commit labels within 500 milliseconds while handling unseen speakers without a known speaker count."
+  ]
+ },
+ {
+  "task_id": "task_043",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop unsupervised speech recognition accent adaptation that separates pronunciation shifts from speaker and channel variation without sacrificing existing accents.",
+  "requirements": [
+   "Reduce unseen-accent word error rate ≥15% relative to frozen recognizer using only unlabeled adaptation speech.",
+   "Limit existing-accent WER increases to one percentage point under independently varying speakers and channels."
+  ]
+ },
+ {
+  "task_id": "task_044",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop causal speech enhancement that distinguishes whispered consonants from transient noise without fabricating speech during ambiguous acoustic events.",
+  "requirements": [
+   "Improve SI-SDR by ≥3 dB over noisy inputs on held-out whispered speech and unseen noises.",
+   "Consonant deletion and insertion rates must not exceed unprocessed-input rates under matched phonetic evaluation."
+  ]
+ },
+ {
+  "task_id": "task_045",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop simultaneous speech translation that preserves late-resolved negation and semantic roles while committing irreversible output under bounded latency.",
+  "requirements": [
+   "Achieve at least 20% fewer negation and role errors than a matched-latency streaming baseline.",
+   "Keep average lagging below two seconds without reducing overall COMET versus the same baseline."
+  ]
+ },
+ {
+  "task_id": "task_046",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable zero-shot voice conversion across unseen tonal languages while transferring speaker identity without altering lexical tone or prosody.",
+  "requirements": [
+   "Keep lexical-tone error within 2 percentage points of unconverted speech, preserving source intonation and rhythm.",
+   "Achieve 90% target-speaker verification acceptance at 1% false acceptance using evaluators independent of training."
+  ]
+ },
+ {
+  "task_id": "task_047",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop expressive speech synthesis that transfers phrase-level emotion across speakers while preserving speaker identity and independently specified emphasis.",
+  "requirements": [
+   "Listeners identify intended emotion in ≥80% of phrases, including emotion–emphasis combinations absent from training.",
+   "Emphasis placement accuracy exceeds 90%, with listener-rated speaker similarity no worse than neutral synthesis."
+  ]
+ },
+ {
+  "task_id": "task_048",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop streaming overlapping-speech recognition that preserves speaker identities through interruptions without enrollment or known speaker counts.",
+  "requirements": [
+   "Reduce speaker-attributed word error rate ≥15% relative to a matched-latency streaming separation–recognition baseline.",
+   "Handle unseen speakers with 95th-percentile token emission delay ≤500 milliseconds after reference word endings."
+  ]
+ },
+ {
+  "task_id": "task_049",
+  "task_type": "research_idea_exploration",
+  "task_description": "Detect partially deepfaked speech from unseen generators while distinguishing synthesis artifacts from benign recording and transmission distortions.",
+  "requirements": [
+   "Achieve ≥80% detection sensitivity at ≤1% false-positive rate for utterances containing 0.5–2-second synthetic spans.",
+   "Meet these thresholds on held-out generators and codecs, with recording conditions matched across authenticity classes."
+  ]
+ },
+ {
+  "task_id": "task_050",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop streaming code-switching speech recognition that generalizes to unseen language pairings without sacrificing monolingual accuracy.",
+  "requirements": [
+   "Reduce WER within three words of switches by 15% relative to a matched multilingual baseline.",
+   "Evaluate unseen pairings; keep monolingual WER degradation below 0.5 percentage points at matched streaming latency."
+  ]
+ },
+ {
+  "task_id": "task_051",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable dexterous in-hand reorientation of unfamiliar objects while distinguishing incipient slip from intentional contact transitions under visual occlusion.",
+  "requirements": [
+   "Complete 80% of occluded reorientations on held-out objects within 10° orientation error without dropping.",
+   "Distinguish unintended slip from planned contact transitions with ≥90% balanced accuracy across unseen friction conditions."
+  ]
+ },
+ {
+  "task_id": "task_052",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop image-goal navigation that resolves perceptual aliasing in unseen buildings without privileged localization or unsafe exploratory motion.",
+  "requirements": [
+   "Achieve at least 80% goal-reaching success in held-out buildings with visually repeated corridors.",
+   "Reduce collisions per episode by 30% versus a reactive navigation baseline under equal travel budgets."
+  ]
+ },
+ {
+  "task_id": "task_053",
+  "task_type": "research_idea_exploration",
+  "task_description": "Investigate contact-rich insertion policies that distinguish recoverable misalignment from jamming under visual occlusion and unknown friction.",
+  "requirements": [
+   "Achieve ≥90% insertion success on held-out peg geometries and friction conditions with 0.2 mm clearance.",
+   "Keep peak contact force below 20 N in ≥99% of trials, including jam recovery."
+  ]
+ },
+ {
+  "task_id": "task_054",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a legged locomotion controller that identifies hidden terrain yielding limits while maintaining recoverability during exploratory foot contacts.",
+  "requirements": [
+   "Estimate previously unseen terrain’s load-bearing limits with median relative error below 15%.",
+   "Reduce falls by 30% versus an otherwise matched nonexploratory controller at equal traversal speed."
+  ]
+ },
+ {
+  "task_id": "task_055",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a shared-control robot that distinguishes human intent changes from reactions to its assistance during collaborative object transport.",
+  "requirements": [
+   "Achieve intent-change F1 ≥0.85 for unseen partners when robot assistance itself induces human corrections.",
+   "Reduce unnecessary control overrides by 30% versus a fixed-assistance baseline without increasing peak interaction forces."
+  ]
+ },
+ {
+  "task_id": "task_056",
+  "task_type": "research_idea_exploration",
+  "task_description": "Learn insertion policies from demonstrations that transfer across robot embodiments and unseen object compliance while respecting contact-force limits.",
+  "requirements": [
+   "Achieve 80% success on unseen embodiment–compliance pairs, exceeding same-data behavior cloning by 15 percentage points.",
+   "Keep peak contact force below object-specific damage thresholds in at least 95% of trials."
+  ]
+ },
+ {
+  "task_id": "task_057",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable safe sim-to-real transfer for robotic peg insertion when friction and clearance changes are indistinguishable before contact.",
+  "requirements": [
+   "Achieve ≥90% insertion success across held-out friction–clearance combinations using at most 20 real adaptation trials.",
+   "Keep peak contact force below 20 N during adaptation and deployment without privileged state observations."
+  ]
+ },
+ {
+  "task_id": "task_058",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop robotic active perception that resolves grasp-relevant occlusions while accounting for uncertain object motion induced by sensing actions.",
+  "requirements": [
+   "Reduce failed grasps by 20% relative to a fixed-view baseline under matched action budgets.",
+   "Maintain object-damage rates below 1% across previously unseen object dynamics and occlusion patterns."
+  ]
+ },
+ {
+  "task_id": "task_059",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable mobile manipulators to distinguish object slip from localization drift while maintaining contact during furniture repositioning.",
+  "requirements": [
+   "Reposition unseen furniture within 5 cm in 90% of trials with intermittent visual occlusion.",
+   "Identify slip versus localization drift with 90% balanced accuracy without external tracking during execution."
+  ]
+ },
+ {
+  "task_id": "task_060",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop tactile slip prediction that distinguishes impending grasp slip from elastic deformation across unseen materials and sensor wear.",
+  "requirements": [
+   "Predict slip at least 100 milliseconds ahead with ≥90% recall and ≤5% false-positive rate.",
+   "Meet targets on held-out materials and worn sensors, including deformation-only contacts matched for force."
+  ]
+ },
+ {
+  "task_id": "task_061",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop visual question answering that responds to causally relevant image changes while remaining invariant to distractors under compositional shift.",
+  "requirements": [
+   "Answer both original and answer-changing counterfactual images correctly on at least 80% of fixed-question pairs.",
+   "Limit answer changes under irrelevant visual edits to 5% on unseen object–attribute combinations."
+  ]
+ },
+ {
+  "task_id": "task_062",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop video-language grounding that distinguishes repeated actions through temporal relationships while remaining robust to irrelevant visual changes.",
+  "requirements": [
+   "Ground both queries correctly in 80% of event-order minimal pairs (temporal IoU ≥0.5).",
+   "Limit accuracy loss to 5 percentage points under background changes preserving actions and timing."
+  ]
+ },
+ {
+  "task_id": "task_063",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable speech–gesture reference resolution that distinguishes gesture-dependent meaning from speaker-specific correlations under uncertain cross-modal timing.",
+  "requirements": [
+   "Achieve ≥10 percentage-point accuracy gains over speech-only models on gesture-dependent references from unseen speakers.",
+   "Limit accuracy degradation to 5 percentage points under irrelevant-gesture substitutions and ±300-millisecond audiovisual offsets."
+  ]
+ },
+ {
+  "task_id": "task_064",
+  "task_type": "research_idea_exploration",
+  "task_description": "Generate synchronized audio from silent video while distinguishing visually determined sound events from acoustically ambiguous alternatives.",
+  "requirements": [
+   "Reduce visible-event audio onset error by 20% versus an equally sized deterministic video-to-audio baseline.",
+   "Cover 90% of reference-supported sound alternatives across samples, with visually contradicted events below 5%."
+  ]
+ },
+ {
+  "task_id": "task_065",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a multimodal predictor robust to label-dependent modality missingness shifts without sacrificing accuracy when all modalities are observed.",
+  "requirements": [
+   "Reduce worst-pattern error by 10% relative to the strongest unimodal baseline under unseen label-dependent missingness.",
+   "Retain complete-modality accuracy within one percentage point of an equally trained complete-modality baseline."
+  ]
+ },
+ {
+  "task_id": "task_066",
+  "task_type": "research_idea_exploration",
+  "task_description": "Enable multimodal dialogue models to distinguish genuine scene changes from earlier grounding errors while maintaining consistent conversational references.",
+  "requirements": [
+   "Achieve ≥85% change-versus-error classification accuracy on matched dialogue pairs sharing final images but differing histories.",
+   "Preserve ≥95% of previously correct entity references when revising erroneous visual grounding."
+  ]
+ },
+ {
+  "task_id": "task_067",
+  "task_type": "research_idea_exploration",
+  "task_description": "Investigate embodied grounding of action verbs that transfers across robot morphologies while distinguishing intended effects from observed motions.",
+  "requirements": [
+   "Achieve ≥70% instruction success on unseen morphologies when motion cues conflict with intended effects.",
+   "Distinguish identical motions producing different effects while recognizing different motions achieving the same instructed effect."
+  ]
+ },
+ {
+  "task_id": "task_068",
+  "task_type": "research_idea_exploration",
+  "task_description": "Detect false contextual claims in authentic image–text pairs while distinguishing benign reuse under event and publisher shifts.",
+  "requirements": [
+   "Achieve macro-F1 ≥0.80 on events and publishers absent from training.",
+   "Keep false-positive rates ≤5% on benign reuse matched to misinformation for image–text semantic similarity."
+  ]
+ },
+ {
+  "task_id": "task_069",
+  "task_type": "research_idea_exploration",
+  "task_description": "Investigate causal effect identifiability reasoning from diagrams, distinguishing structural edits from equivalent redrawings across unseen graph compositions.",
+  "requirements": [
+   "Achieve 85% paired accuracy on identifiability judgments before and after structural edits, including latent confounding.",
+   "Maintain 95% prediction consistency across equivalent redrawings of held-out graph compositions."
+  ]
+ },
+ {
+  "task_id": "task_070",
+  "task_type": "research_idea_exploration",
+  "task_description": "Learn audio–video temporal alignment that separates clock drift from genuine event delays despite missing and repeated events.",
+  "requirements": [
+   "Reduce median clock-offset estimation error by 25% versus global-offset alignment under matched missing-event conditions.",
+   "State identifiability assumptions and flag timing ambiguities that cannot be resolved from observed modalities."
+  ]
+ },
+ {
+  "task_id": "task_071",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop informative treatment-effect confidence sets when confounding proxies are weak and their conditional independence assumptions are approximately violated.",
+  "requirements": [
+   "Guarantee at least 95% asymptotic coverage uniformly over explicitly quantified proxy-strength and assumption-violation classes.",
+   "Characterize when confidence sets are strictly narrower than outcome-range-only bounds without requiring point identification."
+  ]
+ },
+ {
+  "task_id": "task_072",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop causal discovery that distinguishes mechanism shifts from latent confounding across environments with unknown intervention targets.",
+  "requirements": [
+   "Specify assumptions enabling identifiable edge orientations and characterize unavoidable equivalence classes.",
+   "At 95% orientation precision, improve recall over pooled-data discovery by 10 percentage points."
+  ]
+ },
+ {
+  "task_id": "task_073",
+  "task_type": "research_idea_exploration",
+  "task_description": "Characterize bounds for dynamic treatment-regime effects under simultaneous unmeasured time-varying confounding and informative dropout.",
+  "requirements": [
+   "Establish sharp identification bounds under explicit, separately interpretable confounding and dropout sensitivity constraints.",
+   "Construct confidence regions with at least 95% asymptotic coverage uniformly over the specified sensitivity class."
+  ]
+ },
+ {
+  "task_id": "task_074",
+  "task_type": "research_idea_exploration",
+  "task_description": "Determine identifiability of population treatment-policy effects under network interference when treatment influences which social ties are observed.",
+  "requirements": [
+   "Establish identification boundaries under explicit restrictions on interference and treatment-dependent missing ties.",
+   "Within identifiable regimes, achieve ≥93% coverage for 95% intervals, with median width ≤2× complete-network oracle."
+  ]
+ },
+ {
+  "task_id": "task_075",
+  "task_type": "research_idea_exploration",
+  "task_description": "Characterize identifiable interventional mediation effects of gene perturbations through noisy cell-state measurements under treatment-induced mediator–outcome confounding.",
+  "requirements": [
+   "Specify identification assumptions and counterexamples establishing when measurement noise prevents identification.",
+   "Achieve 90–95% coverage and median interval width ≤2× a latent-state-observing oracle across identifiable simulations."
+  ]
+ },
+ {
+  "task_id": "task_076",
+  "task_type": "research_idea_exploration",
+  "task_description": "Characterize when heterogeneous treatment effects remain partially identifiable with weak instruments and bounded exclusion violations in observational healthcare.",
+  "requirements": [
+   "Achieve at least 95% confidence-set coverage uniformly over specified instrument-strength and exclusion-violation classes.",
+   "Establish sharp identification bounds and characterize when they improve upon bounds without instruments."
+  ]
+ },
+ {
+  "task_id": "task_077",
+  "task_type": "research_idea_exploration",
+  "task_description": "Characterize when staggered policy effects remain partially identifiable under network spillovers and bounded unmeasured adoption confounding.",
+  "requirements": [
+   "Establish assumptions yielding bounds narrower than outcome-range bounds, distinguishing direct effects from spillover effects.",
+   "Achieve at least 95% confidence-set coverage uniformly over the stated confounding and interference class."
+  ]
+ },
+ {
+  "task_id": "task_078",
+  "task_type": "research_idea_exploration",
+  "task_description": "Characterize treatment-effect identification and uncertainty in randomized trials with nonignorable missing outcomes and imperfect outcome proxies.",
+  "requirements": [
+   "Establish sharp identification bounds under explicit, interpretable restrictions on outcome-dependent missingness and proxy validity.",
+   "Construct confidence sets with at least 95% asymptotic coverage uniformly as proxy informativeness vanishes."
+  ]
+ },
+ {
+  "task_id": "task_079",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop informative partial identification of heterogeneous treatment effects for adaptively discovered subgroups under unmeasured confounding.",
+  "requirements": [
+   "Achieve 95% asymptotic simultaneous coverage across adaptively selected subgroups under explicit confounding bounds.",
+   "Characterize when subgroup effect bounds are strictly narrower than bounds implied solely by outcome ranges."
+  ]
+ },
+ {
+  "task_id": "task_080",
+  "task_type": "research_idea_exploration",
+  "task_description": "Characterize sharp policy-value bounds for clinical decision policies with selectively observed outcomes and bounded unmeasured confounding.",
+  "requirements": [
+   "Specify sensitivity assumptions and characterize when bounds certify improvement over the historical policy.",
+   "Achieve at least 95% confidence-set coverage uniformly over the stated sensitivity model."
+  ]
+ },
+ {
+  "task_id": "task_081",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop reward-transferable memory for partially observable navigation where identical observations require different actions depending on distant cues.",
+  "requirements": [
+   "Match full-history policy success rates within 5 percentage points across held-out goal assignments.",
+   "Limit persistent policy state to 32 bits while retaining cues through variable-length distractor sequences."
+  ]
+ },
+ {
+  "task_id": "task_082",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop offline policy improvement certificates that remain valid under bounded hidden confounding without requiring full action coverage.",
+  "requirements": [
+   "Certificates attain at least 95% coverage of true policy gains under the stated confounding bound.",
+   "Certify strictly positive gains over the behavior policy in a nontrivial, explicitly characterized regime."
+  ]
+ },
+ {
+  "task_id": "task_083",
+  "task_type": "research_idea_exploration",
+  "task_description": "Characterize when partially observable reinforcement learning permits reward discovery without irreversible failures or a known safe exploration policy.",
+  "requirements": [
+   "Bound the probability of any irreversible failure during learning by 1% under explicit, nontrivial assumptions.",
+   "Establish sublinear regret against the optimal informed policy satisfying the same safety constraint."
+  ]
+ },
+ {
+  "task_id": "task_084",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop decentralized multi-agent reinforcement learning that adapts to unfamiliar teammates without destabilizing coordination under partial observability.",
+  "requirements": [
+   "Achieve 20% higher normalized held-out teammate return than matched nonadaptive policies under identical observation constraints.",
+   "Retain 95% of familiar-team return without teammate identities, communication, or test-time parameter sharing."
+  ]
+ },
+ {
+  "task_id": "task_085",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop hierarchical reinforcement learning that adapts to hidden dynamics shifts using frozen skills despite changing skill outcomes.",
+  "requirements": [
+   "Exceed matched-budget flat reinforcement learning by 15 percentage points in success rate on held-out dynamics.",
+   "Adapt from observation histories without dynamics labels or low-level parameter updates."
+  ]
+ },
+ {
+  "task_id": "task_086",
+  "task_type": "research_idea_exploration",
+  "task_description": "Identify causally responsible actions in partially observed reinforcement learning despite delayed rewards and correlated, reward-irrelevant actions.",
+  "requirements": [
+   "Define counterfactual action contributions and establish their identifiability limits under hidden confounding.",
+   "Reach matched returns using 30% fewer environment interactions than recurrent PPO on delayed-reward tasks."
+  ]
+ },
+ {
+  "task_id": "task_087",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop reinforcement learning transfer for robotic manipulation that reuses skills under hidden dynamics shifts while limiting negative transfer.",
+  "requirements": [
+   "Match from-scratch success rates using 50% fewer target interactions when manipulation dynamics partially overlap.",
+   "On incompatible targets, stay within 5 percentage points of from-scratch success under equal interaction budgets."
+  ]
+ },
+ {
+  "task_id": "task_088",
+  "task_type": "research_idea_exploration",
+  "task_description": "Learn reward-improving policies in partially observed environments while certifying trajectory-level safety from finite offline data.",
+  "requirements": [
+   "Certify trajectory violation probability below 1% with 95% confidence under bounded observation-model uncertainty.",
+   "Exceed a supplied safe baseline’s positive expected return by 10% on specified benchmarks."
+  ]
+ },
+ {
+  "task_id": "task_089",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop RLHF that preserves conflicting minority preferences under policy-induced distribution shifts without observing annotator group identities.",
+  "requirements": [
+   "Improve worst-group preference win rate by ≥5 percentage points versus pooled RLHF, matching feedback budgets.",
+   "Establish identifiability conditions separating persistent preference disagreement from annotation noise under distribution shift."
+  ]
+ },
+ {
+  "task_id": "task_090",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a continual reinforcement learning agent that adapts to hidden dynamics changes without forgetting policies for recurring regimes.",
+  "requirements": [
+   "Achieve 20% lower post-switch cumulative regret than matched-budget reset agents across recurring, unannounced dynamics shifts.",
+   "Retain at least 90% of prior-regime normalized return under fixed memory and no regime labels."
+  ]
+ },
+ {
+  "task_id": "task_091",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a learned large-eddy closure reconciling local energy backscatter with long-horizon stability across unseen Reynolds numbers.",
+  "requirements": [
+   "Reduce kinetic-energy spectrum error by 20% versus dynamic Smagorinsky on held-out Reynolds numbers.",
+   "Maintain bounded kinetic energy for 100 eddy-turnover times without suppressing all local backscatter."
+  ]
+ },
+ {
+  "task_id": "task_092",
+  "task_type": "research_idea_exploration",
+  "task_description": "Infer spatial conductivity and unknown boundary flux from sparse temperature observations while preserving uncertainty under nonidentifiability.",
+  "requirements": [
+   "Achieve 90% interval coverage within five percentage points for conductivity and flux across identifiability regimes.",
+   "Match known-flux conductivity reconstruction error within 20% when joint recovery is identifiable."
+  ]
+ },
+ {
+  "task_id": "task_093",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a stochastic subgrid closure that preserves energy budgets and transfers extreme-precipitation statistics across warming climates.",
+  "requirements": [
+   "Under held-out 4 K warming, reduce absolute 99th-percentile precipitation bias 20% versus a deterministic closure.",
+   "Keep global energy-budget residual below 0.5 W/m² without climate-specific retuning."
+  ]
+ },
+ {
+  "task_id": "task_094",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop coarse-grained alanine-pentapeptide dynamics preserving equilibrium populations and slow kinetics across temperatures despite memory induced by eliminated coordinates.",
+  "requirements": [
+   "Match reference atomistic metastable-state populations within 0.05 absolute error at three held-out temperatures.",
+   "Recover the three slowest atomistic relaxation times within 20% at those temperatures without atomistic inputs."
+  ]
+ },
+ {
+  "task_id": "task_095",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a neural solution operator for scalar conservation laws that preserves entropy admissibility across unseen shock interactions and discretizations.",
+  "requirements": [
+   "Achieve relative L1 error below 5% against converged finite-volume references on held-out shock interactions.",
+   "Guarantee discrete conservation and entropy inequalities across grid refinements without retraining."
+  ]
+ },
+ {
+  "task_id": "task_096",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a learned turbulence closure that captures bidirectional energy transfer and remains stable across unseen coarse-graining scales.",
+  "requirements": [
+   "Achieve below 10% energy-spectrum error against filtered direct numerical simulations at two unseen filter widths.",
+   "Maintain bounded kinetic energy and correct mean subgrid dissipation while reproducing intermittent backscatter."
+  ]
+ },
+ {
+  "task_id": "task_097",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a learned surrogate for compressible Euler dynamics that preserves conservation and entropy admissibility across shocks on unseen meshes.",
+  "requirements": [
+   "Keep normalized mass, momentum, and energy drift below 10⁻⁶ over 1,000 periodic, unforced timesteps.",
+   "Match an entropy-stable finite-volume baseline’s shock accuracy without increasing discrete entropy violations on unseen meshes."
+  ]
+ },
+ {
+  "task_id": "task_098",
+  "task_type": "research_idea_exploration",
+  "task_description": "Learn reduced models of partially observed Kuramoto–Sivashinsky dynamics preserving stationary energy distributions and responses to unseen forcing.",
+  "requirements": [
+   "Stationary energy-distribution Wasserstein-1 error stays below 5% of the full-system distribution’s standard deviation.",
+   "Predict nonzero mean-energy responses to unseen weak forcing within 10% relative error against full-system simulations."
+  ]
+ },
+ {
+  "task_id": "task_099",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a subsurface two-phase flow surrogate that preserves local mass conservation while generalizing across unseen permeability connectivity.",
+  "requirements": [
+   "Maximum cellwise mass-balance error stays below 0.1% of injected mass per timestep.",
+   "On unseen channel connectivity, breakthrough-time error remains below 5% versus a converged finite-volume solver."
+  ]
+ },
+ {
+  "task_id": "task_100",
+  "task_type": "research_idea_exploration",
+  "task_description": "Develop a learned plasma fluid closure that recovers collisionless plasma echoes while preserving energy under unseen forcing histories.",
+  "requirements": [
+   "Predict echo amplitudes within 10% of Vlasov–Poisson reference values on held-out forcing histories.",
+   "Keep unforced total energy drift below 0.1% over 100 plasma periods."
+  ]
+ },
+ {
+  "task_id": "task_101",
+  "task_type": "software_development",
+  "task_description": "Design online shard migration for a replicated key-value store with linearizable operations and crash-safe ownership transfer.",
+  "requirements": [
+   "Preserve linearizability and acknowledged writes across retries, network partitions, and one replica crash.",
+   "Without failures, sustain ≥80% of migration-free throughput while migrating a shard under continuous writes."
+  ]
+ },
+ {
+  "task_id": "task_102",
+  "task_type": "software_development",
+  "task_description": "Design recoverable distributed snapshots for migrating stream operators with reordered messages and concurrent worker failures.",
+  "requirements": [
+   "Recovery preserves a consistent cut and exactly-once outputs after any single worker crash.",
+   "Maintain at least 85% of snapshot-disabled throughput without globally pausing processing."
+  ]
+ },
+ {
+  "task_id": "task_103",
+  "task_type": "software_development",
+  "task_description": "Design a distributed scheduler for preemptible gang jobs that reconciles tenant fairness, placement constraints, and recovery from scheduler partitions.",
+  "requirements": [
+   "Prevent conflicting resource assignments during partitions, including stale schedulers and partially completed gang reservations.",
+   "After connectivity stabilizes, restore scheduling progress within 30 seconds while preventing starvation under feasible demand."
+  ]
+ },
+ {
+  "task_id": "task_104",
+  "task_type": "software_development",
+  "task_description": "Design a distributed scheduler preserving tenant quota ownership and performance isolation during tenant migration, adversarial workloads, and network partitions.",
+  "requirements": [
+   "Quota ownership never duplicates during migration, crashes, or partitions; disconnected schedulers cannot exceed assigned quotas.",
+   "On healthy workers, unaffected tenants’ p99 dispatch latency remains within 2× their workload-matched isolated baseline."
+  ]
+ },
+ {
+  "task_id": "task_105",
+  "task_type": "software_development",
+  "task_description": "Design distributed garbage collection that safely reclaims cycles despite concurrent object migration, network partitions, and crash recovery.",
+  "requirements": [
+   "Never reclaim objects reachable through durable roots or in-flight references during crashes, partitions, and migration.",
+   "Reclaim unreachable cycles within 3 collection rounds after recovery and quiescence, without global pauses."
+  ]
+ },
+ {
+  "task_id": "task_106",
+  "task_type": "software_development",
+  "task_description": "Design an adaptive join executor supporting mid-query algorithm switches while preserving outer-join semantics under skew and memory pressure.",
+  "requirements": [
+   "Preserve SQL duplicate and NULL semantics across switches and spills without exceeding configured memory limits.",
+   "Match the fastest fixed strategy within 20% per query on a declared benchmark suite."
+  ]
+ },
+ {
+  "task_id": "task_107",
+  "task_type": "software_development",
+  "task_description": "Design distributed incremental view maintenance preserving snapshot-consistent outer joins and aggregates across retractions, partition failures, and concurrent transactions.",
+  "requirements": [
+   "Match full recomputation at every committed snapshot across 100,000 transactions, including crash recovery.",
+   "Maintain atomic multi-table updates without globally pausing writers or rescanning unaffected base-table partitions."
+  ]
+ },
+ {
+  "task_id": "task_108",
+  "task_type": "software_development",
+  "task_description": "Design a distributed recursive-query engine that incrementally maintains cyclic reachability under concurrent insertions and deletions with snapshot-consistent reads.",
+  "requirements": [
+   "Every committed snapshot matches least-fixed-point recomputation, including deletions that break or preserve cycles.",
+   "Pass 10,000 randomized concurrent update/read histories with worker crashes, without full-query recomputation after individual updates."
+  ]
+ },
+ {
+  "task_id": "task_109",
+  "task_type": "software_development",
+  "task_description": "Design a distributed join executor that adapts to changing key skew while preserving bounded memory and retry-safe output.",
+  "requirements": [
+   "Preserve SQL bag semantics under worker retries while respecting a 512 MiB per-worker memory cap.",
+   "Reduce p95 completion time 30% versus static hash partitioning on shifting-skew workloads with equal resources."
+  ]
+ },
+ {
+  "task_id": "task_110",
+  "task_type": "software_development",
+  "task_description": "Design a distributed query-result cache preserving transaction snapshot semantics across concurrent writes, range predicates, and replica lag.",
+  "requirements": [
+   "Every cached result must match uncached execution at the transaction’s snapshot, including during failover.",
+   "Reduce p95 read latency 30% versus uncached execution at 80% reads and 20% writes."
+  ]
+ },
+ {
+  "task_id": "task_111",
+  "task_type": "software_development",
+  "task_description": "Design an incremental compiler that soundly reuses cross-module typechecking results despite edits changing overload and trait resolution.",
+  "requirements": [
+   "Match clean-build diagnostics and executable behavior across edits, including newly applicable candidates and ambiguities.",
+   "Reuse at least 95% of typechecking results for declarations whose resolution dependencies remain semantically unchanged."
+  ]
+ },
+ {
+  "task_id": "task_112",
+  "task_type": "software_development",
+  "task_description": "Design an incremental cross-module optimizer that preserves optimization benefits while maintaining sound cache reuse under symbol interposition.",
+  "requirements": [
+   "Match clean-build semantics under dependency changes, dynamic symbol interposition, and mixed optimized/unoptimized modules.",
+   "For single-module edits, halve full-LTO rebuild time while keeping runtime within 5% of full LTO."
+  ]
+ },
+ {
+  "task_id": "task_113",
+  "task_type": "software_development",
+  "task_description": "Build a loop vectorizer preserving scalar semantics across data-dependent exits, potentially aliasing accesses, and faulting loads.",
+  "requirements": [
+   "Preserve observable write ordering and precise faults without accessing memory beyond the scalar exit.",
+   "Achieve 1.3× throughput versus optimized scalar code on three representative loops combining exits and aliasing."
+  ]
+ },
+ {
+  "task_id": "task_114",
+  "task_type": "software_development",
+  "task_description": "Build an incremental interprocedural alias analysis that preserves soundness across pointer escapes, indirect calls, and changing function summaries.",
+  "requirements": [
+   "Soundly handle heap objects, pointer casts, recursion, and opaque external calls under documented IR semantics.",
+   "After single-function edits, match full recomputation’s alias answers while reducing median analysis latency by 50%."
+  ]
+ },
+ {
+  "task_id": "task_115",
+  "task_type": "software_development",
+  "task_description": "Design incremental link-time optimization that safely reuses optimized code despite changing cross-module symbol resolution and optimization dependencies.",
+  "requirements": [
+   "Preserve clean-build semantics across weak-symbol replacement, visibility changes, and cross-module function edits.",
+   "For single-function edits, median rebuild time ≤50% of clean LTO, with ≤3% executable runtime regression."
+  ]
+ },
+ {
+  "task_id": "task_116",
+  "task_type": "software_development",
+  "task_description": "Design an ownership type checker for cancellable asynchronous tasks that safely transfer borrowed resources across task boundaries.",
+  "requirements": [
+   "Guarantee memory safety under cancellation and task migration without whole-program analysis or runtime borrow checks.",
+   "Accept 12 safe and reject 12 unsafe programs covering nested borrows, ownership transfer, and cancellation."
+  ]
+ },
+ {
+  "task_id": "task_117",
+  "task_type": "software_development",
+  "task_description": "Design a session-typed language supporting endpoint delegation and structured cancellation without stranded peers or broken protocol guarantees.",
+  "requirements": [
+   "Establish protocol safety and cancellation progress under fair scheduling and reliable asynchronous delivery.",
+   "Under separate compilation, accept 12 valid delegation-and-cancellation programs and reject 12 protocol-invalid variants."
+  ]
+ },
+ {
+  "task_id": "task_118",
+  "task_type": "software_development",
+  "task_description": "Design a typed language supporting multi-shot continuations and deterministic resource cleanup without duplicating ownership or invalidating resumed computations.",
+  "requirements": [
+   "Accept resource-safe repeated resumptions; establish type safety and exactly-once cleanup for owned resources.",
+   "Pass 30 conformance cases covering nested capture, repeated resumption, cancellation, and rejected ownership violations."
+  ]
+ },
+ {
+  "task_id": "task_119",
+  "task_type": "software_development",
+  "task_description": "Design a typed FFI preserving borrowed-memory safety across reentrant C callbacks, asynchronous cancellation, and callback deregistration.",
+  "requirements": [
+   "Support zero-copy borrowed buffers while preventing use-after-free under explicit foreign-code contracts.",
+   "Keep callback dispatch overhead within 20% of equivalent unchecked bindings, excluding foreign execution."
+  ]
+ },
+ {
+  "task_id": "task_120",
+  "task_type": "software_development",
+  "task_description": "Design a typed Rust–JavaScript FFI preserving Rust aliasing guarantees across asynchronous callbacks, cancellation, and garbage collection.",
+  "requirements": [
+   "Establish memory safety through explicit boundary semantics covering reentrancy, cancellation, and JavaScript-retained Rust objects.",
+   "Achieve ≤20% callback latency overhead versus equivalent handwritten unsafe bindings on a declared benchmark suite."
+  ]
+ },
+ {
+  "task_id": "task_121",
+  "task_type": "software_development",
+  "task_description": "Design an SSD-backed key-value store that limits write amplification under long-lived snapshots without sacrificing crash consistency.",
+  "requirements": [
+   "Reduce total host-written bytes by 30% versus leveled LSM compaction under identical update-heavy workloads.",
+   "Preserve snapshot isolation and acknowledged writes across crashes; keep p99 reads within 10% of baseline."
+  ]
+ },
+ {
+  "task_id": "task_122",
+  "task_type": "software_development",
+  "task_description": "Design a tiered MVCC storage engine preserving snapshot isolation and safe reclamation during concurrent migration, writes, and crashes.",
+  "requirements": [
+   "Acknowledged writes and snapshot-required versions survive crashes at every migration and reclamation transition.",
+   "Migration increases p99 read latency by at most 20% versus identical workloads without migration."
+  ]
+ },
+ {
+  "task_id": "task_123",
+  "task_type": "software_development",
+  "task_description": "Design a persistent ordered index supporting online key-range repartitioning without blocking snapshot scans or compromising crash recovery.",
+  "requirements": [
+   "Concurrent updates, repartitioning, and crashes preserve committed writes and snapshot-consistent, duplicate-free range scans.",
+   "During repartitioning, p99 operation latency stays within 2× the same workload’s non-repartitioning baseline."
+  ]
+ },
+ {
+  "task_id": "task_124",
+  "task_type": "software_development",
+  "task_description": "Design a multi-tenant storage engine that isolates write latency while sharing compaction capacity and preserving crash-consistent tenant boundaries.",
+  "requirements": [
+   "Keep tenant p99 write latency within 2× its standalone baseline during competing compactions within quotas.",
+   "Prevent cross-tenant data exposure and storage quota evasion across crashes and capacity reassignment."
+  ]
+ },
+ {
+  "task_id": "task_125",
+  "task_type": "software_development",
+  "task_description": "Design a persistent-memory transactional index combining serializable concurrency, crash-safe memory reclamation, and recovery independent of total index size.",
+  "requirements": [
+   "Recover after every injected persistence-boundary crash without losing acknowledged commits or resurrecting reclaimed records.",
+   "Recovery reads at most 64 MiB per 100 GiB index, independent of completed transaction count."
+  ]
+ },
+ {
+  "task_id": "task_126",
+  "task_type": "software_development",
+  "task_description": "Design a multipath transport that preserves reliable ordered delivery, bounded buffering, and bottleneck fairness during asymmetric path failures.",
+  "requirements": [
+   "Maintain delivery progress within 8 MiB receiver buffering whenever at least one path remains usable.",
+   "Keep competing single-path flows’ throughput within 10% of their equal-share baseline at shared bottlenecks."
+  ]
+ },
+ {
+  "task_id": "task_127",
+  "task_type": "software_development",
+  "task_description": "Design a software-defined routing system supporting concurrent, overlapping route updates with per-packet consistency and recovery from controller crashes.",
+  "requirements": [
+   "Every packet follows one committed routing configuration despite overlapping updates and controller crashes.",
+   "Limit peak per-switch rules to 2× max(initial, final); complete updates after controller connectivity recovers."
+  ]
+ },
+ {
+  "task_id": "task_128",
+  "task_type": "software_development",
+  "task_description": "Design a multi-tenant service load balancer that maintains fairness without retry-driven overload under delayed feedback and partial failures.",
+  "requirements": [
+   "Under feasible demand, each tenant receives at least 90% of its weighted fair throughput.",
+   "During backend failures and five-second telemetry delays, retry amplification stays below 1.2 attempts per request."
+  ]
+ },
+ {
+  "task_id": "task_129",
+  "task_type": "software_development",
+  "task_description": "Design a network diagnosis system that separates concurrent causal faults from downstream symptoms under asymmetric routing and incomplete telemetry.",
+  "requirements": [
+   "Achieve ≥90% fault-localization precision at ≥80% incident coverage with 30% telemetry loss.",
+   "Report observationally indistinguishable fault sets without asserting unsupported single-cause explanations."
+  ]
+ },
+ {
+  "task_id": "task_130",
+  "task_type": "software_development",
+  "task_description": "Design a stateful edge proxy that preserves established TCP sessions across anycast rerouting and single-site failures.",
+  "requirements": [
+   "Preserve byte ordering and acknowledged data without endpoint changes, including failures during connection-state migration.",
+   "Keep p99 application-visible failover stalls below 500 milliseconds with 50-millisecond intersite RTT."
+  ]
+ },
+ {
+  "task_id": "task_131",
+  "task_type": "software_development",
+  "task_description": "Design a multi-tenant workflow runtime enforcing information-flow isolation across shared caches, asynchronous retries, and explicitly authorized declassification.",
+  "requirements": [
+   "Establish termination-insensitive noninterference under concurrent execution and retries, except for tenant-authorized declassification.",
+   "Keep median workflow latency overhead below 15% versus identical executions without information-flow enforcement."
+  ]
+ },
+ {
+  "task_id": "task_132",
+  "task_type": "software_development",
+  "task_description": "Design a software-supply-chain admission service preserving transitive artifact trust during concurrent dependency updates, signing-key revocations, and network partitions.",
+  "requirements": [
+   "Admission decisions must use consistent dependency snapshots and reject transitively revoked trust after revocation commits.",
+   "Maintain p99 admission latency below 100 milliseconds on million-edge dependency graphs while processing revocations."
+  ]
+ },
+ {
+  "task_id": "task_133",
+  "task_type": "software_development",
+  "task_description": "Design a multi-region secret broker reconciling emergency credential revocation, partition availability, and rollback-safe rotation.",
+  "requirements": [
+   "Revoked credentials become unusable within 60 seconds, including during network partitions and broker replica rollback.",
+   "Unrevoked workloads maintain 99.9% authentication success during 30-second regional partitions overlapping credential rotation."
+  ]
+ },
+ {
+  "task_id": "task_134",
+  "task_type": "software_development",
+  "task_description": "Design a plugin execution service preventing explicit-channel secret exfiltration while supporting authorized streaming releases and concurrent policy revocation.",
+  "requirements": [
+   "Zero unauthorized bytes across 10,000 adversarial executions covering secret transformations and revocation races.",
+   "Preserve authorized streaming outputs with under 15% throughput loss versus identical execution without enforcement."
+  ]
+ },
+ {
+  "task_id": "task_135",
+  "task_type": "software_development",
+  "task_description": "Design a confidential key-release service preserving revocation consistency during enclave migration despite malicious host rollback and forking.",
+  "requirements": [
+   "Prevent revoked-key release after acknowledged revocation across host-controlled snapshots, forks, crashes, and migrations.",
+   "Keep p99 key-release latency within 2× an equivalent attested service without rollback protection."
+  ]
+ },
+ {
+  "task_id": "task_136",
+  "task_type": "software_development",
+  "task_description": "Design an incremental change-impact analyzer that safely minimizes regression tests despite dynamic dispatch, reflection, and generated code.",
+  "requirements": [
+   "Never exclude potentially affected tests when reflection, generated code, or missing dependencies prevent definitive analysis.",
+   "Match full-suite failure detection while selecting at most 40% of tests across 100 benchmark revisions."
+  ]
+ },
+ {
+  "task_id": "task_137",
+  "task_type": "software_development",
+  "task_description": "Build an incremental Java taint analyzer preserving interprocedural soundness when edits change heap aliasing and virtual dispatch.",
+  "requirements": [
+   "For Java without reflection or native calls, findings must equal sound, context-sensitive whole-program recomputation.",
+   "Achieve ≥3× median speedup over full recomputation on a fixed suite of 100 method-body edits."
+  ]
+ },
+ {
+  "task_id": "task_138",
+  "task_type": "software_development",
+  "task_description": "Build an incremental dependency analyzer that prevents stale artifacts despite generated inputs, conditional dependencies, and concurrent filesystem changes.",
+  "requirements": [
+   "Match clean-build outputs across 1,000 adversarial edit sequences, including dependency creation and deletion.",
+   "Rebuild at most 10% more actions than an exact dependency oracle across those sequences."
+  ]
+ },
+ {
+  "task_id": "task_139",
+  "task_type": "software_development",
+  "task_description": "Design a race detector for C++ coroutine runtimes that handles task migration and custom synchronization without masking races.",
+  "requirements": [
+   "Match an exhaustive happens-before oracle on bounded executions covering migration, cancellation, and custom synchronization.",
+   "Keep geometric-mean runtime overhead below 3× uninstrumented execution across a representative coroutine benchmark suite."
+  ]
+ },
+ {
+  "task_id": "task_140",
+  "task_type": "software_development",
+  "task_description": "Build a dependency-upgrade analyzer that distinguishes client-reachable behavioral incompatibilities from harmless upstream changes despite dynamic dispatch and incomplete code.",
+  "requirements": [
+   "Achieve at least 90% recall and 90% precision on 100 labeled upgrade scenarios.",
+   "Provide reproducible client-level witnesses for incompatibilities; explicitly identify uncertainty caused by unavailable code or reflection."
+  ]
+ },
+ {
+  "task_id": "task_141",
+  "task_type": "software_development",
+  "task_description": "Design asynchronous distributed checkpointing that preserves recoverable training-state consistency across worker failures and changes in model parallelism.",
+  "requirements": [
+   "Recover a committed, globally consistent model, optimizer, and RNG state after any single-worker crash.",
+   "Support restores across tensor-parallel layouts while limiting checkpoint-induced throughput loss to 5% versus checkpoint-free training."
+  ]
+ },
+ {
+  "task_id": "task_142",
+  "task_type": "software_development",
+  "task_description": "Design a GPU-sharing runtime that bounds inference latency while reclaiming memory from concurrent, stateful training jobs.",
+  "requirements": [
+   "Under admitted mixed workloads, inference p99 latency stays within 1.2× its isolated baseline.",
+   "Training maintains forward progress through memory reclamation without restarting or corrupting optimizer state."
+  ]
+ },
+ {
+  "task_id": "task_143",
+  "task_type": "software_development",
+  "task_description": "Design an elastic training runtime preserving committed optimizer and data-consumption state across concurrent worker failures and membership changes.",
+  "requirements": [
+   "Worker failures during 4–16 GPU resizing cause no lost or duplicated committed training steps.",
+   "Stable-membership throughput remains at least 90% of an otherwise identical fixed-membership sharded-training baseline."
+  ]
+ },
+ {
+  "task_id": "task_144",
+  "task_type": "software_development",
+  "task_description": "Design distributed Adam state management supporting elastic resharding and crash recovery without mixing optimizer steps or duplicating updates.",
+  "requirements": [
+   "After any single worker crash during resharding, recover parameters and moments matching uninterrupted deterministic execution.",
+   "Limit failure-free step-time overhead to 10% versus static sharding with identical hardware and workloads."
+  ]
+ },
+ {
+  "task_id": "task_145",
+  "task_type": "software_development",
+  "task_description": "Design distributed training recovery that preserves optimizer and data progress consistency across failures and worker membership changes.",
+  "requirements": [
+   "Recovered executions match failure-free optimizer-update and sample-consumption histories, including failures during resharding.",
+   "Recovery adds at most 5% failure-free step latency versus identical training without recovery support."
+  ]
+ },
+ {
+  "task_id": "task_146",
+  "task_type": "software_development",
+  "task_description": "Design live firmware updates for an embedded controller that preserve real-time deadlines and actuator consistency across state-schema changes.",
+  "requirements": [
+   "Maintain 1 ms control deadlines throughout uninterrupted updates, without duplicated or skipped actuator commands.",
+   "Reject incompatible state migrations atomically; recover a compatible firmware-state pair after any update-time reset."
+  ]
+ },
+ {
+  "task_id": "task_147",
+  "task_type": "software_development",
+  "task_description": "Design a restartable device-driver isolation boundary that contains DMA faults without invalidating hard-real-time guarantees for unaffected devices.",
+  "requirements": [
+   "Contain arbitrary driver memory writes, DMA, and interrupt storms across driver crashes and restarts.",
+   "Unaffected devices retain verified 1 ms service deadlines during driver faults and concurrent recovery."
+  ]
+ },
+ {
+  "task_id": "task_148",
+  "task_type": "software_development",
+  "task_description": "Design an embedded runtime that contains peripheral-driver faults while preserving hard real-time deadlines and safe shared-device recovery.",
+  "requirements": [
+   "Under driver crashes, hangs, and invalid DMA requests, protected control tasks retain 1 ms deadlines.",
+   "Recover shared-device service within 50 ms without stale DMA writes or cross-partition state corruption."
+  ]
+ },
+ {
+  "task_id": "task_149",
+  "task_type": "software_development",
+  "task_description": "Design runtime verification for multicore embedded controllers that preserves deadline guarantees and sound verdicts despite asynchronous, lossy telemetry.",
+  "requirements": [
+   "Verdicts are sound under telemetry loss and complete for bounded-response violations when telemetry is lossless.",
+   "Monitoring adds ≤5% worst-case execution time per control job while preserving all specified deadlines."
+  ]
+ },
+ {
+  "task_id": "task_150",
+  "task_type": "software_development",
+  "task_description": "Design a mixed-criticality accelerator runtime guaranteeing control-task deadlines despite nonpreemptible inference kernels and shared-memory interference.",
+  "requirements": [
+   "Under declared execution and interference bounds, all admitted control jobs meet 2 ms deadlines.",
+   "Guarantee starvation-free inference progress under adversarial arrivals without compromising admitted control deadlines."
+  ]
+ }
+]

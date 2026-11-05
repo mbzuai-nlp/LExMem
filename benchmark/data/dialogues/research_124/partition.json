@@ -1,0 +1,174 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Joint Γ-constrained policy-gain bounds and initial benchmarking",
+      "boundary_reason": "The initial benchmark is complete; the next discussion searches for failures of sharpness."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Unattainable joint extrema and a shared-confounder-mixture repair",
+      "boundary_reason": "A repair plan is established; the next discussion implements and tests it."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Shared-mixture implementation and seven-counterexample retest",
+      "boundary_reason": "The discrete counterexamples are resolved; the next discussion tests continuous confounders."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Continuous-confounder sharpness gap and finite-atomic approach",
+      "boundary_reason": "The gap motivates a new optimization plan, which the next discussion implements."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Finite-atomic ΓTable v0.3 validation and adoption",
+      "boundary_reason": "The ΓTable approach reaches a decision; the next proposal uses separate Γ and Λ bounds."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p2",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Γ–Λ linear-fractional proposal, sharpness failures, and rejection",
+      "boundary_reason": "The proposal is rejected; the next discussion considers moment optimization."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Coupled Γ/Λ moment optimization and exact-inversion validation",
+      "boundary_reason": "The failed tables are resolved; the next proposal changes the sensitivity assumptions to total variation."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Conditional-TV response-type bounds and initial benchmark",
+      "boundary_reason": "The initial benchmark ends; the next discussion independently audits the bounds."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "TV-bound breaches, recording-conditioning correction, and decision",
+      "boundary_reason": "The TV implementation is corrected and retained; the next proposal uses KL budgets."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Shared-latent KL bounds and initial attainability tests",
+      "boundary_reason": "Initial tests pass; the next discussion stress-tests sparse recording."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Sparse-recording nonattainment and a recording-propensity-floor plan",
+      "boundary_reason": "A revised assumption and test plan are established; the next discussion implements them."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "KLPolicy v0.2 recording floor and floor-inactive tests",
+      "boundary_reason": "Floor-inactive tests are complete; the next discussion examines floor-active cases."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71"
+      ],
+      "topic": "Floor-active KL cases, certificate correction, and final KL decision",
+      "boundary_reason": "The KL approach reaches a decision; the final node synthesizes the approaches."
+    },
+    {
+      "session_id": "S14",
+      "node_ids": [
+        "n72"
+      ],
+      "topic": "Selection of sharp-bound approaches and improvement criterion",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

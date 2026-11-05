@@ -1,0 +1,869 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a distributed query-result cache preserving transaction snapshot semantics across concurrent writes, range predicates, and replica lag.",
+      "requirements": [
+        "Every cached result must match uncached execution at the transaction’s snapshot, including during failover.",
+        "Reduce p95 read latency 30% versus uncached execution at 80% reads and 20% writes."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Cache versioned results with key/range dependencies; reuse after indexed consensus-log conflict checks and replica catch-up to snapshot."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can failover nodes verify range-predicate conflicts for long-lived snapshots after the consensus log is compacted?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "A replicated, checkpointed interval-write index plus cache eviction at its retention cutoff yields zero missed range conflicts across 10,000 failovers."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Persist interval-write checkpoints, evict cache entries predating retained history, and test 10,000 failovers with MVCC-pinned range snapshots."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run FailoverRange-10k, comparing cached and uncached MVCC results across 10,000 failovers, log compactions, concurrent inserts, and replica lag."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "FailoverRange-10k report containing per-snapshot result diffs, range-conflict traces, compaction boundaries, replica lag, and failover timestamps."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Audit FailoverRange-10k report for snapshot mismatches, missed range conflicts, and cache hits below checkpoint retention across failovers."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "FailoverRange-10k audit found zero snapshot mismatches or missed range conflicts across 10,000 failovers; all pre-cutoff entries were evicted."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Replay the report’s longest snapshot-to-compaction windows with 2-second replica lag; compare checkpointed range-conflict detection against uncached MVCC."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "In long-window replay, 2-second replica lag exposed checkpoint gaps: 3/10,000 failovers missed inserts, returning stale cached range results."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Require contiguous cached-version-to-snapshot interval-write coverage and replica catch-up; bypass gaps to prevent the three observed failover mismatches."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Replay FailoverRange-10k checkpoint-gap traces under 2-second lag, comparing original and contiguous-coverage-gated caches against uncached MVCC."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "With atomic checkpoint publication, index-plus-eviction missed zero conflicts across 10,000 failovers; without it, the three gap failures recurred."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n13",
+      "content": "Despite replica catch-up, coverage-gated replay returned three stale ranges: prematurely published checkpoint watermarks concealed missing interval writes."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Replay FailoverRange-10k gap traces under 2-second lag, atomically publishing checkpoint manifests; compare gated hits with uncached MVCC."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Atomic checkpoint manifests eliminated premature watermarks; coverage-gated replay matched uncached MVCC on all 10,000 failovers under 2-second lag."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 18,
+      "exploration_parent_id": "n12",
+      "content": "Adopt contiguous-coverage gating only with atomically published checkpoint manifests; premature watermarks caused three stale results, while atomic replay had none."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Add snapshot-aware L1/L2 read-through caching with reuse-based admission and single-flight fills to target 30% lower p95 latency."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Does snapshot-aware L1/L2 caching offset validation and fill overhead enough to cut p95 read latency 30% at 80/20 load?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Reuse-admitted L1/L2 caches with single-flight fills and coverage validation cut p95 read latency ≥30% versus uncached at 80/20 load."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Run Mix80-20 comparing uncached reads against coverage-validated L1/L2 caching with reuse admission and single-flight; record p95 latency and snapshot mismatches."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Mix80-20 p95 reads: 100 ms uncached versus 79 ms cached (21% gain); snapshot mismatches: zero."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n21",
+      "content": "Profile Mix80-20 p95 hits by cache tier, validation RPC, and fill waits to explain the 21%-versus-30% shortfall."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Mix80-20 profiling attributes 13 ms of 79 ms p95 to serial validation RPCs; parallelizing them projects 69 ms."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "Can parallel validation RPCs remove the 13 ms bottleneck without accepting stale checkpoint coverage during failover?"
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Parallel validation pinned to one atomic checkpoint-manifest epoch and replica catch-up achieves Mix80-20 p95 ≤70 ms, zero mismatches."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Pin parallel validation RPCs to one manifest epoch; rerun Mix80-20 with failovers, measuring p95 latency and cached-versus-uncached mismatches."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Run Mix80-20 with epoch-pinned parallel validation and 2-second replica lag; compare p95 reads and snapshot mismatches against uncached."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Mix80-20: epoch-pinned parallel validation cut read p95 from 100 to 69 ms (31%); zero mismatches during 2-second-lag failovers."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n29",
+      "content": "Mix80-20 high-churn rerun (80/20): overall read p95 was 84 ms cached versus 100 ms uncached, only 16% faster."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "p2",
+      "content": "Defer rollout: parallelizing 13-ms validation raised baseline gains from 21% to 31%, but high-churn’s 16% requires admission tuning."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Admit query shapes after three conflict-free reuses; bypass volatile ranges with uncached snapshot reads while retaining epoch-pinned validation."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Can three-reuse admission and volatile-range bypass lower high-churn Mix80-20 read p95 from 84 to ≤70 ms?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Admitting after three conflict-free reuses and bypassing ranges exceeding 5 writes/s yields high-churn p95 ≤70 ms, zero mismatches."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Implement three-reuse admission and >5-writes/s range bypass; rerun high-churn Mix80-20, measuring read p95 and snapshot mismatches during failover."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Run high-churn Mix80-20 with three-reuse admission, >5-writes/s bypass, epoch-pinned validation, and 2-second-lag failovers."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "HighChurn-Mix80-20 report with read-p95 comparisons, admission and bypass decisions, snapshot diffs, and failover lag traces."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n36",
+      "content": "Audit HighChurn-Mix80-20 p95 latency and snapshot diffs; correlate admission and >5-writes/s bypass decisions with failover lag."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "HighChurn-Mix80-20 audit: read p95 fell from 84 to 68 ms (100 ms uncached); zero snapshot mismatches across failovers."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Adopt three-reuse admission and >5-writes/s bypass: high-churn read p95 reached 68 ms versus 100 ms uncached, without mismatches."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 42,
+      "exploration_parent_id": "g1",
+      "content": "Validate cached cross-shard joins against transaction-consistent snapshot vectors and durable commit decisions before reuse after failover."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "p4",
+      "content": "Can cross-shard join hits remain snapshot-correct when failover interrupts a distributed commit between participant acknowledgments?"
+    },
+    {
+      "id": "n44",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Shard-epoch-pinned snapshot-vector coverage plus durable commit-decision proofs, bypassing unresolved transactions, yields zero join mismatches across 10,000 interrupted-commit failovers."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Replay HighChurn-Mix80-20 report’s lag traces through 10,000 interrupted-commit failovers; compare epoch-pinned, proof-gated cached joins with uncached snapshots."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "InterruptedCommit-10k: epoch-pinned, proof-gated joins matched uncached snapshots across 10,000 failovers; 412 unresolved commits bypassed caching, zero mismatches."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Can proof-gated cross-shard joins retain ≤70 ms read p95 under high-churn Mix80-20 despite unresolved-commit bypasses?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Batching commit-proof lookups per snapshot vector keeps proof-gated high-churn Mix80-20 read p95 ≤70 ms, with zero snapshot mismatches."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Replay HighChurn-Mix80-20 lag traces with batched proof lookups and interrupted commits; measure read p95 and snapshot mismatches."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Batched HighChurn-Mix80-20 reached 69 ms read p95 with zero mismatches; interrupted-commit-heavy 80/20 joins reached 92 ms versus 100 uncached."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n48",
+      "content": "Replay HighChurn-Mix80-20 lag traces across 10,000 interrupted-commit-heavy failovers; compare proof-gated joins with uncached snapshots and dissect 92-ms p95."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Across 10,000 interrupted-commit-heavy failovers, two cached joins mismatched uncached snapshots after coordinator epoch rollover; read p95 was 92 ms."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "p4",
+      "content": "Defer cross-shard join caching: initial failovers passed, but epoch rollover caused two mismatches and commit-heavy p95 reached 92 ms."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "n44"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a distributed query-result cache preserving transaction snapshot semantics across concurrent writes, range predicates, and replica lag.",
+    "requirements": [
+      "Every cached result must match uncached execution at the transaction’s snapshot, including during failover.",
+      "Reduce p95 read latency 30% versus uncached execution at 80% reads and 20% writes."
+    ]
+  }
+}

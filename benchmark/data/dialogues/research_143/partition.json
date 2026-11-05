@@ -1,0 +1,198 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Test shear–odometry residuals for slip versus drift during RGB-D occlusion",
+      "boundary_reason": "The initial classifier fell below the accuracy target, prompting a revised residual."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Evaluate and select latency-aligned shear–arm closure residuals",
+      "boundary_reason": "The estimator was selected; the next stage tests furniture repositioning."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13"
+      ],
+      "topic": "Run unseen-furniture repositionings and compile the OccludedFurniture-100 report",
+      "boundary_reason": "The report was produced; discussion shifts to bounding pose error."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Measure contact constraints’ effect on pose error under odometry bias",
+      "boundary_reason": "The pose-error comparison ends before a broader bound-coverage audit."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Audit pose bounds and placement misses, then set a visual-reacquisition rule",
+      "boundary_reason": "The contact-estimation decision closes this approach before a new proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p2",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Test and adopt force-limited contact micro-dithers",
+      "boundary_reason": "The micro-dither decision closes before the mmWave proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Test mmWave–shear fusion and gate metal-leg multipath",
+      "boundary_reason": "Held-out gating results precede a separate unseen-chrome stress test."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Address chrome-leg multipath with two-angle radar steering",
+      "boundary_reason": "Held-out steering results precede testing on unseen chrome-legged furniture."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Compare radar variants after unseen-chrome failures",
+      "boundary_reason": "Both variants were retained for cross-cohort validation; the next proposal uses lidar anchors."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Test lidar wall anchors when at least 20% of wall returns are visible",
+      "boundary_reason": "The high-visibility result leads to a low-visibility evaluation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Audit low-visibility wall-anchor accuracy and placement",
+      "boundary_reason": "The low-visibility report and audit conclude before a ceiling-odometry proposal."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "p5",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Assess ceiling odometry and wrench fusion under lighting switches",
+      "boundary_reason": "The timing comparison identifies coincident switches as the next issue."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n66",
+        "n67",
+        "n68"
+      ],
+      "topic": "Validate fixed-duration shadow gating with inertial bridging",
+      "boundary_reason": "Held-out validation is followed by deployment on unseen furniture."
+    },
+    {
+      "session_id": "S14",
+      "node_ids": [
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75"
+      ],
+      "topic": "Investigate unseen-furniture gating failures and ceiling-inlier recovery delays",
+      "boundary_reason": "Recovery-delay results motivate a micro-dither trigger."
+    },
+    {
+      "session_id": "S15",
+      "node_ids": [
+        "n76",
+        "n77",
+        "n78",
+        "n79"
+      ],
+      "topic": "Evaluate and select recovery-triggered micro-dithers",
+      "boundary_reason": "The policy decision is followed by a new validation plan."
+    },
+    {
+      "session_id": "S16",
+      "node_ids": [
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Validate the selected gating and micro-dither policy on unseen furniture",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

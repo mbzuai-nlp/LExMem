@@ -1,0 +1,119 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "topic": "Initial exposure-mapped bounds and simulation results",
+      "boundary_reason": "The discussion shifts from simulated bound widths and coverage to uniform coverage beyond the simulation grid."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Certifying coverage over continuous adoption mechanisms",
+      "boundary_reason": "The certification audit concludes, and attention turns to clustered and hub-dominated networks."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Hub-network coverage failure and block-factorized calibration",
+      "boundary_reason": "The hub-network benchmark produces a calibration artifact; a new sensitivity-DiD proposal follows."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Sensitivity-DiD under independent-block shocks and a coverage contradiction",
+      "boundary_reason": "A within-block correlated-adoption result contradicts the initial coverage certificate, prompting an audit."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Auditing within-block adoption and adopting joint Γ-block caps",
+      "boundary_reason": "The revised assumptions are certified and adopted; the next proposal uses rollout instruments."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Rollout-IV simulations and an exact-coverage failure at strength 0.2",
+      "boundary_reason": "Exact enumeration reveals a point-null inversion problem that calls for composite-null tests."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Composite-null correction and deferral of rollout-IV at strength 0.2",
+      "boundary_reason": "Corrected coverage comes at the cost of a full-range spillover bound; a stronger-instrument proposal follows."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Certifying rollout-IV bounds at instrument strength at least 0.35",
+      "boundary_reason": "The initial stronger-instrument certificate is established, and the discussion moves to cohortwise implementation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Cohortwise rollout-IV certification and adoption",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

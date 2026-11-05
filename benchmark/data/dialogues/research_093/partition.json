@@ -1,0 +1,136 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial sensitivity-band proposal and degree–overlap simulations",
+      "boundary_reason": "The initial simulation and its proof-target decision are complete; the next nodes audit the bands under adversarial adoption."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Adversarial adoption audits and cohort-block band failures",
+      "boundary_reason": "Both band approaches fall below the target coverage; the next node introduces a different test-inversion proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Finite-sample cohort-law test inversion and four-cohort audit",
+      "boundary_reason": "The initial implementation and exhaustive four-cohort audit conclude; the next step tests cross-linked networks."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19"
+      ],
+      "topic": "Cross-linked network failure of cohort-law inversion",
+      "boundary_reason": "The audit exposes omitted exposure dependence, prompting a new question about restrictions on that dependence."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Three-cohort exposure-component enumeration and initial audits",
+      "boundary_reason": "The component method and its initial stress test are reported; the next audit examines stronger cross-component dependence."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Shared-shock coverage failure and shock-conditional restriction",
+      "boundary_reason": "The revised independence condition receives a coverage audit; the next proposal changes to Horvitz–Thompson envelopes."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Shock-conditional Horvitz–Thompson bands and marginal-weight failure",
+      "boundary_reason": "Stress testing refutes the marginal-weight approach; the next proposal uses joint exposure histories."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Joint-history test inversion and the marginal-overlap limitation",
+      "boundary_reason": "The audit finds outcome-range widths despite adequate coverage, motivating a question about joint-history overlap."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Joint-history overlap threshold and ShockHT v3",
+      "boundary_reason": "The overlap-constrained implementation and simulation are reported; the remaining nodes audit and prove its guarantees."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Exhaustive audit, uniform-coverage proof, and adoption of ShockHT v3",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

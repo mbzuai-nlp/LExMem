@@ -1,0 +1,1105 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn classifiers that reject shifting spurious cues without environment labels while preserving stable predictive features specific to minority groups.",
+      "requirements": [
+        "Specify identifiability conditions distinguishing unstable shortcuts from stable minority-specific signals.",
+        "Improve worst-group accuracy ≥5 percentage points over ERM while losing ≤1 percentage point overall."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Infer minority clusters from features stable under shortcut-covering, minority-preserving augmentations; suppress augmentation-sensitive cues within clusters under one-point overall-accuracy tolerance."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can augmentation-stable minority clusters guide shortcut suppression without discarding predictors that remain stable within those clusters?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "If augmentations randomize shortcuts while preserving minority cues, cluster-conditioned invariance gains ≥5 worst-group points with ≤1 overall-point loss."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "On Waterbirds, audit background-randomizing, species-preserving augmentations; compare cluster-conditioned invariance against ERM using held-out worst-group and overall accuracies."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "On Waterbirds, augmentations preserved species silhouettes (96%) while changing backgrounds (91%); versus ERM, worst-group accuracy rose 72%→78%, overall fell 94%→93.5%."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Advance cluster-conditioned invariance to multi-dataset validation: Waterbirds meets both accuracy thresholds under audited silhouette-preserving, background-randomizing augmentations."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Following Waterbirds advancement, formalize shortcut-randomization and minority-signal-preservation conditions; benchmark CelebA worst-group and overall accuracies against ERM."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "l1",
+      "content": "Audit CelebA Blond Hair gender edits for hair-label and minority-cue preservation; benchmark cluster-conditioned invariance versus ERM over five seeds."
+    },
+    {
+      "id": "r1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "CelebA Edit Audit v1 documents gender-edit shortcut randomization, hair-label and minority-cue preservation, and five-seed accuracy comparisons against ERM."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 11,
+      "exploration_parent_id": "q1",
+      "content": "If label-preserving edits span shortcut variation within each cluster while retaining minority features, within-cluster variance identifies shortcuts without environment labels."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "h2",
+      "content": "Using CelebA Edit Audit v1, test whether within-cluster edit variance separates gender shortcuts from minority cues (AUROC ≥0.90)."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "a3",
+      "content": "Within CelebA clusters, edits changed gender in 92% and preserved minority cues in 97%, yet shortcut-identification AUROC was 0.64."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Use paired counterfactual loss across independent edit families to suppress shortcut reliance while retaining cluster-specific features with stable label associations."
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Derive independent-edit identifiability conditions preserving minority cues; evaluate paired-loss training against ERM for ≥5-point worst-group gains, ≤1-point overall loss."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "l2",
+      "content": "Using CelebA Edit Audit v1, compare cluster-conditioned invariance, independent-edit paired loss, and ERM on five-seed worst-group and overall accuracy."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "a4",
+      "content": "CelebA five-seed worst-group/overall accuracy: ERM 72%/94%; cluster-invariance 74%/93.8% misses target; paired-loss 78%/93.5% meets both thresholds."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "e3",
+      "content": "Does paired-loss retain its CelebA worst-group gain when edit families share artifacts correlated with minority-specific hair cues?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "q2",
+      "content": "If edit families share artifacts correlated with minority hair cues (|r|≥0.3), paired-loss worst-group gains fall below five points versus ERM."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "h3",
+      "content": "On CelebA, compare paired-loss worst-group gains against ERM under independent versus minority-cue-correlated (|r|=0.4) edit artifacts across five seeds."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "a5",
+      "content": "CelebA five-seed worst-group accuracy: paired-loss fell from 78% with independent edits to 75% at artifact–minority-cue |r|=0.4; ERM scored 72%."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "h3",
+      "content": "Sweep CelebA artifact–minority-cue correlations (|r|=0.2, 0.3, 0.5), measuring paired-loss worst-group gains and overall losses against ERM."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "a6",
+      "content": "CelebA worst-group accuracy at artifact correlations 0.2/0.3/0.5 was 78%/77%/74% versus ERM’s 72%; 0.3 retains a five-point gain."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "q2",
+      "content": "Paired-loss retains ≥5-point worst-group gains at artifact–minority-cue |r|≤0.3, but loses them at |r|≥0.4."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "h4",
+      "content": "Using CelebA’s observed 0.3/0.4 crossover, compare paired-loss and ERM worst-group accuracy on held-out edits at |r|=0.3, 0.35, 0.4."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "a7",
+      "content": "Held-out CelebA worst-group accuracy at |r|=0.3/0.35/0.4 was 77%/76%/75% versus ERM’s 72%, confirming the five-point crossover."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "e6",
+      "content": "Advance paired-loss for audited |r|≤0.3 edits, pending overall-accuracy validation; at |r|≥0.35, worst-group gains miss five points."
+    },
+    {
+      "id": "l3",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "d2",
+      "content": "For audited |r|≤0.3 edits, formalize shortcut-variation and minority-cue-preservation conditions; verify ≥5-point worst-group gains and ≤1-point overall loss on CelebA."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "l3",
+      "content": "Using CelebA Edit Audit v1, verify shortcut variation and minority-cue preservation at |r|≤0.3; benchmark paired-loss accuracies against ERM."
+    },
+    {
+      "id": "r2",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "a8",
+      "content": "CelebA Edit Audit v2 replaces v1’s pooled comparisons with |r|≤0.3 stratification, shortcut-variation/minority-cue checks, and paired-loss versus ERM accuracy tables."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Train paired-loss with artifact-matched sham edits, subtracting sham-induced logit changes to retain minority cues under correlated edit artifacts."
+    },
+    {
+      "id": "l4",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Derive artifact-matching and minority-cue-preservation conditions; test sham-edit subtraction on CelebA at |r|=0.4 for ≥5-point worst-group gains, ≤1-point overall loss."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "l4",
+      "content": "Extend CelebA Edit Audit v2 to |r|=0.4, testing cue preservation and sham-subtracted versus uncorrected paired-loss and ERM accuracies."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "a9",
+      "content": "At |r|=0.4, CelebA sham-subtracted accuracy reached 78% worst-group/93.4% overall, versus uncorrected 75%/93.5% and ERM 72%/94%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 35,
+      "exploration_parent_id": "g1",
+      "content": "Learn cluster-specific edit-effect masks from sham-calibrated gradients, penalizing shortcut-sensitive features while exempting stable minority predictors."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p4",
+      "content": "How can edit-effect penalties avoid suppressing stable minority predictors when artifact-correlated gradients make them appear shortcut-sensitive?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "q3",
+      "content": "At |r|=0.4, sham-calibrated cluster masks retain ≥95% of minority-cue attribution while suppressing ≥80% of shortcut attribution."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "h5",
+      "content": "On CelebA at |r|=0.4, compare sham-calibrated and uncalibrated masks using annotated minority-cue retention and shortcut-attribution suppression."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "a10",
+      "content": "At |r|=0.4, CelebA sham-calibrated masks retained 91% minority-cue attribution and suppressed 83% shortcut attribution; uncalibrated masks retained 76%."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "h5",
+      "content": "Sweep CelebA mask thresholds at |r|=0.4; measure minority-cue retention, shortcut suppression, and worst-group/overall accuracy against ERM."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "a11",
+      "content": "At a tuned mask threshold, CelebA retained 96% minority-cue attribution and suppressed 81% shortcut attribution; worst-group/overall accuracy reached 78%/93.2%."
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "q3",
+      "content": "At |r|=0.4, sham-calibrated masks preserve ≥95% minority-cue attribution only after threshold tuning constrained by ≥80% shortcut suppression."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "h6",
+      "content": "Using default 91%/83% and tuned 96%/81% baselines, test validation-selected masks against ≥95%/≥80% attribution targets on held-out CelebA at |r|=0.4."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "a12",
+      "content": "Held-out CelebA at |r|=0.4: validation-selected masks retained 95.3% minority-cue attribution while suppressing 80.5% shortcut attribution."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "e10",
+      "content": "Adopt validation-tuned masks, not default masks: held-out retention/suppression met 95%/80% targets, and tuned accuracy met ERM-relative requirements."
+    },
+    {
+      "id": "l5",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "d3",
+      "content": "After adopting tuned masks, formalize shortcut coverage and minority-cue preservation; validate ≥5-point worst-group gains, ≤1-point overall loss on Waterbirds."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "l5",
+      "content": "Adapt CelebA Edit Audit v2’s shortcut-variation and cue-preservation checks to Waterbirds; compare tuned-mask worst-group and overall accuracy against ERM."
+    },
+    {
+      "id": "r3",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "a13",
+      "content": "Edit Audit v3 extends CelebA v2 with Waterbirds shortcut-coverage and species-cue checks plus tuned-mask versus ERM accuracy tables."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Use cluster-balanced edit-orbit prototypes to orthogonalize shortcut gradients against stable minority-feature directions before applying invariance penalties."
+    },
+    {
+      "id": "l6",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "p5",
+      "content": "Define orbit-prototype identifiability via shortcut coverage and minority-direction separation; test ≥5-point worst-group gains with ≤1-point overall loss."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "l6",
+      "content": "Using Edit Audit v3, recheck Waterbirds shortcut coverage and species-cue preservation; benchmark orbit-prototype accuracy against tuned masks and ERM."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "a14",
+      "content": "Waterbirds edits covered 91% of backgrounds while preserving 96% of species cues; orbit prototypes reached 80%/93.3% worst-group/overall versus ERM’s 72%/94%."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 53,
+      "exploration_parent_id": "e11",
+      "content": "Do orbit prototypes still separate shortcuts from minority cues when rare Waterbirds clusters contain too few edit orbits?"
+    },
+    {
+      "id": "h7",
+      "type": "hypothesis",
+      "order": 54,
+      "exploration_parent_id": "q4",
+      "content": "With fewer than 30 independent edit orbits per rare cluster, prototype directions collapse, reducing Waterbirds worst-group gains below five points."
+    },
+    {
+      "id": "a15",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "h7",
+      "content": "Using Edit Audit v3, subsample 10/20/30 rare-cluster orbits; measure prototype alignment and Waterbirds worst-group accuracy against ERM’s 72%."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "a15",
+      "content": "At 10/20/30 rare-cluster orbits, Waterbirds prototype alignment was 0.51/0.68/0.86; worst-group accuracy was 73%/75%/78% versus ERM’s 72%."
+    },
+    {
+      "id": "h8",
+      "type": "hypothesis",
+      "order": 57,
+      "exploration_parent_id": "q4",
+      "content": "Cross-cluster shrinkage of prototype directions restores ≥5-point Waterbirds worst-group gains with 20 rare-cluster orbits, without erasing minority cues."
+    },
+    {
+      "id": "a16",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "h8",
+      "content": "Using Waterbirds’ 80% baseline and Edit Audit v3, test shrinkage at 20 rare-cluster orbits for worst-group accuracy and cue retention."
+    },
+    {
+      "id": "e13",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "a16",
+      "content": "With 20 rare-cluster orbits, cross-cluster shrinkage yielded 78% Waterbirds worst-group accuracy but retained only 88% minority-cue attribution."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "q4",
+      "content": "Advance orbit prototypes only with ≥30 audited rare-cluster orbits; reject cross-cluster shrinkage because minority-cue retention fell to 88%."
+    },
+    {
+      "id": "l7",
+      "type": "plan",
+      "order": 61,
+      "exploration_parent_id": "d4",
+      "content": "Collect ≥30 rare-cluster edit orbits; derive shortcut–minority identifiability conditions; validate five-point worst-group gains over ERM within one-point overall loss."
+    },
+    {
+      "id": "a17",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "l7",
+      "content": "Using Edit Audit v3 and the 30-orbit threshold, collect 40 Waterbirds rare-cluster orbits; assess separation, cue retention, and ERM-relative accuracies."
+    },
+    {
+      "id": "r4",
+      "type": "artifact",
+      "order": 63,
+      "exploration_parent_id": "a17",
+      "content": "Edit Audit v4 extends v3 with 40 Waterbirds rare-cluster orbits, shortcut–minority direction separation, cue retention, and ERM-relative accuracy tables."
+    },
+    {
+      "id": "a18",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "l7",
+      "content": "Recheck v3’s Waterbirds shortcut-coverage and species-cue audits on v4’s 40-orbit cohort; subsample 10/20/30 for separation and ERM-relative worst-group gains."
+    },
+    {
+      "id": "e14",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "a18",
+      "content": "V4 reconfirmed v3’s 91% shortcut coverage/96% cue preservation; 10/20/30-orbit alignment was 0.52/0.69/0.85, worst-group accuracy 73%/75%/78% versus ERM’s 72%."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 66,
+      "exploration_parent_id": "e14",
+      "content": "Add ≥0.85 alignment and ≥95% minority-cue-retention certification gates; shrinkage matched 30-orbit accuracy but retained only 88% of cues."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "r1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a4"
+    },
+    {
+      "source": "a4",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a5",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "revise",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "l3",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "l3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a8"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "r2"
+    },
+    {
+      "source": "r2",
+      "relation": "revise",
+      "target": "r1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "l4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a9"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "r2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "refute",
+      "target": "h5"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a11",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "revise",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "l5",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "l5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l5",
+      "relation": "decompose",
+      "target": "a13"
+    },
+    {
+      "source": "a13",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "r3"
+    },
+    {
+      "source": "r3",
+      "relation": "revise",
+      "target": "r2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "l6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l6",
+      "relation": "decompose",
+      "target": "a14"
+    },
+    {
+      "source": "a14",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "h7",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "h7"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a15",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "h7"
+    },
+    {
+      "source": "h8",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a16",
+      "relation": "evaluate",
+      "target": "h8"
+    },
+    {
+      "source": "a16",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "a16",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a16",
+      "relation": "produce",
+      "target": "e13"
+    },
+    {
+      "source": "e13",
+      "relation": "refute",
+      "target": "h8"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "e13",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "l7",
+      "relation": "depend_on",
+      "target": "d4"
+    },
+    {
+      "source": "l7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l7",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "l7",
+      "relation": "decompose",
+      "target": "a17"
+    },
+    {
+      "source": "a17",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a17",
+      "relation": "depend_on",
+      "target": "e12"
+    },
+    {
+      "source": "a17",
+      "relation": "produce",
+      "target": "r4"
+    },
+    {
+      "source": "r4",
+      "relation": "revise",
+      "target": "r3"
+    },
+    {
+      "source": "l7",
+      "relation": "decompose",
+      "target": "a18"
+    },
+    {
+      "source": "a18",
+      "relation": "depend_on",
+      "target": "r4"
+    },
+    {
+      "source": "a18",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a18",
+      "relation": "evaluate",
+      "target": "r4"
+    },
+    {
+      "source": "a18",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a18",
+      "relation": "evaluate",
+      "target": "h7"
+    },
+    {
+      "source": "a18",
+      "relation": "produce",
+      "target": "e14"
+    },
+    {
+      "source": "e14",
+      "relation": "support",
+      "target": "h7"
+    },
+    {
+      "source": "e14",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "e13",
+      "relation": "support",
+      "target": "d5"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn classifiers that reject shifting spurious cues without environment labels while preserving stable predictive features specific to minority groups.",
+    "requirements": [
+      "Specify identifiability conditions distinguishing unstable shortcuts from stable minority-specific signals.",
+      "Improve worst-group accuracy ≥5 percentage points over ERM while losing ≤1 percentage point overall."
+    ]
+  }
+}

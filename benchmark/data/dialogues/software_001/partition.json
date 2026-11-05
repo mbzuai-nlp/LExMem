@@ -1,0 +1,77 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "h2",
+        "a2",
+        "e2",
+        "d1"
+      ],
+      "topic": "Queue-drain acknowledgment and safe reclamation of borrowed callback memory",
+      "boundary_reason": "The queue-drain question is resolved; discussion shifts to asynchronous self-cancellation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h3",
+        "a3",
+        "e3",
+        "a4",
+        "e4",
+        "h4",
+        "a5",
+        "e5",
+        "a6",
+        "e6",
+        "h5",
+        "a7",
+        "e7",
+        "a8",
+        "e8",
+        "h6",
+        "a9",
+        "e9",
+        "d2"
+      ],
+      "topic": "Preventing deadlocks during callback self-cancellation and async waits",
+      "boundary_reason": "Scoped-executor cycle checks are adopted; discussion shifts to verifying C library contracts."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h7",
+        "a10",
+        "e10",
+        "a11",
+        "e11",
+        "h8",
+        "a12",
+        "e12",
+        "d3"
+      ],
+      "topic": "Binding audited C contracts to the loaded library image",
+      "boundary_reason": "Post-load image verification is selected; discussion shifts to implementation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "pl1",
+        "a13",
+        "ar1"
+      ],
+      "topic": "Implementing the ContractFFI bindings",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

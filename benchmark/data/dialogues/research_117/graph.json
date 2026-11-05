@@ -1,0 +1,1122 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop robotic active perception that resolves grasp-relevant occlusions while accounting for uncertain object motion induced by sensing actions.",
+      "requirements": [
+        "Reduce failed grasps by 20% relative to a fixed-view baseline under matched action budgets.",
+        "Maintain object-damage rates below 1% across previously unseen object dynamics and occlusion patterns."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use belief-space MPC with online action-induced motion estimates to choose grasp-informative views and probes under a 0.5% predicted-damage cap."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can probe-induced motion uncertainty be calibrated for unseen objects when occlusion conceals their contact geometry?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Visible post-probe displacement enables conformal motion bounds with ≥95% coverage on unseen objects despite hidden contact geometry."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Collect low-force probe trajectories, calibrate displacement-conditioned motion bounds by occlusion severity, then test 95% coverage on unseen dynamics."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run OccluProbe-200: calibrate displacement-conditioned conformal motion bounds on 150 objects; test 95% coverage across 50 unseen dynamics and occlusions."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On OccluProbe-200, displacement-conditioned bounds covered 96.2% of 1,000 motions across 50 unseen objects; each occlusion stratum exceeded 95%."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Integrate displacement-conditioned conformal bounds into belief-space MPC, since OccluProbe-200 exceeded 95% coverage in every occlusion stratum."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Benchmark conformal-bound MPC versus fixed-view grasping across 100 unseen dynamics–occlusion combinations with matched action budgets, measuring grasp failures and damage."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "OccluGrasp-100 evaluation report documents paired MPC/fixed-view trials across 100 unseen combinations, matched budgets, grasp-failure reduction, and damage rates."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Fusing low-force wrist-force transients with visible displacement yields ≥95% unseen-object coverage and 20% narrower motion bounds than displacement-only calibration."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Calibrate wrist-force/displacement bounds on 150 OccluProbe-200 objects; test ≥95% coverage and ≥20% median-width reduction versus displacement-only on 50 held-out."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "On OccluProbe-200, force-fused bounds narrowed median width 23% but covered only 92.8% of held-out motions, below the 95% target."
+    },
+    {
+      "id": "n14",
+      "type": "decision",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Retain displacement-only bounds: their 96.2% coverage meets calibration target, while force fusion drops coverage to 92.8% despite narrower bounds."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p1",
+      "content": "How should belief-space MPC reject informative probes whose worst-case induced motion could damage fragile objects under unseen dynamics?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Use occlusion-aware wrist-camera view planning with probabilistic arm-clearance constraints to avoid contact-induced motion while revealing grasp surfaces."
+    },
+    {
+      "id": "n17",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Calibrate force-aware damage bounds, reject probes above 0.5% predicted damage, and select clearance-constrained noncontact wrist-camera views."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Using OccluGrasp-100’s paired-trial protocol, test 0.5%-damage probe vetoes and noncontact views across 100 combinations; record failures and damage."
+    },
+    {
+      "id": "n19",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "OccluGrasp-100 safety appendix records per-condition probe vetoes, wrist-camera clearances, paired grasp failures, and observed damage rates."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Recompute paired failure and damage rates from OccluGrasp-100 logs; audit report and safety appendix for budget parity and damage annotations."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "OccluGrasp-100 audit: matched-budget failures were 30% fixed-view, 22% probe-MPC, and 23% noncontact-view MPC; damage was 1.4% and 0.6%, respectively."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Does noncontact-view MPC maintain <1% damage and ≥20% failure reduction on heavily occluded, fragile objects with unseen dynamics?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "On heavily occluded, fragile unseen objects, noncontact-view MPC reduces fixed-view failures ≥20% at matched budgets while keeping damage <1%."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Power matched-budget fragile-object trials from audited 30%-versus-23% failure rates; measure noncontact-view failures and damage under severe occlusion and unseen dynamics."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Across 500 severely occluded fragile-object trials with unseen dynamics, noncontact views cut failures 31%→23% (25.8%) under matched budgets; damage: 0.6%."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n23",
+      "content": "Audit OccluGrasp-100 and fragile-object trial logs for stratified failure reduction, damage confidence bounds, and matched-budget compliance."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Stratified audit found translucent fragile objects had 2% damage (2/100) and only 13.3% failure reduction (30%→26%)."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Continue noncontact-view MPC development, but block translucent-object deployment: aggregate targets passed, while that stratum missed both thresholds."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n22",
+      "content": "Polarization-assisted views with 15-mm clearance will reduce translucent-fragile grasp failures from 30% to ≤24% and damage from 2% to <1%."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Enforce the translucent-deployment block before testing polarized 15-mm-clearance views against n21’s audited 30% failure baseline and measuring damage."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "In 500 translucent-fragile trials, polarized 15-mm-clearance views achieved 23% failures versus 30% fixed-view and 0.4% damage."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n29",
+      "content": "Under n28’s deployment block, independently replicate n31’s polarized views on 2,000 unseen translucent-fragile trials against n21’s matched-budget baseline, recording damage."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Independent 2,000-trial replication found 25% failures versus 30% fixed-view and 1.2% damage, missing both revised thresholds."
+    },
+    {
+      "id": "n34",
+      "type": "decision",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Keep translucent-object deployment blocked: pilot gains did not replicate; independent trials missed both the 20% failure-reduction and <1% damage targets."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 35,
+      "exploration_parent_id": "g1",
+      "content": "Use 60-mm stand-off stereo-polarimetric views with conformal motion-and-clearance bounds to reveal translucent grasp surfaces without close-range contact."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p3",
+      "content": "Can 60-mm stand-off stereo-polarimetric views recover graspable edges through severe occlusion without underestimating clearance uncertainty on translucent objects?"
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "At 60-mm stand-off, stereo-polarimetric views recover ≥90% occluded grasp edges, ensure ≥95% clearance coverage, and meet both goal thresholds."
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Keep deployment blocked; calibrate 60-mm stereo-polarimetric clearance bounds, then test ≥90% occluded-edge recall and ≥95% coverage on unseen translucent objects."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Stratify matched-budget 60-mm stereo-polarimetric trials using polarized-view pilot and replication logs; assess edge recall, clearance coverage, failures, and damage."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Across 2,000 matched-budget unseen translucent trials, 60-mm stereo-polarimetric views achieved 91% occluded-edge recall, 96% clearance coverage, 30%→23% failures, 0.5% damage."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n38",
+      "content": "Using OccluGrasp-100’s fixed-view baseline, independently replicate 60-mm stereo-polarimetric trials across unseen translucent occlusions and dynamics; measure recall, clearance, failures, damage."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Independent 2,000-trial replication achieved 92% edge recall, 95.5% clearance coverage, 30%→23% failures, and 0.6% damage on unseen translucent objects."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Lift the translucent-object block only for 60-mm stereo-polarimetric MPC; independent trials reproduced failure, damage, recall, and clearance targets."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Run gated stereo-polarimetric MPC with safety-appendix clearance checks; audit matched-budget failures and damage across unseen dynamics and occlusions."
+    },
+    {
+      "id": "n45",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "OccluGrasp-100 safety appendix v2 adds 60-mm stereo-polarimetric gating, clearance checks, and matched-budget failure and damage audits."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Use low-pressure air puffs to displace occluders, with conformal motion bounds and damage-risk vetoes selecting safe grasp-revealing actions."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Calibrate conformal air-puff motion and damage bounds; veto puffs exceeding 0.5% predicted damage, otherwise select informative puffs."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Collect 10,000 low-pressure air-puff trajectories; calibrate conformal motion bounds and test 0.5%-damage vetoes on held-out dynamics."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "PuffMotion-10K contains 10,000 air-puff trajectories, held-out dynamics splits, calibrated motion bounds, and damage-veto evaluation logs."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n47",
+      "content": "Audit PuffMotion-10K vetoes; compare puff-MPC, appendix-v2 stereo, and fixed-view across unseen dynamics/occlusions for matched-budget grasp failures and damage."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "On unseen dynamics, matched-budget fixed-view/puff/stereo failures were 30%/26%/23%; puff damage reached 1.6% versus stereo’s 0.6%, despite vetoes."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Trace puff-MPC’s 1.6% damage through PuffMotion-10K calibration residuals; prospectively test stricter vetoes for matched-budget failures and damage."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "In 1,000 held-out trials, PuffMotion-10K residual-guided vetoes yielded 24% failures versus 30% fixed-view and 0.8% damage."
+    },
+    {
+      "id": "n54",
+      "type": "question",
+      "order": 54,
+      "exploration_parent_id": "p4",
+      "content": "Do residual-guided puff vetoes maintain <1% damage and ≥20% failure reduction in unseen lightweight-object and severe-occlusion strata?"
+    },
+    {
+      "id": "n55",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Residual-guided puff vetoes keep damage <1% and reduce fixed-view failures ≥20% within each unseen lightweight-object and severe-occlusion stratum."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Independently test residual-guided puff vetoes in 2,000 unseen lightweight-object and severe-occlusion trials, measuring matched-budget failures and damage versus fixed-view."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "In 2,000 matched-budget unseen trials, lightweight failures fell 30%→23% (0.6% damage); severe-occlusion failures fell 35%→27% (0.8% damage)."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Retire original puff policy (1.6% damage); conditionally permit residual-guided vetoes in tested strata after independent trials met both thresholds."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 59,
+      "exploration_parent_id": "g1",
+      "content": "Route lightweight or severely occluded objects to 60-mm stereo views unless residual-calibrated puff damage risk stays below 0.3%."
+    },
+    {
+      "id": "n60",
+      "type": "plan",
+      "order": 60,
+      "exploration_parent_id": "p5",
+      "content": "Within n58’s permitted strata, calibrate the 0.3% puff-risk gate and compare routed versus puff-only failures and damage."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Within permitted strata, implement appendix-v2 stereo fallback and PuffMotion-10K’s 0.3% puff-risk gate; compare matched-budget grasp failures and damage."
+    },
+    {
+      "id": "n62",
+      "type": "artifact",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "OccluGrasp-100 safety appendix v3 adds a calibrated 0.3% puff-risk gate, stereo fallback, permitted-stratum rules, and matched-budget audit fields."
+    },
+    {
+      "id": "n63",
+      "type": "activity",
+      "order": 63,
+      "exploration_parent_id": "n60",
+      "content": "Test appendix-v3 routing against original and residual-veto puff policies across 2,000 matched-budget lightweight/severe-occlusion trials; record failures and damage."
+    },
+    {
+      "id": "n64",
+      "type": "evidence",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Across 2,000 matched-budget trials, routed failures were 24% versus 32.5% fixed-view; damage was 0.5% versus residual-puff’s 0.8%."
+    },
+    {
+      "id": "n65",
+      "type": "decision",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Adopt appendix-v3 routing only in n58’s tested strata: 24% versus 32.5% failures and 0.5% damage meet both targets."
+    },
+    {
+      "id": "n66",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Monitor adopted appendix-v3 routing in approved strata across unseen dynamics and occlusions for matched-budget grasp failures and damage."
+    },
+    {
+      "id": "n67",
+      "type": "artifact",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Appendix-v3 monitoring dashboard tracks approved-stratum matched-budget failure reduction, damage rate, puff-gate decisions, and stereo fallbacks by unseen condition."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "revise",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n60",
+      "relation": "decompose",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "decompose",
+      "target": "n63"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "revise",
+      "target": "n45"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "n62"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n63",
+      "relation": "produce",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n66",
+      "relation": "produce",
+      "target": "n67"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop robotic active perception that resolves grasp-relevant occlusions while accounting for uncertain object motion induced by sensing actions.",
+    "requirements": [
+      "Reduce failed grasps by 20% relative to a fixed-view baseline under matched action budgets.",
+      "Maintain object-damage rates below 1% across previously unseen object dynamics and occlusion patterns."
+    ]
+  }
+}

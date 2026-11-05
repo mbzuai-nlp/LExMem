@@ -1,0 +1,912 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build an incremental Java taint analyzer preserving interprocedural soundness when edits change heap aliasing and virtual dispatch.",
+      "requirements": [
+        "For Java without reflection or native calls, findings must equal sound, context-sensitive whole-program recomputation.",
+        "Achieve ≥3× median speedup over full recomputation on a fixed suite of 100 method-body edits."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Track derivation dependencies across context-sensitive taint, points-to, and dispatch summaries; retract affected facts and propagate additions to fixed point."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can provenance identify every virtual call edge invalidated by changed receiver points-to sets without rescanning unaffected contexts?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Reverse-indexed receiver points-to justifications identify all affected context-qualified call edges without rescanning contexts lacking changed receivers."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Implement receiver-fact reverse indexes, update dispatch edges on points-to deltas, and compare context-qualified targets against full recomputation on 100 edits."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Instrument DispatchDelta-100 to compare reverse-indexed dispatch updates against full recomputation and count unaffected contexts rescanned after 100 method-body edits."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "DispatchDelta-100 found four alias edits activating new contexts; the existing receiver-fact index missed seven dispatch edges versus full recomputation."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Seeding receiver subscriptions when contexts become reachable should recover seven missed dispatch edges without rescanning unaffected contexts."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Instrument context-activation subscription seeding and replay four failing DispatchDelta-100 alias edits; compare dispatch edges and unaffected-context scans."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Across four replayed edits, activation seeding recovered all seven missing dispatch edges with zero unaffected-context scans."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "With activation seeding validated, run all 100 DispatchDelta-100 edits; compare taint findings and median update time against whole-program recomputation."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "DispatchDelta-100 report records per-edit finding differences, dispatch-edge differences, and incremental versus whole-program runtimes for 100 edits."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Provisionally retain activation-seeded reverse indexing after seven-edge recovery; require DispatchDelta-100 to confirm zero finding differences and ≥3× median speedup."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Partition context-sensitive call and heap dependencies into SCCs; recompute affected closures after edits while reusing untouched summaries."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Using activation-seeded reverse indexing, recompute changed call/heap SCCs and downstream dependents; test finding parity and ≥3× median speedup on DispatchDelta-100."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Use the DispatchDelta-100 report as baseline; implement SCC invalidation and rerun 100 edits, measuring finding differences and median speedup."
+    },
+    {
+      "id": "n14",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "SCCUpdate v1 adds context-qualified call/heap SCC invalidation and a DispatchDelta-100 comparison table of finding differences and median speedup."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Benchmark SCCUpdate v1 and reverse-indexed updates against DispatchDelta-100’s full-recomputation baseline, checking 100-edit finding parity and median speedup."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "DispatchDelta-100: reverse-indexed updates matched full-recomputation findings but achieved only 1.9× median speedup, below the 3× requirement."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Does SCCUpdate v1 reduce dependency-processing time enough to reach 3× median speedup while preserving finding parity?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "SCCUpdate v1’s affected-closure recomputation yields ≥3× median speedup on DispatchDelta-100 with zero finding differences versus full recomputation."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Quantify SCCUpdate v1’s improvement over n16’s 1.9× baseline across five DispatchDelta-100 repetitions; verify ≥3× speedup and finding parity."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Across five DispatchDelta-100 repetitions, SCCUpdate v1 achieved 3.4× median speedup and zero finding differences over 100 edits."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n12",
+      "content": "Adopt SCCUpdate v1 with activation-seeded indexing: 3.4× median speedup and zero finding differences, versus reverse indexing’s 1.9×."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Use versioned context-sensitive heap facts, invalidating strong updates when edits introduce aliases before recomputing affected taint and dispatch summaries."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "When an edit introduces a heap alias, which earlier strong updates must be revoked across affected contexts?"
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "Replay DispatchDelta-100 alias edits against n10’s baseline, tracing versioned points-to facts to identify strong updates requiring revocation."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Four DispatchDelta-100 alias edits invalidate 11 strong updates across six contexts when write-base points-to sets lose singleton status."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n22",
+      "content": "Tracking each strong update’s singleton justification and revoking its kill upon alias introduction restores taint flows across six contexts."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Implement singleton-justification revocation for 11 identified kills; compare four alias-edit findings and update times against full recomputation."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "All four alias edits matched full-recomputation findings after revoking 11 kills; provenance updates achieved 3.2× median speedup on these edits."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Adopt singleton-justified kill revocation alongside SCCUpdate v1: four alias edits matched full recomputation; SCC recomputation achieved 3.4× suite speedup."
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Integrate kill revocation with activation-seeded SCC updates, then rerun 100 edits for finding parity and ≥3× median speedup."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Extend SCCUpdate v1 with singleton-justified kill revocation, then rerun DispatchDelta-100 against full recomputation for findings and median runtime."
+    },
+    {
+      "id": "n31",
+      "type": "artifact",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "SCCUpdate v2 integrates singleton-justified kill revocation and includes DispatchDelta-100 per-edit finding differences and runtime comparisons."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "SCCUpdate v2 had zero finding differences across DispatchDelta-100’s 100 edits and achieved 3.1× median speedup over full recomputation."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Guard cached summaries with versioned dependencies and rebuild SCC topology when virtual call edges change, preventing stale cross-component taint flows."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "p4",
+      "content": "Dispatch-edge-triggered SCC rebuilding and version-checked summaries preserve finding parity with ≥3× median speedup on DispatchDelta-100."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "Add dispatch-edge-triggered SCC rebuilding and summary version checks to SCCUpdate v2; rerun DispatchDelta-100 against full recomputation."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "DispatchDelta-100 retained zero finding differences, but rebuilding SCCs on every dispatch-edge change lowered median speedup to 2.6×."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "Can SCC topology be rebuilt only when dispatch-edge changes cross component boundaries, while retaining exact taint findings?"
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "After the 2.6× regression, rebuild SCCs only for cycle-forming cross-component additions or connectivity-breaking internal deletions; benchmark finding parity."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Implement conditional SCC rebuilding with version-checked summaries; benchmark finding parity and median speedup across DispatchDelta-100."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Conditional SCC rebuilding retained zero finding differences and achieved 3.2× median speedup on DispatchDelta-100, versus 2.6× with eager rebuilding."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Adopt conditional SCC rebuilding with version checks: zero finding differences and 3.2× median speedup, versus SCCUpdate v2’s 3.1×."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 46,
+      "exploration_parent_id": "n38",
+      "content": "SCCUpdate v3 extends v2’s kill revocation with conditional SCC rebuilding and version-checked summaries for dispatch-edge edits."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Use edit-scoped transactions with dependency completeness checks and whole-program fallback when alias or dispatch provenance is incomplete."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "p5",
+      "content": "Which dependency-completeness invariant detects missing alias or dispatch justifications before committing an incremental finding set?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "For each affected producer, independently enumerated summary, heap, and dispatch consumers must match version-current reverse dependencies."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "Inject dropped heap and dispatch reverse links into SCCUpdate v3; independently enumerate consumers and verify transaction rejection before findings commit."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n44",
+      "content": "Three injected dispatch-link losses in newly activated contexts escaped both enumerators, allowing stale findings to commit."
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n42",
+      "content": "Forward-scan affected and newly reachable contexts for dispatch targets and heap uses, comparing derived dependencies with reverse indexes before commit."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "After three escaped dispatch-link losses, add source-level forward scans for activated contexts and fall back when derived dependencies disagree."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Implement forward dependency scans in SCCUpdate v3; inject lost links and measure fallback correctness and DispatchDelta-100 speedup."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "SCCUpdate v4 adds source-level dependency scans and transactional whole-program fallback when scanned heap or dispatch consumers disagree with reverse indexes."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n48",
+      "content": "SCCUpdate v4 detected all three injected link losses, fell back to matching findings, and achieved 3.0× median speedup on DispatchDelta-100."
+    },
+    {
+      "id": "n51",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "p5",
+      "content": "Adopt SCCUpdate v4, retaining alias-kill revocation and conditional SCC rebuilding; fallback detected injected faults while maintaining 3.0× median speedup."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "revise",
+      "target": "n31"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "revise",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n49"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build an incremental Java taint analyzer preserving interprocedural soundness when edits change heap aliasing and virtual dispatch.",
+    "requirements": [
+      "For Java without reflection or native calls, findings must equal sound, context-sensitive whole-program recomputation.",
+      "Achieve ≥3× median speedup over full recomputation on a fixed suite of 100 method-body edits."
+    ]
+  }
+}

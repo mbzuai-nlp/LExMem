@@ -1,0 +1,1110 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a semantic parser that distinguishes genuine utterance ambiguity from model uncertainty under unseen compositional structures.",
+      "requirements": [
+        "Achieve ambiguity-detection F1 ≥0.85 on unseen compositions, using independently annotated sets of valid interpretations.",
+        "Match unambiguous-input execution accuracy of a single-output parser trained on identical data."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a shared encoder with execution and interpretation-set heads on annotated parse sets; detect ambiguity from predicted cardinality, not entropy."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can supervised interpretation-set cardinality distinguish genuine alternative parses from high-entropy errors on unseen compositions?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "On unseen COGS-AMB compositions, cardinality supervision yields ambiguity F1 ≥0.85, exceeding entropy-thresholding by ≥0.10 without reducing unambiguous execution accuracy."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Independently annotate COGS-AMB sets; train matched-data cardinality and single-output parsers; compare cardinality-versus-entropy F1 and unambiguous execution accuracy on novel compositions."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run five-seed COGS-AMB novel-composition splits; compare cardinality, entropy, and matched-data single-output baselines on ambiguity F1 and unambiguous execution accuracy."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across five COGS-AMB seeds, cardinality achieved F1 0.87 versus entropy 0.74; unambiguous execution accuracy matched single-output at 91%."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt cardinality-based ambiguity detection: COGS-AMB F1 exceeds 0.85, and unambiguous execution matches the single-output baseline."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Integrate the adopted cardinality detector into parser serving, returning ranked interpretation sets only for predicted ambiguous utterances."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Parser API v0.1 returns ranked interpretation sets for predicted ambiguities and one executable parse otherwise, with cardinality scores."
+    },
+    {
+      "id": "n9",
+      "type": "hypothesis",
+      "order": 11,
+      "exploration_parent_id": "n1",
+      "content": "Across label-preserving paraphrases matched on entropy, multi-interpretation predictions persist for ≥80% ambiguous inputs versus ≤20% uncertain unambiguous inputs."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Using Parser API v0.1, test three independently validated interpretation-set-preserving paraphrases per 400 entropy-matched COGS-AMB examples for multi-interpretation persistence."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "On 400 entropy-matched examples, multi-interpretation predictions persisted across paraphrases for only 62% of ambiguous inputs versus 17% unambiguous inputs."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Augment cardinality training with interpretation-set-preserving paraphrases, then re-evaluate unseen-composition ambiguity F1, paraphrase stability, and matched-data unambiguous execution accuracy."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Use Parser API v0.1 to select unstable, set-preserving COGS-AMB paraphrases; fine-tune cardinality consistency and repeat five-seed evaluation."
+    },
+    {
+      "id": "n14",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Parser API v0.2 includes paraphrase-consistent cardinality weights and a five-seed COGS-AMB report of F1, stability, and execution accuracy."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n12",
+      "content": "Audit Parser API v0.2 on independently annotated COGS-AMB compositions versus v0.1 and single-output baselines for F1, paraphrase stability, execution accuracy."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "On independently annotated COGS-AMB, v0.2 achieved ambiguity F1 0.88, paraphrase stability 83% versus 62%, and unambiguous execution 91%, matching single-output."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Use grammar-constrained candidate decoding and conformal abstention; flag ambiguity only when multiple semantically distinct interpretations have annotation-calibrated support."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can conformal support distinguish valid alternative interpretations from beam-search artifacts on unseen compositions without degrading unambiguous execution accuracy?"
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Using Parser API v0.2, compare grammar-constrained conformal and cardinality detection on unseen COGS-AMB for F1, beam-artifact rejection, execution accuracy."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On independently annotated COGS-AMB recursive-composition holdouts, cardinality ambiguity F1 was 0.79 versus conformal 0.86, below the required 0.85."
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Conformal support maintains ambiguity F1 ≥0.85 on recursive compositions while matching the 91% unambiguous execution baseline."
+    },
+    {
+      "id": "n21",
+      "type": "plan",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Annotate recursive COGS-AMB beam artifacts; calibrate conformal support on disjoint data; compare artifact rejection, F1, and 91% execution baseline."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Against Parser API v0.2, calibrate conformal support on disjoint COGS-AMB data; measure recursive-holdout F1, artifact rejection, execution accuracy."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "On recursive COGS-AMB holdouts, conformal support achieved ambiguity F1 0.86 and 89% artifact rejection, but execution 88% versus 91% baseline."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Restricting conformal support to ambiguity classification while preserving v0.2's execution path yields recursive-holdout F1 ≥0.85 and execution ≥91%."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Attach a conformal ambiguity gate to Parser API v0.2 without changing execution decoding; test recursive COGS-AMB F1 and execution accuracy."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Gate-only conformal support scored recursive-holdout ambiguity F1 0.82, below 0.85, despite preserving 91% unambiguous execution accuracy."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Restoring grammar-constrained candidate decoding for the conformal gate while retaining v0.2's execution output yields recursive F1 ≥0.85 and accuracy ≥91%."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Add grammar-constrained candidates to v0.2's conformal gate, retain its execution decoder, and measure recursive-holdout F1 and accuracy."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "On recursive COGS-AMB holdouts, grammar-constrained conformal gating reached ambiguity F1 0.86; unchanged v0.2 decoding retained 91% unambiguous execution accuracy."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Adopt grammar-constrained conformal gating with unchanged v0.2 execution decoding: recursive-holdout F1 reaches 0.86 and execution remains 91%."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "Implement the adopted grammar-constrained conformal gate in Parser API v0.2, retaining its execution decoder and logging supported interpretation sets."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Parser API v0.3 replaces v0.2's cardinality ambiguity gate with grammar-constrained conformal gating, retaining execution decoding and logging supported interpretation sets."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "Can semantic-equivalence filtering prevent grammar-constrained beams from counting equivalent logical forms as ambiguity on unseen compositions?"
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Test v0.3 beam clustering by alpha-renaming and conjunction reordering on 300 annotated unseen compositions; measure false-ambiguity reduction."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n34",
+      "content": "On 300 annotated unseen compositions, equivalence clustering removed 27 of 34 false-ambiguity flags without merging any validated interpretation pairs."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "Integrate validated equivalence clustering before conformal scoring, recalibrate support, and retest COGS-AMB ambiguity F1 and unambiguous execution accuracy."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n36",
+      "content": "Add validated alpha-renaming and conjunction-order clustering to v0.3 beams; recalibrate conformal scores on disjoint COGS-AMB data."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n37",
+      "content": "Parser API v0.4 adds equivalence-clustered beams and recalibrated conformal support to v0.3, leaving its execution decoder unchanged."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Compare v0.4 against v0.3 on independently annotated COGS-AMB holdouts for duplicate-parse false alarms, ambiguity F1, and unambiguous execution accuracy."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n39",
+      "content": "On 300 annotated COGS-AMB holdouts, v0.4 cut duplicate-parse false alarms 34→7, raised ambiguity F1 0.86→0.89, retained 91% unambiguous execution."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 44,
+      "exploration_parent_id": "n40",
+      "content": "Select v0.4's equivalence-clustered conformal parser: ambiguity F1 reaches 0.89, duplicate false alarms fall, and unambiguous execution remains 91%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Train a contrastive interpretation verifier on compositional minimal pairs to reject unsupported readings while retaining v0.4's execution decoder."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p3",
+      "content": "Does contrastive verification reject structurally plausible but invalid readings on deeper unseen compositions without removing valid ambiguous interpretations?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "On depth-4 COGS-AMB, contrastive verification rejects ≥70% invalid readings, retains ≥95% valid readings, and preserves 91% execution accuracy."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Train a minimal-pair verifier on v0.4 candidates; measure invalid-reading rejection, valid-reading retention, and execution accuracy on annotated depth-4 COGS-AMB."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "On annotated depth-4 COGS-AMB, verification rejected 74% invalid readings but retained only 89% valid readings; execution remained 91%."
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n42",
+      "content": "Hard-positive augmentation raises depth-4 valid-reading retention from 89% to ≥95%, preserving ≥70% invalid-reading rejection and 91% execution accuracy."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Augment v0.4 candidate-verifier training with validated depth-3 hard positives; retest depth-4 retention, rejection, ambiguity F1, and execution."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "On depth-4 COGS-AMB, hard positives raised valid-reading retention 89%→96%; invalid-reading rejection reached 71%, ambiguity F1 0.87, execution 91%."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "Adopt hard-positive verification: depth-4 valid-reading retention rises 89%→96%, invalid-reading rejection reaches 71%, ambiguity F1 0.87, execution 91%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 54,
+      "exploration_parent_id": "g1",
+      "content": "Train five bootstrap parsers; flag ambiguity when two distinct readings each recur in ≥4 models, retaining v0.4's execution decoder."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 55,
+      "exploration_parent_id": "p4",
+      "content": "Does cross-bootstrap recurrence reflect genuine interpretation multiplicity rather than shared compositional errors on unseen structures?"
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Train five matched-data bootstrap parsers; compare recurrence gating against v0.4 on independently annotated depth-4 COGS-AMB ambiguity F1 and error overlap."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Score five bootstrap parsers on 500 annotated depth-4 COGS-AMB utterances; inspect recurrent candidate sets and compare recurrence versus v0.4 F1."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Depth-4 recurrence audit lists each utterance's five bootstrap candidate sets, annotated valid readings, shared-error labels, and F1 comparisons against v0.4."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n51",
+      "content": "Quantify shared-error false alarms in the depth-4 recurrence audit; compare ≥4-of-5 gating against v0.4 on ambiguity F1."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Among 500 depth-4 utterances, recurrence F1 was 0.79 versus v0.4's 0.86; shared errors caused 31 false alarms."
+    },
+    {
+      "id": "n56",
+      "type": "question",
+      "order": 61,
+      "exploration_parent_id": "p4",
+      "content": "Would template-stratified bootstraps reduce the 31 shared-error false alarms without losing valid alternative readings?"
+    },
+    {
+      "id": "n57",
+      "type": "hypothesis",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Template-stratified bootstraps cut shared-error false alarms from 31 to ≤15 while raising depth-4 ambiguity F1 from 0.79 to ≥0.85."
+    },
+    {
+      "id": "n58",
+      "type": "plan",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "Use the 31-error audit to stratify bootstrap training by compositional template; retest shared-error alarms, ambiguity F1, and valid-reading retention."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Train five template-stratified bootstraps; benchmark ≥4-of-5 gating against v0.4 on audited depth-4 false alarms, ambiguity F1, and valid-reading retention."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "On 500 depth-4 utterances, stratified recurrence cut shared-error alarms 31→12 and raised ambiguity F1 0.79→0.86; valid-reading retention was 95%."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "Keep v0.4 in production: stratified five-parser recurrence matches its 0.86 depth-4 F1, while unstratified gating scored 0.79."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n21",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "revise",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "revise",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "revise",
+      "target": "n14"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n58",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a semantic parser that distinguishes genuine utterance ambiguity from model uncertainty under unseen compositional structures.",
+    "requirements": [
+      "Achieve ambiguity-detection F1 ≥0.85 on unseen compositions, using independently annotated sets of valid interpretations.",
+      "Match unambiguous-input execution accuracy of a single-output parser trained on identical data."
+    ]
+  }
+}

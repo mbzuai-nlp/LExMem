@@ -1,0 +1,127 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Cache and retry isolation: quotas versus hard partitions",
+      "boundary_reason": "The initial comparison and partition decision are documented; the discussion shifts to authorized releases."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Signed release capabilities and isolation-versus-latency benchmarks",
+      "boundary_reason": "Release testing establishes the security result and identifies join-cache invalidation cost as the next issue."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Epoch-keyed join caches and atomic revocation checks",
+      "boundary_reason": "The revised release design is adopted; the discussion moves to formal verification."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Model-checking release-aware cache and retry isolation",
+      "boundary_reason": "The bounded model check concludes; the next discussion asks for an unbounded inductive proof."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Inductive stuttering relation and pending-notification equality",
+      "boundary_reason": "The proof relation is strengthened, but verification is deferred pending an outbox invariant."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Atomic tenant outboxes, crash replay, and parametric proof",
+      "boundary_reason": "The outbox proof and latency gate pass; the discussion shifts to runtime conformance."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Runtime assertions and paired-schedule conformance testing",
+      "boundary_reason": "Guard testing passes; a separate concern arises about audit-log receipts."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Cross-tenant leakage through audit receipt batching",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

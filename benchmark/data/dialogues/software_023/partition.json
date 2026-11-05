@@ -1,0 +1,118 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Build and validate incremental SCC repair with atomic MVCC snapshots",
+      "boundary_reason": "The baseline implementation is adopted after crash-history validation; the next discussion turns to adversarial deletion performance."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Assess locality and latency of SCC repair on CycleSplit-1M",
+      "boundary_reason": "The stress result establishes a performance problem, prompting a different repair proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Evaluate and implement bridge-certified SCC splits",
+      "boundary_reason": "ReachEpoch v0.2 is produced; the next discussion focuses on certificate validity under concurrent mixed updates."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n25",
+        "n26",
+        "p3",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Test certificate validation and sharded overdelete/rederive under mixed updates",
+      "boundary_reason": "The initial mixed-update test finds stale snapshots, leading to a revised invalidation approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Investigate stale snapshots from epoch-fenced certificate invalidation",
+      "boundary_reason": "Replay identifies reused acknowledgments, and the current invalidation approach is rejected."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Implement and validate epoch-tagged sealing in ReachEpoch v0.3",
+      "boundary_reason": "ReachEpoch v0.3 is adopted after correctness and latency tests; the next discussion explores a different repair strategy."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Prototype source-rooted forest repair and identify missed alternate paths",
+      "boundary_reason": "Forest repair fails the oracle comparison, shifting attention to alternate-path validation on ReachEpoch v0.3."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Evaluate alternate-path checks and retain validated ReachEpoch v0.3",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

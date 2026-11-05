@@ -1,0 +1,131 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Initial SafeTiger belief-policy certificates and decision to validate across benchmarks",
+      "boundary_reason": "The SafeTiger evaluation ends with a decision to pursue cross-benchmark validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "RockSample and SafeGrid belief-policy certificates",
+      "boundary_reason": "The cross-benchmark audit reports its results; the next discussion tests a different SafeTiger estimator."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Clipped importance weighting with 50,000 SafeTiger episodes",
+      "boundary_reason": "The evidence resolves the clipped-weight hypothesis."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16"
+      ],
+      "topic": "Coverage-constrained optimization for SafeTiger",
+      "boundary_reason": "The proposed optimization activity ends before a distinct baseline-mixture approach begins."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Cross-fitted baseline mixtures for RockSample and SafeGrid",
+      "boundary_reason": "The mixture audit ends with a decision to retain those policies and test SafeTiger separately."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "SafeTiger mixture certificates and five-split robustness",
+      "boundary_reason": "The five-split results complete the TV≤0.05 SafeTiger evaluation before ambiguity is increased."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "SafeTiger mixtures at TV≤0.06 and interval undercoverage",
+      "boundary_reason": "The provisional decision calls for independent coverage validation under a new calibration approach."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Nested-holdout calibration and SafeTiger replicate audit",
+      "boundary_reason": "The SafeTiger audit reports coverage and certification rates; the focus shifts to other benchmarks."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "RockSample and SafeGrid v2 calibration audit",
+      "boundary_reason": "SafeGrid boundary undercoverage leads to a hold on cross-benchmark certification."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "SafeGrid boundary recalibration and independent v3 audit",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

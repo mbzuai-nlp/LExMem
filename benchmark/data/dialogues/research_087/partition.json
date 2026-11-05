@@ -1,0 +1,121 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial foreground-swap mask sweep and selection",
+      "boundary_reason": "The mask sweep produced a report and an initial configuration decision; the next discussion tests unseen reversals."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Unseen-reversal failure and refined pseudo-masks",
+      "boundary_reason": "The refined-mask test concludes before a shift to background-cluster group DRO."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Source-background group DRO and held-out reversal comparison",
+      "boundary_reason": "The initial group DRO comparison ends before a focused investigation of sparse rare-class clusters."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Effects of cluster count and size on rare-class gains",
+      "boundary_reason": "The cluster-size finding motivates a new proposal to fill sparse clusters."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Sparse-cluster fill hybrid and disjoint-reversal validation",
+      "boundary_reason": "The hybrid's validation concludes before ablations expose a texture-reversal weakness."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Texture-reversal weakness and four-mode cluster fills",
+      "boundary_reason": "A decision on four-mode fills closes the investigation before the revised training proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Texture-stratified DRO and separate reversal validation",
+      "boundary_reason": "Separate semantic and texture validation concludes before testing joint reversals."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Joint-reversal failure, diagnosis, and foreground-consistency decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

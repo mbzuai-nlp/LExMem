@@ -1,0 +1,1032 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an ownership type checker for cancellable asynchronous tasks that safely transfer borrowed resources across task boundaries.",
+      "requirements": [
+        "Guarantee memory safety under cancellation and task migration without whole-program analysis or runtime borrow checks.",
+        "Accept 12 safe and reject 12 unsafe programs covering nested borrows, ownership transfer, and cancellation."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use region-indexed task scopes, linear join obligations, cancellation-shielded child draining, and Send/Sync-qualified transfers for migration."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can a cancelled parent keep a borrowed resource alive until every child using it has stopped?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "A linear join token whose cancellation-safe scope cleanup drains children before resource destruction prevents dangling borrows after parent cancellation."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Define cancellation-safe scope-exit lowering: cancel children, shield joins, then expire region loans; check nested borrows and migration."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Implement ScopeIR’s cancel–shield–join–expire lowering and type-check 24 fixtures covering nested borrows, ownership moves, migration, and cancellation."
+    },
+    {
+      "id": "n5",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ScopeIR checker with cancel–shield–join–expire lowering and 12 expected-safe and 12 expected-unsafe fixtures covering nested borrows, moves, migration, and cancellation."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Run ScopeIR’s 12-safe/12-unsafe suite and enumerate cancellation/migration schedules through four suspension points, checking classification and dangling loans."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "ScopeIR accepted 12/12 safe and rejected 12/12 unsafe fixtures; 256 cancellation/migration schedules exposed zero dangling loans."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Retain ScopeIR’s linear joins and cancellation-shielded draining; fixture and schedule results justify this baseline, not a general safety proof."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Mechanize ScopeIR transitions in Lean 4, checking loan liveness under nested reborrows, migration, and cancellation during shielded joins."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Lean 4 found a three-task counterexample: direct-child joins closed an outer loan while a migrated grandchild retained its reborrow."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Transitive, region-indexed join obligations keep loans live until all borrowing descendants drain, even after intermediate-task cancellation or migration."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Extend ScopeIR with region-indexed descendant obligations propagated through spawn and discharged only after cancellation-shielded subtree draining."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Implement compositional region-obligation typing, prove cancellation and migration safety, then rerun 24 fixtures and the grandchild counterexample."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Patch ScopeIR with descendant obligations; compare baseline and revised checkers on 24 fixtures and the migrated-grandchild cancellation trace."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Baseline missed the migrated-grandchild dangling reborrow; revised checker rejected it while preserving 12/12 safe accepts and 12/12 unsafe rejects."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Can region-indexed obligations handle recursive child spawning compositionally without enumerating descendants or analyzing the whole task tree?"
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Region-polymorphic spawn-effect summaries permit local recursive-call checking while scope-local child registries ensure descendants drain before loan expiry."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Model-check recursive spawn depths 1–8 under cancellation and migration, testing region-polymorphic summaries and transitive obligations for dangling loans."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Across recursive spawn depths 1–8, local summary checking succeeded; 4,096 cancellation/migration traces showed zero dangling loans."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Provisionally adopt transitive obligations and region-polymorphic summaries: 24 fixtures classify correctly, and 4,096 recursive traces show no dangling loans."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n12",
+      "content": "Mechanize ScopeIR in Lean 4 and prove loan liveness across atomic spawn registration, shielded subtree draining, and Send/Sync migration."
+    },
+    {
+      "id": "n21",
+      "type": "artifact",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "ScopeIR.lean contains a loan-liveness theorem and typed transition rules for atomic spawn registration, shielded subtree draining, and Send/Sync migration."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Audit ScopeIR.lean with Lean 4 `#print axioms`, replay the migrated-grandchild trace, and inspect cancellation and destructor assumptions."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Audit found no custom axioms or `sorry`; migrated-grandchild replay kept the outer loan live until shielded descendant draining completed."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Compile task scopes into affine cancellation continuations that retain owner frames until supervised child completion, enforcing Send/Sync on migration."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "How are owner frames kept alive when cancellation races migration of an affine child continuation?"
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Run ScopeIR’s 24 fixtures under forced cancel/migrate races at continuation handoff, checking owner frames outlive child completion."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "All 24 fixtures classified correctly, but one cancel/migrate handoff schedule freed an owner frame before its child completed."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Atomic registration of affine continuations with the destination supervisor before source release keeps owner frames live across cancel/migrate races."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Model-check atomic supervisor handoff against ScopeIR’s baseline joins across cancel/migrate interleavings, tracking owner-frame lifetime and child completion."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Atomic handoff with transitive joins preserved owner frames across 1,024 cancel/migrate races, reviving scoped joins; direct-child joins still failed."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Adopt transitive scoped joins with atomic supervisor handoff and shielded draining; Lean audit and 1,024 races support modeled safety."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 35,
+      "exploration_parent_id": "p3",
+      "content": "Integrate atomic handoff into ScopeIR lowering, prove supervisor-retention invariants, and rerun 24 fixtures plus adversarial cancellation/migration schedules."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Extend ScopeIR.lean with atomic supervisor-handoff transitions and prove owner-frame retention until every registered descendant completes."
+    },
+    {
+      "id": "n33",
+      "type": "artifact",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "ScopeIR-Handoff.lean adds atomic registration/release transitions and a supervisor-retention lemma covering cancellable, migrating child continuations."
+    },
+    {
+      "id": "n34",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "ScopeIR.lean v2 replaces independent migration transitions with atomic supervisor handoff and updates loan-liveness proofs to require owner-frame retention."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Use generative scope brands and affine child permits; drain outstanding permits before cancellation destroys owners, requiring Send-safe migration."
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "p4",
+      "content": "Generative scope brands and transitive affine permits classify 24 fixtures correctly and prevent dangling loans across atomic cancel/migrate handoffs."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "Encode branded affine permits in ScopeIR-Handoff.lean; audit its retention lemma and rerun 24 fixtures plus 1,024 cancel/migrate schedules."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Branded permits accepted unsafe U12: atomic cancel/migrate handoff released an owner while its migrated grandchild held a reborrow."
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Generative brands and affine permits remain safe if handoff atomically transfers descendant-region obligations and retains owners through acknowledged draining."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Add atomic descendant-obligation transfer and drain acknowledgments, then recheck U12, the 24 fixtures, and formal owner-retention invariants."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Implement atomic descendant-obligation handoff and drain acknowledgments for permits; replay U12, 24 fixtures, and 1,024 cancellation/migration schedules with retention assertions."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Revised permits rejected U12 and all 12 unsafe fixtures, accepted all 12 safe fixtures; 1,024 schedules preserved owner retention."
+    },
+    {
+      "id": "n42",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Keep transitive scoped joins; require atomic descendant-obligation transfer and acknowledged draining for branded permits, because U12 defeated weaker handoff."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "p4",
+      "content": "How can borrowed child permits be prevented from escaping their generative scope into detached tasks?"
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Test ScopeIR.lean v2 against detached-spawn, captured-closure, and returned-permit escapes using rank-2 scope-brand nonescape checks."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Replace permit-only lifetime tracking with rank-2 scope-branded borrow types and transitive join effects checked at each spawn."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Can rank-2 branded borrow types block detached-task escapes while allowing nested borrowed children under transitive joins?"
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Add rank-2 brand nonescape rules, test three detached-escape patterns and nested safe children, then rerun the 24-fixture suite."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Extend ScopeIR.lean v2 with rank-2 brand checks and acknowledged descendant draining; run three escape tests and 24 fixtures."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "ScopeIR.lean v3 adds rank-2 scope-brand nonescape rules, atomic descendant-obligation transfer, and acknowledged draining before owner destruction."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Compare ScopeIR.lean v3’s rank-2 checks with permit-only typing on three escapes, nested children, 24 fixtures, and cancel/migrate schedules."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "Rank-2 checks rejected three detached escapes accepted by permit-only typing, preserved nested children and 24/24 classifications; 1,024 schedules remained loan-safe."
+    },
+    {
+      "id": "n51",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Adopt rank-2 scope brands with transitive joins and atomic, acknowledged handoff; they block escapes and preserve all 24 fixture classifications."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Prove rank-2 nonescape and nested-child typing preservation in Lean 4, then stress-test higher-order captures and cancellation handoff."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "Formalize rank-2 brand substitution and nested-spawn preservation in ScopeIR.lean v3; test closure captures across detached spawns and cancellation."
+    },
+    {
+      "id": "n54",
+      "type": "artifact",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "ScopeIR.lean v4 adds rank-2 brand substitution and nested-spawn preservation lemmas, replacing v3’s unproved nonescape checks."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "n46",
+      "content": "Audit v4 proof dependencies and replay detached captures plus nested borrowed children under cancellation, checking nonescape and loan liveness."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 62,
+      "exploration_parent_id": "n55",
+      "content": "Lean 4 audit found no `sorry` or custom axioms; detached captures failed typing, while nested borrowed children survived cancellation."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "revise",
+      "target": "n46"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "revise",
+      "target": "n48"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "p5"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an ownership type checker for cancellable asynchronous tasks that safely transfer borrowed resources across task boundaries.",
+    "requirements": [
+      "Guarantee memory safety under cancellation and task migration without whole-program analysis or runtime borrow checks.",
+      "Accept 12 safe and reject 12 unsafe programs covering nested borrows, ownership transfer, and cancellation."
+    ]
+  }
+}

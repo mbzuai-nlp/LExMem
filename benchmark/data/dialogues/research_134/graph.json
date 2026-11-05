@@ -1,0 +1,1253 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a legged locomotion controller that identifies hidden terrain yielding limits while maintaining recoverability during exploratory foot contacts.",
+      "requirements": [
+        "Estimate previously unseen terrain’s load-bearing limits with median relative error below 15%.",
+        "Reduce falls by 30% versus an otherwise matched nonexploratory controller at equal traversal speed."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Combine bounded force-ramp foot probes and Bayesian yield-threshold inference with chance-constrained MPC preserving a verified recovery foothold."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should probe force ramps balance yield-threshold information against the probability of losing a recoverable stance?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "With ≤1% predicted stance-loss risk, entropy-maximizing ramps achieve <15% median yield error and ≥30% fewer falls versus speed-matched nonexploratory control."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Calibrate force–sinkage posteriors, optimize ≤1%-risk probe ramps, then benchmark yield error and falls on held-out substrates against speed-matched controls."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run 300 instrumented foot-ramp contacts across sand, peat, and loam to calibrate Bayesian yield-threshold posteriors."
+    },
+    {
+      "id": "n5",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "FootRamp-300: a labeled force–sinkage dataset and calibrated Bayesian yield-threshold posterior for sand, peat, and loam."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Using FootRamp-300 posteriors, benchmark entropy-ramp yield error, calibration, ≤1% stance-loss risk, and speed-matched falls versus nonexploratory control."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Across 500 held-out crossings per arm, median yield error was 12.8%, stance-loss 0.8%, and falls 5.2% versus 8.0% speed-matched."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Field-test FootRamp-300-initialized entropy ramps on unseen mud and clay against speed-matched controls; measure yield error, stance-loss, and falls."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Across 250 unseen mud/clay crossings per arm, median yield error was 22%, stance-loss 2.4%, and falls 11.2% versus 13.6% speed-matched."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Do delayed sinkage and hysteresis in mud and clay cause overconfident yield estimates and unsafe probe ramps?"
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Online hysteresis-aware sinkage inference restores <15% yield error, ≤1% stance loss, and ≥30% fewer speed-matched falls on mud/clay."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Fit hysteretic delayed-sinkage dynamics, recalibrate probe-risk bounds online, then retest on new mud/clay crossings against speed-matched controls."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Initialize hysteretic filter from FootRamp-300; test 400 unseen mud/clay crossings per speed-matched arm for yield error, stance loss, and falls."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Across 400 mud/clay crossings per arm, median yield error was 18.1%, stance-loss 1.5%, and falls 10.0% versus 13.0% speed-matched."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n12",
+      "content": "With FootRamp-300-initialized hysteretic filtering, run 200 slow-draining clay crossings per arm, measuring lag-stratified yield error, stance-loss, and speed-matched falls."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Across 200 slow-draining clay crossings per arm: median yield error 13.4%, stance loss 0.5%, falls 6% versus 9% speed-matched."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Does variable mud drainage, rather than delayed clay sinkage, explain the remaining yield errors and stance-loss violations?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "Adding drainage-state inference to hysteretic filtering yields <15% mud/clay median error, ≤1% stance loss, and ≥30% fewer speed-matched falls."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "Stratify mud by drainage time; fit drainage-state filtering; measure yield error, stance loss, and falls versus speed-matched baselines."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n19",
+      "content": "Benchmark a FootRamp-300-initialized hysteretic drainage-state filter across 400 drainage-stratified mud/clay crossings per arm: yield error, stance loss, speed-matched falls."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n20",
+      "content": "Across 400 crossings per arm, drainage-state filtering achieved 13.9% median yield error, 0.75% stance loss, and 7.5% falls versus 11%."
+    },
+    {
+      "id": "n22",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n19",
+      "content": "Select drainage-state filtering: mixed-terrain yield error 13.9%, stance loss 0.75%, fall reduction 31.8%; hysteresis-only failed despite slow-clay success."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Probe terrain with progressive vertical load cycles; estimate yield from residual sinkage and preserve recovery through viability-kernel foothold selection."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "Can residual sinkage from progressive load cycles identify yield before probing eliminates viable recovery footholds?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "On unseen substrates, viability-gated load cycles achieve <15% median yield error and ≥30% fewer falls versus speed-matched nonexploratory control."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Calibrate residual-sinkage yield estimates, compute foothold viability kernels, then compare speed-matched traversal outcomes on withheld substrates."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Run 300 unseen-silt crossings per arm; measure viability-gated cycling’s yield error and falls against speed-matched nonexploratory control."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Across 300 unseen-silt crossings per arm, median yield error was 13.1%; falls were 6% versus 9% speed-matched."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Estimate yield force from graded, variable-area sole preloads while capture-region MPC preserves three verified stance contacts."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Can changing sole contact area disambiguate pressure-dependent terrain yield from transient sinkage without sacrificing capture-region feasibility?"
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Alternate toe and full-sole preloads on held-out terrains; fit pressure–sinkage curves and compare yield error, capture feasibility, and speed-matched falls."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Run 240 held-out gravel-over-mud crossings per arm, alternating toe/full-sole preloads; log yield error, three-contact capture feasibility, and falls."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "On gravel-over-mud (240/arm), yield error was 21%, capture feasibility 86%, and falls 13% versus 10% speed-matched."
+    },
+    {
+      "id": "n32",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p3",
+      "content": "Can capture-region MPC detect when three stance contacts cannot arrest a slip triggered by toe preloads on layered terrain?"
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "A slip-aware capture-region forecast flags ≥90% of unrecoverable toe-preload slips ≥100 ms early, with ≤10% false alarms."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Train slip-aware capture forecasts on toe-preload trajectories, then score early detection and false alarms on withheld layered-terrain crossings."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Replay 180 withheld gravel-over-mud toe-preload trajectories; score capture forecasts ≥100 ms before unrecoverable slip and false alarms."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "On 180 withheld trajectories, slip-aware forecasts flagged 92% of unrecoverable slips ≥100 ms early, with 8% false alarms."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Test frozen slip-aware forecasts on 250 live wet gravel-over-mud toe-preload crossings; measure ≥100-ms unrecoverable-slip recall and false-alarm rate."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "In 250 live wet crossings, forecasts flagged 71% of unrecoverable slips ≥100 ms early, with 17% false alarms."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Does moisture-dependent friction shorten toe-preload slip warning times enough to invalidate replay-trained capture forecasts?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Online friction-adaptive capture forecasts restore ≥90% unrecoverable-slip detection ≥100 ms early with ≤10% false alarms in wet crossings."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Estimate friction from stance micro-slips, adapt capture forecasts online, and compare wet-terrain early-slip recall and false alarms against frozen forecasts."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "Run 300 wet gravel-over-mud crossings with micro-slip friction adaptation; compare ≥100-ms slip recall and false alarms against frozen forecasts."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Across 300 wet crossings, frozen low-moisture forecasts reached 92% ≥100-ms slip recall/8% false alarms; adaptation overall reached 85%/12%."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "Stratify 300 new wet gravel-over-mud crossings by measured friction; compare adaptive and frozen ≥100-ms slip recall and false alarms."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "In 120 low-friction wet crossings, adaptive forecasts achieved 92% ≥100-ms slip recall and 9% false alarms versus frozen 69%/18%."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n41",
+      "content": "Reject layered-terrain variable-area probing after 21% yield error and excess falls; retain friction-adaptive slip alerts only for low-friction conditions."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Use bounded stance-foot impedance chirps and tactile shear imaging to infer yield force while reachability-shielded MPC reserves emergency touchdown."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "Can shear-imaged impedance chirps distinguish impending substrate yield from reversible deformation before emergency touchdown becomes unreachable?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Shear-imaged chirps yield <15% median limit error and ≥30% fewer speed-matched falls while touchdown reachability remains ≥99%."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Calibrate chirp shear features against yield loads, shield probes with touchdown reachability, then compare held-out traversal error and falls."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Record 360 chirped contacts on peat, loam, and mud; label first irreversible sinkage using force plates and tactile shear frames."
+    },
+    {
+      "id": "n51",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "ShearChirp-360 pairs tactile shear sequences, chirp forces, and first-irreversible-sinkage yield labels for peat, loam, and mud."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n49",
+      "content": "Using ShearChirp-360 labels, benchmark held-out median yield error, emergency-touchdown reachability, and speed-matched falls against nonexploratory control."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Across 300 held-out crossings per arm, median yield error was 12.6%, touchdown reachability 99.3%, and falls 5.7% versus 8.4%."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n49",
+      "content": "Field-test ShearChirp-360-trained chirps on 250 unseen waterlogged-silt crossings per arm; measure yield error, touchdown reachability, and speed-matched falls."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "On 250 unseen waterlogged-silt crossings per arm, median yield error was 19.4%, touchdown reachability 96.8%, and falls 10.8% versus 12.4%."
+    },
+    {
+      "id": "n56",
+      "type": "question",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "Does waterlogged silt’s rate-dependent pore-pressure response distort shear-chirp yield estimates and invalidate precomputed touchdown reachability?"
+    },
+    {
+      "id": "n57",
+      "type": "hypothesis",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Online pore-pressure inference and drainage-aware reachability achieve <15% median yield error, ≥99% touchdown reachability, and ≥30% fall reduction on silt."
+    },
+    {
+      "id": "n58",
+      "type": "plan",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "Fit pore-pressure dynamics from chirp phase lag, update drainage-conditioned touchdown sets, then benchmark unseen silt against speed-matched baselines."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Using ShearChirp-360, compare original and pore-pressure-adaptive chirps across 300 unseen-silt crossings per arm: yield error, touchdown reachability, speed-matched falls."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "On unseen silt (300/arm), original/adaptive yield error: 19.1%/13.2%; touchdown reachability: 97.0%/99.3%; adapted falls: 7% versus 11% speed-matched."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n58",
+      "content": "Stress-test ShearChirp-360-initialized adaptive chirps on 300 variable-drainage silt crossings per arm; record yield error, touchdown reachability, speed-matched falls."
+    },
+    {
+      "id": "n62",
+      "type": "evidence",
+      "order": 67,
+      "exploration_parent_id": "n61",
+      "content": "On variable-drainage silt (300/arm), median yield error was 16.8%, touchdown reachability 98.3%, and falls 9% versus 12% speed-matched."
+    },
+    {
+      "id": "n63",
+      "type": "question",
+      "order": 68,
+      "exploration_parent_id": "n62",
+      "content": "Do within-stance drainage transitions outpace pore-pressure updates, causing missed yield onset and overestimated touchdown reachability?"
+    },
+    {
+      "id": "n64",
+      "type": "hypothesis",
+      "order": 69,
+      "exploration_parent_id": "n63",
+      "content": "A 20-ms change-point pore-pressure filter restores <15% yield error, ≥99% touchdown reachability, and ≥30% fall reduction on variable-drainage silt."
+    },
+    {
+      "id": "n65",
+      "type": "plan",
+      "order": 70,
+      "exploration_parent_id": "n64",
+      "content": "Detect within-stance drainage change points from chirp phase shifts, recompute touchdown sets every 20 ms, and benchmark silt traversals."
+    },
+    {
+      "id": "n66",
+      "type": "activity",
+      "order": 71,
+      "exploration_parent_id": "n65",
+      "content": "Using ShearChirp-360, compare pore-pressure and 20-ms change-point filters across 300 variable-drainage silt crossings per arm: yield error, reachability, speed-matched falls."
+    },
+    {
+      "id": "n67",
+      "type": "evidence",
+      "order": 72,
+      "exploration_parent_id": "n66",
+      "content": "Across 300 crossings per arm, pore-pressure filtering met all targets on slow-transition silt; change-point filtering missed all three overall."
+    },
+    {
+      "id": "n68",
+      "type": "activity",
+      "order": 73,
+      "exploration_parent_id": "n65",
+      "content": "Using ShearChirp-360, test 20-ms change-point filtering on 240 rapid-drainage-transition silt crossings per arm; record yield error, reachability, speed-matched falls."
+    },
+    {
+      "id": "n69",
+      "type": "evidence",
+      "order": 74,
+      "exploration_parent_id": "n68",
+      "content": "On rapid-transition silt (240/arm), change-point filtering achieved 13.7% median yield error, 99.2% touchdown reachability, and 18 versus 27 falls."
+    },
+    {
+      "id": "n70",
+      "type": "decision",
+      "order": 75,
+      "exploration_parent_id": "n65",
+      "content": "Retain baseline chirps off silt; select pore-pressure filtering for stable drainage or change-point filtering for rapid transitions, pending validation."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n33"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "refute",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "n48"
+    },
+    {
+      "source": "n57",
+      "relation": "revise",
+      "target": "n48"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "refute",
+      "target": "n48"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "decompose",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "refute",
+      "target": "n57"
+    },
+    {
+      "source": "n64",
+      "relation": "revise",
+      "target": "n57"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "decompose",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n66",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n66",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n66",
+      "relation": "produce",
+      "target": "n67"
+    },
+    {
+      "source": "n67",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n67",
+      "relation": "refute",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "decompose",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n68",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n68",
+      "relation": "produce",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n69"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a legged locomotion controller that identifies hidden terrain yielding limits while maintaining recoverability during exploratory foot contacts.",
+    "requirements": [
+      "Estimate previously unseen terrain’s load-bearing limits with median relative error below 15%.",
+      "Reduce falls by 30% versus an otherwise matched nonexploratory controller at equal traversal speed."
+    ]
+  }
+}

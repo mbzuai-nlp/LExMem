@@ -1,0 +1,127 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Gap-reserved receive credits for bounded failover recovery",
+      "boundary_reason": "The gap reserve is adopted; the discussion shifts to implementation and testing."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Implement and test GapCredit v0.1",
+      "boundary_reason": "The v0.1 test results conclude this implementation stage."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Test reserve-free gap repair under a saturated receive window",
+      "boundary_reason": "The reserve-free alternative stalls in some tests; the focus shifts to bottleneck fairness."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "a5",
+        "e4"
+      ],
+      "topic": "Assess shared-bottleneck detection under asymmetric loss",
+      "boundary_reason": "Detection fails the fairness target, prompting a different congestion-control proposal."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "l2",
+        "a6",
+        "r2",
+        "a7",
+        "e5",
+        "d2",
+        "a8",
+        "e6"
+      ],
+      "topic": "Replace bottleneck detection with aggregate AIMD and compare versions",
+      "boundary_reason": "The aggregate-window decision and version comparison are complete; the focus shifts to blackholed paths."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "h3",
+        "q3",
+        "a9",
+        "e7",
+        "h4",
+        "a10",
+        "e8"
+      ],
+      "topic": "Choose a quarantine threshold for blackholed paths",
+      "boundary_reason": "First-RTO quarantine meets the tested collapse and fairness targets; the next discussion addresses reactivation."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "q4",
+        "h5",
+        "a11",
+        "e9",
+        "a12",
+        "e10",
+        "h6",
+        "a13",
+        "e11",
+        "a14",
+        "e12",
+        "a15",
+        "e13",
+        "e14"
+      ],
+      "topic": "Evaluate probe-based reactivation after quarantine",
+      "boundary_reason": "Mixed-blackhole comparisons close the probe-count investigation; a cooldown-based proposal follows."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "q5",
+        "h7",
+        "a16",
+        "e15"
+      ],
+      "topic": "Select an exponential cooldown for failed reactivations",
+      "boundary_reason": "The cooldown sweep identifies a configuration to implement."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "l3",
+        "a17",
+        "r3",
+        "a18",
+        "e16",
+        "d3"
+      ],
+      "topic": "Implement, validate, and adopt GapCredit v0.3",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

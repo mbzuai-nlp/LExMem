@@ -1,0 +1,943 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Determine identifiability of population treatment-policy effects under network interference when treatment influences which social ties are observed.",
+      "requirements": [
+        "Establish identification boundaries under explicit restrictions on interference and treatment-dependent missing ties.",
+        "Within identifiable regimes, achieve ≥93% coverage for 95% intervals, with median width ≤2× complete-network oracle."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Under randomized assignment, one-hop interference, and positive treatment-stratified dyad audits, use policy g-computation with cluster-bootstrap intervals and MNAR bounds."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can positive dyad audits identify one-hop exposure distributions when treatment-dependent reporting also depends on unobserved tie status?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Independent, positive-probability dyad verification enables audit-weighted complete-ego g-computation despite tie-status-dependent reporting."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Simulate 1,000 datasets of 300 eight-person clusters with 90% independent dyad audits and treatment-by-tie reporting; assess coverage and oracle-width ratios."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "Across 1,000 simulated datasets, audit-weighted estimates achieved 94.1% coverage, with median interval width 1.6× the complete-network oracle."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Adopt audit-weighted g-computation with independent dyad audits, given 94.1% coverage and 1.6× oracle width; defer unaudited MNAR settings."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Derive complete-ego audit identification and unaudited MNAR counterexamples; test 70–90% audit rates for ≥93% coverage and ≤2× oracle width."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "l1",
+      "content": "Construct observationally equivalent unaudited MNAR counterexamples; simulate audit-weighted coverage and oracle-width ratios at 70%, 80%, and 90% verification."
+    },
+    {
+      "id": "r1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "AuditBound-v1 report documents complete-ego identification, observationally equivalent unaudited MNAR models, and coverage/oracle-width tables at 70%, 80%, and 90% verification."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "r1",
+      "content": "Audit AuditBound-v1 derivations and reanalyze its 70–90% verification tables against ≥93% coverage and ≤2× oracle width."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "AuditBound-v1 confirms audited identification and unaudited MNAR nonidentification; at 80–90% audits, coverage reached 93.4–94.1% with 1.8–1.6× oracle width."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "e2",
+      "content": "Stress-test audit-weighted g-computation across 1,000 datasets with unrecorded degree-dependent audits and two-hop spillovers; measure coverage and oracle-width ratios."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "a4",
+      "content": "With one-hop interference and 80% treatment-stratified audit positivity, unrecorded degree-dependent verification reduced coverage to 87.2% (1.8× oracle width)."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 15,
+      "exploration_parent_id": "e3",
+      "content": "Retain one-hop audit-weighted inference with independent dyad verification; exclude unrecorded degree-dependent audits after coverage fell to 87.2%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Randomly census 80% of isolated clusters; use design-weighted g-computation under assignment positivity to allow arbitrary within-cluster interference."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Can 80% cluster censuses deliver precise policy intervals when arbitrary interference makes relevant treatment vectors rare?"
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "q2",
+      "content": "For eight-person isolated clusters, 80% random censuses and policy-to-randomization likelihood ratios ≤3 yield ≥93% coverage and ≤2× oracle width."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "h2",
+      "content": "Simulate 1,000 datasets with 300 eight-person clusters, treatment-dependent tie reporting, 80% random censuses, and policy ratios ≤3; measure coverage/oracle-width."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "a5",
+      "content": "Across 1,000 simulated datasets, 80% random cluster censuses yielded 94.0% coverage and 1.7× oracle width under policy ratios ≤3."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "e4",
+      "content": "Stress-test 80% random cluster censuses across 1,000 eight-person-cluster datasets with rare bridge-tie spillovers and policy ratios ≤3."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "a6",
+      "content": "Within isolated eight-person clusters, rare bridge-tie spillovers yielded 89.8% coverage despite 80% random censuses and policy ratios ≤3."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "e5",
+      "content": "Retain census inference for baseline regimes (94.0% coverage), but defer rare-bridge settings (89.8%) pending bridge-aware intervals."
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "d3",
+      "content": "With ≥20 bridge-positive censused clusters, bridge-stratified bootstrap intervals restore ≥93% coverage and ≤2× oracle width under policy ratios ≤3."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "h3",
+      "content": "Simulate 1,000 300-cluster datasets with ≥20 bridge-positive censused clusters, 80% census, ratios ≤3; assess bridge-stratified bootstrap coverage/oracle-width."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "a7",
+      "content": "Across 1,000 simulations with ≥20 bridge-positive censused clusters, stratified bootstrap coverage reached 93.6%, with median width 1.9× oracle."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "e6",
+      "content": "Extend census inference to rare-bridge regimes only with ≥20 bridge-positive censused clusters and stratified bootstrap (93.6% coverage; 1.9× oracle width)."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Recover one-hop exposure distributions from three conditionally independent treatment-stratified tie reporters with zero false positives, then bootstrap policy g-computation."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Does latent degree-driven dependence among tie reporters invalidate exposure identification despite treatment-stratified three-reporter agreement?"
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "q3",
+      "content": "Latent degree-driven reporter dependence permits observationally equivalent tie distributions with policy effects differing by ≥0.05, defeating three-reporter identification."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "h4",
+      "content": "Construct observationally equivalent degree-dependent three-reporter models and test whether their one-hop policy effects differ by ≥0.05."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a8",
+      "content": "Across all latent-degree models under network-independent Bernoulli policies, effect gaps were zero; zero-sensitivity treatment strata defeated three-reporter identification."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "e7",
+      "content": "Reject unrestricted three-reporter inference because zero-sensitivity strata defeat identification; latent-degree dependence alone did not separate Bernoulli-policy effects."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 34,
+      "exploration_parent_id": "g1",
+      "content": "Randomize isolated clusters 1:1 between Bernoulli(0.3) and Bernoulli(0.7) policies; use cluster-mean contrasts regardless of treatment-dependent tie reporting."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 35,
+      "exploration_parent_id": "p4",
+      "content": "With unequal cluster sizes, does the unweighted cluster-mean contrast identify a cluster-average rather than the population individual-average policy effect?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "q4",
+      "content": "With unequal cluster sizes, unweighted contrasts identify cluster-average effects; size-weighted contrasts identify individual-average effects under fixed cluster sizes."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "h5",
+      "content": "Simulate 1,000 unequal-size cluster trials with treatment-dependent tie reporting; compare unweighted versus size-weighted individual-average bias, coverage, and oracle-width."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "a9",
+      "content": "Across 1,000 unequal-size trials, unweighted individual-effect bias was 0.025; size-weighted coverage reached 94.3% with 1.0× oracle width."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "h5",
+      "content": "Stress-test size-weighted contrasts across 1,000 trials of 200 isolated clusters (sizes 2–40) with size-correlated effects; assess coverage/oracle-width."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "a10",
+      "content": "With size-biased cluster enrollment and size-correlated effects, size-weighted contrasts had 0.031 population bias and 87.6% coverage despite fixed sizes."
+    },
+    {
+      "id": "d6",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "e9",
+      "content": "Use size-weighted policy contrasts only for representative cluster samples; size-biased enrollment requires inverse-inclusion weights after coverage dropped to 87.6%."
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "d6",
+      "content": "With known positive cluster-inclusion probabilities, inverse-inclusion-and-size-weighted contrasts recover individual-average effects at ≥93% coverage despite size-biased enrollment."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "h6",
+      "content": "Simulate fixed-size clusters under representative versus size-biased enrollment; compare size-weighted contrasts against sample and population individual-average effects."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "a11",
+      "content": "With fixed sizes, size-weighted contrasts identified sampled individuals’ effects in both designs; population bias appeared only under size-biased enrollment."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "h6",
+      "content": "Simulate 1,000 size-biased 200-cluster trials (sizes 2–40); assess inverse-inclusion-and-size-weighted population-effect bias, 95% coverage, and oracle-width ratios."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a12",
+      "content": "Across 1,000 trials with known positive inclusion probabilities, extreme enrollment weights yielded 89.1% coverage and 2.3× oracle width."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "h6",
+      "content": "Rerun 1,000 size-biased trials with inclusion-probability ratios ≤4; assess inverse-inclusion-and-size-weighted coverage, oracle-width, and effective sample size."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "a13",
+      "content": "With inclusion-probability ratios ≤4, inverse-inclusion-and-size weighting achieved 94.0% coverage, 1.5× oracle width, and median effective sample size 164."
+    },
+    {
+      "id": "d7",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "e12",
+      "content": "For size-biased population effects, adopt inverse-inclusion-and-size weighting only with inclusion-probability ratios ≤4; extreme weights missed both targets."
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "d7",
+      "content": "Prove randomized isolated-cluster identification despite treatment-dependent missing ties; benchmark ratio-≤4 inclusion weighting against ≥93% coverage and ≤2× oracle width."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "l2",
+      "content": "Derive design-weighted identification under arbitrary within-cluster interference and treatment-dependent tie reporting; benchmark ratio-≤4 enrollment weights over 1,000 trials."
+    },
+    {
+      "id": "r2",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "a14",
+      "content": "PolicyTrial-v1 contains isolated-cluster identification proof, inverse-inclusion-and-size-weighted estimator, and 1,000-trial coverage/oracle-width benchmarks for inclusion ratios ≤4."
+    },
+    {
+      "id": "a15",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "l2",
+      "content": "Audit PolicyTrial-v1 proof and rerun its 1,000-trial ratio-≤4 benchmarks; assess population-effect bias, coverage, and oracle-width."
+    },
+    {
+      "id": "e13",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "a15",
+      "content": "PolicyTrial-v1 audit confirmed identification despite treatment-dependent tie reporting; ratio-≤4 weighted trials achieved 94.0% coverage and 1.5× oracle width."
+    },
+    {
+      "id": "d8",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "e13",
+      "content": "Prioritize ratio-≤4 isolated-cluster trials (94% coverage; 1.5× oracle width); retain audited one-hop and bridge-stratified census alternatives, reject unrestricted three-reporters."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "l1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h2"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "h3",
+      "relation": "revise",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "refute",
+      "target": "h4"
+    },
+    {
+      "source": "e7",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "h5"
+    },
+    {
+      "source": "d6",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "d6",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "h6",
+      "relation": "revise",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "e11",
+      "relation": "refute",
+      "target": "h6"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "d6"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e12"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "l2",
+      "relation": "depend_on",
+      "target": "d7"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a14"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a15"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a15",
+      "relation": "produce",
+      "target": "e13"
+    },
+    {
+      "source": "e13",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e13",
+      "relation": "support",
+      "target": "d8"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "e13"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d7"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d4"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d5"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Determine identifiability of population treatment-policy effects under network interference when treatment influences which social ties are observed.",
+    "requirements": [
+      "Establish identification boundaries under explicit restrictions on interference and treatment-dependent missing ties.",
+      "Within identifiable regimes, achieve ≥93% coverage for 95% intervals, with median width ≤2× complete-network oracle."
+    ]
+  }
+}

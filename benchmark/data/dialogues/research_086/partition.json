@@ -1,0 +1,128 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Initial adapter retrieval threshold and its failure under observation dropout",
+      "boundary_reason": "The dropout stress test undermines the fixed-threshold hypothesis, prompting a revised retrieval approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Mask-aware retrieval and action-conditioned probes under dropout",
+      "boundary_reason": "The probe test resolves the local retrieval question; the graph shifts to policy retention."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Coreset replay-gradient projection and its retention–regret tradeoff",
+      "boundary_reason": "The overall and recurring-switch ablations establish the tradeoff, motivating selective projection."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Gating projection and adding interference-triggered replay",
+      "boundary_reason": "The revised gating approach meets the tested retention and regret targets; the graph turns to adapter capacity."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Rare-policy retention under eight adapter slots",
+      "boundary_reason": "Tests identify different results for similar and dissimilar rare policies, leading to a combined merging strategy."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Similarity-aware merging and a reserved high-interference adapter slot",
+      "boundary_reason": "Reserved-slot merging raises overall retention above the target; the graph moves to integrated benchmarks."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "SwitchKeeper benchmarks on recurring shifts and held-out dropout schedules",
+      "boundary_reason": "The held-out dropout result misses both targets, prompting probe calibration."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Dropout-calibrated probes and the SwitchKeeper adoption decision",
+      "boundary_reason": "Calibration restores the measured targets and leads to an adoption decision; the next stage freezes the agent for benchmarking."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Frozen SwitchKeeper five-seed benchmark plan and report artifact",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+Expand the current node into an English user–assistant dialogue fragment.
+
+INPUT
+{{INPUT_JSON}}
+
+- previous_dialogue: accepted messages grouped by session and source node; labels are metadata, not dialogue.
+- current_node: the new content to express, including any requirements.
+- earlier_relations: directed relations to earlier nodes, with their content; preserve source–target direction.
+- continuation: current session ID and required first role.
+- retry_feedback: issues to correct, if any.
+
+CONTENT
+Express the current node fully and accurately. Preserve its specific names, numerical values, units, conditions, and any stated comparisons or corrections, without replacing them with vague summaries. Natural paraphrasing is allowed; preserve meaning and certainty: hypotheses remain hypotheses, and plans are not completed experiments.
+
+Aim for a long, rich, multi-turn exchange centered on the current node, and extend it as far as you naturally can: the longer and richer the discussion, the better, as long as every turn stays faithful to the current node and the rules below and adds no new task-specific facts. Freely develop its meaning through natural discussion. Verbosity, repeated explanations, paraphrases, and clarification are acceptable when faithful to the supplied information. There is no fixed message count.
+
+The assistant may answer at length, in several sentences or short paragraphs, for example by explaining what a term or condition means, what the node does and does not say, how a value or threshold can be read, or by walking through a small general illustration. The user can ask short follow-up questions, request clarification, restate the idea in their own words, or probe a detail, and the discussion can continue through several such rounds. These are only suggestions; develop the node in whatever natural way fits, as long as the supplied information stays accurate.
+
+Stay within the current node and established history. General conceptual discussion is allowed, but do not invent or change task-specific facts, experiments, data, causes, implementation details, commitments, or decisions, or advance to an unsupported next step.
+
+HISTORICAL INFORMATION
+Earlier dialogue and relations provide context for consistency; they are not additional content to narrate. Apply these rules to both user and assistant:
+- Do not declare an earlier result, hypothesis, plan, or branch valid, invalid, supported, refuted, obsolete, superseded, abandoned, or revived unless that specific judgment is explicitly in current_node.
+- Do not tell the reader which historical value or version is now authoritative, which old value must not be used, or which earlier target is now met or missed unless current_node explicitly states that conclusion.
+- Do not reconstruct a history of changes or provide a recap of earlier results to justify the current node. This also applies to decision nodes and closing summaries.
+- Do not generate questions that invite any of the above. A fact's presence in previous_dialogue or a relation's logical implication does not authorize restating it as a historical status judgment here.
+
+Preserve every comparison, correction, decision, and reason explicitly in current_node, but do not extend its scope. A node that states a correction may express that correction; later nodes must not retell it unless they also explicitly contain it. A phrase such as "after corrected audits" does not authorize reconstructing those audits and their old values.
+
+Historical references may identify the method, experiment, object, or baseline needed to understand the current node. Give only the necessary reference; do not add which older alternative was superseded or why it is no longer valid. For example, identifying a comparison baseline does not authorize saying "use this value instead of the obsolete earlier value." Do not expose graph metadata.
+
+CONTINUATION
+Write only the new fragment. Begin with continuation.next_role and alternate user and assistant. Either role may end the fragment. Continue naturally across node and session boundaries without forced greetings, closing summaries, or complete question–answer pairs. Avoid questions requiring unavailable future information.
+
+OUTPUT
+Return only JSON:
+{"messages": [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]}
+The roles above are illustrative; follow continuation.next_role. The program assigns source-node labels; do not generate them.

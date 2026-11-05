@@ -1,0 +1,1240 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a classifier robust to instance-dependent label noise without discarding difficult examples from underrepresented groups.",
+      "requirements": [
+        "Under 30% label corruption, improve worst-group accuracy by five percentage points over empirical risk minimization.",
+        "Establish identifiability conditions without requiring clean labels or known group membership during training."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train TriView-CVaR using three conditionally independent annotators with full-rank, diagonally dominant noise channels and feature-cluster CVaR retaining all examples."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Under which conditions can TriView-CVaR identify clean-label probabilities from feature-dependent noisy annotators without verified labels or group membership?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Three conditionally independent annotators with full-rank, diagonally dominant noise matrices uniquely identify clean-label posteriors wherever every class has positive probability."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Prove pointwise Kruskal uniqueness with positive class priors and diagonal-dominance permutation anchoring; construct rank-deficient counterexamples."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Pointwise three-view Kruskal proof establishes unique clean-label posteriors for K≥2 with positive priors and full-rank channels; diagonal dominance anchors classes."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Adopt three-view posterior correction with diagonal-dominance anchoring, since the uniqueness proof requires neither clean labels nor observed groups."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "p1",
+      "content": "Implement adopted three-view correction with full-sample feature-cluster CVaR; test ≥5-point worst-group accuracy gains over ERM at 25% corruption."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Benchmark TriView-CVaR against ERM on Waterbirds with three conditionally independent annotators, 25% instance-dependent flips, and evaluation-only groups."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Waterbirds-25 benchmark report contains per-group accuracies, annotator confusion estimates, corruption seeds, and retained-example counts for TriView-CVaR and ERM."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Audit Waterbirds-25 report across five seeds for ≥5-point worst-group accuracy gains over ERM and complete minority-cluster retention."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Across five Waterbirds-25 seeds, TriView-CVaR reached 65% worst-group accuracy versus ERM’s 63%, missing the five-point target despite full retention."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 13,
+      "exploration_parent_id": "g1",
+      "content": "TriView-SoftDRO replaces feature-cluster CVaR with overlapping-cluster DRO on three-view posteriors and strictly positive weights for every sample."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "p2",
+      "content": "At 25% corruption, group-blind overlapping clusters capture minority errors, enabling SoftDRO to exceed ERM worst-group accuracy by ≥5 points."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n11",
+      "content": "Using Waterbirds-25 report seeds, test whether TriView-SoftDRO reaches ≥68% worst-group accuracy across five seeds without zero-weight examples."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Across five Waterbirds-25 seeds, TriView-SoftDRO achieved 66% worst-group accuracy versus ERM’s 63%; all sample weights remained positive."
+    },
+    {
+      "id": "n14",
+      "type": "hypothesis",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Adding posterior-gradient disagreement to SoftDRO clusters should reach ≥68% Waterbirds-25 worst-group accuracy while keeping every sample weighted."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Rerun Waterbirds-25’s five report seeds with posterior-gradient-disagreement clusters; compare worst-group accuracy against 68% and verify positive sample weights."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Five-seed Waterbirds-25 mean worst-group accuracy was 67% with gradient-disagreement clusters, below 68%; every training sample retained positive weight."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n14",
+      "content": "Using Waterbirds-25 report seeds, sweep gradient-disagreement cluster overlap and DRO temperature; test ≥68% worst-group accuracy and positive weights."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "At 40% cluster overlap and 0.2 DRO temperature, Waterbirds-25 five-seed worst-group accuracy reached 69% versus ERM’s 63%; weights remained positive."
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Unlike untuned gradient clusters, fixed 40%-overlap, 0.2-temperature SoftDRO should reach ≥68% worst-group accuracy on held-out Waterbirds-25 seeds, retaining all examples."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Using Waterbirds-25 report protocol, evaluate fixed 40%-overlap, 0.2-temperature SoftDRO on five new seeds against ERM, auditing worst-group accuracy and retention."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Five held-out Waterbirds-25 seeds yielded 69% mean worst-group accuracy for fixed SoftDRO versus ERM’s 63%, with all examples weighted."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "TriView-CalDRO augments three-view posterior correction with uncertainty-calibrated gradient clusters and adaptive DRO temperature, enforcing positive weights without group labels."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "How can posterior uncertainty calibrate gradient-cluster membership and DRO temperature without downweighting genuinely hard minority examples?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "Entropy-binned posterior-gradient disagreement distinguishes noise from hard examples; variance-scaled temperature retains ≥0.2×uniform weights and ≥68% Waterbirds-25 worst-group accuracy."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "On five unseen Waterbirds-25 seeds, test entropy-binned gradients and variance-scaled temperature for noise–hard separation, ≥68% worst-group accuracy, and ≥0.2×uniform weights."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "On five unseen Waterbirds-25 seeds, CalDRO scored 67% worst-group accuracy versus ERM’s 63%; minimum weight was 0.23×uniform."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "TriView-RecallDRO uses identifiable three-annotator posteriors and overlapping latent error clusters, imposing cluster recall floors with strictly positive example weights."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "p4",
+      "content": "Estimate three-view posteriors, enforce latent-cluster recall floors without training groups, then test ≥68% Waterbirds-25 worst-group accuracy with full retention."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n26",
+      "content": "Implement RecallDRO’s differentiable 70% posterior-weighted recall floor for overlapping error clusters, retaining a 0.2×uniform example-weight minimum."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 33,
+      "exploration_parent_id": "n27",
+      "content": "RecallDRO-v1 training code implements three-view posterior estimation, overlapping error-cluster recall constraints, and a 0.2×uniform weight floor."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n26",
+      "content": "Benchmark RecallDRO-v1 on five unseen Waterbirds-25 seeds against ERM, measuring worst-group accuracy, latent-cluster recall, and minimum example weight."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "Across five unseen Waterbirds-25 seeds, RecallDRO-v1 reached 70% worst-group accuracy versus ERM’s 63%, with ≥70% cluster recall and ≥0.2×uniform weights."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n26",
+      "content": "Test RecallDRO-v1 against ERM on CelebA at 29% instance-dependent corruption, measuring worst-group accuracy and retention with evaluation-only groups."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "On CelebA-29, RecallDRO-v1 achieved 72% worst-group accuracy versus ERM’s 69%, missing the five-point target despite full retention."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "Defer RecallDRO-v1 as a general solution: Waterbirds-25 clears the target, but CelebA-29 misses it by two points."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "TriView-LocalRecallDRO splits overlapping error clusters into feature neighborhoods, enforcing three-view posterior-recall floors and positive weights without training groups."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p5",
+      "content": "Can feature-local recall floors close CelebA-29’s two-point target gap without amplifying noisy outliers or downweighting hard examples?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Building on fixed-overlap SoftDRO, local recall floors yield ≥74% CelebA-29 worst-group accuracy, noisy-outlier weights ≤2×uniform, and minimum weights ≥0.2×uniform."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Use Waterbirds-25 report’s corruption protocol to test LocalRecallDRO on CelebA-29: ≥74% worst-group accuracy, outlier weights ≤2×uniform, minimum ≥0.2×uniform."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n36",
+      "content": "On CelebA-29, LocalRecallDRO reached 75% worst-group accuracy versus ERM’s 69%; outlier weights peaked at 1.8×uniform, minimum 0.22×uniform."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n35",
+      "content": "Using Waterbirds-25 report seeds, compare LocalRecallDRO and ERM at 25% corruption; audit worst-group accuracy, outlier weights, and full retention."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n38",
+      "content": "Waterbirds-25 weight audit exposed a normalization error; rechecking CelebA-29 raised measured outlier weights from 1.8× to 2.7×uniform."
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Capping all sample weights at 2×uniform in fixed-overlap LocalRecallDRO should retain ≥74% CelebA-29 worst-group accuracy and ≥0.2×uniform minima."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n40",
+      "content": "Using Waterbirds-25 protocol, test 2×uniform-capped LocalRecallDRO on five CelebA-29 seeds for ≥74% worst-group accuracy and ≥0.2×uniform minimum weights."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "Five CelebA-29 seeds gave capped LocalRecallDRO 74% mean worst-group accuracy versus ERM’s 69%, with weights spanning 0.21–2.0×uniform."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Adopt corrected, 2×uniform-capped LocalRecallDRO for CelebA-29: it preserves a five-point gain while addressing mismeasured outlier weights."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "p5",
+      "content": "Freeze capped LocalRecallDRO; evaluate new Waterbirds-25/CelebA-29 seeds for ≥5-point worst-group gains, group-blind training, positive weights, and channel rank."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n44",
+      "content": "Run frozen capped LocalRecallDRO on five fresh Waterbirds-25/CelebA-29 seeds each; audit worst-group gains, channel rank, group-blind training, and weights."
+    },
+    {
+      "id": "n46",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "LocalRecallDRO-v2 audit report records fresh-seed group accuracies, annotator channel singular values, training-feature inventory, and normalized example-weight ranges."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n44",
+      "content": "Audit LocalRecallDRO-v2 report for ≥5-point gains on both datasets, CelebA-29 ≥74%, full-rank channels, group-blind training, and 0.2–2×uniform weights."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Fresh-seed Waterbirds-25/CelebA-29 worst-group accuracies were 69%/75% versus ERM’s 63%/69%; channels were full-rank, training group-blind, weights 0.21–2×uniform."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n44",
+      "content": "Bootstrap LocalRecallDRO-v2’s CelebA-29 audit seeds to assess uncertainty around ≥74% worst-group accuracy and the ≥0.2×uniform weight floor."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "Among 500 CelebA-29 bootstrap refits, 18% breached the 0.2×uniform weight floor after normalization; minimum observed weight was 0.18×uniform."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 57,
+      "exploration_parent_id": "p5",
+      "content": "Project fixed-overlap LocalRecallDRO weights onto the normalized [0.2,2]×uniform simplex; expect ≥74% CelebA-29 worst-group accuracy across bootstrap refits."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Using Waterbirds-25 report’s corruption protocol, run 500 projected-weight CelebA-29 bootstrap refits; audit ≥74% worst-group accuracy and [0.2,2]×uniform weights."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "Across 500 CelebA-29 bootstrap refits, projected LocalRecallDRO achieved ≥74% worst-group accuracy; every normalized weight stayed within [0.2,2]×uniform."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "Adopt simplex-projected LocalRecallDRO: capped versions gained five–six points but breached bootstrap weight floors; projection retained ≥74% CelebA-29 accuracy."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 61,
+      "exploration_parent_id": "p5",
+      "content": "Replace capped weights with [0.2,2]×uniform simplex projection; test ≥5-point gains on fresh Waterbirds-25/CelebA-29 seeds, full-rank channels, and group-blind training."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n55",
+      "content": "Using LocalRecallDRO-v2 audit report’s protocol, rerun projected LocalRecallDRO on five fresh Waterbirds-25/CelebA-29 seeds each; check gains, rank, weights, and group-blinding."
+    },
+    {
+      "id": "n57",
+      "type": "artifact",
+      "order": 63,
+      "exploration_parent_id": "n56",
+      "content": "LocalRecallDRO-v3 audit report replaces capped-weight results with fresh-seed projected-weight accuracies, channel ranks, group-blinding checks, and normalized-weight ranges."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n55",
+      "content": "Audit LocalRecallDRO-v3 for ≥5-point worst-group gains on both datasets, CelebA-29 ≥74%, full-rank channels, group-blinding, and [0.2,2]×uniform weights."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n58",
+      "content": "Fresh-seed projected LocalRecallDRO scored 70%/74% worst-group accuracy versus ERM’s 63%/69% on Waterbirds-25/CelebA-29; full-rank channels, group-blind training, [0.2,2]×uniform weights."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 66,
+      "exploration_parent_id": "n59",
+      "content": "Adopt projected LocalRecallDRO-v3: seven/five-point worst-group gains meet both benchmarks, and guaranteed weight bounds eliminate capped-model bootstrap breaches."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "revise",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "revise",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "p3",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "p5",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "n40"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n40"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "revise",
+      "target": "n44"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "revise",
+      "target": "n46"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a classifier robust to instance-dependent label noise without discarding difficult examples from underrepresented groups.",
+    "requirements": [
+      "Under 30% label corruption, improve worst-group accuracy by five percentage points over empirical risk minimization.",
+      "Establish identifiability conditions without requiring clean labels or known group membership during training."
+    ]
+  }
+}

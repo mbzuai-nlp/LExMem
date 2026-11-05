@@ -1,0 +1,162 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Pseudo-label sampling and speaker/channel adversaries for accent adapters",
+      "boundary_reason": "The initial adapter tests identify a sampling gain but leave existing-accent protection unresolved; the next proposal changes the routing approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Calibrate and stress-test a 95th-percentile accent-novelty gate",
+      "boundary_reason": "The held-out mobile result challenges the initial gate, prompting a revised gating hypothesis."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Channel-normalized gating and threshold selection",
+      "boundary_reason": "A threshold is selected; the next proposal introduces a different phoneme-level router."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Compression-aware router performance on mobile audio and held-out codecs",
+      "boundary_reason": "The held-out codec result undermines the initial hypothesis and motivates a revised router."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Codec-randomized articulatory routing and its planned WER audit",
+      "boundary_reason": "The router is provisionally selected and an audit artifact is produced; the next proposal shifts to pronunciation variants."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Lattice-derived pronunciation variants and three-cell support",
+      "boundary_reason": "Held-out Opus/headset variants fail the retention target, prompting a different support rule."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Codec-stratified two-cell variant filtering",
+      "boundary_reason": "The disjoint-speaker audit leads to deferring the filter for decoding and strengthening error controls."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66"
+      ],
+      "topic": "Bidirectional lattice agreement and a variant-audit dataset",
+      "boundary_reason": "Lexicon decoding remains deferred, and the discussion concludes with an audit dataset; the next proposal changes methods."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "Familiar-prototype-only KL for pronunciation-prototype adapters",
+      "boundary_reason": "Disjoint-speaker results fall short of the targets, prompting a revision to KL weighting."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79",
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Swap-stability-weighted KL selection and untouched-cross validation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

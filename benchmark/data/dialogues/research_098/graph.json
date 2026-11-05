@@ -1,0 +1,1047 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Investigate embodied grounding of action verbs that transfers across robot morphologies while distinguishing intended effects from observed motions.",
+      "requirements": [
+        "Achieve ≥70% instruction success on unseen morphologies when motion cues conflict with intended effects.",
+        "Distinguish identical motions producing different effects while recognizing different motions achieving the same instructed effect."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train EffectBind using contrastive same-motion/different-effect and cross-morphology different-motion/same-effect rollouts to learn morphology-invariant verb embeddings for goal-conditioned control."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "On unseen grippers, can EffectBind distinguish sliding from rotation when identical wrist trajectories actuate prismatic versus revolute joints?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "EffectBind will reach ≥80% slide-versus-rotate accuracy on unseen grippers with identical wrist trajectories but prismatic versus revolute outcomes."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Construct JointSwitch matched-trajectory prismatic/revolute pairs; train EffectBind on six grippers, measure slide/rotate accuracy on two held-out grippers."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Train EffectBind on six JointSwitch grippers and score slide-versus-rotate accuracy on matched-trajectory prismatic/revolute trials from two held-out grippers."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "EffectBind achieved 64% slide-versus-rotate accuracy on matched-trajectory trials from two held-out JointSwitch grippers, below the hypothesized 80%."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Conditioning EffectBind on object-relative pre/post state changes will raise held-out JointSwitch slide-versus-rotate accuracy from 64% to ≥80%."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Using JointSwitch’s 64% baseline, retrain EffectBind with object-relative pre/post pose deltas and measure slide-versus-rotate accuracy on both held-out grippers."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Object-relative pose deltas raised held-out JointSwitch slide-versus-rotate accuracy from 64% to 83% on matched-trajectory trials."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt object-relative pose deltas for EffectBind because held-out JointSwitch accuracy rose from the original 64% baseline to 83%."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Extend JointSwitch with different-wrist-motion/same-effect pairs; score adopted pose-delta EffectBind’s slide/rotate accuracy on both held-out grippers."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "JointSwitch-v2 and its evaluation report contain cross-motion same-effect pairs and 76% pose-delta EffectBind accuracy on two held-out grippers."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can pose-delta EffectBind reach ≥70% instruction success on unseen morphologies when demonstration wrist motions misleadingly indicate another verb?"
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Run VerbConflict-100: test pose-delta EffectBind on 100 conflicting-motion instructions per held-out gripper; score effect-based instruction success."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Pose-delta EffectBind achieved 58% effect-based instruction success on VerbConflict-100’s unseen grippers, below the required 70%."
+    },
+    {
+      "id": "n17",
+      "type": "decision",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Retain pose-delta embeddings but add causal effect prediction before control: 83% JointSwitch discrimination yielded only 58% VerbConflict success."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Train CausalVerb on JointSwitch-v2 matched- and cross-motion pairs to predict action-conditioned object effects and plan morphology-specific controls."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Train CausalVerb on JointSwitch-v2; evaluate ≥70% VerbConflict-100 success and effect discrimination/equivalence across two held-out grippers."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Train CausalVerb on JointSwitch-v2’s matched- and cross-motion pairs, then execute VerbConflict-100 instructions on two held-out grippers."
+    },
+    {
+      "id": "n21",
+      "type": "artifact",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "CausalVerb-v1 checkpoint and VerbConflict-100 rollout logs contain predicted object effects, executed actions, and outcomes for both held-out grippers."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Score CausalVerb-v1 rollout success and compare JointSwitch-v2 matched-motion discrimination and cross-motion equivalence against pose-delta EffectBind."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "On held-out grippers, CausalVerb-v1 reached 74% VerbConflict-100 success, 88% JointSwitch-v2 matched-motion discrimination, and 82% cross-motion equivalence."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Adopt CausalVerb-v1: VerbConflict-100 success rose from 58% to 74%, with 88% effect discrimination and 82% cross-motion equivalence."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n19",
+      "content": "Using the CausalVerb-v1 checkpoint, rerun held-out VerbConflict-100 and JointSwitch-v2 trials against pose-delta EffectBind; compare instruction success and effect-pair accuracy."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "On low-displacement cross-motion JointSwitch-v2 pairs, EffectBind scored 91% versus CausalVerb-v1’s 72%; CausalVerb retained 74% versus 58% VerbConflict-100 success."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 27,
+      "exploration_parent_id": "p2",
+      "content": "Can CausalVerb recover EffectBind’s 91% low-displacement cross-motion equivalence without sacrificing its 74% VerbConflict-100 instruction success?"
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Adding EffectBind’s verb embeddings to CausalVerb’s effect predictor will achieve ≥90% low-displacement equivalence while maintaining ≥70% VerbConflict-100 success."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Fuse EffectBind verb embeddings into CausalVerb-v1; measure low-displacement JointSwitch-v2 equivalence and VerbConflict-100 success on held-out grippers."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "On held-out grippers, fused CausalVerb reached 88% low-displacement JointSwitch-v2 equivalence and 66% VerbConflict-100 success, missing both targets."
+    },
+    {
+      "id": "n31",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Reject 66%-success fusion; retain EffectBind for low-displacement equivalence (91%) and CausalVerb-v1 for conflicting-motion control (74% success)."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Use uncertainty-gated VerbRouter: EffectBind judges low-displacement equivalence, while CausalVerb plans actions when motion conflicts with intended effects."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "EffectBind’s uncertainty reliably separates low-displacement equivalence cases from misleading-motion cases, enabling VerbRouter to achieve ≥70% unseen-gripper instruction success."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Calibrate EffectBind uncertainty using JointSwitch-v2 pairs; route VerbConflict-100 trials on unseen grippers and measure gate AUROC and instruction success."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "EffectBind uncertainty yielded 0.58 gate AUROC; VerbRouter achieved 67% VerbConflict-100 success on unseen grippers, below 70%."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Can effect-prediction disagreement replace EffectBind uncertainty as VerbRouter’s gate, improving 0.58 AUROC and reaching 70% instruction success?"
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Calibrate EffectBind–CausalVerb effect-label disagreement on JointSwitch-v2, compare gate AUROC against 0.58, and retest VerbConflict-100 instruction success."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Calibrate EffectBind–CausalVerb disagreement; benchmark disagreement-gated, uncertainty-gated, and fused policies on held-out JointSwitch-v2 equivalence, gate AUROC, and VerbConflict-100 success."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Training-split recalibration yielded EffectBind-only uncertainty-gate AUROC 0.74 and 72% success; embedding-fused CausalVerb achieved 90% low-displacement equivalence, 71% success."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Adopt training-split recalibrated fused CausalVerb: 90% low-displacement equivalence and 71% instruction success reverse the original 88%/66% failure."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Evaluate frozen recalibrated fused CausalVerb on VerbConflict-100 and JointSwitch-v2 across four new grippers, scoring success, discrimination, and equivalence."
+    },
+    {
+      "id": "n42",
+      "type": "artifact",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "CausalVerb-v1.1 replaces the v1 checkpoint with recalibrated fusion; four-new-gripper logs report 72% success, 86% discrimination, and 88% equivalence."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "p3",
+      "content": "Benchmark recalibrated uncertainty-gated VerbRouter against CausalVerb-v1.1 on four new grippers, measuring VerbConflict-100 success and JointSwitch-v2 effect-pair accuracy."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "On four new grippers, VerbRouter achieved 76% VerbConflict-100 success and 89%/90% JointSwitch-v2 discrimination/equivalence, exceeding CausalVerb-v1.1’s 72%/86%/88%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Use low-force affordance probes to identify object joint dynamics, then ground verbs in predicted state transitions across morphologies."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Can ≤2 N affordance probes distinguish prismatic from revolute effects on unseen grippers and exceed VerbRouter’s 76% success?"
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Two ≤2 N affordance probes will yield ≥90% prismatic/revolute discrimination and ≥80% VerbConflict-100 success on unseen grippers."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "On JointSwitch-v2’s held-out grippers, apply two ≤2 N probes; measure joint-type discrimination and subsequent VerbConflict-100 instruction success."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Two ≤2 N probes achieved 93% prismatic/revolute discrimination and 82% VerbConflict-100 instruction success on held-out grippers."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n47",
+      "content": "Replicate two ≤2 N probes on four unseen JointSwitch-v2 grippers; compare joint discrimination and VerbConflict-100 success to 93%/82%."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "On four unseen grippers, two ≤2 N probes achieved 78% joint-type discrimination and 69% VerbConflict-100 success, below both hypothesized thresholds."
+    },
+    {
+      "id": "n52",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Does gripper compliance mask joint type under fixed-force probes, explaining the drop from 93% to 78% discrimination?"
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Compliance-normalized probe displacement will restore ≥90% joint-type discrimination and ≥80% VerbConflict-100 success across four unseen grippers."
+    },
+    {
+      "id": "n54",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Using 93%/82% and 78%/69% baselines, estimate compliance; compare normalized versus raw ≤2 N probes on four unseen grippers."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Estimate compliance; compare normalized JointSwitch-v2 joint discrimination and VerbConflict-100 success against 93%/82% and 78%/69% baselines on four unseen grippers."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Compliance normalization raised four-unseen-gripper discrimination from 78% to 91% and VerbConflict-100 success from 69% to 81%."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Adopt compliance-normalized probes: initial 93%/82% dropped to 78%/69% on new grippers; normalization restored 91%/81%."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n54",
+      "content": "Stratify four unseen JointSwitch-v2 grippers by compliance; bootstrap normalized-versus-raw probe discrimination and VerbConflict-100 success within each stratum."
+    },
+    {
+      "id": "n59",
+      "type": "artifact",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Compliance-Strata-v1 report contains per-gripper compliance bins and bootstrap intervals for normalized-versus-raw JointSwitch-v2 discrimination and VerbConflict-100 success."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "p4",
+      "content": "Using Compliance-Strata-v1, validate bootstrap intervals and measure normalized-probe instruction success, matched-motion discrimination, and cross-motion equivalence on unseen grippers."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Normalized probes achieved 81% VerbConflict-100 success (95% bootstrap CI 77–85%), 91% matched-motion discrimination, and 87% cross-motion equivalence."
+    },
+    {
+      "id": "n62",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Select compliance-normalized probes for conflicting-motion control (81% versus VerbRouter’s 76%); retain EffectBind for low-displacement equivalence (91%)."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "revive",
+      "target": "n28"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "refute",
+      "target": "n47"
+    },
+    {
+      "source": "n53",
+      "relation": "revise",
+      "target": "n47"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n44"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Investigate embodied grounding of action verbs that transfers across robot morphologies while distinguishing intended effects from observed motions.",
+    "requirements": [
+      "Achieve ≥70% instruction success on unseen morphologies when motion cues conflict with intended effects.",
+      "Distinguish identical motions producing different effects while recognizing different motions achieving the same instructed effect."
+    ]
+  }
+}

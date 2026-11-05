@@ -1,0 +1,170 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "TraceGuard’s initial benchmark, adoption, and CI integration",
+      "boundary_reason": "The initial approach reaches a CI artifact before uncertainty-focused testing begins."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Reflective-call omissions, MethodHandles instrumentation, and a TraceGuard rerun",
+      "boundary_reason": "The rerun report closes this investigation; the next node introduces a different approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Testing proof-bounded dependency cones",
+      "boundary_reason": "The benchmark finds safe exclusions but excessive test selection, prompting a generator-provenance extension."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Generator fingerprints, provenance, and an escaped symlink input",
+      "boundary_reason": "The symlink omission creates a specific new question about fingerprinting."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Realpath fingerprints and the selection cost of broken-symlink fallback",
+      "boundary_reason": "Broken-symlink fallback exceeds the selection target, motivating another refinement."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Hermetic generator traces, benchmark results, and CI integration",
+      "boundary_reason": "The refinement reaches a decision and CI artifact before a new analyzer is proposed."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "SoundSlice certificate invalidation for dynamic implementations",
+      "boundary_reason": "The classloader test concludes before a separate generator-rerun omission is investigated."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "SoundSlice omissions after generator reruns and their immediate correction",
+      "boundary_reason": "Instrumentation recovers the omitted tests; the next stage checks its overall selection cost."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Generator-rerun-aware SoundSlice benchmark, adoption, and CI gate",
+      "boundary_reason": "The SoundSlice work reaches a CI artifact before ModuleFence is introduced."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "ModuleFence benchmarks and a missed runtime service provider",
+      "boundary_reason": "The missed provider motivates a focused investigation of provider additions."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74"
+      ],
+      "topic": "Provider-inventory hashing and its post-hash injection gap",
+      "boundary_reason": "A late provider injection defeats hashing, requiring invalidation through execution."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79",
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Classloader hooks, atomic snapshots, and the ModuleFence CI gate",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,851 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Recover metrically consistent video depth despite unknown changing focal lengths and independently moving objects.",
+      "requirements": [
+        "With one initial metric scale anchor, keep median sequence scale drift below 5%.",
+        "Reduce moving-object depth AbsRel by 15% versus a fixed-intrinsics baseline on held-out cameras."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Jointly optimize per-frame focal length, depth, and separate camera/object motions using background and object-track reprojection with initial metric anchoring."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can joint background/object-track reprojection distinguish focal-length changes from camera translation without absorbing object motion into depth?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Object-masked epipolar constraints and sparse zoom priors separate focal changes from translation under lateral parallax, yielding focal error below 3%."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Fit focal trajectories from masked-background epipolar tracks with lateral parallax and sparse zoom regularization; optimize object motion and depth separately."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Evaluate masked epipolar fitting on ZoomMotion-500 lateral-parallax clips against unmasked and unregularized variants, measuring focal error and translation leakage."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On ZoomMotion-500 lateral-parallax clips, masked fitting yielded 7.8% median focal error and 12% translation leakage, missing the 3% target."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Orthogonal vanishing-point constraints replace zoom priors in masked fitting, reducing ZoomMotion-500 focal error below 3% and translation leakage below 5%."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Using n7’s 7.8% focal-error baseline, rerun ZoomMotion-500 with orthogonal vanishing-point constraints; compare median focal error and translation leakage."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "On ZoomMotion-500, vanishing-point constraints cut median focal error from 7.8% to 2.6% and translation leakage from 12% to 4.1%."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt orthogonal vanishing-point constraints over sparse zoom priors: median focal error fell from n7’s 7.8% to 2.6%."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Using adopted vanishing-point calibration, fit separate object-motion and depth heads on ZoomMotion-500; measure anchored scale drift and held-out-camera moving-object AbsRel."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "ZoomMotion-500 checkpoint with vanishing-point calibration, separate object-motion and depth heads, and held-out-camera scale-drift and moving-object AbsRel tables."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can background-only scale propagation retain the initial metric anchor through object-dominated intervals without degrading moving-object depth?"
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Test n13 on ZoomMotion-500 clips with >70% object coverage; compare background-only versus full-scene anchor propagation using drift and moving-object AbsRel."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "On object-dominated held-out-camera ZoomMotion-500, background-only anchoring cut median drift from 8.1% to 4.3%; moving-object AbsRel beat fixed-intrinsics by 19%."
+    },
+    {
+      "id": "n17",
+      "type": "decision",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Adopt background-only anchor propagation for object-dominated clips: 4.3% median drift and 19% lower moving-object AbsRel meet both targets."
+    },
+    {
+      "id": "n18",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Extend adopted background-only anchoring across 30-frame occlusions using confidence-gated propagation; evaluate scale drift and moving-object AbsRel on held-out cameras."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Modify n13’s checkpoint with confidence-gated background anchoring; evaluate 30-frame occlusions on held-out ZoomMotion-500 cameras for drift and moving-object AbsRel."
+    },
+    {
+      "id": "n20",
+      "type": "artifact",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "ZoomMotion-500 confidence-gated checkpoint and held-out-camera 30-frame-occlusion report with anchored scale drift, moving-object AbsRel, and baseline comparisons."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 21,
+      "exploration_parent_id": "g1",
+      "content": "Train a camera-conditioned temporal depth transformer with learned focal-length trajectories, object-specific scene-flow tokens, and anchor-preserving background scale normalization."
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "Pretrain on synthetic zooms, fine-tune scene-flow tokens on ZoomMotion-500, then benchmark anchored drift and held-out-camera moving-object AbsRel."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Train p2 on synthetic zooms and ZoomMotion-500; compare with p1’s n13 checkpoint using held-out-camera scale drift and moving-object AbsRel."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Held-out ZoomMotion-500: p2 drift 3.8% versus n13 5.6%; moving-object AbsRel 0.181 versus n13 0.208 and fixed-intrinsics 0.240."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Do p2’s aggregate gains persist during 30-frame background occlusions on held-out cameras, or does anchor scale diverge?"
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "During 30-frame background occlusions, p2 retains anchored drift below 5% and moving-object AbsRel below 0.204 on held-out cameras."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Evaluate p2 on held-out ZoomMotion-500 clips with 30-frame background occlusions; measure anchored scale drift and moving-object AbsRel."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "On held-out ZoomMotion-500 clips with 30-frame background occlusions, p2 achieved 4.7% anchored drift and 0.196 moving-object AbsRel."
+    },
+    {
+      "id": "n29",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Advance p2 for 30-frame occlusions (4.7% drift, 0.196 AbsRel); retain p1 background-only anchoring for object-dominated clips (4.3% drift)."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n22",
+      "content": "Integrate n20’s confidence-gated background anchoring into p2 for object-dominated clips; compare held-out-camera drift and moving-object AbsRel."
+    },
+    {
+      "id": "n31",
+      "type": "artifact",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Hybrid p2 checkpoint with n20 confidence-gated background anchoring and held-out-camera object-dominated drift and moving-object AbsRel comparison tables."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Benchmark hybrid checkpoint on held-out ZoomMotion-500 object-dominated clips with 30-frame occlusions; compare drift and moving-object AbsRel against p2."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Object-dominated occlusions: p2 drift 6.4% versus hybrid 4.2%; moving-object AbsRel 0.211 versus hybrid 0.188 and fixed-intrinsics 0.240."
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "p2",
+      "content": "Masking low-confidence background tokens alone reduces p2’s object-dominated 30-frame occlusion drift from 6.4% below 5%."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Using n33’s object-dominated occlusion split, ablate p2’s background tokens below 0.6 confidence; measure drift against the 6.4% baseline."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "After n29 favored p1 anchoring for object-dominated clips, confidence masking cut p2 drift from 6.4% to 4.6%, reopening p2."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Build anchor-scaled background Gaussian-splat SLAM jointly optimizing focal trajectories, loop closures, and independently moving object splats."
+    },
+    {
+      "id": "n38",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Can loop-closed background splats constrain focal changes and anchor scale when moving objects occupy most frames?"
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Loop closures spanning object-dominated intervals keep anchored scale drift below 5% if at least 20% background splats reappear."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Initialize p3 splats from n13 depth; ablate loop closures on object-dominated ZoomMotion-500 clips with ≥20% background reappearance; measure anchored drift."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "On qualifying object-dominated ZoomMotion-500 clips, loop closures lowered median anchored drift from 7.2% to 4.4%."
+    },
+    {
+      "id": "n42",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Advance loop-closed p3 when ≥20% background reappears and confidence-masked p2 for occlusions; both achieved <5% scale drift."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Benchmark p3 loop-closure ablations against confidence-masked p2 by background reappearance, measuring anchored drift, focal error, and moving-object AbsRel."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Stratify held-out ZoomMotion-500 clips by background reappearance (<20% versus ≥20%); compare p3, closure-ablated p3, and confidence-masked p2."
+    },
+    {
+      "id": "n45",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "ZoomMotion-500 reappearance-stratified benchmark report comparing p3, closure-ablated p3, and confidence-masked p2 on drift, focal error, and moving-object AbsRel."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n43",
+      "content": "Audit n45’s split-level results against sequence IDs and anchor frames; recompute drift, focal error, and AbsRel with bootstrap intervals."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Audit found 6.2% anchored drift on abrupt-zoom clips with ≥20% background reappearance, despite loop closures; n41’s broader median remains 4.4%."
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n38",
+      "content": "Vanishing-point focal recalibration at loop closures reduces abrupt-zoom anchored drift below 5% when ≥20% background reappears."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "On n47’s abrupt-zoom subset, add vanishing-point focal recalibration to p3 loop closures; compare anchored drift against 6.2%."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "On n47’s abrupt-zoom subset, vanishing-point recalibration reduced anchored drift from 6.2% to 4.5% with ≥20% background reappearance."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "p3",
+      "content": "Compare n31 hybrid against recalibrated p3 on held-out abrupt-zoom ZoomMotion-500 clips, measuring anchored drift and moving-object AbsRel."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "On held-out abrupt-zoom clips, recalibrated p3 achieved 4.5% drift and 0.202 moving-object AbsRel; n31 hybrid achieved 4.8% and 0.188."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Choose recalibrated p3 for reappearing-background scale, n31 hybrid for object depth, and confidence-masked p2 during occlusions."
+    },
+    {
+      "id": "n54",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n51",
+      "content": "n51’s original metric outputs, including n52’s 4.5% p3 drift and 0.188 hybrid AbsRel, used for n53’s selection."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n18",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "revive",
+      "target": "p2"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "refute",
+      "target": "n39"
+    },
+    {
+      "source": "n48",
+      "relation": "revise",
+      "target": "n39"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n54"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Recover metrically consistent video depth despite unknown changing focal lengths and independently moving objects.",
+    "requirements": [
+      "With one initial metric scale anchor, keep median sequence scale drift below 5%.",
+      "Reduce moving-object depth AbsRel by 15% versus a fixed-intrinsics baseline on held-out cameras."
+    ]
+  }
+}

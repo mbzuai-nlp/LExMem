@@ -1,0 +1,1050 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Characterize when heterogeneous treatment effects remain partially identifiable with weak instruments and bounded exclusion violations in observational healthcare.",
+      "requirements": [
+        "Achieve at least 95% confidence-set coverage uniformly over specified instrument-strength and exclusion-violation classes.",
+        "Establish sharp identification bounds and characterize when they improve upon bounds without instruments."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use stratified bounded-exclusion response-type linear programs for sharp bounds; project multinomial confidence regions for weak-IV-safe coverage, benchmarking no-IV bounds."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "For binary treatment and outcome, which first-stage differences and exclusion-violation limits yield narrower stratum-specific bounds than no-IV bounds?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Within strata, first-stage differences ≥0.10 and exclusion caps ≤0.02 risk units reduce median bound width ≥15% versus no-IV."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Simulate 10,000 binary-outcome datasets over first-stage 0–0.20 and exclusion-cap 0–0.05 grids; compare median LP/no-IV widths and coverage."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "At first-stage ≥0.10 and exclusion cap ≤0.02, median LP widths were 19% narrower than no-IV; gridwide minimum coverage was 95.1%."
+    },
+    {
+      "id": "n7",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Advance stratified LP bounds based on 19% narrowing, but require a uniform-coverage proof beyond the simulated 95.1% minimum."
+    },
+    {
+      "id": "n8",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "For adopted stratified LPs, prove sharpness and uniform ≥95% coverage via exact multinomial projection; map strength–violation regions improving no-IV bounds."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Verify response-type LP attainability and dual certificates; project simultaneous exact multinomial 95% regions and map no-IV improvements."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "LP notebook contains attainable response-type bounds, a uniform ≥95% exact-multinomial projection proof, and first-stage/exclusion-cap improvement maps versus no-IV."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Audit the LP notebook using exhaustive 64-type enumeration and 20,000 n=500 simulations, checking sharpness and weak-IV coverage."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "At first-stage 0.10 and exclusion cap 0.02, an admissible stratum’s median narrowing was 5% across 20,000 draws, not 15%."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n4",
+      "content": "With first-stage ≥0.10, exclusion cap ≤0.02, and instrument–outcome risk difference ≥0.08, median narrowing reaches 15% versus no-IV."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Simulate 20,000 admissible samples of 500 per stratum at revised thresholds; measure median LP/no-IV narrowing and confidence-set coverage."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Across 20,000 admissible n=500 simulations, revised-threshold strata showed 17% median narrowing versus no-IV and 95.3% minimum empirical coverage."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Stress-test revised thresholds across 10,000 n=200 healthcare-like strata with outcome prevalence 5%–30%, recording bound narrowing and coverage."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Despite meeting revised thresholds, 5%–10% prevalence strata showed only 8% median narrowing; empirical coverage remained 95.2%."
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "At n=200 and prevalence ≥15%, first-stage ≥0.10, exclusion cap ≤0.02, and instrument–outcome difference ≥0.08 yield ≥15% median narrowing versus no-IV."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Run 20,000 n=200 simulations at 15%–30% prevalence meeting revised IV thresholds; compare median LP/no-IV width reduction and coverage."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Among 20,000 eligible n=200 simulations, 15%–30% prevalence yielded 16% median LP/no-IV narrowing and 95.1% minimum empirical coverage."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "Stress-test n18 in 20,000 n=200 strata with 30%–60% prevalence and asymmetric treatment uptake; measure median narrowing and coverage."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Across 20,000 eligible n=200 strata with 45% prevalence and 75% baseline uptake, median narrowing was 7%; coverage 95.2%."
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "At n=200, prevalence 15%–30%, baseline uptake ≤65%, and revised IV thresholds yield ≥15% median narrowing versus no-IV."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Simulate 20,000 eligible n=200 strata at 15%–30% prevalence and 70%–90% baseline uptake; assess median narrowing and coverage."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "In 20,000 eligible n=200 strata at 15%–30% prevalence and 70%–90% uptake, median narrowing was 16%; minimum coverage 95.1%."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n23",
+      "content": "Simulate 20,000 n=200 strata meeting revised IV thresholds, with 15%–30% prevalence and ≤65% uptake; compare bound widths and coverage."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Among 20,000 eligible n=200 strata with 20% prevalence and 20% baseline uptake, median narrowing was 9%; coverage was 95.2%."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Replace threshold-only ≥15% narrowing rules with direct LP-versus-no-IV width comparisons, because eligible strata yielded 7%–16% median gains."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Construct dual-certified LP-versus-no-IV gain maps over prevalence, uptake, first-stage strength, and exclusion caps, with exact-multinomial projection."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Which observable cell-probability and exclusion-cap conditions certify strict LP-bound narrowing over no-IV, including weak-first-stage strata?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "With first-stage 0.02–0.05, instrument–outcome differences exceeding exclusion caps by 0.02 yield ≥0.01 dual-certified endpoint narrowing versus no-IV."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Enumerate 50,000 feasible first-stage-0.02–0.05 models with instrument–outcome differences ≥0.02 above exclusion caps; test dual-certified ≥0.01 endpoint narrowing versus no-IV."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Among 50,000 qualifying weak-IV models, minimum dual-certified endpoint narrowing was 0.011 risk units versus no-IV bounds."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "p2",
+      "content": "Derive necessary-and-sufficient cell-probability and exclusion-cap certificates for LP gains, then audit boundary cases around the observed 0.011 weak-IV gain."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Enumerate parametric LP dual bases for binary observed tables; derive exact LP-versus-no-IV endpoint-gain inequalities and audit weak-IV boundary vertices."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Dual-basis atlas lists necessary-and-sufficient observed-cell and exclusion-cap inequalities for strict LP gains, plus weak-IV boundary certificates."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n34",
+      "content": "Cross-check atlas certificates against primal LPs on 100,000 held-out tables; simulate n=200 exact-projection coverage near zero first-stage."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Across 100,000 held-out tables, atlas certificates matched primal LP gains exactly; 20,000 n=200 near-zero-first-stage simulations yielded 95.1% minimum coverage."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Apply atlas to 50,000 healthcare-like strata across prevalence, uptake, first-stage, and exclusion caps; assess certified gains and exact-projection coverage."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "In 50,000 healthcare-like strata, structural-zero tables caused 6% false-positive atlas gain certificates versus primal LPs, invalidating proposed maps."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p2",
+      "content": "How should gain certificates account for structural-zero cells to prevent false positives while preserving sharp bounds under weak instruments?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Restricting dual certificates to known structural-zero faces eliminates false-positive gain calls without changing sharp LP bounds or exact-projection coverage."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Recompute face-restricted certificates on 50,000 structural-zero tables; compare false-positive gains, primal LP endpoints, and n=200 projected coverage."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Across 50,000 structural-zero tables, face-restricted certificates produced zero false-positive gains, matched primal LP endpoints, and achieved 95.1% minimum empirical coverage."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n42",
+      "content": "Stress-test 100,000 n=200 sparse-table draws with multiple known structural zeros and first-stage ≤0.02; audit false-positive gains and coverage."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Across 100,000 multi-zero weak-IV draws, face-restricted certificates falsely declared gains in 1.4% at intersecting support faces; coverage was 95.2%."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Preserve ≥0.011 weak-IV gains and exact projection; retain atlas on full support, face-restrict zeros, and primal-check intersections after false positives."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 48,
+      "exploration_parent_id": "g1",
+      "content": "Use support-adaptive primal-dual LPs, checking intersecting known-zero faces directly, to certify sharp heterogeneous-effect gains with exact-multinomial projection."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p3",
+      "content": "Which intersecting-support-face checks eliminate false gain certificates while retaining sharp bounds and uniform 95% coverage near zero instrument strength?"
+    },
+    {
+      "id": "n50",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Primal checks on intersecting known-zero faces yield zero false gain certificates and sharp bounds; exact projection ensures uniform ≥95% coverage."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Enumerate intersecting known-zero faces, audit primal-dual gains on 100,000 weak-IV tables, and verify uniform exact-projection coverage."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Across 100,000 four-stratum weak-IV draws, primal checks eliminated false gains, but simultaneous coverage was 82.0% despite 95% marginal coverage."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n50",
+      "content": "Recheck 100,000 four-stratum draws using one joint exact 95% multinomial region before projection; record simultaneous effect-set coverage."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "With one joint exact 95% multinomial region, simultaneous coverage rose from 82.0% to 95.1% across 100,000 four-stratum weak-IV draws."
+    },
+    {
+      "id": "n55",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n50",
+      "content": "Retain intersecting-face primal checks, but replace marginal regions with one joint exact 95% region to restore simultaneous coverage."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p3",
+      "content": "Prove joint exact-region coverage across strata; verify sharp primal-dual no-IV gain certificates on intersecting-zero faces, including zero-strength instruments."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Derive joint-region coverage by projection; enumerate intersecting-zero faces and verify primal-dual bound equality at first-stage 0–0.02."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Support-adaptive theorem and code certify sharp LP bounds, exact no-IV gain tests, and uniform ≥95% joint-projection coverage, including zero first-stage."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n56",
+      "content": "Audit support-adaptive theorem and code on 100,000 held-out four-stratum zero-cell tables with first-stage ≤0.02: sharpness, false gains, simultaneous coverage."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Across 100,000 held-out four-stratum zero-cell tables, primal-dual bounds agreed, false gains were 0%, and joint coverage reached 95.1%."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "p3",
+      "content": "Adopt support-adaptive primal-dual bounds with joint exact projection: zero false gain certificates and 95.1% simultaneous coverage versus 82.0% marginal."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Characterize when heterogeneous treatment effects remain partially identifiable with weak instruments and bounded exclusion violations in observational healthcare.",
+    "requirements": [
+      "Achieve at least 95% confidence-set coverage uniformly over specified instrument-strength and exclusion-violation classes.",
+      "Establish sharp identification bounds and characterize when they improve upon bounds without instruments."
+    ]
+  }
+}

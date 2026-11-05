@@ -1,0 +1,975 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Investigate causal effect identifiability reasoning from diagrams, distinguishing structural edits from equivalent redrawings across unseen graph compositions.",
+      "requirements": [
+        "Achieve 85% paired accuracy on identifiability judgments before and after structural edits, including latent confounding.",
+        "Maintain 95% prediction consistency across equivalent redrawings of held-out graph compositions."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a diagram-to-ADMG encoder using ID-algorithm labels, structural-edit contrastive pairs, and redraw-invariance regularization on held-out graph compositions."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can the diagram-to-ADMG encoder distinguish added latent confounding from visually rerouted, structurally unchanged edges in held-out graph compositions?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Contrastive ADMG training will achieve ≥85% paired accuracy for latent-confounder edits and ≥95% redraw consistency on unseen compositions."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Generate held-out ADMG compositions with confounder edits and equivalent redraws; train the encoder, then measure paired accuracy and redraw consistency."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Train the encoder on 12,000 ID-labeled ADMG diagrams; measure confounder-edit paired accuracy and redraw consistency across 2,000 held-out compositions."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On 2,000 held-out ADMG compositions, confounder-edit paired accuracy reached 87% and equivalent-redraw prediction consistency reached 96%."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Retain contrastive ADMG training for broader edit tests; confounder-edit accuracy and redraw consistency exceed their respective thresholds."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "ADMG-Contrast v1 checkpoint and held-out evaluation report with ID-label predictions, 87% confounder-edit paired accuracy, and 96% redraw consistency."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Using ADMG-Contrast v1, score 1,000 unseen compositions before and after confounder removal and across equivalent redraws; recompute both metrics."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On 1,000 new compositions, confounder-removal paired accuracy was 79%, below the 85% threshold; redraw consistency remained 96%."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Bidirectional confounder-edit augmentation will raise held-out removal paired accuracy above 85% while preserving ≥95% redraw consistency."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Fine-tune ADMG-Contrast v1 on 4,000 new bidirectional confounder-edit pairs; measure removal paired accuracy and redraw consistency on 1,000 held-out compositions."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "After bidirectional fine-tuning, confounder-removal paired accuracy rose from 79% to 86% on 1,000 held-out compositions; redraw consistency stayed 96%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Build a symbolic edge parser that canonicalizes labeled ADMGs and applies the ID algorithm to each structural-edit pair."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Will canonical ADMG parsing preserve directed versus bidirected edges when held-out diagrams mix crossings, rerouting, and latent confounding?"
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Benchmark canonical edge parsing on crossed-edge redraws and bidirected-edge edits; compare parsed ADMGs and ID judgments against oracle graphs."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Using ADMG-Contrast v1, compare encoder versus canonical-parser ID judgments on 800 held-out confounder-edit/crossing-redraw pairs for paired accuracy and consistency."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Across 800 crossing-redraw/confounder-edit pairs, canonical parser versus ADMG-Contrast v1 achieved 90% versus 77% paired accuracy; 97% versus 89% redraw consistency."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n14",
+      "content": "Audit canonical-parser errors from the 800-pair comparison against oracle ADMGs, classifying crossing and bidirected-edge mismatches."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "ParserAudit-800 catalogs oracle versus parsed edges for all 800 pairs, with crossing and bidirected-edge error tags."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Blindly reannotate 160 stratified ParserAudit-800 cases against oracle ADMGs; quantify crossing and bidirected-edge tag precision and recall."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On 160 reannotated ParserAudit-800 cases, crossing-tag precision/recall was 94%/91%; bidirected-edge-tag precision/recall was 89%/85%."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Prioritize canonical parsing for crossings, but cross-check confounder edits with the fine-tuned encoder given 85% bidirected-tag recall."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Fuse canonical ADMG parsing with the fine-tuned encoder, resolving ambiguous bidirected edges by comparing predictions across equivalent redraws."
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Redraw-consensus fusion will achieve ≥90% paired accuracy across mixed confounder edits and ≥97% consistency on unseen redraws."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "Does redraw-consensus fusion recover bidirected edges missed by canonical parsing without merging genuinely different confounder edits?"
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Fuse fine-tuned ADMG-Contrast v1 with canonical parsing; measure bidirected recall, edit-pair accuracy, and redraw consistency on 1,200 compositions."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "On 1,200 compositions, fusion reached 88% mixed-edit paired accuracy, below the hypothesized 90%; redraw consistency reached 98%."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "n23",
+      "content": "Audit fusion disagreements by bidirected-edge status, then tune consensus gating and retest edit preservation and redraw consistency."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Audit fusion disagreements; tune gates using ADMG-Contrast v1, then test 1,200 new compositions for paired accuracy and redraw consistency."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "On 1,200 new compositions, gated fusion achieved 91% mixed-edit paired accuracy and 97% redraw consistency, meeting both hypothesis thresholds."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Does gated fusion retain paired accuracy on larger, multiply confounded ADMGs absent from the 1,200-composition evaluation?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "On unseen 8–12-node ADMGs with multiple bidirected edges, gated fusion maintains ≥85% paired accuracy and ≥95% redraw consistency."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Power a held-out 8–12-node multiply-confounded ADMG test from ungated 88%/98% and gated 91%/97% findings; measure paired accuracy and redraw consistency."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "On 600 unseen 8–12-node multiply-confounded ADMGs, gated fusion achieved 87% paired-edit accuracy and 96% redraw consistency."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n26",
+      "content": "Stratify ungated, gated, and 8–12-node fusion errors by bidirected-edge count; inspect structural edits incorrectly merged as redraws."
+    },
+    {
+      "id": "n34",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "FusionErrorAtlas v1 catalogs errors across three evaluation cohorts by bidirected-edge count, including structural edits misclassified as redraws."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Use FusionErrorAtlas v1 to train an edge-change verifier separating latent-confounder edits from redraws before gated ID inference."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p4",
+      "content": "Can an edge-change verifier detect bidirected-edge additions masked by redraws without flagging harmless reroutings on multiply-confounded ADMGs?"
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "Create matched confounder-addition/redraw pairs from FusionErrorAtlas v1; train an edge-change verifier and compare gated ID inference against unchanged fusion."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Train an edge-change verifier on FusionErrorAtlas v1; compare verifier-gated ID inference against unchanged fusion on 600 new confounder-addition/redraw pairs."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "On 600 new pairs, verifier-gated versus unchanged fusion achieved 82% versus 87% paired accuracy and 94% versus 96% redraw consistency."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Which verifier errors cause harmless reroutings to trigger ID changes, degrading both paired accuracy and redraw consistency?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "False-positive edge-change flags on crossed reroutings drive both failures; suppressing them restores ≥85% paired accuracy and ≥95% redraw consistency."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Using FusionErrorAtlas v1, audit crossed-rerouting false positives, calibrate verifier gates, and retest paired accuracy and redraw consistency on 600 pairs."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "On 600 pairs, crossed-rerouting false positives fell 18%→7%; calibrated verifier achieved 89% paired accuracy and 96% redraw consistency."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n36",
+      "content": "Using FusionErrorAtlas v1 and both gating baselines, test multiply-confounded pairs for edit recall, redraw false alarms, and ID accuracy."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "On 500 multiply-confounded pairs, calibrated gating achieved 91% edit recall, 6% redraw false alarms, and 88% paired accuracy."
+    },
+    {
+      "id": "n45",
+      "type": "artifact",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "EdgeVerify-Bench v1 provides 500 multiply-confounded edit/redraw pairs, oracle ADMGs, and verifier-gated ID predictions for reproducible auditing."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Use ID-sensitivity tests to target ambiguous bidirected edges for additional redraws, then aggregate parsed ADMGs before judging structural edits."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p5",
+      "content": "Can ID-sensitivity-guided redraws resolve uncertain bidirected edges without smoothing away genuine changes in identifiability?"
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Rank uncertain edges by ID-label sensitivity, generate three targeted redraws per diagram, and compare edit preservation with untargeted sampling."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Using ParserAudit-800 edge tags and EdgeVerify-Bench v1, compare three ID-sensitivity-targeted versus random redraws for paired accuracy and consistency."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "On EdgeVerify-Bench v1, targeted versus random redraws achieved 90% versus 86% paired accuracy and 97% versus 95% consistency."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n47",
+      "content": "Use FusionErrorAtlas v1 mismerged-edit tags to select held-out pairs; quantify ID-label flips masked by validated targeted-redraw aggregation."
+    },
+    {
+      "id": "n51",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "IDFlipAudit v1 lists held-out structural-edit pairs, oracle ID-label flips, and whether targeted-redraw aggregation masked each flip."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Using validated edge tags and initial-versus-calibrated gate benchmarks, audit IDFlipAudit v1 for masked ID flips and redraw consistency."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "In IDFlipAudit v1, targeted aggregation masked 8/200 oracle ID flips (4%); equivalent-redraw consistency was 97% across 600 views."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "Adopt calibrated verifier gating and targeted redraws, but abstain on uncertain edge changes because aggregation masked 4% of ID flips."
+    },
+    {
+      "id": "n55",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n52",
+      "content": "IDFlipAudit v1 validation report records 8/200 masked ID flips, 97% consistency across 600 redraws, and uncertain-edge abstention flags."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n54"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Investigate causal effect identifiability reasoning from diagrams, distinguishing structural edits from equivalent redrawings across unseen graph compositions.",
+    "requirements": [
+      "Achieve 85% paired accuracy on identifiability judgments before and after structural edits, including latent confounding.",
+      "Maintain 95% prediction consistency across equivalent redrawings of held-out graph compositions."
+    ]
+  }
+}

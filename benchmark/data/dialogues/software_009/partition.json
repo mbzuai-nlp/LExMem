@@ -1,0 +1,102 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Epoch-pinned routing and WAL replay for crash-safe partition cutovers",
+      "boundary_reason": "Crash testing and mutation testing support the initial cutover design; the next discussion examines repeated crashes."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Double-crash duplicate scans and single-generation routing",
+      "boundary_reason": "The duplicate-range finding leads to a routing correction; the next proposal shifts to repartitioning latency."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Feedback-throttled copying under mixed-workload latency targets",
+      "boundary_reason": "The benchmark supports adopting 256-key throttling; the next tests examine crashes and restart latency."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Post-restart scan latency under WAL-replay contention",
+      "boundary_reason": "Pausing copying does not bring scan p99 below the target, motivating a different recovery I/O approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Parent-shard visibility after recovery with child replay paused",
+      "boundary_reason": "A WAL audit identifies mandatory parent redo as the condition for correct parent-served scans; the next discussion measures I/O reservations."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "75/25 scan and replay I/O reservation after mandatory parent recovery",
+      "boundary_reason": "Oracle checks and latency measurements support the revised restart policy; the next proposal combines the design components."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Integrated design under repeated crashes during child replay",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

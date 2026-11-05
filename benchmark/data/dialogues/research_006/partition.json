@@ -1,0 +1,93 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "pl1",
+        "a1",
+        "e1",
+        "a2",
+        "e2"
+      ],
+      "topic": "Test hierarchical Bayesian joint inversion and compare marginalized with plug-in hyperparameters",
+      "boundary_reason": "Oscillatory-flux undercoverage motivates a revised prior."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "h2",
+        "pl2",
+        "a3",
+        "e3",
+        "d1"
+      ],
+      "topic": "Evaluate and adopt marginalized frequency-adaptive Fourier flux priors",
+      "boundary_reason": "The adaptive-prior decision concludes this approach; the next proposal turns to sensor design."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h3",
+        "pl3",
+        "a4",
+        "e4",
+        "ar1"
+      ],
+      "topic": "Optimize eight sensor–time pairs for joint identifiability and calibrated coverage",
+      "boundary_reason": "The sensor-design results and artifact are complete; the next proposal turns to profile intervals."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "q3",
+        "a5",
+        "e5",
+        "h4",
+        "pl4",
+        "a6",
+        "e6",
+        "d2"
+      ],
+      "topic": "Calibrate bounded-smoothness profile intervals for conductivity–flux ridges",
+      "boundary_reason": "The profile-interval decision closes this approach; the next proposal combines it with posterior intervals."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "pl5",
+        "a7",
+        "e7",
+        "ar2",
+        "a8",
+        "e8",
+        "d3"
+      ],
+      "topic": "Test and adopt unioned posterior–profile intervals, including a stress test",
+      "boundary_reason": "The union-interval decision concludes this approach; the next proposal changes the experimental design."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p5",
+        "q5",
+        "h6",
+        "pl6",
+        "a9",
+        "e9",
+        "d4"
+      ],
+      "topic": "Compare interior-heater schedules for joint inversion with independent boundary fluxes",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

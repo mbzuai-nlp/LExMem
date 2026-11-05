@@ -1,0 +1,1039 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Infer calibrated cell ancestry from incomplete lineage barcodes and transcriptional states despite state convergence and biased lineage sampling.",
+      "requirements": [
+        "Improve ancestral-pair AUROC by ≥0.05 over barcode-only inference with 30% barcode dropout.",
+        "Achieve ancestry-probability expected calibration error ≤0.05 under convergent states and uneven lineage sampling."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Develop ConvergeTree, a joint latent-tree model combining dropout-aware barcode likelihoods, convergence-aware expression, sampling-adjusted priors, and importance-weighted isotonic calibration."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can ConvergeTree prevent convergent states from inflating ancestral-pair probabilities when 30% barcode dropout coincides with biased lineage sampling?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Under convergent states and biased sampling, ConvergeTree’s gated expression and inverse-sampling weights will achieve ancestry-probability ECE ≤0.05 at 30% dropout."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Simulate convergent states, 30% dropout, and skewed sampling; fit weighted isotonic calibration, ablate gating/weights, evaluate held-out-lineage ECE and pair-AUROC."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Generate 200 convergent-state trees with 30% barcode dropout and 10:1 lineage sampling; ablate gating and weights, measuring held-out-lineage ECE/AUROC."
+    },
+    {
+      "id": "n5",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ConvergeTree benchmark v1 contains 200 simulated trees, 30%-dropout and 10:1-sampling metadata, gating/weight ablation AUROC/ECE tables, and held-out-lineage reliability plots."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Bootstrap ConvergeTree benchmark v1’s held-out lineages; test gated, weighted ECE ≤0.05 and AUROC gain ≥0.05 versus barcode-only."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Held-out-lineage bootstraps: gated, weighted ConvergeTree ECE 0.038, AUROC 0.79 versus barcode-only 0.72 at 30% dropout and 10:1 sampling."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Advance gated, weighted ConvergeTree to real-lineage validation because held-out simulation meets ECE ≤0.05 and AUROC gain ≥0.05."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Using ConvergeTree benchmark v1, calculate 15-bin ECE for convergent-state pairs involving 10-fold undersampled lineages, comparing gated-weighted and ablated models."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "At 30% dropout, target-population 15-bin ECE was 0.068 overall; undersampled convergent pairs scored 0.11 versus 0.16 ablated."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Lineage-stratified shrinkage calibration will lower undersampled convergent-pair ECE from 0.11 to ≤0.05 and overall ECE ≤0.05, preserving ≥0.05 AUROC gain."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How should ConvergeTree pool calibration across lineages when 10-fold-undersampled convergent pairs provide too few labels for isotonic fitting?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Develop CaptureClock: model barcode mutation histories, lineage capture, and recurrent transcriptional transitions jointly; calibrate ancestry with hierarchical beta-binomial pooling."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Simulate convergent-state trees; fit CaptureClock; test held-out-lineage AUROC gain ≥0.05 versus barcode-only and ECE ≤0.05 at 30% dropout, 10:1 sampling."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Fit CaptureClock and ConvergeTree on benchmark v1; compare held-out-lineage pair-AUROC against barcode-only and target-weighted ECE for undersampled convergent pairs."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Benchmark v1: CaptureClock versus ConvergeTree held-out-lineage AUROC 0.80/0.79, target-weighted overall ECE 0.043/0.068, and undersampled-convergent ECE 0.047/0.11."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Does CaptureClock’s 0.043 target-weighted ECE persist when capture rates are misspecified for held-out, undersampled lineages?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "CaptureClock’s hierarchical pooling maintains target-weighted ECE ≤0.05 for held-out, undersampled lineages when capture rates are misspecified by 0.5–2×."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Perturb held-out undersampled-lineage capture rates 0.5–2×; compare CaptureClock hierarchical pooling with lineage-stratified isotonic using target-weighted convergent-pair ECE."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Across 0.5–2× capture errors, held-out CaptureClock/shrinkage-isotonic undersampled-convergent target-weighted ECEs were 0.048/0.049; isotonic overall ECE 0.046, AUROC 0.79 versus barcode-only 0.72."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n17",
+      "content": "Using n19’s perturbation outputs, bootstrap worst-lineage CaptureClock target-weighted ECE across held-out undersampled lineages and 0.5–2× capture errors against 0.05."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Worst-lineage bootstrap yielded CaptureClock target-weighted ECE 0.081 (95% CI 0.063–0.099) under 2× capture-rate error."
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "CaptureClock with capture-error-aware lineage-stratified shrinkage isotonic will reduce worst-lineage target-weighted ECE from 0.081 to ≤0.05 at 2× capture-rate error."
+    },
+    {
+      "id": "n23",
+      "type": "plan",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Train capture-error-aware shrinkage isotonic on benchmark v1 training lineages; bootstrap held-out worst-lineage target-weighted ECE at 2× error against 0.05."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Augment training lineages with 0.5–2× capture errors; fit shrinkage isotonic and bootstrap held-out worst-lineage target-weighted ECE against 0.05 at 2×."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "At 2× capture error, capture-error-aware CaptureClock shrinkage isotonic cut bootstrapped worst-lineage target-weighted ECE from 0.081 to 0.043 (95% CI 0.036–0.049)."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Advance capture-error-aware CaptureClock to real-lineage validation: worst-lineage ECE drops from 0.081 to 0.043, resolving pooled-calibration blind spots."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Develop ContrastRoot: train barcode-anchored ancestry embeddings against cross-lineage convergent-state negatives, then cross-fit lineage-balanced probability calibration."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "Can ContrastRoot distinguish convergent-state unrelated pairs while maintaining target-weighted ECE ≤0.05 under 10:1 lineage sampling?"
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "With lineage-stratified shrinkage calibration, ContrastRoot’s cross-lineage convergent negatives will yield ≥0.05 AUROC gain and target-weighted ECE ≤0.05 at 10:1 sampling."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Benchmark v1: train ContrastRoot with cross-lineage convergent negatives; cross-fit lineage-stratified shrinkage calibration; compare held-out AUROC versus barcode-only and target-weighted ECE."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Benchmark v1: ContrastRoot AUROC 0.78 versus barcode-only 0.72, target-weighted ECE 0.047; negative-free ablation: AUROC 0.82, ECE 0.034."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n28",
+      "content": "Investigate ContrastRoot’s negative-free advantage on benchmark v1: compare negative-mining ablations by convergent-pair AUROC and target-weighted ECE."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Benchmark v1: barcode-verified cross-lineage negatives improved overall/convergent-pair AUROC to 0.83/0.86 versus negative-free 0.82/0.76; target-weighted ECE was 0.044."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "How sensitive is ContrastRoot’s 0.86 convergent-pair AUROC to 5% false negatives among barcode-verified cross-lineage pairs?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "With 5% false negatives, verified ContrastRoot retains convergent-pair AUROC ≥0.82 versus negative-free 0.76, with target-weighted ECE ≤0.05."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Spike 5% false negatives into benchmark v1 verified cross-lineage training pairs; compare held-out convergent-pair AUROC and target-weighted ECE against negative-free."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "With 5% false negatives, verified ContrastRoot retained convergent-pair AUROC 0.83 versus negative-free 0.76; target-weighted ECE was 0.048."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Advance verified-negative ContrastRoot over naive and negative-free variants to real-lineage validation: convergent AUROC 0.83, target-weighted ECE 0.048 at 5% contamination."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 42,
+      "exploration_parent_id": "g1",
+      "content": "Develop AnchorForest: impute dropped edits using barcode-anchored, convergence-filtered RNA neighbors; enforce tree-consistent ancestry and capture-stratified calibration."
+    },
+    {
+      "id": "n38",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "p4",
+      "content": "Can AnchorForest impute missing edits without merging convergent lineages while keeping capture-stratified ECE ≤0.05 under 10:1 sampling and 30% dropout?"
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "AnchorForest’s convergence-filtered imputation yields ≥0.05 pair-AUROC gain over barcode-only and capture-stratified ECE ≤0.05 under 30% dropout, 10:1 sampling."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "On benchmark v1, ablate AnchorForest’s convergence filter; assess edit recovery, false merges, pair-AUROC versus barcode-only, and capture-stratified ECE."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "On benchmark v1, mask 30% of edits and compare filtered versus unfiltered AnchorForest imputation by edit recall and false-merge rate."
+    },
+    {
+      "id": "n42",
+      "type": "artifact",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "AnchorForest imputation audit v1 tabulates filtered/unfiltered edit recall (74%/81%) and false-merge rates (3%/14%) at 30% masking."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n40",
+      "content": "Using AnchorForest imputation audit v1, test how filtered versus unfiltered false merges affect pair-AUROC against barcode-only and capture-stratified ECE."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Benchmark v1: filtered/unfiltered AnchorForest (3%/14% false merges) achieved pair-AUROC 0.80/0.74 versus barcode-only 0.72; worst capture-stratum ECE 0.044/0.092."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Advance filtered AnchorForest to real-lineage validation: benchmark v1 achieves AUROC 0.80 versus 0.72 barcode-only and worst-stratum ECE 0.044."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Develop TripletGuard: use irreversible-edit triplet constraints to bound ancestry, then resolve ambiguous pairs with lineage-balanced, convergence-suppressed RNA likelihood ratios."
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "p5",
+      "content": "On benchmark v1, ablate TripletGuard’s triplet constraints and RNA suppression; compare AUROC against barcode-only and target-weighted ECE."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Using AnchorForest audit v1’s false-merge rates, compare TripletGuard triplet/RNA ablations and filtered AnchorForest against barcode-only pair-AUROC and capture-stratified ECE."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Audit-matched held-out trees, 30% dropout/10:1 sampling: TripletGuard AUROC/worst-stratum ECE 0.82/0.041; no-triplets 0.75/0.084; unsuppressed-RNA 0.77/0.071; filtered AnchorForest 0.76/0.069; barcode-only AUROC 0.72."
+    },
+    {
+      "id": "n49",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Adding triplet vetoes to filtered AnchorForest will restore worst-stratum ECE ≤0.05 on audit-matched trees, with pair-AUROC ≥0.77."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "On audit-matched trees, add triplet vetoes to AnchorForest’s audit v1 filtered-imputation arm; compare worst-stratum ECE and pair-AUROC against no-veto."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "On audit-matched trees, triplet-veto AnchorForest achieved pair-AUROC 0.79 and worst-stratum ECE 0.045, versus 0.76 and 0.069 without vetoes."
+    },
+    {
+      "id": "n52",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Prioritize TripletGuard (AUROC/worst-stratum ECE 0.82/0.041) for real-lineage validation; include veto-rescued AnchorForest (0.79/0.045), CaptureClock and verified ContrastRoot."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "refute",
+      "target": "n39"
+    },
+    {
+      "source": "n49",
+      "relation": "revise",
+      "target": "n39"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Infer calibrated cell ancestry from incomplete lineage barcodes and transcriptional states despite state convergence and biased lineage sampling.",
+    "requirements": [
+      "Improve ancestral-pair AUROC by ≥0.05 over barcode-only inference with 30% barcode dropout.",
+      "Achieve ancestry-probability expected calibration error ≤0.05 under convergent states and uneven lineage sampling."
+    ]
+  }
+}

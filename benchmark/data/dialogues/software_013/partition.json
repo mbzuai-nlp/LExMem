@@ -1,0 +1,119 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1",
+        "pl1"
+      ],
+      "topic": "Profiled GPU sharing: slice and offload settings, benchmark result, and implementation plan",
+      "boundary_reason": "The settings are adopted and the implementation is planned; the next node begins implementation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "a2",
+        "ar1",
+        "a3",
+        "e2",
+        "d2"
+      ],
+      "topic": "ShareRun v0.1 optimizer-state manager and forced-eviction validation",
+      "boundary_reason": "The validated state manager is selected for integration; the discussion shifts to a lower-bandwidth alternative."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3",
+        "a5",
+        "e4"
+      ],
+      "topic": "Testing 8 GB/s overlapped prefetch with 0.5-ms slices and priority dispatch",
+      "boundary_reason": "The alternative's measurements conclude before a different sharing proposal begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h3",
+        "a6",
+        "e5",
+        "pl2"
+      ],
+      "topic": "MPS quota and queue-depth deferral: initial test and implementation plan",
+      "boundary_reason": "The tested configuration becomes a plan; the next node starts implementing it."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "a7",
+        "ar2",
+        "a8",
+        "e6"
+      ],
+      "topic": "ShareRun v0.2 implementation and burst-trace validation",
+      "boundary_reason": "Burst-trace results are reported; the next test changes focus to sustained saturation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "a9",
+        "e7",
+        "d3"
+      ],
+      "topic": "Saturation reveals training starvation under v0.2 deferral",
+      "boundary_reason": "The release is blocked and a scheduler revision is proposed next."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "pl3",
+        "a10",
+        "ar3",
+        "a11",
+        "e8",
+        "d4"
+      ],
+      "topic": "Guaranteed training service in v0.3 and its saturation result",
+      "boundary_reason": "The revised scheduler breaches the latency target, and production release is withheld; a new admission approach follows."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h4",
+        "a12",
+        "e9",
+        "d5"
+      ],
+      "topic": "Profiled admission slack for guaranteed training slots",
+      "boundary_reason": "The admission threshold is adopted; the discussion shifts to fixed MIG partitioning."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "a13",
+        "e10",
+        "h6",
+        "a14",
+        "e11",
+        "d6"
+      ],
+      "topic": "MIG partition sizing and model eligibility for optimizer paging",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

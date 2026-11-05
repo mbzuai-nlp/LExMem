@@ -1,0 +1,139 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Initial subgroup LP bounds and simulated gains over Manski bounds",
+      "boundary_reason": "The initial comparison ends with a decision to retain the weak-instrument grid and prioritize stronger first stages."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Sharpness certification and exact-projection coverage audit",
+      "boundary_reason": "The planned validation concludes with audited sharpness and coverage results."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "a4",
+        "e3",
+        "d2"
+      ],
+      "topic": "Sparse-cell stress test of pooled exclusion budgets",
+      "boundary_reason": "The coverage failure leads to a decision to use subgroup-specific budgets."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h2",
+        "a5",
+        "e4",
+        "l2",
+        "a6",
+        "r2"
+      ],
+      "topic": "Subgroup-specific exclusion budgets and validation atlas",
+      "boundary_reason": "The subgroup-budget approach reaches a validation artifact before the focus shifts to instrument–outcome confounding."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h3",
+        "a7",
+        "e5",
+        "a8",
+        "e6",
+        "d3"
+      ],
+      "topic": "Confounding sensitivity and the sparse-subgroup width limitation",
+      "boundary_reason": "The sparse-subgroup result prompts a restriction on width-gain claims."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "h4",
+        "a9",
+        "e7",
+        "l3",
+        "a10",
+        "r3"
+      ],
+      "topic": "Sample-size threshold and validation of confounding-sensitive bounds",
+      "boundary_reason": "The sample-size investigation concludes with a confounding-sensitivity atlas."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "a11",
+        "e8",
+        "a12",
+        "e9",
+        "d4"
+      ],
+      "topic": "Negative-control calibration and plug-in budget uncertainty",
+      "boundary_reason": "The stress test leads to a decision to replace plug-in budgets with simultaneous upper limits."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "h6",
+        "a13",
+        "e10",
+        "a14",
+        "e11",
+        "d5"
+      ],
+      "topic": "Simultaneous calibration limits and low control prevalence",
+      "boundary_reason": "The low-prevalence result qualifies the narrowing claim and motivates a prevalence condition."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "h7",
+        "a15",
+        "e12",
+        "a16",
+        "e13",
+        "a17",
+        "e14",
+        "d6"
+      ],
+      "topic": "Control prevalence, rare outcomes, and incidence-qualified narrowing",
+      "boundary_reason": "The incidence tests lead to a decision to limit narrowing claims to outcomes with incidence of at least 5%."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "l4",
+        "a18",
+        "r4",
+        "a19",
+        "e15",
+        "d7"
+      ],
+      "topic": "Final sharpness and coverage audit of control-calibrated LPs",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

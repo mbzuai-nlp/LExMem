@@ -1,0 +1,882 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Investigate whether language models can revise temporal inferences under corrected narratives while preserving uncertainty about underspecified event order.",
+      "requirements": [
+        "Achieve macro-F1 ≥0.85 classifying temporal claims as entailed, contradicted, or undetermined on unseen event structures.",
+        "Preserve ≥95% of previously correct temporal judgments unaffected by narrative corrections while updating affected judgments."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Have an LLM extract provenance-tagged temporal constraints, incrementally recompute affected closure after corrections, and classify claims by bidirectional reachability."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can provenance-tagged closure updates distinguish correction-dependent event orders from genuinely unspecified pairs without changing unrelated judgments?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Provenance-scoped closure will yield ≥0.85 macro-F1, ≥0.85 undetermined-class F1, and ≥95% unaffected-judgment retention on unseen event structures."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Test extraction-and-closure on TempoRev-500 graph-disjoint correction pairs with gold partial orders; measure macro-F1, undetermined F1, retention, and update accuracy."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "On TempoRev-500, closure achieved 0.88 macro-F1, 0.86 undetermined F1, 97% unaffected-judgment retention, and 90% corrected-claim update accuracy."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 7,
+      "exploration_parent_id": "h1",
+      "content": "Ablate provenance on held-out TempoRev-500 fork-join corrections; compare undetermined F1, affected-update accuracy, and unaffected-judgment retention against full closure."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 8,
+      "exploration_parent_id": "a2",
+      "content": "On fork-join cases, full closure scored 0.78 undetermined F1, 92% retention, 84% update accuracy; provenance ablation scored 0.66, 81%, 72%."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 9,
+      "exploration_parent_id": "h1",
+      "content": "Adding fork-join incomparability certificates to provenance-scoped closure will yield ≥0.85 undetermined F1, ≥95% unaffected retention, and ≥90% update accuracy."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "h2",
+      "content": "Implement fork-join incomparability certificates and rerun TempoRev-500’s held-out split, comparing undetermined F1, unaffected retention, and update accuracy."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "a3",
+      "content": "With incomparability certificates, held-out TempoRev-500 fork-join cases reached 0.87 undetermined F1, 96% unaffected retention, and 91% update accuracy."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "h2",
+      "content": "Evaluate certificate-guided closure on graph-disjoint TempoRev-Chain-200 three-correction narratives, measuring macro-F1, undetermined F1, unaffected retention, and update accuracy."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "a4",
+      "content": "On TempoRev-Chain-200, certificate-guided closure scored 0.81 macro-F1, 0.78 undetermined F1, 89% unaffected retention, and 82% update accuracy."
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "On unseen multi-correction narratives, fork-join certificates alone will yield <0.85 undetermined F1 and <95% unaffected retention."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "h3",
+      "content": "Add versioned dependency tracking to invalidate superseded constraints, then retest uncertainty and unaffected judgments across sequential corrections."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "l1",
+      "content": "Calibrate regression checks to e3’s 0.87/96% and e4’s 0.78/89% F1/retention; compare certificate-only and versioned invalidation on new chains."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "a5",
+      "content": "On held-out TempoRev-Chain-200 chains, certificate-only scored 0.79 undetermined F1 and 90% retention; versioned invalidation scored 0.86 and 96%."
+    },
+    {
+      "id": "t1",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "a5",
+      "content": "TempoRev-Chain-200 evaluation bundle contains gold partial orders, correction-version dependencies, fork-join certificates, and scripts reporting F1 and retention."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "h3",
+      "content": "Adopt versioned invalidation with fork-join certificates: certificates succeeded on fork-joins but failed on chains; versioning restored uncertainty and retention."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Fine-tune an LLM with correction-pair contrastive loss, explicit undetermined labels, and consistency regularization on unaffected event pairs."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can contrastive training teach an LLM to update correction-dependent claims while preserving undetermined orders and unaffected judgments on unseen structures?"
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "q2",
+      "content": "Contrastive fine-tuning will reach ≥0.85 macro-F1 and ≥0.85 undetermined F1 while retaining ≥95% unaffected judgments on graph-disjoint corrections."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "h4",
+      "content": "Audit TempoRev-Chain-200 gold orders and dependencies; test contrastively tuned LLM on graph-disjoint splits for macro-F1, undetermined F1, and retention."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "a6",
+      "content": "Audit verified gold correction dependencies; on graph-disjoint TempoRev-Chain-200, contrastive LLM achieved 0.86 macro-F1, 0.86 undetermined F1, 96% unaffected retention."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "h4",
+      "content": "Retain contrastive fine-tuning as a viable alternative: graph-disjoint results meet macro-F1, undetermined F1, and unaffected-retention thresholds."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 26,
+      "exploration_parent_id": "g1",
+      "content": "Use correction-aware evidence retrieval with a temporal NLI verifier and calibrated abstention for event pairs lacking ordering evidence."
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 27,
+      "exploration_parent_id": "p3",
+      "content": "Index narrative versions, train the temporal NLI verifier on correction-linked evidence, calibrate abstention, and test graph-disjoint classification and retention."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "l2",
+      "content": "Using TempoRev-Chain-200’s gold orders and dependencies, test version-filtered retrieval plus calibrated temporal NLI for macro-F1, undetermined F1, and retention."
+    },
+    {
+      "id": "t2",
+      "type": "artifact",
+      "order": 29,
+      "exploration_parent_id": "a7",
+      "content": "TempoRev-Retrieve v1 contains version-filtered evidence, temporal NLI predictions, abstention scores, and graph-disjoint F1 and retention reports."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "a7",
+      "content": "On graph-disjoint TempoRev-Chain-200, version-filtered retrieval and temporal NLI achieved 0.87 macro-F1, 0.88 undetermined F1, and 97% unaffected-judgment retention."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "l2",
+      "content": "Audit TempoRev-Retrieve v1 provenance; ablate version filtering and abstention on held-out chains, comparing macro-F1, undetermined F1, and retention."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a8",
+      "content": "On long-range chains, full retrieval scored 0.82 macro-F1 and 92% retention; removing version filtering lowered macro-F1 to 0.76."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "Defer retrieval-only deployment: aggregate scores pass, but long-range chains fall below macro-F1 and retention targets despite version filtering."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 34,
+      "exploration_parent_id": "g1",
+      "content": "Combine versioned constraint closure with contrastive LLM predictions, using graph reachability for long-range order and certificates for undetermined pairs."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 35,
+      "exploration_parent_id": "p4",
+      "content": "Does combining graph reachability with contrastive predictions improve long-range correction handling without misclassifying unlinked event pairs?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "q3",
+      "content": "On graph-disjoint long-range chains, hybrid closure–LLM inference will achieve ≥0.88 macro-F1, ≥0.85 undetermined F1, and ≥95% unaffected-judgment retention."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "h5",
+      "content": "Use e7’s aggregate baseline and e8’s long-range failure cases to benchmark hybrid inference on macro-F1, undetermined F1, and retention."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "a9",
+      "content": "On graph-disjoint long-range chains, hybrid inference reached 0.87 macro-F1, 0.86 undetermined F1, and 94% unaffected-judgment retention."
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "h5",
+      "content": "Gate LLM overrides by correction dependencies; predict ≥0.88 macro-F1, ≥0.85 undetermined F1, and ≥95% retention on long-range chains."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "h6",
+      "content": "Implement dependency-gated LLM overrides and rerun graph-disjoint long-range chains; measure macro-F1, undetermined F1, unaffected retention, and affected-update accuracy."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "a10",
+      "content": "Dependency-gated hybrid inference scored 0.89 macro-F1, 0.87 undetermined F1, 97% unaffected retention, and 92% affected-update accuracy on long-range chains."
+    },
+    {
+      "id": "l3",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "h6",
+      "content": "Test gated hybrid against baselines on unseen topologies with sequential retractions and disconnected pairs; audit uncertainty and retention."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "l3",
+      "content": "Using e10’s gated hybrid and TempoRev-Retrieve v1, compare methods on unseen retraction/disconnected-pair topologies: macro-F1, undetermined F1, retention."
+    },
+    {
+      "id": "t3",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "a11",
+      "content": "TempoRev-Retrieve v2 replaces v1’s retrieval-only reports with gated-hybrid comparisons on unseen retractions and disconnected pairs, including F1 and retention."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "a11",
+      "content": "On unseen long-range retraction/disconnected-pair topologies, gated hybrid achieved 0.90 macro-F1, 0.88 undetermined F1, 97% retention; retrieval achieved 0.83 macro-F1."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Adopt dependency-gated hybrid: gating corrected the initial retention shortfall and met F1 and retention targets on unseen retraction topologies."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Rebuild temporal SAT models after corrections; classify claims using dual satisfiability tests, retaining uncertainty when both orders remain possible."
+    },
+    {
+      "id": "l4",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "p5",
+      "content": "Encode event constraints as versioned SAT clauses, retract superseded clauses, probe both claim polarities, and compare classification and retention."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "l4",
+      "content": "Use TempoRev-Retrieve v2 splits and e8’s long-range failures to benchmark versioned SAT against gated hybrid: macro-F1, undetermined F1, retention."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "a12",
+      "content": "On v2 unseen topologies, versioned SAT achieved 0.86 macro-F1, 0.91 undetermined F1, and 98% unaffected-judgment retention."
+    },
+    {
+      "id": "t4",
+      "type": "artifact",
+      "order": 51,
+      "exploration_parent_id": "a12",
+      "content": "TempoSAT-v1 contains versioned temporal clauses, dual-satisfiability claim labels, and v2-split macro-F1, undetermined F1, and retention reports."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "p5",
+      "content": "Keep versioned SAT for uncertainty audits (0.91 undetermined F1, 98% retention); prefer hybrid’s macro-F1; retain contrastive alternative, defer retrieval."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "a2",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "refute",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "revise",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "relation": "revise",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a5"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a5",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "a5",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "t1"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "t1"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a7"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "t1"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "t2"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a8"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "t2"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "t2"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "revise",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "l3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a11"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "t2"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "t3"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "t3",
+      "relation": "revise",
+      "target": "t2"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "l4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a12"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "t3"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "t3"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "t4"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e12"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "d4"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Investigate whether language models can revise temporal inferences under corrected narratives while preserving uncertainty about underspecified event order.",
+    "requirements": [
+      "Achieve macro-F1 ≥0.85 classifying temporal claims as entailed, contradicted, or undetermined on unseen event structures.",
+      "Preserve ≥95% of previously correct temporal judgments unaffected by narrative corrections while updating affected judgments."
+    ]
+  }
+}

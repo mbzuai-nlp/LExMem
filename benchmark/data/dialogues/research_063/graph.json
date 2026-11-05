@@ -1,0 +1,1007 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop retrieval-augmented reasoning that revises multi-hop conclusions under corrected evidence while preserving conclusions unaffected by the correction.",
+      "requirements": [
+        "Improve corrected-answer accuracy by 10 percentage points over standard RAG given identical updated evidence.",
+        "Preserve at least 95% of previously correct answers whose supporting evidence remains valid."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Build DeltaTrace RAG: track claim-level evidence dependencies, recompute conclusions affected by corrected passages, and retain verified unaffected reasoning paths."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can DeltaTrace identify multi-hop claims affected by a corrected passage without invalidating independent supporting paths?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Explicit passage-to-claim dependencies and alternative-support tracking will yield ≥90% affected-claim recall and ≥95% unaffected-answer retention."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Construct DeltaTrace-500 with corrected passages, claim links, and alternative supports; implement selective invalidation and measure affected-claim recall and unaffected-answer retention."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run DeltaTrace and standard RAG on DeltaTrace-500 with identical corrected passages; score affected-claim recall, unaffected-answer retention, and corrected-answer accuracy."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On DeltaTrace-500, DeltaTrace achieved 92% affected-claim recall, 96% unaffected-answer retention, and 79% corrected-answer accuracy versus RAG's 67%."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Advance DeltaTrace to broader validation: its 12-point corrected-answer gain and 96% unaffected-answer retention meet both targets."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "DeltaTrace-500 evaluation report includes paired predictions and scripts reproducing 92% affected-claim recall, 96% unaffected-answer retention, and 79%-versus-67% accuracy."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Using DeltaTrace-500 report scripts, test 100 new alternative-support corrections and measure affected-claim recall and unaffected-answer retention."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On 100 new alternative-support corrections, DeltaTrace reached 83% affected-claim recall, below the hypothesized 90%, despite 96% unaffected-answer retention."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Entailment-checked cross-passage edges will lift alternative-support affected-claim recall from 83% to ≥90% while preserving ≥95% unaffected-answer retention."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Audit missed links, add entailment-checked cross-passage edges, and compare recall and retention against DeltaTrace on 200 held-out corrections."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Using DeltaTrace-500 report scripts, benchmark original and entailment-edge DeltaTrace on 200 held-out corrections for affected-claim recall and unaffected-answer retention."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "On 200 held-out mixed corrections, original DeltaTrace achieved 91% affected-claim recall and 96% retention; entailment-edge DeltaTrace achieved 94% and 95%."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Among 80 alternative-support corrections, entailment-edge recall reached 86% versus 83% originally, below the hypothesized 90%."
+    },
+    {
+      "id": "n15",
+      "type": "decision",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Defer deployment: the initial 12-point gain and 94% overall recall mask alternative-support recall rising only from 83% to 86%."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n12",
+      "content": "Held-out correction audit v1 contains paired predictions, alternative-support error labels, and recall/retention breakdowns for both DeltaTrace variants."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Develop TwinProof RAG: compare pre- and post-correction proof chains, revise contradicted steps, and retain independently reverified conclusions."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can TwinProof distinguish conclusions needing revision from those still justified by independent proof chains after a passage correction?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "TwinProof's paired-chain verification will improve corrected-answer accuracy by ≥10 points over standard RAG while retaining ≥95% valid answers."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Implement paired-chain verification; benchmark TwinProof against standard RAG on TwinProof-300 with identical updated evidence, measuring accuracy and retention."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Run TwinProof and standard RAG on TwinProof-300 with identical updated evidence; score corrected-answer accuracy and valid-answer retention."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "On TwinProof-300, corrected-answer accuracy reached 81% versus RAG’s 69% with identical evidence; valid-answer retention was 97%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n19",
+      "content": "Stress-test TwinProof against standard RAG on 120 alternative-support corrections with identical updated evidence; measure corrected-answer accuracy and valid-answer retention."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "On 120 alternative-support corrections, TwinProof achieved 76% corrected-answer accuracy versus RAG’s 69%, and 93% valid-answer retention."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Counterfactual chain interventions plus independent-support checks will exceed RAG accuracy by ≥10 points with ≥95% valid-answer retention on alternative-support corrections."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Add counterfactual chain interventions and independent-support checks; retest 120 alternative-support corrections against unchanged TwinProof and RAG baselines."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Implement TwinProof-CF and rerun the 120-case alternative-support test; score corrected-answer accuracy and valid-answer retention against unchanged baselines."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "On 120 alternative-support corrections, TwinProof-CF reached 80% accuracy versus RAG’s 69%, with 96% valid-answer retention."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n25",
+      "content": "Test TwinProof-CF against RAG on 200 held-out alternative-support corrections with identical updated evidence; score corrected-answer accuracy and valid-answer retention."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "On 200 held-out alternative-support corrections, TwinProof-CF scored 77% accuracy versus RAG’s 69%, with 94% valid-answer retention."
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Adding calibrated independent-support adjudication to TwinProof-CF will raise held-out accuracy from 77% to ≥79% and retention from 94% to ≥95%."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "Calibrate independent-support adjudication on development corrections, then compare TwinProof-CF with RAG on fresh alternative-support cases for accuracy and retention."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Calibrate support adjudication on 100 development cases; benchmark TwinProof-CF and RAG on 250 fresh corrections for accuracy and retention."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "On 250 fresh alternative-support corrections, calibrated TwinProof-CF scored 80% accuracy versus RAG’s 68%; valid-answer retention was 96%."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Manual adjudication of the same 250 cases found 77% corrected-answer accuracy and 93% valid-answer retention, below automated scores."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n31",
+      "content": "Blind-review scoring disagreements across 250 cases; compare calibrated and uncalibrated TwinProof-CF against RAG on manually scored accuracy and retention."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "After correcting disputed labels in 250 cases, calibrated TwinProof-CF scored 79.2% accuracy/95% retention; uncalibrated scored 77%/94%; RAG 68% accuracy."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n36",
+      "content": "Advance calibrated TwinProof-CF to replication, not deployment: audited accuracy exceeds RAG by 11.2 points with 95% retention despite scoring discrepancies."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "TwinProof-CF audit v2 contains 250 blind-reviewed cases, corrected labels, adjudication rules, and scripts reproducing 79.2% accuracy and 95% retention."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 42,
+      "exploration_parent_id": "g1",
+      "content": "Train ChangeGate RAG with synthetic passage edits, contrastive changed-answer pairs, and a stability loss for unaffected multi-hop answers."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "p3",
+      "content": "Can ChangeGate learn when an evidence edit changes a multi-hop answer without overreacting to irrelevant edits?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Contrastive edit training plus stability loss will give ChangeGate ≥10-point corrected-answer accuracy gain over RAG and ≥95% valid-answer retention."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Generate paired edits, train ChangeGate with contrastive and stability losses, then benchmark identical updated evidence against standard RAG."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "Train ChangeGate using audit v1 error labels and contrastive/stability losses; benchmark fresh corrections against RAG for accuracy and retention."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "On ChangeGate-400 fresh corrections, ChangeGate scored 81% corrected-answer accuracy versus RAG’s 69% with identical evidence; valid-answer retention reached 96%."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "Using audit v1 error labels, test ChangeGate on 150 new alternative-support and irrelevant edits; compare accuracy and retention with RAG."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "On 150 alternative-support and irrelevant edits, ChangeGate scored 74% accuracy versus RAG’s 69%, with 91% valid-answer retention."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p3",
+      "content": "Do ChangeGate’s synthetic stability pairs adequately represent edits that leave an alternative support path valid?"
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Adding verified alternative-support edits to stability training will yield ≥95% retention and ≥10-point accuracy gain over RAG on challenging edits."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Generate verified alternative-support stability pairs, retrain ChangeGate, and evaluate on held-out challenging edits against unchanged RAG."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "Use DeltaTrace audit v1 labels and TwinProof-CF audit v2 rules to retrain ChangeGate; benchmark challenging-edit accuracy and retention against RAG."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "On 200 challenging edits, audit-trained ChangeGate scored 80% versus RAG’s 69% and retained 96%; original ChangeGate retained 91%."
+    },
+    {
+      "id": "n51",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n50",
+      "content": "Advance audit-trained ChangeGate to independent replication, not original ChangeGate: challenging-edit accuracy gained 11 points over RAG with 96% retention."
+    },
+    {
+      "id": "n52",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "ChangeGate-AS v1 contains verified alternative-support training pairs, audit-derived labels, retraining configuration, and scripts for the 200-edit evaluation."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "g1",
+      "content": "Replicate calibrated TwinProof-CF and ChangeGate-AS independently; defer DeltaTrace for alternative-support recall gaps and defer deployment pending validation."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "revise",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "revise",
+      "target": "n40"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n51"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop retrieval-augmented reasoning that revises multi-hop conclusions under corrected evidence while preserving conclusions unaffected by the correction.",
+    "requirements": [
+      "Improve corrected-answer accuracy by 10 percentage points over standard RAG given identical updated evidence.",
+      "Preserve at least 95% of previously correct answers whose supporting evidence remains valid."
+    ]
+  }
+}

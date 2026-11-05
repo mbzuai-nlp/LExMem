@@ -1,0 +1,124 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Test whether 16 phase-resolved memory modes recover echoes across held-out and extrapolated pulse delays while conserving energy",
+      "boundary_reason": "The extrapolated-delay result challenges the 16-mode hypothesis, prompting a revised approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Evaluate adaptive 32-mode expansion on long delays and withheld three-pulse chirps",
+      "boundary_reason": "The chirped-history error motivates a new phase-rotation hypothesis."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Fit chirp-conditioned phase rotations, release EchoClosure-v1, and adopt the 32-mode closure",
+      "boundary_reason": "The Hamiltonian memory-mode approach reaches a decision; the next proposal uses Hermite moments."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Benchmark and select the reversible Hermite-moment closure for three-pulse chirps",
+      "boundary_reason": "The Hermite closure reaches a selection decision before a distinct Volterra-kernel proposal."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Test Volterra memory horizons and defer deployment after long-separation echo errors",
+      "boundary_reason": "The Volterra approach reaches a deployment decision before the waterbag proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Train adaptive waterbags and benchmark 30-period pulse separations",
+      "boundary_reason": "The next evaluation shifts from 30-period separations to withheld chirped four-pulse histories."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Stress-test waterbags on four-pulse chirps, publish WB-Chirp-OOD, and restrict deployment",
+      "boundary_reason": "The waterbag decision closes this approach before a latent-characteristic proposal."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Test whether 64 advected phase markers recover four-pulse chirped echoes",
+      "boundary_reason": "The 64-marker result misses the echo target, prompting a redistribution hypothesis."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Evaluate chirp-triggered 128-marker redistribution and adopt MarkerEcho-v1",
+      "boundary_reason": "The marker approach reaches a decision before the final cross-approach selection."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n50"
+      ],
+      "topic": "Select closures by forcing-history regime and defer Volterra",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

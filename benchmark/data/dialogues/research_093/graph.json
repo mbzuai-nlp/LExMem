@@ -1,0 +1,1022 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Characterize when staggered policy effects remain partially identifiable under network spillovers and bounded unmeasured adoption confounding.",
+      "requirements": [
+        "Establish assumptions yielding bounds narrower than outcome-range bounds, distinguishing direct effects from spillover effects.",
+        "Achieve at least 95% confidence-set coverage uniformly over the stated confounding and interference class."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Invert simultaneous exposure-specific sensitivity bands under overlap and Γ-bounded staggered adoption for nontrivial direct/spillover bounds with uniform 95% coverage."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What degree-growth and exposure-cell overlap rates preserve uniform 95% coverage and nontrivial direct/spillover bounds at Γ=1.5?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "With degree o(n^{1/8}) and exposure-cell probabilities ≥0.1, Γ=1.5 yields nontrivial direct/spillover bounds and uniform asymptotic ≥95% coverage."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Derive direct/spillover sensitivity linear programs and dependency-graph simultaneous bands; prove uniform coverage, then test degree/overlap thresholds."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Simulate 10,000 Γ=1.5 staggered panels across degree exponents 0.10–0.17 and minimum exposure-cell probabilities 0.05–0.20; measure simultaneous coverage and widths."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "At degree exponent 0.10 and overlap ≥0.10, 10,000 worst-case Γ=1.5 panels yielded 95.4% coverage; direct/spillover widths were 62%/71% of range."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Retain Γ=1.5, overlap ≥0.10, and degree o(n^{1/8}) as proof targets; simulated coverage supports feasibility, not uniformity."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "StaggerNetSim v1 contains Γ=1.5 panel simulations, degree/overlap grids, simultaneous-coverage estimates, and separate direct/spillover bound-width tables."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Use StaggerNetSim v1 panels to audit sensitivity-band inversion under adversarial adoption odds, measuring minimum simultaneous coverage and direct/spillover widths."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Under cohort-correlated, Γ=1.5-bounded adoption odds and 0.10 overlap, band inversion covered both effects in only 92.8% of 10,000 trials."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "For independent cohorts, degree o(n^{1/8}), and overlap ≥0.10, worst-case cohort-block Γ=1.5 bands ensure uniform ≥95% coverage and nontrivial direct/spillover bounds."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Derive worst-case cohort-block Γ=1.5 critical values and test 10,000 adversarial panels for joint coverage and direct/spillover widths."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "At n=800, cohort-block bands achieved 93.6% joint coverage across 10,000 independent-cohort Γ=1.5 panels (degree exponent 0.10; overlap 0.10)."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Invert finite-sample worst-case tests over independent-cohort Γ-bounded adoption laws, using exposure overlap and bounded drift for narrower direct/spillover intervals."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Impose exposure overlap and bounded drift; invert worst-case Γ=1.5 cohort-adoption tests, then prove direct/spillover narrowing and uniform 95% coverage."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Extend StaggerNetSim v1 with worst-case cohort-law enumeration and invert joint Γ=1.5 tests across its overlap and degree grids."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "StaggerNetSim v2 adds worst-case cohort-law test inversion, separate direct/spillover confidence sets, and coverage tables by degree and overlap."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Benchmark StaggerNetSim v2 against exhaustive four-cohort Γ=1.5 law enumeration; audit inversion correctness, joint coverage, and direct/spillover widths."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Exhaustive four-cohort Γ=1.5 audit found 95.0% minimum joint coverage; direct/spillover widths averaged 78%/86% of outcome-range bounds."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n13",
+      "content": "Using StaggerNetSim v2, audit worst-case-law optimization and prove uniform 95% joint coverage with direct/spillover narrowing under overlap and bounded drift."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Twelve independent-cohort, cross-linked Γ=1.5 networks showed 92.9% joint coverage across 10,000 trials (overlap 0.10; zero drift), exposing omitted exposure dependence."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "Which cross-cohort exposure-dependence restrictions preserve uniform 95% coverage without widening direct/spillover bounds to outcome-range widths?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "With ≤3-cohort exposure components, ≥0.10 overlap, and ≤0.05-range drift, joint Γ=1.5 enumeration ensures uniform ≥95% coverage and sub-range direct/spillover widths."
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Replace cohort-law inversion with joint ≤3-cohort exposure-component enumeration; prove finite-sample coverage and sub-range direct/spillover bounds under bounded drift."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Extend StaggerNetSim v2 to enumerate three-cohort exposure-adoption laws; audit Γ=1.5 coverage and direct/spillover widths at ≥0.10 overlap, ≤0.05-range drift."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Across 10,000 three-cohort Γ=1.5 panels (overlap ≥0.10; drift ≤0.05-range), minimum joint coverage was 95.1%; direct/spillover widths were 83%/91% of range."
+    },
+    {
+      "id": "n25",
+      "type": "artifact",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "StaggerNetSim v3 replaces cohort-independent inversion with joint ≤3-cohort exposure-law enumeration and separate direct/spillover coverage audits."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n22",
+      "content": "Stress-test StaggerNetSim v3 under cross-component adoption correlations; compare worst-case p-values against exhaustive six-cohort binary-adoption laws."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "On six-cohort adoption grids with cross-component correlation ≤0.15, v3 p-values exceeded exact values; minimum joint coverage was 95.2%."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n22",
+      "content": "Audit StaggerNetSim v3 against joint-law optimization; assess finite-sample superuniformity and sub-range direct/spillover bounds at ≥0.10 overlap, ≤0.05-range drift."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Shared adoption shocks (correlation 0.30) yielded 91.7% joint coverage across 10,000 Γ=1.5 panels with three-cohort components, overlap 0.10, drift 0.05-range."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Limit v3 to cross-component adoption correlation ≤0.15 and pursue joint-law calibration; 0.30-shock failures preclude unrestricted coverage claims."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n20",
+      "content": "Observed-shock-conditional independence of ≤3-cohort components, Γ=1.5, ≥0.10 overlap, and ≤0.05-range drift yield uniform 95% joint coverage and sub-range direct/spillover bounds."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Condition StaggerNetSim v3 on observed shocks; test joint-test superuniformity and simulate Γ=1.5 coverage and direct/spillover widths."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "At overlap ≥0.10 and drift ≤0.05-range, 10,000 shock-conditioned Γ=1.5 panels achieved 95.3% joint coverage; direct/spillover widths: 85%/93% of range."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Construct shock-conditional Γ=1.5 Horvitz–Thompson envelopes with bounded drift and component-level simultaneous 95% Hoeffding bands for direct/spillover effects."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "How many shock-conditionally independent exposure components make Γ=1.5 Horvitz–Thompson bands narrower than outcome-range bounds for both effects?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "At ≥4,000 shock-conditionally independent ≤3-cohort components and ≥0.10 overlap, Γ=1.5 envelopes yield sub-range direct/spillover widths and uniform 95% coverage."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Derive Γ=1.5 shock-conditional envelope bias and Hoeffding radii; prove uniform joint coverage and certify 4,000-component sub-range direct/spillover widths."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Compute worst-case Hoeffding radii at 1,000–8,000 independent components; verify Γ=1.5 direct/spillover widths and joint 95% coverage."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "At 4,000 independent components, the Γ=1.5 Hoeffding calculation certified ≥95% joint coverage and direct/spillover widths ≤94%/98% of range."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "ShockHT v1 records Γ=1.5 envelope formulas, component Hoeffding radii, and certified 4,000-component direct/spillover width thresholds."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n36",
+      "content": "Stress-test ShockHT v1 on 10,000 shock-conditioned Γ=1.5 panels with 4,000 components; audit joint coverage and direct/spillover widths."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "ShockHT v1’s marginal exposure weights yielded 93.1% minimum joint coverage across 10,000 shock-conditioned Γ=1.5 panels with 4,000 independent components."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Invert worst-case shock-conditional joint exposure-history Γ=1.5 tests; exploit overlap and bounded drift for uniformly covered, sub-range direct/spillover sets."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Specify bounded joint-history odds and shock-conditional independence; derive finite-sample test validity, certify sub-range widths, then stress-test 4,000 components."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Upgrade ShockHT v1 to enumerate Γ=1.5 joint exposure histories per component; calibrate worst-case tests across 4,000 shock-conditionally independent components."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "ShockHT v2 replaces marginal weights with joint exposure-history Γ=1.5 law enumeration and worst-case, shock-conditional confidence-set inversion."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Audit ShockHT v2 via exhaustive two-component joint-history laws and 10,000 four-thousand-component Γ=1.5 panels; measure joint coverage and widths."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "In 4,000-component Γ=1.5 panels, 0.10 marginal overlap concealed 0.01 joint-history cells; both widths reached outcome-range bounds despite 95.2% coverage."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "What minimum joint-history cell probability ensures both effect bounds remain sub-range at 4,000 components while retaining uniform 95% coverage?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "With 4,000 shock-conditionally independent components, joint-history overlap ≥0.10 and ≤0.05-range drift yield sub-range direct/spillover bounds and uniform ≥95% coverage."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Reproduce n46's 0.01-cell failure at 4,000 components; require ≥0.10 joint-history overlap, prove uniform 95% coverage and sub-range direct/spillover widths."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Using ShockHT v2, enumerate shock-conditional Γ=1.5 joint-history laws at overlap 0.01–0.15 and drift ≤0.05-range; calculate 4,000-component coverage and effect-specific widths."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "At joint-history overlap ≥0.10, 10,000 Γ=1.5 trials showed 95.3% minimum joint coverage; direct/spillover widths were ≤91%/97% of range."
+    },
+    {
+      "id": "n52",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "ShockHT v3 adds a ≥0.10 joint-history overlap check, drift constraints, and separate direct/spillover worst-case Γ=1.5 bound certificates."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n49",
+      "content": "Exhaustively enumerate small-network Γ=1.5 laws; audit ShockHT v3’s 95% joint coverage and sub-range direct/spillover certificates at 0.10 overlap."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Exhaustive six-cohort Γ=1.5 law enumeration found maximum joint-test rejection of 4.8% at 0.10 joint-history overlap."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n49",
+      "content": "Prove ShockHT v3 worst-case-test superuniformity and 4,000-component sub-range direct/spillover widths under ≥0.10 joint-history overlap and ≤0.05-range drift."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "At 4,000 components, ≥0.10 joint-history overlap and ≤0.05-range drift yield superuniform p-values, uniform ≥95% coverage, and sub-range direct/spillover widths."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "p4",
+      "content": "Adopt ShockHT v3 for ≥4,000 shock-conditionally independent components, ≥0.10 joint-history overlap, and ≤0.05-range drift: uniform 95% coverage, sub-range direct/spillover bounds."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n25",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n31",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "revise",
+      "target": "n39"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "revise",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n57"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Characterize when staggered policy effects remain partially identifiable under network spillovers and bounded unmeasured adoption confounding.",
+    "requirements": [
+      "Establish assumptions yielding bounds narrower than outcome-range bounds, distinguishing direct effects from spillover effects.",
+      "Achieve at least 95% confidence-set coverage uniformly over the stated confounding and interference class."
+    ]
+  }
+}

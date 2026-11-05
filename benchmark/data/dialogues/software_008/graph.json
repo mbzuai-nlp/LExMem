@@ -1,0 +1,796 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build an incremental Java taint analyzer preserving interprocedural soundness when edits change heap aliasing and virtual dispatch.",
+      "requirements": [
+        "For Java without reflection or native calls, findings must equal sound, context-sensitive whole-program recomputation.",
+        "Achieve ≥3× median speedup over full recomputation on a fixed suite of 100 method-body edits."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Maintain context-sensitive points-to and taint summaries with provenance-tracked heap and dispatch dependencies; retract stale facts and recompute affected SCCs."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which heap-alias and virtual-dispatch dependencies must invalidate context-sensitive summaries after a method-body edit?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Tracking points-to, heap read/write, receiver-type, and call-edge provenance yields zero missed context-sensitive summary invalidations versus whole-program recomputation."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Replay 100 AliasDispatch-100 method-body edits; compare invalidated summaries and taint findings against context-sensitive whole-program recomputation."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "On AliasDispatch-100, 100/100 edits matched recomputed findings; invalidation omitted zero changed context-sensitive summaries."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Select provenance-based invalidation for further development: AliasDispatch-100 showed no missed summaries; formal soundness and speed remain unverified."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Implement selected provenance invalidation; prove equivalence to sound whole-program fixpoints; test ≥3× median speedup on AliasDispatch-100."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Implement provenance-indexed retraction and affected-SCC recomputation, including newly introduced heap aliases and virtual call targets."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "IncrementalTaint v0.1 implements provenance-indexed summary retraction and affected-SCC recomputation, tracking newly introduced heap aliases and virtual targets."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "AliasDispatch-100 included 29 edits changing heap aliases and 17 changing virtual targets; nine changed both."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "Heap-alias and virtual-target changes never coincide in AliasDispatch-100, so each edit needs only one summary-invalidation path."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Run IncrementalTaint v0.1 on nine AliasDispatch-100 dual-change edits; trace heap and dispatch invalidations against whole-program summaries."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "All nine dual-change edits required both invalidation paths; tracing only heap or dispatch missed 3–8 changed summaries per edit."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p1",
+      "content": "Enforce combined heap and dispatch invalidation for dual-change edits, then verify fixpoint equivalence and ≥3× median speedup on AliasDispatch-100."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Implement unioned heap and dispatch invalidation in IncrementalTaint, then replay nine dual-change edits against whole-program summaries."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "IncrementalTaint v0.2 unions heap and dispatch invalidations before retracting summaries and recomputing affected SCCs."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Replay AliasDispatch-100 on v0.2, comparing changed summaries, taint findings, and per-edit runtime against context-sensitive whole-program recomputation."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Use differential Datalog with counted derivations and delete-and-rederive to maintain context-sensitive points-to, call-graph, and taint fixpoints."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can counted-derivation maintenance handle newly reachable virtual targets and heap aliases without recomputing every context-sensitive taint fact?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "For AliasDispatch-100 edits introducing aliases or virtual targets, counted DRed matches recomputed findings while revisiting <40% of context-sensitive facts."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Build counted DRed on IncrementalTaint v0.1; compare findings and revisited-fact fractions against recomputation for AliasDispatch-100 alias/target additions."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Across 31 AliasDispatch-100 alias/target additions, counted DRed matched recomputed findings; context-sensitive facts revisited: median 24%, maximum 38%."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Generate cyclic-alias and megamorphic-target variants of 31 passing edits; check v0.1 DRed finding parity and <40% fact revisits."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Replaying original AliasDispatch-100 edit A-17, which adds an alias, showed 46% fact revisits; earlier counts omitted recursive rederivations."
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n17",
+      "content": "Including recursive rederivations, counted DRed preserves finding parity on AliasDispatch-100 additions with median fact revisits ≤35%, allowing outliers."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Reinstrument v0.1 counted DRed to include recursive rederivations; rerun 31 AliasDispatch-100 additions against whole-program findings and ≤35% median revisits."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "With recursive rederivations counted, all 31 additions matched recomputed findings; median fact revisits were 32%, maximum 51%."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Advance counted DRed using corrected recursive-rederivation counts, not initial 24% estimates; 32% median revisits warrant benchmarking despite outliers."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Integrate counted DRed with heap and dispatch updates, prove fixpoint equivalence, and benchmark ≥3× median speedup on AliasDispatch-100."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Integrate counted DRed into IncrementalTaint v0.2; propagate retractions and additions through points-to, virtual-call, and taint rules."
+    },
+    {
+      "id": "n29",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "IncrementalTaint v0.3 integrates counted DRed with points-to, virtual-call, and taint rules, including recursive rederivation instrumentation."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Cache context-sensitive summaries behind heap-and-dispatch interface signatures; reanalyze affected contexts and fall back to full recomputation on uncertain dependencies."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Which heap-and-dispatch interface changes require reanalyzing cached caller contexts, and when must uncertain dependencies trigger full recomputation?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Signatures covering read/write points-to sets, receiver targets, and taint effects preserve findings while limiting full fallbacks to ≤10 edits."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Prototype signatures atop IncrementalTaint v0.3; replay AliasDispatch-100, measuring finding parity, caller-context invalidations, and full fallbacks."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "On AliasDispatch-100, signatures matched recomputed findings for 100/100 edits; eight triggered full fallback, with median 12 caller contexts invalidated."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Stress-test v0.3 signatures with cyclic aliases and overriding targets; compare findings and fallback counts against whole-program recomputation."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Sequential AliasDispatch-100 replay triggered 14/100 full fallbacks versus eight isolated, including cyclic-alias and overriding-target edits; findings matched."
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n30",
+      "content": "Adding transitive heap-alias and override provenance to signatures preserves sequential finding parity while limiting full fallbacks to ≤15/100 edits."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Add transitive alias and override provenance to v0.3 signatures; sequentially replay AliasDispatch-100, recording finding parity and fallback count."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Sequential AliasDispatch-100 replay with expanded signatures matched 100/100 recomputed findings and triggered 11 full fallbacks."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Adopt expanded signatures provisionally: 11 sequential fallbacks improve on 14, but earlier isolated eight cannot justify the original threshold."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "p3",
+      "content": "Integrate expanded signatures into v0.4, prove fallback-safe fixpoint equivalence, and measure ≥3× median speedup on sequential AliasDispatch-100."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Implement v0.4 expanded signatures atop IncrementalTaint v0.3, tracking transitive alias and override provenance with fallback for uncertain dependencies."
+    },
+    {
+      "id": "n42",
+      "type": "artifact",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "IncrementalTaint v0.4 caches context-sensitive summaries using transitive heap-alias and override signatures, with full-recomputation fallback on uncertain dependencies."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Sequentially replay AliasDispatch-100 on v0.4; compare finding parity, fallback triggers, and median runtime with whole-program recomputation."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Sequential AliasDispatch-100: v0.4 matched recomputed findings on 100/100 edits, triggered 11 fallbacks, and achieved 3.6× median speedup."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Select v0.4 as release candidate: 100/100 finding parity and 3.6× median speedup meet suite targets; formal soundness remains unproven."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "revise",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n39"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build an incremental Java taint analyzer preserving interprocedural soundness when edits change heap aliasing and virtual dispatch.",
+    "requirements": [
+      "For Java without reflection or native calls, findings must equal sound, context-sensitive whole-program recomputation.",
+      "Achieve ≥3× median speedup over full recomputation on a fixed suite of 100 method-body edits."
+    ]
+  }
+}

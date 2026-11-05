@@ -1,0 +1,125 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Pitch-adversarial embeddings for tonal voice conversion",
+      "boundary_reason": "Initial benchmark supports selecting the embeddings; discussion shifts to detailed prosody validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Thai/Yoruba source-prosody validation",
+      "boundary_reason": "The alignment and audio audit concludes; discussion shifts to large source–target F0 gaps."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Lexical-tone errors at large F0 gaps",
+      "boundary_reason": "The stratified result refutes the proposed tone-error increase; the next question concerns speaker acceptance."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Speaker-verification test at large F0 gaps",
+      "boundary_reason": "The verification report is produced; discussion turns to an alternative converter."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Envelope diffusion and glottal-tilt refinement",
+      "boundary_reason": "Glottal-tilt diffusion is selected; the next stage tests transfer to other unseen languages."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Cantonese/Vietnamese transfer test and report audit",
+      "boundary_reason": "The audit revises the prosody comparison; the next work benchmarks both converters on matched pairs."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n31",
+        "n32"
+      ],
+      "topic": "Matched comparison of the two converters",
+      "boundary_reason": "Matched-cohort metrics are reported; discussion shifts to potentially omitted vowel substitutions."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Vowel-aware audit and converter suspension",
+      "boundary_reason": "Corrected tone error leads to suspension; the next proposal redesigns the converter."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p3",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Formant-anchored diffusion redesign and ablation",
+      "boundary_reason": "The reaudit supports the dual-constraint design; the next test isolates large vowel-F2 gaps."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "High-F2-gap test and conditional reinstatement",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

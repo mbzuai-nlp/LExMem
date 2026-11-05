@@ -1,0 +1,141 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Test prototype-based detection of unfamiliar anatomy on held-out scanners",
+      "boundary_reason": "The detection criteria are met and prototype novelty scoring is retained; attention shifts to boundary calibration."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Calibrate and audit boundary uncertainty against annotator disagreement",
+      "boundary_reason": "The boundary-uncertainty audit reports its correlation and Dice results; the next discussion tests prototype stability across scanners."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Measure cross-scanner stability of anatomy prototypes",
+      "boundary_reason": "Familiar-tissue distance shifts exceed the proposed limit, motivating an alignment approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "a5",
+        "e4"
+      ],
+      "topic": "Evaluate scanner-conditioned prototype alignment",
+      "boundary_reason": "Alignment results are available; the next discussion introduces a different segmenter."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "l2",
+        "a6",
+        "r2"
+      ],
+      "topic": "Train a dual-head flow segmenter using scanner-conditioned alignment",
+      "boundary_reason": "FlowSeg v1 is packaged, and the next discussion evaluates whether it meets the performance targets."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "q3",
+        "h3",
+        "a7",
+        "e5",
+        "h4",
+        "a8",
+        "e6"
+      ],
+      "topic": "Evaluate FlowSeg and fine-tune its boundary head",
+      "boundary_reason": "Ranking-loss fine-tuning addresses the initial boundary-correlation shortfall; the next step is a direct model comparison."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "a9",
+        "e7",
+        "d2"
+      ],
+      "topic": "Compare tuned FlowSeg with BrainMRI-Cal and select FlowSeg",
+      "boundary_reason": "The comparison leads to a model choice; the next discussion explores diffusion as an alternative."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "q4",
+        "a10",
+        "e8"
+      ],
+      "topic": "Test diffusion-based novelty detection on unseen scanners",
+      "boundary_reason": "Novelty false-positive and small-cavity results are reported; boundary uncertainty remains a separate test."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "q5",
+        "h5",
+        "a11",
+        "e9",
+        "d3"
+      ],
+      "topic": "Test diffusion boundary uncertainty and decide whether to retain FlowSeg",
+      "boundary_reason": "Diffusion misses the boundary and Dice targets, so FlowSeg is retained; the next discussion proposes combining their components."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "l3",
+        "a12",
+        "r3"
+      ],
+      "topic": "Build diffusion-residual novelty gating for frozen FlowSeg",
+      "boundary_reason": "GatedFlowSeg v1 is packaged; the next discussion audits its held-out-scanner performance."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "a13",
+        "e10",
+        "a14",
+        "e11",
+        "d4"
+      ],
+      "topic": "Audit GatedFlowSeg and decide whether to adopt it",
+      "boundary_reason": "The comparative audits support adopting GatedFlowSeg; the next stage tests independent vendor cohorts."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "l4",
+        "a15",
+        "r4"
+      ],
+      "topic": "Prepare an independent vendor-scanner audit of GatedFlowSeg",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

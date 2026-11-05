@@ -1,0 +1,890 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn reward-improving policies in partially observed environments while certifying trajectory-level safety from finite offline data.",
+      "requirements": [
+        "Certify trajectory violation probability below 1% with 95% confidence under bounded observation-model uncertainty.",
+        "Exceed a supplied safe baseline’s positive expected return by 10% on specified benchmarks."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Optimize belief-state policies for baseline-relative reward using trajectorywise importance-weighted bounds and 95%-confidence risk certificates robust to bounded observation-kernel uncertainty."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can robust importance-weight bounds remain nonvacuous for sub-1% trajectory risk with 50,000 offline episodes and 0.02-TV observation uncertainty?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "For 20-step POMDPs, 50,000 episodes yield robust 95%-confidence risk bounds below 1% when importance-weight ESS exceeds 30,000."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Simulate 50,000-episode, 20-step POMDPs; stratify policies by ESS and compare robust 95%-confidence trajectory-risk bounds against 1% under 0.02-TV observation shifts."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run 200 seeded 20-step POMDP trials with 50,000 episodes, recording robust 95%-confidence risk bounds for ESS>30,000 under 0.02-TV shifts."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across 200 trials with ESS>30,000, median robust 95%-confidence trajectory-risk bound was 2.3% under 0.02-TV shifts; none fell below 1%."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "ESS alone is insufficient; observation-invariant actions at hazard-critical decisions should yield robust 95%-confidence risk bounds below 1%."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "In 200 50,000-episode POMDP trials, compare matched-ESS policies with and without hazard-critical observation-invariant actions using robust 95%-confidence trajectory-risk bounds."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Across 200 matched-ESS trials, hazard-invariant policies achieved 0.8% median robust 95%-confidence risk bounds versus 2.3% without invariance."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Using hazard-invariant policies with 0.8% median bounds, measure baseline-return gains and ESS-stratified certificates on Tiger-20 and SafeGrid-20."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Tiger-20/SafeGrid-20 benchmark report with baseline-relative returns, ESS-stratified 95%-confidence risk certificates under 0.02-TV observation shifts, and hazard-invariance ablations."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Can hazard-invariant policies improve positive baseline returns by at least 10% on Tiger-20 and SafeGrid-20 while certifying sub-1% risk?"
+    },
+    {
+      "id": "n12",
+      "type": "decision",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Select hazard-invariant policies only if the Tiger-20/SafeGrid-20 report shows ≥10% return gains and <1% individual risk certificates."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Fit finite-sample POMDP confidence sets including observation-kernel uncertainty, then robustly optimize baseline-relative reward subject to trajectory-risk constraints."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Fit offline POMDP confidence sets, optimize worst-case return under trajectory-risk constraints, then benchmark 95%-confidence certificates and ≥10% gains on Tiger-20/SafeGrid-20."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Extract baseline returns and ESS strata from the Tiger-20/SafeGrid-20 report; fit 0.02-TV observation-kernel confidence sets for matched optimization."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Tiger-20/SafeGrid-20 confidence-set package containing 0.02-TV observation-kernel sets, baseline returns, and ESS strata for robust optimization."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Validate 95%-confidence observation-set coverage under 0.02-TV uncertainty; compare robust optimization against hazard-invariant weighting for <1% risk and ≥10% baseline-relative gains."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On Tiger-20/SafeGrid-20, hazard-invariant weighting gained 12%/11% with 0.8%/0.9% 95%-confidence risk bounds; robust optimization gained only 6%/8%."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Select hazard-invariant weighting over robust optimization: both benchmarks meet the decision rule’s return and risk thresholds."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "Can occupancy-weighted observation ambiguity eliminate robust optimization’s return shortfall without weakening 95%-confidence sub-1% trajectory-risk certificates?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Occupancy-weighting reward uncertainty while retaining full 0.02-TV safety sets yields ≥10% baseline-relative gains and <1% certified risk on both benchmarks."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Using n15's 0.02-TV safety sets, optimize occupancy-weighted reward ambiguity on Tiger-20/SafeGrid-20; record baseline-relative gains and 95%-confidence risk bounds."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Optimize episode-level baseline/candidate mixtures using robust 95%-confidence component-risk bounds and offline returns to target 10% gains."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Can the baseline’s 95%-confidence risk slack accommodate the candidate mixing fraction needed for ≥10% gains on both benchmarks?"
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "Compute feasible mixing fractions from component 95%-confidence risk bounds and required fractions from offline returns on Tiger-20/SafeGrid-20."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Occupancy-weighted policies gained 11%/10.5% with 0.85%/0.92% 95%-confidence risk bounds; unsafe-candidate mixture caps 0.20/0.18 missed required 0.35/0.30."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Across held-out seeds, unsafe-candidate mixture risk caps remain below fractions needed for 10% returns on both benchmarks."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "On 100 held-out seeds per benchmark, compare mixture risk caps against fractions required for 10% baseline-relative return gains."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "On held-out seeds, mixture risk caps met 10%-gain fractions in 17/100 Tiger-20 and 11/100 SafeGrid-20 trials."
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "When baseline/candidate 95%-confidence risk bounds are ≤0.3%/2% and candidate gains ≥35%, mixtures achieve ≥10% gains below 1% risk."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Reanalyze initial and held-out Tiger-20/SafeGrid-20 mixtures meeting ≤0.3%/2% component-risk bounds and ≥35% candidate gains; test ≥10% gains under <1% risk."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "All 12 Tiger-20 and 8 SafeGrid-20 held-out mixtures meeting component thresholds gained ≥10%, with 95%-confidence risk bounds ≤0.96%."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n28",
+      "content": "Using n30’s thresholds, test 30% candidate mixtures on 200 fresh Tiger-20/SafeGrid-20 seeds for 95%-confidence risk <1% and baseline-relative gains ≥10%."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "In 7/200 fresh trials, marginal bounds met n28 with 35–38% gains; joint-95% bounds of 0.55%/2.4% precluded safe 10%-gain mixtures."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Joint-95% component-risk bounds ≤0.3%/2% and ≥35% candidate return gains yield 30%-candidate mixtures with ≤0.81% risk and ≥10.5% gains."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Use held-out episodes to verify joint-95% component-risk bounds ≤0.3%/2% and candidate-gain lower bounds ≥35% before certifying 30% mixtures."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Reassess n30/n32 cases against joint-95% risk thresholds (0.3%/2%) and ≥35% candidate-gain lower bounds; test 30%-candidate mixtures on holdouts."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Five holdouts (3 Tiger-20, 2 SafeGrid-20) met joint-95% gates; 30% mixtures had ≤0.79% risk bounds and ≥10.6% return-gain lower bounds."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Audit n36’s five eligible mixtures on 200 independent 0.02-TV kernels for joint-95% risk coverage and ≥10% gains."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Mixture audit table recording joint-95% certificate coverage and baseline-relative returns across 200 independent 0.02-TV kernels for five eligible policies."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n33",
+      "content": "Conditionally retain 30% mixtures: n36 supports the thresholds, but release requires n38’s audit to confirm ≥95% coverage and ≥10% gains."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Learn belief-state hazard shields under 0.02-TV observation shifts; optimize shielded reward with independent sub-1% trajectory-risk certificates."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Can belief-state hazard shields preserve ≥10% baseline-relative gains on Tiger-20 and SafeGrid-20 while certifying <1% risk under 0.02-TV shifts?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Shielding only belief states with >0.5% worst-case remaining-horizon hazard probability preserves ≥10% gains and <1% certified risk on both benchmarks."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Using n15’s confidence sets, test >0.5% worst-case remaining-horizon hazard shields on Tiger-20/SafeGrid-20; measure 95%-confidence risk bounds and baseline-relative gains."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Shielded Tiger-20/SafeGrid-20 policies gained 11.4%/10.8% over baseline, with 0.82%/0.91% robust 95%-confidence trajectory-risk bounds under 0.02-TV shifts."
+    },
+    {
+      "id": "n44",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n40",
+      "content": "Retain hazard-invariant weighting over shielding: both pass, but weighting delivers higher gains and tighter risk bounds on both benchmarks."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Apply baseline-anchored offline policy iteration with localized action substitutions, certifying incremental trajectory risk using finite-sample 0.02-TV-robust coupling bounds."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Estimate baseline risk slack, rank localized substitutions by offline advantage, then certify 95%-confidence 0.02-TV-robust coupling risk and benchmark ≥10% gains."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Rank local substitutions to n44-selected weighting by offline advantage per coupled risk, using n39’s audit-gated 30% mixture as comparator."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Tiger-20/SafeGrid-20 substitution ledger listing offline advantage, 0.02-TV coupled-risk increments, and rankings against audit-gated mixture policies."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n45",
+      "content": "Test n47’s top-five substitutions per benchmark on held-out episodes for <1% 95%-confidence 0.02-TV coupled-risk bounds and ≥10% baseline-relative gains."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Best substitutions gained 13%/12% on Tiger-20/SafeGrid-20, with 0.88%/0.96% robust 95%-confidence trajectory-risk bounds under 0.02-TV shifts."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "p5",
+      "content": "Adopt localized substitutions to hazard-invariant weighting over shielding and audit-gated mixtures: 13%/12% gains, with 0.88%/0.96% certified risk bounds."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "revise",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n44"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn reward-improving policies in partially observed environments while certifying trajectory-level safety from finite offline data.",
+    "requirements": [
+      "Certify trajectory violation probability below 1% with 95% confidence under bounded observation-model uncertainty.",
+      "Exceed a supplied safe baseline’s positive expected return by 10% on specified benchmarks."
+    ]
+  }
+}

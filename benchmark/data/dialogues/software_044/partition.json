@@ -1,0 +1,122 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "n1",
+        "a1",
+        "e1",
+        "a2",
+        "e2",
+        "d1",
+        "n2",
+        "a3",
+        "r1"
+      ],
+      "topic": "Restart fencing, DMA containment, and the effect of PCIe resets on 1 ms deadlines",
+      "boundary_reason": "The revised restart sequence and validation patch are complete; the discussion shifts to peer-to-peer DMA isolation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "q2",
+        "a4",
+        "e3",
+        "a5",
+        "e4",
+        "d2"
+      ],
+      "topic": "ACS validation, peer-DMA bypass, and admission of isolated IOMMU groups",
+      "boundary_reason": "The group-admission decision resolves the non-ACS bridge issue; the discussion shifts to recovery interference bounds."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h2",
+        "n3",
+        "a6",
+        "e5",
+        "a7",
+        "r2"
+      ],
+      "topic": "DMA bandwidth caps and compositional 1 ms deadline certificates",
+      "boundary_reason": "The assurance pack completes this interference analysis; the discussion shifts to stale completions and interrupts."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "q4",
+        "a8",
+        "e6",
+        "d3"
+      ],
+      "topic": "Generation-tagged completions and bounded MSI-X delivery across restarts",
+      "boundary_reason": "The completion and interrupt controls are adopted; the discussion shifts to hardware partitioning."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n4",
+        "a9",
+        "r3"
+      ],
+      "topic": "Partitioned PCIe root complexes and critical-device deadline certificates",
+      "boundary_reason": "The partitioned design has an assurance-pack update; the discussion turns to shared-firmware effects."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "q5",
+        "a10",
+        "e7",
+        "a11",
+        "e8",
+        "d4",
+        "n5",
+        "a12",
+        "r4"
+      ],
+      "topic": "Cross-root firmware pauses and hardware-only reset certification",
+      "boundary_reason": "The reset-path restriction and revised certificates are complete; the discussion shifts to shared DRAM controllers."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "q6",
+        "h3",
+        "n6",
+        "a13",
+        "e9",
+        "a14",
+        "e10",
+        "d5",
+        "n7",
+        "a15",
+        "r5"
+      ],
+      "topic": "Shared-DRAM interference, refresh conflicts, and disjoint-controller admission",
+      "boundary_reason": "Refresh-aware certificates address the DRAM-controller issue; the discussion shifts to coherence-fabric contention."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "q7",
+        "a16",
+        "e11",
+        "a17",
+        "e12",
+        "d6"
+      ],
+      "topic": "Shared coherence-fabric contention and recovery-DMA quotas",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

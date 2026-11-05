@@ -1,0 +1,1307 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Infer calibrated, multimodal 3D human motion from monocular video despite occlusion and previously unseen camera viewpoints.",
+      "requirements": [
+        "Attain 87–93% empirical coverage for nominal 90% motion regions under occlusion and unseen viewpoints.",
+        "Reduce prediction-region volume by 20% versus a calibrated unimodal predictor at matched coverage."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train visibility-aware, camera-equivariant motion diffusion; conformally calibrate compact unions of 3D trajectory tubes using held-out camera viewpoints."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which visibility-weighted nonconformity score calibrates unions of motion tubes across held-out viewpoints without filling gaps between modes?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "A minimum-over-modes visibility-normalized residual, calibrated by occlusion and camera-angle strata, maintains 87–93% coverage with 20% less volume than unimodal regions."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Compare pooled versus occlusion-and-viewpoint-stratified minimum-over-modes residual calibration on held-out-camera Human3.6M, measuring coverage and matched-coverage union volume."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run five-seed Human3.6M leave-one-camera-out trials with 40% joint occlusion; compare pooled/stratified coverage and matched-coverage volume against a unimodal baseline."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Across five held-out-camera Human3.6M seeds with 40% occlusion, stratified tubes covered 84% (nominal 90%); matched-coverage volume fell 12% versus unimodal."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "A camera-shift-weighted, visibility-normalized mode-minimum residual with mode pruning will achieve 87–93% coverage and ≥20% matched-coverage volume reduction versus unimodal."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Run Human3.6M leave-one-camera-out trials at 40% occlusion; evaluate shift-weighted calibration and mode pruning for coverage and matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "On Human3.6M held-out-camera trials with 40% occlusion, shift-weighted pruned tubes achieved 89% coverage and 23% lower matched-coverage volume than unimodal."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt shift-weighted, mode-pruned calibration: unlike the earlier 84% coverage result, it achieves 89% coverage and 23% lower matched-coverage volume."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Using adopted shift-weighted, pruned tubes, compare pooled versus occlusion-and-viewpoint-stratified calibration on held-out-camera Human3.6M for coverage and matched-coverage volume."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Human3.6M calibration report with per-camera coverage, matched-coverage volume, and pooled-versus-stratified comparisons for adopted shift-weighted, pruned tubes."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How can camera-equivariant diffusion preserve distinct 3D motion modes when occlusion hides limbs and the test camera is unseen?"
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Ablate equivariant conditioning and visibility masks in diffusion on held-out-camera Human3.6M at 40% occlusion; measure oracle MPJPE and diversity."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "On held-out-camera Human3.6M, masks plus equivariance lowered oracle MPJPE from 58 to 45 mm versus ablation, retaining 48-mm pairwise diversity."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Stress-test calibrated diffusion on 3DPW held-out azimuth bins with limb occlusion; measure mode recall, coverage, and matched-coverage volume."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "On 3DPW unseen-azimuth limb occlusion, tubes covered 81% (nominal 90%) and reduced matched-coverage volume only 9% versus unimodal."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n14",
+      "content": "Use n13’s per-camera calibration report to predict 3DPW azimuth failures; test predictions against occluded-mode recall and empirical coverage."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Report-flagged rear-oblique 3DPW bins showed 73% coverage and 54% occluded-mode recall, versus 88% and 76% elsewhere."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Retain masked equivariant diffusion, but defer cross-dataset deployment; prioritize rear-oblique mode recovery and recalibration after 3DPW failures."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 22,
+      "exploration_parent_id": "g1",
+      "content": "Add render-and-compare camera-latent inference and rear-oblique occlusion augmentation to diffusion; recalibrate recovered modes on shifted validation viewpoints."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "Can render-and-compare camera inference recover rear-oblique occluded modes without enlarging calibrated trajectory unions?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Camera-latent refinement and augmentation raise rear-oblique mode recall above 70%, yielding 87–93% 3DPW coverage and ≥20% smaller regions versus unimodal."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Ablate camera-latent refinement and rear-oblique augmentation on occluded 3DPW; measure mode recall, recalibrated coverage, and matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "On occluded 3DPW rear-oblique bins, mode recall reached 74%; recalibrated coverage was 89%, with 22% less volume than matched-coverage unimodal."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Adopt camera-latent refinement with rear-oblique augmentation and shifted-view calibration; 3DPW rear-oblique coverage reached 89% with 22% volume reduction."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Learn a camera-marginalized, action-conditioned normalizing flow with occlusion-aware particle smoothing; calibrate disconnected highest-density trajectory sets."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Does camera marginalization preserve rare action-dependent trajectory modes under occlusion while keeping highest-density sets compact on unseen viewpoints?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Particle-smoothed camera-marginalized flow retains ≥75% rare-action mode recall on occluded unseen-view 3DPW; regions achieve 87–93% coverage, ≥20% smaller than unimodal."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Run rare-action 3DPW unseen-azimuth occlusion trials; measure flow mode recall, 90% region coverage, and matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "On rare-action occluded 3DPW unseen azimuths, flow retained 61% mode recall and 85% coverage; matched-coverage volume decreased 14% versus unimodal."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Rare-action-stratified particles and camera-conditioned proposals yield ≥75% mode recall, 87–93% coverage, and ≥20% smaller regions than unimodal."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Ablate stratified particles and camera-conditioned proposals in camera-marginalized 3DPW flow; measure occluded unseen-view mode recall, coverage, and matched-coverage volume."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "On occluded unseen-view 3DPW, stratified flow achieved 78% rare-action mode recall, 90% coverage, and 21% lower matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n33",
+      "content": "Test stratified flow on disjoint 3DPW subjects and unseen azimuths with 60% occlusion; measure rare-action recall, coverage, and matched-coverage volume."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "On disjoint-subject 3DPW with unseen azimuths and 60% occlusion: 68% rare-action recall, 83% coverage, 13% smaller matched-coverage regions versus unimodal."
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Subject-invariant kinematic priors and occlusion-adaptive particles restore ≥75% rare-action recall, 87–93% coverage, and ≥20% volume reduction under 60% occlusion."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Ablate invariant priors and adaptive particle counts on disjoint-subject 3DPW at 60% occlusion; measure recall, coverage, matched-coverage volume."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "On disjoint-subject 3DPW at 60% occlusion, invariant-prior adaptive flow achieved 76% rare-action recall, 89% coverage, 22% lower matched-coverage volume."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n38",
+      "content": "Validate n40’s invariant-prior adaptive-flow checkpoint on new-subject, unseen-azimuth 3DPW at 60% occlusion; measure rare-action recall, coverage, matched-coverage volume."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "On new-subject, unseen-azimuth 3DPW at 60% occlusion, rare-action recall fell to 70%, coverage to 85%, volume reduction to 16%."
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Test-time bone-length adaptation of camera-marginalized particles restores ≥75% rare-action recall, 87–93% coverage, and ≥20% matched-coverage volume reduction."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Compare bone-length-adapted versus unadapted invariant-prior adaptive flows on new-subject unseen-azimuth 3DPW (60% occlusion); measure recall, coverage, matched-coverage volume."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Disjoint-subject unseen-azimuth controls replicated 76% recall, 89% coverage, 22% matched-coverage volume reduction; bone-adapted new-subject cases achieved 72%, 86%, 18%."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n43",
+      "content": "Stratify new-subject 3DPW at 60% occlusion by unseen azimuth and bone-length mismatch; measure adapted-flow rare-mode recall, coverage, and volume."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "On unseen-azimuth 3DPW at 60% occlusion, adapted flow achieved 77% rare-action recall, 89% coverage, 21% volume reduction for ≤5%-mismatch subjects."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Use bone-adapted flow only for ≤5%-mismatch subjects (89% coverage, 21% volume reduction); defer broader deployment after 86%/18% overall."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Combine subject-shape-marginalized inverse-kinematics ensembles with occlusion-aware conformal calibration to retain compact motion modes across unseen viewpoints."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p4",
+      "content": "Can shape-marginalized inverse kinematics recover occluded motion modes for >5%-mismatch subjects without inflating unseen-view prediction regions?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Under >5% shape mismatch and 60% occlusion, shape-marginalized IK achieves ≥75% rare-mode recall, 87–93% coverage, ≥20% smaller regions than unimodal."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Train shape-marginalized IK ensembles, calibrate occlusion-stratified trajectory unions, then test >5%-mismatch 3DPW subjects at unseen azimuths."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Evaluate calibrated shape-marginalized IK on >5%-mismatch 3DPW subjects with unseen azimuths and 60% occlusion; compare rare-mode recall and matched-coverage volume."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "On >5%-mismatch 3DPW unseen-azimuths at 60% occlusion, shape-marginalized IK: 77% rare-mode recall, 89% coverage, 22% less matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n52",
+      "content": "Using n54’s IK checkpoint, test disjoint >5%-mismatch 3DPW subjects at unseen azimuths and 60% occlusion for coverage, recall, matched-coverage volume."
+    },
+    {
+      "id": "n56",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Disjoint-subject 3DPW validation table listing rare-mode recall, nominal-90% coverage, and matched-coverage volume by bone-length mismatch and azimuth."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "Audit n56’s mismatch-by-azimuth table; replicate worst-bin IK trials at 60% occlusion against unimodal coverage and matched-coverage volume."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Worst-bin high-mismatch unseen-azimuth 3DPW replication at 60% occlusion: 87% coverage, 75% rare-mode recall, 20% lower matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 59,
+      "exploration_parent_id": "g1",
+      "content": "Train camera-invariant bidirectional motion bridges with foot-contact constraints to span occluded intervals; calibrate disconnected 3D trajectory regions."
+    },
+    {
+      "id": "n60",
+      "type": "question",
+      "order": 60,
+      "exploration_parent_id": "p5",
+      "content": "Do foot-contact constraints preserve multiple plausible trajectories across long occlusions without overconstraining motion from unseen camera angles?"
+    },
+    {
+      "id": "n61",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Contact-conditioned bridges achieve 87–93% coverage and ≥20% lower matched-coverage volume than unimodal on unseen-view 3DPW with ≥1-second occlusions."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Compare contact-conditioned bridges with contact-free bridges and calibrated unimodal predictors on unseen-view 3DPW ≥1-second occlusions; measure coverage and matched-coverage volume."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "On unseen-view 3DPW ≥1-second occlusions, contact-conditioned bridges covered 82% (nominal 90%) and reduced matched-coverage volume 11% versus unimodal."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n61",
+      "content": "Stratify unseen-view 3DPW long-occlusion trials by contact-label confidence; compare bridge mode recall, coverage, and matched-coverage volume against contact-free bridges."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "On unseen-view 3DPW ≥1-second occlusions with ≥0.9 contact confidence, bridges achieved 90% coverage and 22% lower matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "n66",
+      "type": "hypothesis",
+      "order": 66,
+      "exploration_parent_id": "n61",
+      "content": "Confidence-gated bridges applying contact constraints only above 0.9 confidence achieve 87–93% coverage and ≥20% volume reduction across long occlusions."
+    },
+    {
+      "id": "n67",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Run confidence-gated versus always-on contact bridges across unseen-view 3DPW ≥1-second occlusions; measure nominal-90% coverage and matched-coverage volume."
+    },
+    {
+      "id": "n68",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "Across unseen-view 3DPW ≥1-second occlusions, confidence-gated bridges achieved 89% coverage and 21% less matched-coverage volume than unimodal."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n66",
+      "content": "Freeze n68’s validated 0.9-confidence gate; evaluate on disjoint-subject unseen-view 3DPW ≥1-second occlusions for coverage and matched-coverage volume."
+    },
+    {
+      "id": "n70",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "On disjoint-subject unseen-view 3DPW ≥1-second occlusions, frozen-gate bridges covered 84% and reduced matched-coverage volume 15% versus unimodal."
+    },
+    {
+      "id": "n71",
+      "type": "hypothesis",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Subject-adaptive confidence thresholds from visible foot-ground reprojection restore 87–93% coverage and ≥20% matched-coverage volume reduction on disjoint-subject unseen-view long occlusions."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "Revisit n70’s disjoint-subject failures; estimate subject-specific contact gates from visible foot-ground reprojection, then compare coverage and volume against frozen gates."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "On disjoint-subject unseen-view 3DPW ≥1-second occlusions, adaptive gates reached 86% coverage and 18% volume reduction versus unimodal."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 74,
+      "exploration_parent_id": "n71",
+      "content": "Stratify adaptive-gate disjoint-subject 3DPW long occlusions by visible foot-ground reprojection error; measure mode recall, coverage, matched-coverage volume."
+    },
+    {
+      "id": "n75",
+      "type": "evidence",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "At ≤4-pixel foot-ground reprojection error, adaptive gates achieved 89% coverage and 21% lower matched-coverage volume on disjoint-subject unseen-view 3DPW."
+    },
+    {
+      "id": "n76",
+      "type": "hypothesis",
+      "order": 76,
+      "exploration_parent_id": "n75",
+      "content": "Restrict adaptive contact gating to ≤4-pixel reprojection error; elsewhere use contact-free bridges to maintain 87–93% coverage and ≥20% volume reduction."
+    },
+    {
+      "id": "n77",
+      "type": "activity",
+      "order": 77,
+      "exploration_parent_id": "n76",
+      "content": "Using n73’s deficits and n75’s ≤4-pixel stratum, test adaptive-gated/contact-free switching on disjoint-subject unseen-view 3DPW; measure coverage and matched-coverage volume."
+    },
+    {
+      "id": "n78",
+      "type": "evidence",
+      "order": 78,
+      "exploration_parent_id": "n77",
+      "content": "On disjoint-subject unseen-view 3DPW ≥1-second occlusions, switched bridges attained 88% coverage and 20% lower matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "n79",
+      "type": "decision",
+      "order": 79,
+      "exploration_parent_id": "n78",
+      "content": "Adopt ≤4-pixel adaptive-contact/contact-free switching: it restores 88% coverage and 20% volume reduction versus unimodal, outperforming adaptive gating alone."
+    },
+    {
+      "id": "n80",
+      "type": "plan",
+      "order": 80,
+      "exploration_parent_id": "n79",
+      "content": "Using the adopted ≤4-pixel switch, stratify long-occlusion 3DPW by azimuth; assess mode recall and contact violations, then recalibrate failing bins."
+    },
+    {
+      "id": "n81",
+      "type": "activity",
+      "order": 81,
+      "exploration_parent_id": "n80",
+      "content": "Stratify adopted ≤4-pixel-switch 3DPW long occlusions by unseen azimuth; measure mode recall, contact violations, coverage, and matched-coverage volume versus unimodal."
+    },
+    {
+      "id": "n82",
+      "type": "artifact",
+      "order": 82,
+      "exploration_parent_id": "n81",
+      "content": "3DPW azimuth-stratified audit table reporting switched-bridge mode recall, contact violations, nominal-90% coverage, and matched-coverage volume versus unimodal."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "revise",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "refute",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "revise",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n67",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "produce",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "support",
+      "target": "n66"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "refute",
+      "target": "n66"
+    },
+    {
+      "source": "n71",
+      "relation": "revise",
+      "target": "n66"
+    },
+    {
+      "source": "n71",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n71"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "refute",
+      "target": "n71"
+    },
+    {
+      "source": "n74",
+      "relation": "evaluate",
+      "target": "n71"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "n71"
+    },
+    {
+      "source": "n76",
+      "relation": "revise",
+      "target": "n71"
+    },
+    {
+      "source": "n76",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n77",
+      "relation": "evaluate",
+      "target": "n76"
+    },
+    {
+      "source": "n77",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n77",
+      "relation": "depend_on",
+      "target": "n75"
+    },
+    {
+      "source": "n77",
+      "relation": "produce",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "support",
+      "target": "n76"
+    },
+    {
+      "source": "n73",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n78",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n80",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n80",
+      "relation": "decompose",
+      "target": "n81"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n81",
+      "relation": "produce",
+      "target": "n82"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Infer calibrated, multimodal 3D human motion from monocular video despite occlusion and previously unseen camera viewpoints.",
+    "requirements": [
+      "Attain 87–93% empirical coverage for nominal 90% motion regions under occlusion and unseen viewpoints.",
+      "Reduce prediction-region volume by 20% versus a calibrated unimodal predictor at matched coverage."
+    ]
+  }
+}

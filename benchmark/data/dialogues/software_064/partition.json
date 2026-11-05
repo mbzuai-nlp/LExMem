@@ -1,0 +1,165 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Scoped positive and negative candidate-set dependencies for resolution changes",
+      "boundary_reason": "The candidate-set approach is adopted after the ResolutionFlip-1000 results."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Implementing and testing TypeCache v2",
+      "boundary_reason": "WorkspaceEdit-500 completes the initial implementation check; the next discussion examines transitive trait proofs."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Stale results caused by transitive where-clause proofs",
+      "boundary_reason": "TransitiveWhere-200 identifies a dependency missing from candidate-set tracking."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Tracking transitive trait proofs and rejecting SCC-wide invalidation",
+      "boundary_reason": "Proof tracking fixes stale results, but the decision rejects SCC-wide invalidation because reuse falls below the target."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Per-goal proof fingerprints and TypeCache v3",
+      "boundary_reason": "TypeCache v3 is integrated; the next proposal explores a different caching approach."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Constraint replay prototype and comparison with TypeCache v3",
+      "boundary_reason": "The benchmark and initial choice are recorded before broader coherence testing."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n33",
+        "n34"
+      ],
+      "topic": "Coherence fuzzing of TypeCache v3 and ReplayCache",
+      "boundary_reason": "The fuzz test exposes stale TypeCache v3 ambiguities; the next discussion turns to ReplayCache goal indexing."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Alias-dependent goal reindexing in ReplayCache",
+      "boundary_reason": "ReplayCache v2 implements the normalization-dependency fix; the next proposal addresses differential resolution."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Differential fixed points for cyclic proofs and coherence",
+      "boundary_reason": "The prototype meets parity and reuse targets, enabling an integration plan."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Integrating and testing DiffResolve v1",
+      "boundary_reason": "EditChain-1200 validates DiffResolve v1; the next proposal examines resolution certificates."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Candidate-absence certificates for wildcard reexports",
+      "boundary_reason": "Cyclic wildcard reexports refute the initial name-partitioned summary approach."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "SCC-aware visibility-path certificates",
+      "boundary_reason": "The revised certificates pass WildcardExport-400 and are adopted."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64"
+      ],
+      "topic": "DiffResolve v2 integration, mixed-edit validation, and release",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,1047 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a classifier robust to instance-dependent label noise without discarding difficult examples from underrepresented groups.",
+      "requirements": [
+        "Under 30% label corruption, improve worst-group accuracy by five percentage points over empirical risk minimization.",
+        "Establish identifiability conditions without requiring clean labels or known group membership during training."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train TriAnnot-DRO using three noisy labels independent given features and true class, posterior correction, and latent-group DRO without filtering."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which rank, label-anchoring, and group-separation assumptions identify TriAnnot-DRO's feature-dependent noise matrices and latent worst-group risk?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Full-rank, diagonally dominant annotators and three conditionally independent, group-separable feature-proxy views identify corruption and worst-group risk."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Prove tensor identifiability with full-rank, diagonally dominant annotators and three independent, separable group proxies; validate worst-group risk on 25%-noise mixtures."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Simulate 1,000 25%-noise mixtures; ablate annotator rank, diagonal dominance, proxy independence, and group separation; measure noise-matrix and worst-group risk errors."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Feature-stratum group swaps preserved observables with full-rank, diagonally dominant annotators and separable independent proxies, changing worst-group risk by 12 points."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Connected stratum overlap and invariant, distinct proxy signatures prevent group swaps, jointly identifying annotator noise and worst-group risk."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Prove noise and worst-group risk identifiability under connected overlap and invariant proxy signatures; construct counterexamples when either fails."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Tensor-alignment proof identifies noise and worst-group risk under connected overlap and distinct invariant signatures; removing either permits observationally identical swaps."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt overlap-gated, invariant-signature TriAnnot-DRO with n7’s 12-point swap counterexample as a mandatory negative control; n10 establishes identifiability."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Benchmark overlap-gated TriAnnot-DRO against ERM on 25%-corrupted Waterbirds, retaining all examples; evaluate held-out groups and n7’s swap-control."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Waterbirds-25 package includes overlap-gated TriAnnot-DRO code, all-example retention logs, held-out worst-group accuracy comparisons with ERM, and swap-control results."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Does overlap-gated TriAnnot-DRO improve Waterbirds-25 worst-group accuracy over ERM by at least five points while retaining every example?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Develop EnvShift-DRO: factor three environment-varying noisy label channels, align invariant class posteriors, and optimize latent-cluster worst-risk without filtering."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Derive three-environment identifiability conditions without clean labels or training-group labels; test EnvShift-DRO for five-point worst-group gains versus ERM on Waterbirds-25."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Reuse Waterbirds-25 package’s ERM comparisons and swap-control results to benchmark three-environment EnvShift-DRO’s worst-group accuracy and example retention."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "EnvShift-Waterbirds-25 report records three-environment worst-group accuracy versus ERM, retained-example counts, and swap-control outcomes."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Audit EnvShift-Waterbirds-25 against matched TriAnnot-DRO and ERM runs for worst-group accuracy, example retention, and swap-control failures."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "On Waterbirds-25, worst-group accuracy was 61% for ERM, 63% for TriAnnot-DRO, and 68% for EnvShift-DRO; both retained all examples."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Advance EnvShift-DRO for its seven-point gain, but retain TriAnnot-DRO’s proven identifiability conditions as a benchmark pending EnvShift-DRO’s proof."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Bootstrap Waterbirds-25’s two-point TriAnnot-DRO gain over ERM to test the five-point threshold and verify all examples were retained."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Waterbirds-25 bootstrap: TriAnnot-DRO gained 2 worst-group points over ERM (95% CI: 0–4), below five; all examples remained."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Which cross-environment overlap and rank conditions identify EnvShift-DRO’s noise channels and latent worst-group risk without clean or group labels?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "If overlap, invariant posteriors, and full-rank channels identify EnvShift-DRO’s noise and worst-group risk, its seven-point gain closes TriAnnot-DRO’s deficit."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Construct observationally equivalent three-environment models with full-rank noise channels, overlapping features, invariant posteriors, and distinct worst-group risks."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Three-environment counterexample preserves observed distributions, overlap, full-rank channels, and invariant posteriors, yet changes latent worst-group risk by 12 points."
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Independent, diagonally dominant annotation triplets and conditionally independent, distinct invariant group-proxy triplets with connected overlap identify noise and worst-group risk."
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Prove proxy-triplet overlap identifies noise and group risk, excluding n27’s ambiguity; bootstrap EnvShift-DRO against n23’s Waterbirds-25 ERM baseline."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Prove tensor identifiability across connected strata using annotation/proxy triplets; test whether removing proxy invariance recreates n27’s 12-point ambiguity."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Tensor proof identified noise and worst-group risk under full-rank annotations, invariant distinct proxies, and connected overlap; noninvariance restored 12-point ambiguity."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Prioritize proxy-augmented EnvShift-DRO: n31 supplies conditions excluding n27’s ambiguity, while n23 shows TriAnnot-DRO misses the accuracy target."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Build ProxyAlign-DRO: estimate identifiable noise and latent groups from annotation/proxy triplets, then optimize soft-group worst-risk on every example."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Implement ProxyAlign-DRO under n31’s identifiability conditions; test five-point Waterbirds-25 worst-group gains versus ERM without filtering or training-group labels."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Using EnvShift-Waterbirds-25’s ERM baseline and swap-control, train ProxyAlign-DRO without group labels; measure worst-group accuracy and example retention."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "ProxyAlign-Waterbirds-25 bundle contains training code, ERM-matched worst-group accuracy results, example-retention logs, and swap-control predictions."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Audit ProxyAlign-Waterbirds-25 for five-point worst-group improvement over ERM, zero discarded examples, and stable predictions on the swap-control."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "On Waterbirds-25, ProxyAlign-DRO achieved 69% worst-group accuracy versus ERM’s 61%, retained every example, and flagged the nonidentifiable swap-control."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "How sensitive is ProxyAlign-DRO’s eight-point worst-group gain to proxy dependence and sparse overlap among rare groups?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "With proxy residual correlations below 0.10 and at least 50 rare-group examples per overlap stratum, worst-group gains remain ≥5 points."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Using ProxyAlign-Waterbirds-25, sweep proxy residual correlations 0–0.15 and rare-group counts 20–100 per stratum; bootstrap worst-group gains versus ERM."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "At proxy residual correlation 0.08 and 50 rare-group examples per stratum, ProxyAlign-DRO gained only three worst-group points over ERM."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n40",
+      "content": "Replicate ProxyAlign-Waterbirds-25 at 0.08 proxy correlation and 50 rare-group examples across 30 seeds; estimate worst-group gain intervals."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Across 30 seeds at correlation 0.08 and 50 examples, mean worst-group gain was 5.8 points (95% CI: 5.1–6.5)."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Treat robustness as unresolved: n44’s replicated gain exceeds five points, but n42’s three-point failure warrants stratified diagnostics."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Develop BoundGuard-DRO: estimate dependence-aware risk bounds, certify identifiable strata, and optimize worst-group risk using all noisy examples."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Can BoundGuard-DRO certify a five-point worst-group gain at 0.08 proxy correlation without clean labels or training-group membership?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "At 0.08 proxy correlation and 50-example strata, BoundGuard-DRO’s dependence-aware bounds certify a five-point worst-group gain over ERM."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Derive dependence-aware bounds; test five-point ERM-relative certificates over 30 Waterbirds-25 seeds at 0.08 correlation and 50-example strata."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Fit BoundGuard-DRO across 30 Waterbirds-25 seeds; calculate 95% lower gain bounds versus ERM at 0.08 correlation, 50-example strata."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Across 30 Waterbirds-25 seeds, BoundGuard-DRO’s 95% lower gain bound was 5.2 points versus ERM at 0.08 correlation and 50-example strata."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n49",
+      "content": "Audit n51’s certificates for held-out coverage, calibration under proxy dependence, and rare-group retention across all 30 Waterbirds-25 seeds."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "BoundGuard audit ledger records seed-level gain bounds, held-out coverage, proxy-dependence calibration, and retained rare-group counts."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Audit ledger’s 95% coverage, dependence calibration, and retention; compare BoundGuard-DRO certificates with ProxyAlign-DRO’s conflicting three- and 5.8-point gains."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "BoundGuard audit: 29/30 held-out gains exceeded certified bounds of at least 5.2 points; proxy-correlation error was 0.02; all examples remained."
+    },
+    {
+      "id": "n56",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Advance BoundGuard-DRO for 0.08-correlated proxies: 29/30 held-out gains met certificates; retain n45’s robustness caveat beyond tested strata."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 57,
+      "exploration_parent_id": "g1",
+      "content": "Develop AuditVote-DRO: obtain independent noisy votes for sparse proxy strata, tensor-identify corruption, and optimize worst-group risk using every example."
+    },
+    {
+      "id": "n58",
+      "type": "plan",
+      "order": 58,
+      "exploration_parent_id": "p5",
+      "content": "Acquire independent votes in sparse strata; prove identifiability without clean labels or group membership; test five-point worst-group gains versus ERM."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Use BoundGuard audit ledger to select sparse strata; collect three independent noisy votes per selected example, then train AuditVote-DRO."
+    },
+    {
+      "id": "n60",
+      "type": "artifact",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "AuditVote-Waterbirds-25 bundle contains sparse-stratum vote triplets, annotator-independence checks, trained model, and per-example retention records."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Audit AuditVote-Waterbirds-25 vote independence and retention; compare AuditVote-DRO, EnvShift-DRO, and BoundGuard-DRO on matched worst-group accuracy."
+    },
+    {
+      "id": "n62",
+      "type": "evidence",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "On Waterbirds-25, AuditVote-DRO reached 71% worst-group accuracy versus EnvShift-DRO’s 68% and BoundGuard-DRO’s 69%; all examples remained."
+    },
+    {
+      "id": "n63",
+      "type": "question",
+      "order": 63,
+      "exploration_parent_id": "p5",
+      "content": "Do targeted vote triplets identify AuditVote-DRO’s corruption process and worst-group risk when unsampled sparse strata lack annotator overlap?"
+    },
+    {
+      "id": "n64",
+      "type": "hypothesis",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Full-rank triplet anchors spanning a shared logistic noise model, plus connected invariant proxies, identify unsampled-stratum corruption and worst-group risk."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Verify logistic-anchor rank in AuditVote-Waterbirds-25; prove unsampled-stratum identifiability under connected invariant proxies or construct counterexamples."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Two models with identical group-proxy signatures share observables despite full-rank spanning anchors and connected proxies; worst-group risks differ 11 points."
+    },
+    {
+      "id": "n67",
+      "type": "decision",
+      "order": 67,
+      "exploration_parent_id": "p5",
+      "content": "Defer AuditVote-DRO despite 71% accuracy: n66’s identical-signature ambiguity undermines identifiability; retain certified BoundGuard-DRO and proxy-augmented EnvShift-DRO."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "revise",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n58",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "refute",
+      "target": "n64"
+    },
+    {
+      "source": "n62",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n32"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a classifier robust to instance-dependent label noise without discarding difficult examples from underrepresented groups.",
+    "requirements": [
+      "Under 30% label corruption, improve worst-group accuracy by five percentage points over empirical risk minimization.",
+      "Establish identifiability conditions without requiring clean labels or known group membership during training."
+    ]
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1",
+        "l1",
+        "a2",
+        "r1"
+      ],
+      "topic": "Test and canary TPM-fenced revocation floors with overlapping rotation keys",
+      "boundary_reason": "The initial approach has a decision and Canary-R1 rollout bundle; discussion shifts to an alternative ticket design."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "h2",
+        "a3",
+        "e2"
+      ],
+      "topic": "Test verifier-side TPM-clock-checked tickets",
+      "boundary_reason": "The ticket test falls below the authentication threshold, prompting a different deadline proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "l2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Compare TPM-monotonic lease deadlines with heartbeat expiry",
+      "boundary_reason": "The comparison favors TPM-monotonic deadlines and raises a new question about regional renewals."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "h3",
+        "a5",
+        "e4",
+        "a6",
+        "e5"
+      ],
+      "topic": "Test regional renewals at checkpoint and revocation boundaries",
+      "boundary_reason": "A delayed-checkpoint test breaches the revocation limit, leading to a revised renewal cap."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "h4",
+        "a7",
+        "e6",
+        "d2",
+        "l3",
+        "a8",
+        "r2"
+      ],
+      "topic": "Validate and canary checkpoint-capped TPM renewals",
+      "boundary_reason": "Canary-R2 is assembled; discussion shifts to workload-side authorization."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "l4",
+        "a9",
+        "e7"
+      ],
+      "topic": "Benchmark sidecar offline grants against Canary-R2",
+      "boundary_reason": "The sidecar benchmark is complete; a distinct quorum-capability design follows."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "q3",
+        "h5",
+        "a10",
+        "e8",
+        "a11",
+        "e9"
+      ],
+      "topic": "Test quorum-signed capabilities through partitions and rollback",
+      "boundary_reason": "Global-only reissuance fails availability, while the age sweep motivates a revised regional approach."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "h6",
+        "a12",
+        "e10",
+        "d3",
+        "l5",
+        "a13",
+        "r3"
+      ],
+      "topic": "Validate and canary regional quorum capability reissuance",
+      "boundary_reason": "Canary-R3 is assembled; discussion shifts to an mTLS alternative."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "l6",
+        "a14",
+        "e11"
+      ],
+      "topic": "Compare checkpoint-capped mTLS with quorum capabilities",
+      "boundary_reason": "The comparison leads to a focused question about delayed trust-bundle propagation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "q4",
+        "h7",
+        "a15",
+        "e12",
+        "h8",
+        "a16",
+        "e13",
+        "d4",
+        "l7",
+        "a17",
+        "r4"
+      ],
+      "topic": "Test dual-key prepublication and acknowledgment gating, then assemble Canary-R4",
+      "boundary_reason": "Canary-R4 is assembled; the next step compares the canary bundles under lagged partition conditions."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "a18",
+        "e14",
+        "d5"
+      ],
+      "topic": "Compare Canary-R4 with Canary-R3 and decide which to promote",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

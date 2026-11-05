@@ -1,0 +1,900 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop tactile slip prediction that distinguishes impending grasp slip from elastic deformation across unseen materials and sensor wear.",
+      "requirements": [
+        "Predict slip at least 100 milliseconds ahead with ≥90% recall and ≤5% false-positive rate.",
+        "Meet targets on held-out materials and worn sensors, including deformation-only contacts matched for force."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a force-conditioned tactile model using shear-drift and strain-recovery signals, matched-force deformation negatives, and wear augmentation for 120-ms slip forecasts."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can force-conditioned shear-drift and strain-recovery cues distinguish incipient slip from force-matched elastic deformation on worn sensors?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Force-conditioned cues achieve ≥90% 120-ms slip recall at ≤5% false-positive rate on worn, unseen materials and force-matched deformation."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Collect force-matched slip/deformation trials; train a wear-augmented cue model; calibrate and test 120-ms forecasts on held-out materials and worn sensors."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run WearSlip-120 leave-material-and-wear-out testing, measuring 120-ms slip recall and false-positive rate on force-matched deformation-only contacts."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "WearSlip-120 held-out-material, worn-sensor tests achieved 92% 120-ms slip recall and 3.8% false-positive rate on force-matched deformation-only contacts."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt force-conditioned cue model for deployment testing: WearSlip-120 meets recall and deformation false-positive thresholds on held-out materials and worn sensors."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "After adoption, test closed-loop gripper interventions on unseen materials and worn sensors, measuring drop rate and deformation-triggered false interventions."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Run GripLoop-120 closed-loop trials on unseen materials with worn sensors, logging drops and force-matched deformation-triggered grip adjustments."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "GripLoop-120 archive contains worn-sensor tactile traces on unseen materials, intervention timestamps, drop labels, and force-matched deformation-triggered adjustment annotations."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Audit GripLoop-120 timestamp alignment and annotation completeness; calculate drop rate and deformation-triggered intervention rate from validated trials."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Audited GripLoop-120 held-out-material, worn-sensor trials cut drops from 8.4% to 2.1%, with 3.6% deformation-triggered interventions."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n1",
+      "content": "At 90% 120-ms slip recall, strain-recovery cues halve deformation false alarms versus shear-drift-only models on worn sensors."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Measure deformation false-positive rates for full versus shear-drift-only models at 90% 120-ms recall on WearSlip-120 held-out materials and worn sensors."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "On WearSlip-120 at 90% 120-ms recall, deformation false-positive rates were 3.3% versus 4.5% for shear-only, not halved."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p1",
+      "content": "Can per-contact normalization control abrasion-induced taxel gain drift without suppressing 120-ms slip precursors?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Ablate per-contact taxel normalization across WearSlip-120 wear levels; compare 120-ms recall and deformation false-positive rate against unnormalized input."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "WearSlip-120 normalization ablation report contains wear-stratified 120-ms recall and deformation false-positive rates against unnormalized baselines."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Forecast 120-ms slip from peripheral microslip-front propagation versus reversible strain, using per-session marker calibration to tolerate sensor wear."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Do peripheral microslip fronts precede grasp slip without appearing in force-matched elastic deformation, even after marker calibration on worn sensors?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Peripheral-front propagation predicts slip ≥120 ms ahead with ≥90% recall and ≤5% deformation false positives on worn sensors."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Using the normalization ablation report, measure calibrated microslip-front 120-ms recall and force-matched deformation false positives on worn, held-out WearSlip-120 contacts."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "WearSlip-120 calibrated fronts reached 91% 120-ms recall but 11% false positives on force-matched deformation-only worn-sensor contacts."
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Gating calibrated microslip fronts by short-window strain recovery reduces worn-sensor deformation false positives to ≤5% at ≥90% 120-ms recall."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Using the normalization-ablation report, compare strain-recovery-gated and ungated fronts' 120-ms recall and force-matched deformation false-positive rates on worn WearSlip-120 sensors."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "On worn, held-out WearSlip-120 contacts, recovery gating retained 90.5% 120-ms recall while reducing deformation false positives from 11% to 4.4%."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Retain the force-conditioned model as deployment baseline; advance recovery-gated fronts to comparison, given GripLoop drop reductions and WearSlip threshold compliance."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "p2",
+      "content": "Benchmark recovery-gated fronts against the retained baseline on worn, held-out WearSlip-120 trials, measuring 120-ms recall and force-matched deformation false-positive rates."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Score both frozen models on identical WearSlip-120 held-out-material, worn-sensor splits; tabulate 120-ms recall and deformation false-positive rates."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "WearSlip-120 paired-model scorecard lists frozen-model 120-ms recall and deformation false-positive rates by held-out material and sensor-wear level."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Audit WearSlip-120 scorecard splits and GripLoop-120 timestamps/labels; recompute per-wear recall, deformation false positives, drop and false-intervention rates."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Audited worst-wear held-out silicone: baseline achieved 85% 120-ms recall and 7% deformation false positives; gated fronts achieved 91% and 4.2%."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n26",
+      "content": "Replicate audited worst-wear silicone results across three sensor batches, comparing both models’ 120-ms recall and force-matched deformation false-positive rates."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Across three worst-wear silicone batches, gated fronts achieved 91–93% 120-ms recall and 3.8–4.6% deformation false positives; baseline missed thresholds."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "Does per-session marker calibration remain valid through progressive abrasion, or does front-timing drift erode the 120-ms warning?"
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Using three-batch benchmarks and the WearSlip-120 scorecard, measure recalibrated front-timing drift, 120-ms recall, and deformation false positives through abrasion."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n34",
+      "content": "After 4,000 within-session abrasion cycles, calibrated fronts drifted 28 ms; held-out silicone 120-ms recall fell to 84%."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "Defer deployment; pursue online recalibration for gated fronts because abrasion breaks recall, while the baseline already fails worst-wear thresholds."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Update marker calibration during stable-contact intervals when marker residual exceeds 2 pixels, retaining recovery-gated 120-ms slip forecasts."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Can stable-contact recalibration correct abrasion-induced front-timing drift without absorbing elastic deformation into the marker baseline?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Online stable-contact recalibration restores ≥90% 120-ms recall and ≤5% force-matched deformation false positives after 4,000 abrasion cycles."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Implement deformation-screened stable-contact recalibration; test 120-ms recall and force-matched deformation false positives after 4,000 abrasion cycles."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Select taxel normalization from WearSlip-120 ablation; implement stable-contact, deformation-screened marker updates triggered by >2-pixel residuals during abrasion trials."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "WearCal-v1 implements normalized, deformation-screened marker updates at >2-pixel residuals and logs update timing during abrasion trials."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Audit WearCal-v1 updates and compare 4,000-cycle drift, 120-ms recall, and force-matched deformation false positives against frozen calibration on held-out silicone."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "After 4,000 cycles, WearCal-v1 cut drift to 7 ms; held-out silicone reached 92% 120-ms recall, 4.3% force-matched deformation false positives."
+    },
+    {
+      "id": "n44",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "p3",
+      "content": "Does slow creep during 30-second holds pass WearCal-v1’s stable-contact screen and increase deformation false positives?"
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Challenge WearCal-v1 with 30-second force-matched creep holds after abrasion; audit update acceptance, deformation false positives, and 120-ms recall."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "In 30-second abrasion-aged creep holds, WearCal-v1 accepted 1.2% of deformation updates; false positives remained 4.7% at 91% 120-ms recall."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Resume closed-loop testing with WearCal-v1, not deployment: abrasion and creep pass thresholds, but prior GripLoop gains predate recalibration."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n22"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n11"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop tactile slip prediction that distinguishes impending grasp slip from elastic deformation across unseen materials and sensor wear.",
+    "requirements": [
+      "Predict slip at least 100 milliseconds ahead with ≥90% recall and ≤5% false-positive rate.",
+      "Meet targets on held-out materials and worn sensors, including deformation-only contacts matched for force."
+    ]
+  }
+}

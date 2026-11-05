@@ -1,0 +1,23 @@
+{
+  "generation": {
+    "model": "gpt-6-sol",
+    "base_url": "https://api.openai.com/v1",
+    "api_key_env": "OPENAI_API_KEY",
+    "service_tier": "flex",
+    "flex_on_unavailable": "pause",
+    "transient_retries": 5,
+    "timeout": 1800,
+    "reasoning_effort": "xhigh"
+  },
+  "filter": {
+    "model": "gpt-6-sol",
+    "base_url": "https://api.openai.com/v1",
+    "api_key_env": "OPENAI_API_KEY",
+    "service_tier": "flex",
+    "flex_on_unavailable": "pause",
+    "transient_retries": 5,
+    "timeout": 1800,
+    "reasoning_effort": "medium",
+    "max_completion_tokens": 4096
+  }
+}

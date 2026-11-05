@@ -1,0 +1,130 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Test whether shielded microdithers identify friction–clearance regimes in simulation",
+      "boundary_reason": "The simulation finding leads to a decision to advance to a real pilot."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Run and audit the 20-trial real microdither pilot",
+      "boundary_reason": "The pilot audit is complete; the next discussion examines a specific wrench cue."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Test release-phase wrench relaxation as a regime cue",
+      "boundary_reason": "The classification result falls below the hypothesized accuracy, prompting a different probe question."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "l2",
+        "a5",
+        "r2"
+      ],
+      "topic": "Benchmark alternative shielded probes for friction–clearance identification",
+      "boundary_reason": "The probe benchmark artifact is produced; the next discussion turns to spiral-search contact classification."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h3",
+        "a6",
+        "e4",
+        "d2"
+      ],
+      "topic": "Calibrate wrench-phase classification for compliant spiral search",
+      "boundary_reason": "The classification finding leads to a decision to test spiral recovery as a fallback."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "l3",
+        "a7",
+        "r3",
+        "a8",
+        "e5",
+        "a9",
+        "e6",
+        "d3"
+      ],
+      "topic": "Evaluate spiral fallback success and investigate missed jams",
+      "boundary_reason": "Pair-specific missed jams lead to a decision to address switch latency before deployment."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "l4",
+        "a10",
+        "r4",
+        "a11",
+        "e7",
+        "d4"
+      ],
+      "topic": "Retest faster phase-gated switching and decide on spiral fallback",
+      "boundary_reason": "The revised fallback is rejected; the next discussion introduces retract-realign recovery."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "q4",
+        "h4",
+        "a12",
+        "e8",
+        "d5"
+      ],
+      "topic": "Test wrench-gated retract-realign on challenging jams",
+      "boundary_reason": "Targeted jam recovery supports advancing to broader held-out validation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "l5",
+        "a13",
+        "r5",
+        "a14",
+        "e9",
+        "d6"
+      ],
+      "topic": "Validate retract-realign across held-out friction–clearance pairs",
+      "boundary_reason": "False retracts and insufficient insertion success lead to deferring deployment."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "q5",
+        "h5",
+        "a15",
+        "e10",
+        "d7"
+      ],
+      "topic": "Test sustained-risk gating and make the final deployment decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

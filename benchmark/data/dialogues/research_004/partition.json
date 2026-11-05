@@ -1,0 +1,134 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Testing state mixtures and inherited-edit gating for ancestry inference",
+      "boundary_reason": "The ablation results support retaining both components; the discussion shifts to calibration under lineage imbalance."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Propensity calibration and audit under 5:1 lineage imbalance",
+      "boundary_reason": "The audit finds a smaller AUROC gain than the initial simulation, prompting a revised training approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12"
+      ],
+      "topic": "Lineage-balanced contrastive training with convergent-state hard negatives",
+      "boundary_reason": "The retraining test is specified; the sequence shifts to a different ancestry model."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Benchmarking edit-event phylogenies with capture and velocity constraints",
+      "boundary_reason": "The ablation benchmark is reported; the next discussion isolates velocity robustness."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Testing uncertainty-weighted velocity constraints under direction-flip noise",
+      "boundary_reason": "The noisy-velocity result supports prioritizing the model; the focus moves to a held-out model comparison."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n21",
+        "n22"
+      ],
+      "topic": "Held-out comparison of contrastive and edit-event ancestry models",
+      "boundary_reason": "The comparison is reported; the next question concerns recurrent-edit homoplasy."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n23",
+        "n24"
+      ],
+      "topic": "Planning a homoplasy stress test for edit-event phylogenies",
+      "boundary_reason": "The stress test is specified; the sequence turns to a new homoplasy-aware proposal."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Initial benchmark of a homoplasy-aware co-edit graph transformer",
+      "boundary_reason": "The benchmark misses both targets, leading to an investigation of its errors."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Diagnosing hotspot-linked false lineage merges and calibration error",
+      "boundary_reason": "The hotspot analysis identifies a failure pattern; the next discussion tests a targeted correction."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Testing and adopting hotspot-weighted co-edit edges",
+      "boundary_reason": "The reweighting decision is made; the sequence moves to a Bayesian tree-ensemble proposal."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p4",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Ablating clone frequencies and RNA residuals in Bayesian tree ensembles",
+      "boundary_reason": "The component ablation is reported; the next stage audits held-out performance."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Lineage-held-out validation and selection of Bayesian tree ensembles",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

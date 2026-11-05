@@ -1,0 +1,121 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Test backscatter energy caps and adopt vorticity alignment",
+      "boundary_reason": "The cap revision reaches a decision; the next nodes begin a benchmark of the adopted approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Benchmark aligned caps and pose the unseen-width spectrum question",
+      "boundary_reason": "The benchmark produces a report and leaves a spectrum-error question; the next proposal introduces a different closure."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Compare deconvolution with aligned caps under matched nominal conditions",
+      "boundary_reason": "The matched-width comparison is assessed; the next activity shifts to stronger-forcing stress tests."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Stress-test deconvolution under stronger forcing",
+      "boundary_reason": "The stress-test finding leads to a deployment decision; the next proposal introduces a blended closure."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Tune a forcing-aware gate for blended backscatter",
+      "boundary_reason": "The revised gate is evaluated; the next proposal shifts to a wavelet flux network."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Train and benchmark a wavelet flux network",
+      "boundary_reason": "The benchmark finds a spectrum-error shortfall; the next proposal introduces an energy reservoir."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Tune the subgrid-energy reservoir turnover time",
+      "boundary_reason": "The turnover-time test yields a supported setting; the next activity broadens to closure comparisons."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Compare reservoir performance with other closures across forcing conditions",
+      "boundary_reason": "The comparisons address nominal-forcing and high-forcing performance; the next plan advances to independent-seed validation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Validate, select, and prepare long-horizon results for the reservoir closure",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

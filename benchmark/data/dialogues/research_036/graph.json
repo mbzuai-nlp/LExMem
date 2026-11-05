@@ -1,0 +1,919 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable cross-lingual morphological inflection transfer to low-resource languages with grammatical feature combinations absent from source languages.",
+      "requirements": [
+        "Use at most 200 labeled inflections per target language; evaluate on unseen lemmas.",
+        "Exceed matched-budget multilingual fine-tuning exact-match accuracy by five percentage points on source-absent feature combinations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "CompoMorph learns feature-wise edit operators from source paradigms, composes source-absent feature bundles, and calibrates using 200 target inflections."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can CompoMorph infer target-specific affix ordering for source-absent feature bundles from 200 labeled inflections?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Pairwise affix-order calibration from 200 target examples raises unseen-lemma exact match on source-absent bundles ≥5 percentage points over matched-budget fine-tuning."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Split UniMorph by lemma; train CompoMorph’s affix-order calibrator on 200 target forms; compare source-absent-bundle exact match against budget-matched multilingual fine-tuning."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run five-seed UniMorph lemma-disjoint trials across four targets, comparing calibrated CompoMorph’s source-absent-bundle exact match against matched-budget multilingual fine-tuning."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across four UniMorph targets, unseen-lemma source-absent-bundle exact match averaged 42.1% versus 40.0% for matched-budget fine-tuning (+2.1 points)."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Defer affix-order-only calibration because its +2.1-point gain misses the five-point threshold; investigate target-specific morphophonological edits."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n3",
+      "content": "After deferring affix-order-only calibration, classify five-seed UniMorph errors as affix misordering or stem alternation on source-absent bundles."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "UniMorph Error Atlas v1 tabulates affix-order and stem-alternation failures by target language and seed, with unseen-lemma examples."
+    },
+    {
+      "id": "n9",
+      "type": "question",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Do stem alternations account for over 50% of CompoMorph’s source-absent-bundle errors in UniMorph Error Atlas v1?"
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Audit 400 stratified errors in UniMorph Error Atlas v1, adjudicating stem-alternation versus affix-order labels and computing per-language shares."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Among 400 adjudicated source-absent-bundle errors, stem alternations were the primary cause in 228 (57%); affix misordering in 116 (29%)."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "With 200 target forms, feature-conditioned stem rewrites will raise CompoMorph’s unseen-lemma source-absent-bundle exact match to ≥45.1% versus 40.0% fine-tuning."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Can 200 target forms identify transferable stem-rewrite rules that improve exact match on unseen-lemma source-absent bundles?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "MetaStem adds context-conditioned stem rewrites to CompoMorph’s feature composition, meta-trained on source paradigms and adapted with 200 target forms."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Meta-train MetaStem on source paradigms, adapt with 200 target forms, then test unseen-lemma source-absent bundles against matched-budget fine-tuning."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Use UniMorph Error Atlas v1 to stratify unseen-lemma source-absent-bundle comparisons of CompoMorph, MetaStem, and matched-budget fine-tuning."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "MetaStem achieved 47.3% unseen-lemma source-absent-bundle exact match, versus CompoMorph’s 42.1% and matched-budget fine-tuning’s 40.0%."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n14",
+      "content": "Using UniMorph Error Atlas v1 stem-alternation strata, ablate MetaStem’s rewrites; measure unseen-lemma source-absent-bundle exact match across four targets."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "On Error Atlas stem-alternation strata, disabling MetaStem’s rewrites raised unseen-lemma exact match from 38.2% to 41.0%."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "Do MetaStem’s rewrites overgeneralize across unseen lemma classes, causing the 2.8-point ablation reversal on stem-alternation cases?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On unseen lemmas, MetaStem’s incorrect-rewrite rate is ≥2× higher for stem-final classes absent versus present in target training."
+    },
+    {
+      "id": "n21",
+      "type": "plan",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Stratify unseen UniMorph lemmas by stem-final class presence in 200 target forms; bootstrap MetaStem incorrect-rewrite rate ratios."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Gate MetaStem’s unseen-lemma stem-class audit on its 7.3-point overall gain and 2.8-point ablation reversal; bootstrap incorrect-rewrite ratios."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "On unseen lemmas, MetaStem’s incorrect-rewrite rate was 46% for training-absent stem-final classes versus 19% for represented classes (2.42×)."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Retain MetaStem’s 7.3-point overall gain, but disable rewrites for unrepresented stem-final classes after the ablation reversal and 2.42× error risk."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "ClassGate-MetaStem gates stem rewrites by stem-final classes observed in 200 target forms, falling back to CompoMorph otherwise."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Does ClassGate-MetaStem reduce errors on unrepresented stem-final classes without erasing MetaStem’s 7.3-point overall advantage?"
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "On unseen lemmas, ClassGate-MetaStem raises unrepresented-class exact match ≥3 points over MetaStem while retaining ≥45.1% overall source-absent-bundle accuracy."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Adapt ClassGate-MetaStem with 200 target forms; compare five-seed unseen-lemma subgroup and overall exact match against MetaStem and fine-tuning."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Implement approved gating; compare ClassGate-MetaStem, MetaStem, and fine-tuning on five-seed, 200-form UniMorph unseen-lemma subgroup and overall exact match."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "ClassGate-MetaStem achieved 44.5% versus 40.8% MetaStem exact match on unrepresented-class unseen lemmas; overall, 48.1% versus 40.0% fine-tuning."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n27",
+      "content": "Bootstrap per-language confidence intervals for ClassGate-MetaStem’s unrepresented-class gains over MetaStem and overall gains over fine-tuning, using approved-gate results."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Language-balanced unrepresented-class gains averaged +2.1 points (95% bootstrap CI: +0.4 to +2.8), below the predicted +3."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Retain ClassGate-MetaStem for its +8.1-point overall advantage; reject the ≥3-point language-balanced subgroup expectation given +2.1 points."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n26",
+      "content": "On held-out targets, ClassGate-MetaStem gains ≥1.5 language-balanced unrepresented-class points over MetaStem and ≥5 overall points over matched-budget fine-tuning."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "On held-out UniMorph targets, compare retained ClassGate-MetaStem with MetaStem and matched-budget fine-tuning using 200 forms; measure unseen-lemma subgroup/overall exact match."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Using +8.1 overall/+2.1 subgroup findings, test ClassGate-MetaStem against MetaStem/fine-tuning across four held-out UniMorph targets: 200 forms, unseen-lemma source-absent bundles."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Across four held-out targets, ClassGate-MetaStem gained +1.9 language-balanced unrepresented-class exact-match points over MetaStem and +6.2 overall over fine-tuning."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Approve retained ClassGate-MetaStem: held-out +6.2 points over fine-tuning exceeds the five-point goal; +1.9 subgroup points supports gating."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 42,
+      "exploration_parent_id": "g1",
+      "content": "PhonoGate replaces ClassGate-MetaStem’s binary gate with confidence-weighted nearest-class stem rewrites, retaining CompoMorph fallback under low similarity."
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "p4",
+      "content": "Tune PhonoGate’s similarity threshold within 200 target forms, then compare unseen-lemma source-absent-bundle exact match against ClassGate-MetaStem and fine-tuning."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Using UniMorph Error Atlas v1 strata, tune PhonoGate with 200 target forms; compare unseen-lemma source-absent-bundle accuracy against approved ClassGate-MetaStem."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "On four original UniMorph targets, PhonoGate reached 49.4% unseen-lemma source-absent-bundle exact match versus ClassGate-MetaStem’s 48.1%."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Does PhonoGate’s +1.3-point gain persist for unseen-lemma source-absent bundles on held-out targets with unfamiliar stem-final classes?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "On held-out targets’ unfamiliar stem-final classes, PhonoGate improves unseen-lemma source-absent-bundle exact match ≥1 point over ClassGate-MetaStem."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Freeze PhonoGate’s original-target threshold; evaluate unfamiliar stem-final classes on four held-out UniMorph targets with 200 forms and unseen lemmas."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Using PhonoGate’s +1.3-point original-target result and ClassGate-MetaStem’s held-out baseline, compare unfamiliar-class source-absent-bundle accuracy on unseen lemmas."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Across four held-out targets, PhonoGate reached 43.0% versus ClassGate-MetaStem’s 41.4% unfamiliar-class unseen-lemma source-absent-bundle exact match."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Adopt PhonoGate over approved ClassGate-MetaStem: it gains +1.3 points originally and +1.6 on held-out unfamiliar classes."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n43",
+      "content": "Audit adopted PhonoGate on four held-out targets: compare unseen-lemma source-absent-bundle exact match against matched-budget fine-tuning with 200 forms."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "PhonoGate Held-Out Audit v1 reports per-language unseen-lemma source-absent-bundle exact match against matched-budget fine-tuning, with 200-form budgets."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "revise",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable cross-lingual morphological inflection transfer to low-resource languages with grammatical feature combinations absent from source languages.",
+    "requirements": [
+      "Use at most 200 labeled inflections per target language; evaluate on unseen lemmas.",
+      "Exceed matched-budget multilingual fine-tuning exact-match accuracy by five percentage points on source-absent feature combinations."
+    ]
+  }
+}

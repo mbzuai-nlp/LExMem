@@ -1,0 +1,1369 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop unsupervised speech recognition accent adaptation that separates pronunciation shifts from speaker and channel variation without sacrificing existing accents.",
+      "requirements": [
+        "Reduce unseen-accent word error rate ≥15% relative to frozen recognizer using only unlabeled adaptation speech.",
+        "Limit existing-accent WER increases to one percentage point under independently varying speakers and channels."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train accent-gated phoneme residual adapters from confidence-filtered pseudo-labels with adversarial speaker/channel disentanglement and frozen-recognizer fallback for existing accents."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Does a 0.85 pseudo-label confidence cutoff discard systematic vowel shifts needed to train accent-gated phoneme residuals?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "A 0.85 cutoff excludes ≥40% of shifted-vowel frames; phoneme-balanced inclusion down to 0.70 should reduce unseen-accent WER."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Compare 0.85 filtering with phoneme-balanced 0.70 sampling on unlabeled AccentShift-12, measuring shifted-vowel retention and speaker/channel-stratified unseen/existing-accent WER."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Train AccentShift-12 adapters with 0.85 filtering versus phoneme-balanced 0.70 sampling; audit shifted-vowel retention and speaker/channel-stratified WER."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On AccentShift-12, 0.85 filtering excluded 44% of shifted-vowel frames; balanced 0.70 sampling lowered unseen-accent WER from 28.0% to 24.1%."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Provisionally prefer phoneme-balanced 0.70 sampling over 0.85 filtering for its 3.9-point WER gain; verify frozen-baseline and existing-accent constraints."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Benchmark provisionally selected balanced-0.70 adapters against frozen ASR, independently crossing held-out speakers and channels to test both WER constraints."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "AccentShift-12 benchmark report tabulating frozen versus balanced-0.70 WER across unseen/existing accents and independently crossed speaker/channel conditions."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Ablate speaker/channel adversaries under both AccentShift-12 sampling policies; measure nuisance-probe accuracy and crossed-speaker/channel WER."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Adversaries reduced balanced-0.70 existing-accent WER from 13.4% to 12.6% across independently crossed speakers/channels; frozen scored 11.0%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 13,
+      "exploration_parent_id": "g1",
+      "content": "Add speaker/channel-invariant accent-novelty gating to balanced-0.70 adapters, routing low-novelty utterances to frozen ASR to protect existing accents."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "p2",
+      "content": "Calibrate speaker/channel-invariant novelty on unlabeled adaptation and existing-accent speech; route familiar utterances to frozen ASR, then audit crossed-speaker/channel WER."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n11",
+      "content": "Calibrate novelty gate at the existing-accent 95th percentile using unlabeled audio; compare routed WER against n8's crossed-condition frozen baselines."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "AccentShift-12 gate-calibration report recording the 95th-percentile novelty threshold, routing rates, and crossed-condition WER against frozen baselines."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Does the 95th-percentile novelty threshold route too many unseen-accent utterances to frozen ASR to achieve 15% relative WER reduction?"
+    },
+    {
+      "id": "n15",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "At the 95th-percentile gate, ≥85% unseen-accent adapter routing should yield ≥15% relative WER reduction without >1-point existing-accent regression."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Evaluate n13’s 95th-percentile gate on AccentShift-12: measure unseen-accent adapter routing, frozen-relative WER, and crossed-condition existing-accent WER change."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On AccentShift-12, 87% of unseen-accent utterances reached adapters; WER fell 29.0%→24.3% (16.2% relative), while crossed-condition existing-accent WER rose 11.0%→11.5%."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n15",
+      "content": "Stress-test the 95th-percentile gate across held-out AccentShift-12 speaker/channel pairs; measure unseen-accent routing, frozen-relative WER, and existing-accent regressions."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On held-out mobile-channel speakers, unseen-accent routing was 68%, WER fell 30.0%→27.0%, and existing-accent WER rose 11.0%→12.3%."
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n15",
+      "content": "Channel-normalized phoneme-shift gating should yield ≥85% mobile unseen-accent routing, ≥15% frozen-relative WER reduction, and ≤1-point existing-accent regression."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Retest the original 95th-percentile gate on held-out far-field and headset cohorts, logging unseen-accent routing, frozen-relative WER, and existing-accent regression."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "On held-out far-field/headset cohorts, unseen-accent routing reached 86%; WER fell 28.0%→23.4% (16.4% relative), while existing-accent WER rose 11.0%→11.6%."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n20",
+      "content": "Fit a channel-normalized phoneme-shift gate on unlabeled speech; measure mobile unseen-accent routing, frozen-relative WER, and crossed-condition existing-accent WER."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "On crossed mobile-speaker/channel conditions, normalized gating routed 88% of unseen-accent utterances; WER fell 30.0%→25.2%, but existing-accent WER rose 11.0%→12.2%."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n20",
+      "content": "Sweep channel-normalized gate thresholds on crossed mobile-speaker/channel cohorts; chart unseen-accent WER reduction against worst-cohort existing-accent WER regression."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "At the 97th-percentile threshold, mobile routing reached 86%; WER fell 30.0%→25.4% (15.3% relative), while worst-cohort existing-accent WER rose 11.0%→11.9%."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 30,
+      "exploration_parent_id": "n20",
+      "content": "Select 97th-percentile channel-normalized gating: unlike the initial 1.2-point regression, it limits regression to 0.9 points with 15.3% relative WER improvement."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Train a phoneme-level adapter router on augmentation-consistent pronunciation shifts; revert speaker/channel-sensitive routing decisions to frozen decoding."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Does augmentation-consistency gating wrongly reject shifted consonants under mobile compression, eroding unseen-accent WER gains?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Compression-aware consistency training should retain ≥80% of shifted-consonant segments on mobile audio while keeping unseen-accent WER ≤25.5%."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Compare standard versus compression-aware consistency routers on AccentShift-12 mobile audio; audit shifted-consonant retention and frozen-relative unseen-accent WER."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Train standard and compression-aware consistency routers using unlabeled AccentShift-12 audio; score mobile shifted-consonant retention and unseen-accent WER."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "On mobile AccentShift-12, compression-aware routing retained 83% shifted consonants versus 69% standard; unseen-accent WER was 25.3% versus 26.6%."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Test compression-aware routing on held-out mobile codecs crossed with unseen speakers; measure shifted-consonant retention and unseen-accent WER."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "On held-out Opus mobile codecs and unseen speakers, compression-aware routing retained 74% shifted consonants and produced 26.1% unseen-accent WER."
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n29",
+      "content": "Codec-randomized articulatory-feature consistency should restore ≥80% shifted-consonant retention and ≤25.5% unseen-accent WER on held-out Opus speaker crosses."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Randomize training codecs and enforce articulatory-feature consistency; test held-out Opus consonant retention, unseen-accent WER, and existing-accent regression."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Train codec-randomized articulatory routers without Opus audio; evaluate shifted-consonant retention and unseen-accent WER on held-out Opus speaker crosses."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Held-out Opus speaker crosses retained 82% shifted consonants with codec-randomized articulatory routing; unseen-accent WER fell from 26.1% to 25.2%."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n35",
+      "content": "Provisionally select codec-randomized routing: initial mobile success failed on Opus, but retention recovered 74%→82% and WER 26.1%→25.2%; audit existing accents."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Benchmark codec-randomized routing against frozen ASR on AccentShift-12 speaker/channel crosses; report unseen-accent relative WER reduction and worst existing-accent regression."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "AccentShift-12 codec-router audit table comparing frozen and adapted WER per accent across independent speaker/channel crosses, with worst existing-accent regression."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Infer accent-specific pronunciation variants from unlabeled ASR lattices, marginalizing speaker/channel embeddings and preserving frozen decoding for familiar variants."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Mine unlabeled AccentShift-12 lattices for nuisance-marginalized pronunciation variants; gate variants against frozen decoding and audit crossed speaker/channel WER."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Extract top-20 phoneme paths per unlabeled utterance; cluster variant alignments after speaker/channel embedding subtraction and estimate accent-specific pronunciation weights."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "AccentShift-12 variant lexicon containing weighted phoneme alternatives, cluster support counts, and speaker/channel-adjusted lattice scores for gated decoding."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "What fraction of lexicon variants recur across independent speaker/channel cells rather than arising from lattice word-substitution errors?"
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Requiring variants in ≥3 independent speaker/channel cells should retain ≥70% genuine accent shifts while rejecting ≥60% word-substitution errors."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Manually audit 300 held-out AccentShift-12 lexicon variants; measure genuine-shift retention and substitution-error rejection under ≥3-cell speaker/channel support."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "In the 300-variant audit, ≥3-cell support retained 74% of genuine accent shifts and rejected 63% of lattice word-substitution errors."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n46",
+      "content": "Annotate 300 held-out Opus/headset lexicon variants across crossed speakers; measure ≥3-cell genuine-shift retention and substitution-error rejection."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "On 300 held-out Opus/headset variants, ≥3-cell support retained only 61% of genuine shifts, despite rejecting 66% of substitutions."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n46",
+      "content": "Codec-stratified two-cell support plus articulatory agreement should retain ≥70% genuine Opus/headset shifts while rejecting ≥60% substitutions."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Partition variant evidence by codec, require two independent speaker/channel cells and matching articulatory shifts, then audit substitutions and genuine variants."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Apply codec-stratified two-cell articulatory filtering to 300 held-out Opus/headset variants; score genuine-shift retention and substitution rejection."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "On 300 held-out Opus/headset variants, codec-stratified two-cell filtering retained 73% genuine shifts and rejected 62% substitutions."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n52",
+      "content": "Blind-audit 300 new Opus/headset variants across disjoint speakers, comparing two-cell articulatory filtering with three-cell support on retention and rejection."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "On 300 disjoint-speaker Opus/headset variants, two-cell filtering retained 75% genuine shifts but rejected only 54% substitutions."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n51",
+      "content": "Defer two-cell filtering for decoding: substitution rejection fell from 62% to 54% on disjoint speakers; strengthen error controls."
+    },
+    {
+      "id": "n58",
+      "type": "hypothesis",
+      "order": 63,
+      "exploration_parent_id": "n51",
+      "content": "Adding bidirectional lattice agreement to deferred two-cell filtering should retain ≥70% genuine shifts and reject ≥60% substitutions on disjoint speakers."
+    },
+    {
+      "id": "n59",
+      "type": "plan",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Add bidirectional lattice agreement to codec-stratified two-cell filtering; audit genuine-shift retention and substitution rejection on disjoint-speaker Opus/headset variants."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "Ablate bidirectional lattice agreement in two-cell filtering on disjoint-speaker Opus/headset variants; score genuine-shift retention and substitution rejection."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "On a new disjoint-speaker Opus/headset audit, two-cell filtering without bidirectional lattice agreement retained 72% genuine shifts and rejected 61% substitutions."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n59",
+      "content": "Apply bidirectional lattice agreement to two-cell Opus/headset variants from disjoint speakers; quantify genuine-shift retention and substitution rejection."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n62",
+      "content": "On the same disjoint-speaker Opus/headset audit, bidirectional agreement rejected 74% of substitutions but retained only 66% of genuine shifts."
+    },
+    {
+      "id": "n64",
+      "type": "decision",
+      "order": 69,
+      "exploration_parent_id": "n58",
+      "content": "Defer lexicon decoding: bidirectional agreement retains only 66% of genuine shifts, while two-cell substitution rejection varies 54%–61% across audits."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 70,
+      "exploration_parent_id": "n64",
+      "content": "Annotate 600 held-out lexicon variants; report cross-cell recurrence and substitution-error fractions across independent speakers, channels, and codecs without decoding."
+    },
+    {
+      "id": "n66",
+      "type": "artifact",
+      "order": 71,
+      "exploration_parent_id": "n65",
+      "content": "AccentShift-12 variant-audit dataset with 600 labeled candidates, speaker/channel/codec recurrence counts, and genuine-shift versus substitution-error tags."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 72,
+      "exploration_parent_id": "g1",
+      "content": "Train pronunciation-prototype adapters on unlabeled accent speech with speaker/channel-swapped views and worst-cell frozen-logit constraints on existing accents."
+    },
+    {
+      "id": "n67",
+      "type": "question",
+      "order": 73,
+      "exploration_parent_id": "p5",
+      "content": "Does worst-cell frozen-logit regularization suppress genuine pronunciation prototypes while protecting existing accents across speaker/channel crosses?"
+    },
+    {
+      "id": "n68",
+      "type": "hypothesis",
+      "order": 74,
+      "exploration_parent_id": "n67",
+      "content": "Familiar-prototype-only frozen-logit KL should preserve ≥80% shifted-phoneme coverage, ≥15% unseen-accent WER reduction, and ≤1-point worst-cell existing-accent WER regression."
+    },
+    {
+      "id": "n69",
+      "type": "plan",
+      "order": 75,
+      "exploration_parent_id": "n68",
+      "content": "Compare uniform versus familiar-prototype-only KL on unlabeled AccentShift-12; audit shifted-phoneme coverage and frozen-relative WER across speaker/channel crosses."
+    },
+    {
+      "id": "n70",
+      "type": "activity",
+      "order": 76,
+      "exploration_parent_id": "n69",
+      "content": "Reproduce n41's codec-router audit; compare uniform versus familiar-only KL on shifted-phoneme coverage and frozen-relative unseen/worst-existing WER."
+    },
+    {
+      "id": "n71",
+      "type": "evidence",
+      "order": 77,
+      "exploration_parent_id": "n70",
+      "content": "On AccentShift-12, familiar-only KL covered 83% of shifted phonemes; unseen WER fell 30.0%→25.2%, while worst-cell existing WER rose 11.0%→11.8%."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 78,
+      "exploration_parent_id": "n69",
+      "content": "Compare uniform and familiar-only KL with n41's codec-router audit on disjoint far-field/headset speakers; score shifted-phoneme coverage and unseen/worst-existing WER."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 79,
+      "exploration_parent_id": "n72",
+      "content": "Disjoint far-field/headset speakers: familiar-only KL covered 76% shifted phonemes; unseen WER fell 28.0%→24.2% (13.6% relative)."
+    },
+    {
+      "id": "n74",
+      "type": "hypothesis",
+      "order": 80,
+      "exploration_parent_id": "n68",
+      "content": "Downweight KL for swap-stable shifted prototypes to achieve ≥80% coverage, ≥15% unseen-WER reduction, and ≤1-point existing-WER regression on far-field/headset crosses."
+    },
+    {
+      "id": "n75",
+      "type": "plan",
+      "order": 81,
+      "exploration_parent_id": "n74",
+      "content": "Estimate prototype stability under speaker/channel swaps; relax KL only for stable shifts, then audit coverage and crossed-condition WER."
+    },
+    {
+      "id": "n76",
+      "type": "activity",
+      "order": 82,
+      "exploration_parent_id": "n75",
+      "content": "Benchmark swap-stability-weighted KL against n41's codec-router audit on disjoint far-field/headset speakers; measure shifted-phoneme coverage and unseen/existing WER."
+    },
+    {
+      "id": "n77",
+      "type": "evidence",
+      "order": 83,
+      "exploration_parent_id": "n76",
+      "content": "On disjoint far-field/headset speakers, swap-weighted KL covered 82% shifted phonemes; unseen WER fell 28.0%→23.6%, existing worst-cell WER rose 11.0%→11.8%."
+    },
+    {
+      "id": "n78",
+      "type": "activity",
+      "order": 84,
+      "exploration_parent_id": "n75",
+      "content": "Audit swap-weighted KL against n66's 600 labeled variants; measure genuine-shift coverage, substitution uptake, and far-field/headset crossed-condition WER."
+    },
+    {
+      "id": "n79",
+      "type": "evidence",
+      "order": 85,
+      "exploration_parent_id": "n78",
+      "content": "Against n66, swap-weighted KL covered 81% genuine shifts and admitted 8% substitutions; unseen WER fell 28.0%→23.7%, worst-existing WER rose 11.0%→11.8%."
+    },
+    {
+      "id": "n80",
+      "type": "decision",
+      "order": 86,
+      "exploration_parent_id": "n74",
+      "content": "Select swap-weighted KL over familiar-only KL: disjoint-speaker coverage recovered 76%→82%, unseen WER 24.2%→23.6%, existing regression stayed 0.8 points."
+    },
+    {
+      "id": "n81",
+      "type": "activity",
+      "order": 87,
+      "exploration_parent_id": "n80",
+      "content": "Validate selected swap-weighted KL on untouched AccentShift-12 speaker/channel crosses; measure shifted-phoneme coverage, frozen-relative unseen WER, and worst-cell existing regression."
+    },
+    {
+      "id": "n82",
+      "type": "artifact",
+      "order": 88,
+      "exploration_parent_id": "n81",
+      "content": "AccentShift-12 validation report with untouched speaker/channel-cross WER by accent, shifted-phoneme coverage, and frozen-baseline comparisons for swap-weighted KL."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "revise",
+      "target": "n51"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "refute",
+      "target": "n58"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n70",
+      "relation": "produce",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "support",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "refute",
+      "target": "n68"
+    },
+    {
+      "source": "n74",
+      "relation": "revise",
+      "target": "n68"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n75",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n76"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "n74"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n76",
+      "relation": "produce",
+      "target": "n77"
+    },
+    {
+      "source": "n77",
+      "relation": "support",
+      "target": "n74"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n74"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n78",
+      "relation": "produce",
+      "target": "n79"
+    },
+    {
+      "source": "n79",
+      "relation": "support",
+      "target": "n74"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n71"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n80"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n81",
+      "relation": "produce",
+      "target": "n82"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop unsupervised speech recognition accent adaptation that separates pronunciation shifts from speaker and channel variation without sacrificing existing accents.",
+    "requirements": [
+      "Reduce unseen-accent word error rate ≥15% relative to frozen recognizer using only unlabeled adaptation speech.",
+      "Limit existing-accent WER increases to one percentage point under independently varying speakers and channels."
+    ]
+  }
+}

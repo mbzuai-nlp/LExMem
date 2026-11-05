@@ -1,0 +1,1001 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop tactile slip prediction that distinguishes impending grasp slip from elastic deformation across unseen materials and sensor wear.",
+      "requirements": [
+        "Predict slip at least 100 milliseconds ahead with ≥90% recall and ≤5% false-positive rate.",
+        "Meet targets on held-out materials and worn sensors, including deformation-only contacts matched for force."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a wear-invariant 100-ms slip-hazard model on viscoelastic-corrected tactile shear, contrasting force-matched deformation-only contacts."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which viscoelastic-corrected shear features distinguish slip 100 ms ahead from force-matched elastic recoil under taxel wear?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Spatially propagating shear-residual fronts emerge ≥100 ms before slip but not force-matched recoil, even on unseen materials and worn taxels."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Run SlipRecoil-v1 leave-material-and-wear-out tests with force-matched recoil controls; measure ≥100-ms-ahead slip recall and deformation false-positive rate."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "On SlipRecoil-v1, held-out materials and worn taxels showed propagating fronts: 92% slip recall at 100 ms, 3.8% deformation false positives."
+    },
+    {
+      "id": "n7",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Select propagating shear-residual fronts as the primary cue: held-out 100-ms recall reached 92% with 3.8% deformation false positives."
+    },
+    {
+      "id": "n8",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Implement the selected shear-front predictor; test 100-ms recall and false positives on unseen materials, worn sensors, and force-matched recoil."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Train ShearFront-v1, calibrate its threshold on validation contacts, then measure 100-ms slip recall and recoil false positives on held-out materials/wear."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "ShearFront-v1 package contains the trained checkpoint, validation-calibrated threshold, and held-out material/wear report of 100-ms recall and recoil false positives."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Blind-test ShearFront-v1’s frozen checkpoint and threshold on unseen-material, worn-sensor slip and force-matched recoil trials; measure 100-ms recall and false-positive rate."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Blind ShearFront-v1 testing yielded 91% 100-ms slip recall and 4.2% false-positive rate on unseen materials, worn sensors, and force-matched recoil."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n3",
+      "content": "Noise-normalized shear-residual persistence over 40 ms distinguishes impending slip from force-matched recoil ≥100 ms ahead despite taxel wear."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Ablate shear-front features in SlipRecoil-v1; test 40-ms persistence alone on held-out materials, worn taxels, and force-matched recoil."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "On SlipRecoil-v1 unseen-material/worn-taxel held-outs, persistence alone yielded 83% 100-ms slip recall and 11% force-matched recoil false positives."
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Adding noise-normalized 40-ms persistence to ShearFront-v1 should cut worn-taxel recoil false positives below 4% while retaining ≥90% 100-ms recall."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "After persistence-only’s 11% false-positive rate, test fused ShearFront-v2’s 100-ms recall and recoil false positives on unseen-material/worn-taxel contacts."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "ShearFront-v2 achieved 92% 100-ms slip recall and 3.1% force-matched recoil false positives on held-out materials and worn taxels."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "p1",
+      "content": "Can viscoelastic baseline calibration preserve ShearFront-v2’s 100-ms sensitivity after additional taxel wear without labeled slip trials?"
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Calibrate per-taxel viscoelastic baselines using 60-second unlabeled stationary grips; test frozen ShearFront-v2 across wear stages and force-matched recoil."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Record 60-second stationary-grip baselines across wear stages; recalibrate taxels and blind-test frozen ShearFront-v2 on unseen-material, force-matched slip/recoil trials."
+    },
+    {
+      "id": "n22",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "WearCal-v1 bundles per-taxel baseline corrections and blind-test 100-ms recall and recoil false-positive reports by material and wear stage."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n21",
+      "content": "With unlabeled WearCal-v1 calibration, ShearFront-v2 achieved 91% 100-ms recall and 3.7% recoil false positives across unseen materials and wear stages."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 24,
+      "exploration_parent_id": "g1",
+      "content": "Train a physics-guided state-space model separating reversible strain from irreversible interfacial creep using force-matched negatives and wear augmentation."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "Can force-conditioned tactile relaxation distinguish interfacial creep from reversible strain before slip when material stiffness and taxel gain change?"
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Force-normalized irreversible-creep latent rises ≥100 ms before slip but remains low during force-matched recoil across unseen materials and wear."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Using WearCal-v1 corrections, train CreepState-v1; test creep-latent 100-ms recall and force-matched recoil false positives across unseen materials/wear."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "WearCal-v1-corrected CreepState-v1 achieved 91% 100-ms slip recall and 4.4% force-matched recoil false positives on unseen-material/worn-taxel trials."
+    },
+    {
+      "id": "n29",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Retain ShearFront-v2 as primary over CreepState-v1: both meet targets, but false positives are 3.1% versus 4.4%."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Retain ShearFront-v2 for alerts; ablate CreepState-v1’s creep latent across stiffness and taxel-gain shifts against force-matched reversible strain."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Stratify force-matched SlipRecoil-v1 trials by stiffness and taxel gain; ablate CreepState-v1’s creep latent, measuring 100-ms recall and recoil FPR."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "CreepAblate-v1 report tabulates creep-latent ablations, 100-ms slip recall, and force-matched recoil FPR by stiffness and taxel gain."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Re-score ShearFront-v1’s frozen checkpoint and threshold on CreepAblate-v1 stiffness/gain strata; compare 100-ms recall and force-matched recoil FPR."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "On unseen-material, worn-taxel high-stiffness strata, CreepState-v1 achieved 90% 100-ms recall/4.5% force-matched recoil FPR versus ShearFront-v1’s 85%/7.2%."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Using WearCal-v1, compare ShearFront-v2 and CreepState-v1 across unseen-material stiffness/wear strata; measure 100-ms recall and force-matched recoil FPR."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "On low-stiffness unseen materials and worn taxels, CreepState-v1 yielded 84% 100-ms recall and 8% force-matched recoil FPR; ShearFront-v2 achieved 92%/3.6%."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Keep ShearFront primary: v1 met overall targets, while CreepState’s high-stiffness advantage over v1 does not offset low-stiffness failure."
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "p2",
+      "content": "Force- and stiffness-normalized creep-to-recovery ratios should achieve ≥90% 100-ms recall and ≤5% recoil FPR on low-stiffness worn-taxel contacts."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Train CreepState-v2 with stiffness-normalized creep-to-recovery ratios; test 100-ms recall and force-matched recoil FPR on low-stiffness worn-taxel contacts."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "On low-stiffness, unseen-material worn-taxel contacts, CreepState-v2 reached 88% 100-ms recall and 6.1% force-matched recoil FPR, missing both targets."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Does stiffness-estimation error or overlapping bulk-relaxation and interfacial-creep trajectories cause CreepState-v2’s low-stiffness failure?"
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "On CreepState-v2’s failed low-stiffness trials, substitute measured stiffness; assess slip–recoil latent overlap, 100-ms recall, and force-matched recoil FPR."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Substituting measured stiffness raised CreepState-v2’s low-stiffness 100-ms recall to 91% and reduced force-matched recoil FPR to 4.7%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Probe contacts with 25-Hz subthreshold tangential micro-dither; predict slip from impedance phase lag versus force-matched recoil after wear calibration."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p3",
+      "content": "Collect 25-Hz micro-dither phase; apply WearCal-v1 and validate 100-ms slip recall and force-matched recoil FPR across held-out materials/wear."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "With WearCal-v1 corrections, record 25-Hz dither impedance on unseen-material/worn-taxel slip and force-matched recoil trials; fit phase-lag classifier."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "DitherPhase-v1 contains wear-corrected 25-Hz impedance traces, phase-lag classifier weights, and force-matched slip/recoil trial labels."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Blind-test DitherPhase-v1’s frozen classifier on held-out materials and wear; measure 100-ms recall, force-matched recoil FPR, and dither-induced slips."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Blind DitherPhase-v1: 93% 100-ms recall, 4.1% force-matched recoil FPR across held-out materials/wear; zero dither-induced slips in 300 recoil trials."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Keep WearCal-v1-calibrated ShearFront-v2 primary; reserve DitherPhase-v1 for uncertain contacts, trading 3.7% versus 4.1% FPR for 91% versus 93% recall."
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Gate 25-Hz dither to WearCal-v1-calibrated ShearFront-v2 probabilities within 0.1 of threshold; retest 100-ms recall and recoil FPR."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Trigger DitherPhase-v1 within ±0.1 of ShearFront-v2’s calibrated threshold; blind-test 100-ms recall, recoil FPR, and dither exposure across materials/wear."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "DitherPhase-v2 replaces always-on probing with ShearFront-v2 uncertainty gating; bundles WearCal-v1 corrections and blind-test recall, recoil-FPR, and dither-exposure reports."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n45",
+      "content": "Sweep 25-Hz dither amplitudes on held-out materials and worn sensors; measure phase separation, 100-ms recall, recoil FPR, and induced slips."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "On low-friction worn-sensor contacts, safe-amplitude dither gave 84% 100-ms recall and 8% recoil FPR; higher amplitudes induced slips."
+    },
+    {
+      "id": "n56",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Suppressing dither on low-friction worn-sensor contacts should let WearCal-v1-calibrated ShearFront-v2 achieve ≥90% 100-ms recall and ≤5% recoil FPR."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Disable DitherPhase-v2 probing on low-friction worn contacts; blind-test WearCal-v1-calibrated ShearFront-v2’s 100-ms recall and force-matched recoil FPR."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "On blind low-friction, worn-sensor trials with dither disabled, ShearFront-v2 achieved 91% 100-ms recall and 4.3% force-matched recoil FPR."
+    },
+    {
+      "id": "n59",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Revive gated dither outside low-friction worn contacts; disabling it there yielded 91% 100-ms recall and 4.3% recoil FPR."
+    },
+    {
+      "id": "n60",
+      "type": "question",
+      "order": 60,
+      "exploration_parent_id": "p3",
+      "content": "Can safe 25-Hz phase lag resolve borderline ShearFront-v2 slip/recoil decisions across unseen materials and worn sensors outside low-friction contacts?"
+    },
+    {
+      "id": "n61",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Outside low-friction contacts, gated 25-Hz phase lag should deliver ≥90% 100-ms-ahead recall and ≤5% recoil FPR on borderline decisions."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Blind-test DitherPhase-v2 on borderline non-low-friction unseen-material/worn-sensor contacts; measure 100-ms recall, force-matched recoil FPR, and dither-induced slips."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "On borderline non-low-friction held-outs, DitherPhase-v2 achieved 92% 100-ms recall, 4.2% force-matched recoil FPR, and zero induced slips."
+    },
+    {
+      "id": "n64",
+      "type": "decision",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Adopt revived gated dither outside low-friction contacts (92% recall/4.2% FPR); retain ShearFront-v2 inside (91%/4.3%), avoiding CreepState’s low-stiffness failures."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "revive",
+      "target": "n38"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n45"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "revise",
+      "target": "n47"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "revive",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n59"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop tactile slip prediction that distinguishes impending grasp slip from elastic deformation across unseen materials and sensor wear.",
+    "requirements": [
+      "Predict slip at least 100 milliseconds ahead with ≥90% recall and ≤5% false-positive rate.",
+      "Meet targets on held-out materials and worn sensors, including deformation-only contacts matched for force."
+    ]
+  }
+}

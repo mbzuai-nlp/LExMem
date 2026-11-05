@@ -1,0 +1,146 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Event-anchored diffusion, dataset creation, and initial benchmark",
+      "boundary_reason": "The initial benchmark identifies recall and contradiction failures, prompting a sampling revision."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Revised diffusion sampling and its adoption",
+      "boundary_reason": "The revised approach is adopted; discussion moves to category-level evaluation."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Diffusion category generalization and an open question about off-screen sounds",
+      "boundary_reason": "A new optical-contact retrieval proposal begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Optical-contact retrieval and its initial benchmark",
+      "boundary_reason": "The benchmark’s recall and contradiction shortfalls prompt an investigation of their causes."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Expanding and filtering retrieval candidates",
+      "boundary_reason": "Retrieval is reconsidered after the ablation; the next stage tests its generalization."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Leakage-audited retrieval comparison and diffusion selection",
+      "boundary_reason": "The comparison reaches a selection decision before a new causal-graph approach begins."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Causal event graph synthesis and initial results",
+      "boundary_reason": "Recall falls short, motivating calibration of causal-edge exclusions."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Soft-edge calibration and held-out graph evaluation",
+      "boundary_reason": "The calibrated graph is prioritized; discussion shifts to occluded clips."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Occlusion-aware graph test and diffusion comparison",
+      "boundary_reason": "The occlusion test concludes before a token-transformer proposal begins."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Boundary-supervised token transformer and initial model choice",
+      "boundary_reason": "The initial comparison concludes with diffusion primary; independent occlusion validation follows."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Independent occlusion validation and reopened model comparison",
+      "boundary_reason": "Independent results reopen the graph-versus-transformer choice; the next discussion examines transformer components."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Transformer ablations for overlapping occluded impacts",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

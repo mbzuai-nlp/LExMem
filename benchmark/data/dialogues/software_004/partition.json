@@ -1,0 +1,120 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1",
+        "pl1"
+      ],
+      "topic": "Design and test commit-indexed range invalidations with fenced replay watermarks",
+      "boundary_reason": "The range-cache approach is adopted and a separate implementation and latency benchmark is planned."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "a2",
+        "ar1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Benchmark and audit the fenced range cache under lag and failover",
+      "boundary_reason": "The benchmark and trace audit conclude before a different phantom-prevention approach is examined."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Test MVCC range-generation counters for phantom prevention",
+      "boundary_reason": "The generation-counter test finds phantom hits; discussion shifts to cross-shard consistency."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "pl2",
+        "a5",
+        "ar2"
+      ],
+      "topic": "Gate cross-shard cache hits on commit-resolved tokens and shard watermarks",
+      "boundary_reason": "The cross-shard test report concludes before a separate snapshot-token cache proposal."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h3",
+        "a6",
+        "e4"
+      ],
+      "topic": "Test local-write bypass for snapshot-token caching",
+      "boundary_reason": "The replay identifies a read-only hit-rate cost, prompting a revised warming approach."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "h4",
+        "a7",
+        "e5",
+        "a8",
+        "e6"
+      ],
+      "topic": "Compare read-only warming strategies after local-write bypass",
+      "boundary_reason": "Top-100 prewarming reaches the hit-rate target, leading to a combined-policy test."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "h5",
+        "a9",
+        "e7",
+        "d2",
+        "pl3"
+      ],
+      "topic": "Adopt combined local-write bypass and top-100 snapshot prewarming",
+      "boundary_reason": "The combined policy is adopted and implementation and ReadMix validation are planned."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "a10",
+        "ar3"
+      ],
+      "topic": "Validate the implemented bypass and prewarming policy on ReadMix-80/20",
+      "boundary_reason": "The implementation report concludes before a predicate-indexed alternative is introduced."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p3",
+        "q4",
+        "h6",
+        "a11",
+        "e8",
+        "pl4"
+      ],
+      "topic": "Design checkpointed predicate-indexed results with range and join deltas",
+      "boundary_reason": "The reconstruction test supports an implementation and failover-benchmark plan."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "a12",
+        "ar4",
+        "a13",
+        "e9"
+      ],
+      "topic": "Benchmark and audit the predicate-indexed delta cache",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

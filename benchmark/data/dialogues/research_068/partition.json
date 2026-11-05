@@ -1,0 +1,132 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Test source-F0 locking for Yoruba and Thai lexical-tone preservation",
+      "boundary_reason": "The tone-preservation test ends with a decision to retain F0 locking; the next discussion turns to speaker verification."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Independently verify Yoruba and Thai target-speaker acceptance",
+      "boundary_reason": "The verification report is independently replayed; the next discussion tests Vietnamese creaky tones."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Test F0 locking and voicing masks for Vietnamese creaky tones",
+      "boundary_reason": "The Vietnamese result does not meet the proposed tone-drift threshold, prompting a new approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "l2",
+        "a5",
+        "r2",
+        "a6",
+        "e4",
+        "d2"
+      ],
+      "topic": "Benchmark glottal-pulse conditioning for Vietnamese tone preservation",
+      "boundary_reason": "The benchmark supports a decision on pulse conditioning; the next discussion examines source-speaker leakage."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "q2",
+        "h3",
+        "a7",
+        "e5",
+        "h4",
+        "a8",
+        "e6"
+      ],
+      "topic": "Detect and reduce source-speaker leakage from pulse conditioning",
+      "boundary_reason": "Speaker-adversarial pulse normalization addresses the measured leakage; the next discussion shifts to fast-reference rhythm."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "q3",
+        "a9",
+        "e7",
+        "d3"
+      ],
+      "topic": "Compare duration-token and masked-F0 decoding with faster references",
+      "boundary_reason": "The comparison yields a decision to retain pulse tokens for rhythm; the next discussion broadens the rhythm test across languages."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "h5",
+        "l3",
+        "a10",
+        "r3",
+        "a11",
+        "e8"
+      ],
+      "topic": "Audit fast-reference rhythm preservation across Yoruba, Thai, and Vietnamese",
+      "boundary_reason": "The independent duration audit meets the proposed threshold; a further audit turns to speaker acceptance."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "a12",
+        "e9",
+        "d4"
+      ],
+      "topic": "Assess Thai target-speaker acceptance in fast-reference trials",
+      "boundary_reason": "Low acceptance leads to deferring fast-reference deployment and motivates a new embedding approach."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h6",
+        "a13",
+        "e10",
+        "h7",
+        "a14",
+        "e11",
+        "d5"
+      ],
+      "topic": "Restore Thai fast-reference acceptance with tempo-invariant and contrastively tuned embeddings",
+      "boundary_reason": "Contrastive fine-tuning meets the Thai thresholds; the next discussion validates the approach across languages."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "l4",
+        "a15",
+        "r4",
+        "a16",
+        "e12",
+        "d6"
+      ],
+      "topic": "Independently validate contrastively tuned conversion across held-out tonal languages",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

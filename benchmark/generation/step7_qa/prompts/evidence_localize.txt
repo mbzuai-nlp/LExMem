@@ -1,0 +1,22 @@
+Locate necessary dialogue evidence for each answer item.
+
+{{INPUT_JSON}}
+
+qa is fixed. messages contains only the dialogue mapped from qa.evidence_node_ids, with stable message_id and source_node_id fields. constraints.max_evidence_messages_per_slot is a hard upper limit for each answer slot.
+
+- For each answer slot, return one list of message IDs that supports the answer under the question's scope. Do not return alternative sets or nested lists.
+- Include messages needed to establish the answer, including scope, conditions, units, references, comparisons, and simple calculations when they matter. The answer text itself is not evidence.
+- Keep the evidence focused: do not include repeated paraphrases, broad background, or messages that do not add support.
+- If the same fact appears many times, choose the clearest direct statement and any needed context; do not enumerate every repetition.
+- Copy only supplied message IDs from that slot's evidence_node_ids. Do not change the QA, invent premises, or use graph contents as evidence.
+- If any slot cannot be supported without exceeding constraints.max_evidence_messages_per_slot, return passed=false, evidence={}, and brief issues.
+
+If previous_rejections is provided, revise the evidence to address reported omissions, invalid IDs, excessive evidence, unsupported claims, or missing context. Verify feedback against the supplied messages; do not change the question or answer or invent evidence.
+
+Return JSON only:
+{
+  "passed": true,
+  "evidence": {"slot_name": ["message_id", "message_id"]},
+  "issues": []
+}
+On success, evidence must cover exactly the answer slots and issues must be empty.

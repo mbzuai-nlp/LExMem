@@ -1,0 +1,1223 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop simultaneous speech translation that preserves late-resolved negation and semantic roles while committing irreversible output under bounded latency.",
+      "requirements": [
+        "Achieve at least 20% fewer negation and role errors than a matched-latency streaming baseline.",
+        "Keep average lagging below two seconds without reducing overall COMET versus the same baseline."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use ASR-lattice role and negation posteriors to commit safe target prefixes while deferring risky phrases under a 1.8-second hold cap."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can ASR-lattice posteriors identify target prefixes that remain correct when negation or semantic roles resolve late?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "On late-resolution MuST-C En–De, ≥95% of prefixes passing a 0.9 role-negation lattice gate need no oracle correction."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Replay MuST-C En–De late-resolution utterances through streaming ASR; measure oracle-correction-free prefixes passing the 0.9 gate against 95%."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "On 1,200 MuST-C En–De late-resolution utterances, 96.1% of prefixes passing the 0.9 gate required no oracle correction."
+    },
+    {
+      "id": "n7",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Retain the 0.9 role-negation gate for latency and COMET evaluation; its 96.1% prefix stability exceeds the 95% criterion."
+    },
+    {
+      "id": "n8",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Benchmark the retained 0.9 gate against matched-latency wait-k on MuST-C En–De; check ≥20% fewer negation/role errors, <2-second lagging, COMET parity."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Run MuST-C En–De streaming replay; match wait-k latency to the gated system, then score negation/role errors, average lagging, and COMET."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "MuST-C En–De replay bundle: irrevocable outputs, negation/role labels, average-lagging traces, and COMET scores for gated and latency-matched wait-k systems."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Audit replay bundle timestamps and negation/role labels; bootstrap paired error, average-lagging, and COMET differences against wait-k."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Audit: gated output reduced negation/role errors 24% (95% CI 21–27%) versus matched-latency wait-k; average lagging 1.72 seconds; COMET 77.4/77.1."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n8",
+      "content": "Stress-test the 0.9 gate on CoVoST 2 En–De late-resolution utterances against latency-matched wait-k; score role/negation errors, lagging, and COMET."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "On CoVoST 2 En–De, gated output cut negation/role errors 9% versus matched-latency wait-k; lagging was 1.76s; COMET 75.0/75.6."
+    },
+    {
+      "id": "n15",
+      "type": "decision",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Defer deployment of the fixed 0.9 gate: MuST-C passes, but CoVoST 2 misses error-reduction and COMET targets."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "After deferral, calibrate adaptive gates from MuST-C’s 0.9 anchor; retest held-out errors, lagging, and COMET against matched-latency wait-k."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Recompute lattice entropy for the MuST-C replay bundle; fit 0.9-anchored adaptive gates using calibration-split role/negation labels and lagging traces."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Replay bundle v2 adds 0.9-anchored entropy-conditioned gate tables, frozen MuST-C calibration parameters, and per-utterance commit traces."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Train a future-risk predictor to emit role-neutral paraphrases and delay negation-sensitive clauses within a 1.8-second cap."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can predicted late negation and role ambiguity trigger safe paraphrases without distorting meaning under the 1.8-second hold cap?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "On CoVoST 2 En–De, risk-triggered paraphrases reduce role/negation errors ≥20% versus matched-latency wait-k, without lowering COMET or exceeding 2-second lagging."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Replay held-out CoVoST 2 En–De with risk-triggered paraphrases and matched-latency wait-k; score role/negation errors, COMET, and average lagging."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "On CoVoST 2 En–De, paraphrases cut role/negation errors 23% versus matched-latency wait-k, but COMET fell 75.6→75.1; lagging was 1.81s."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n21",
+      "content": "Ablate paraphrasing against delay-only commits on CoVoST 2 En–De; compare role/negation errors, COMET, and lagging with wait-k."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "CoVoST 2 ablation: paraphrases cut role/negation errors 23% versus wait-k, compared with 12% for delay-only; lagging remained 1.81s."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Retain risk-triggered paraphrasing for its 23% error reduction, but defer deployment until semantic reranking restores COMET parity."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Fit entailment-based reranking of risk-triggered paraphrases on CoVoST 2 calibration data; test held-out COMET parity, errors, and lagging."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Train a source-conditioned entailment reranker on CoVoST 2 calibration data, rejecting paraphrases with predicted role or polarity drift."
+    },
+    {
+      "id": "n29",
+      "type": "artifact",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "CoVoST 2 entailment-reranker checkpoint with calibrated role/polarity drift filters and a reproducible streaming inference configuration."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Use streaming semantic-role ledgers and constrained decoding to postpone irreversible predicate commitments until polarity and agent–patient roles stabilize."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "Can a streaming role ledger track agent–patient assignments through ASR revisions reliably enough to constrain irreversible translations?"
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "On held-out CoVoST 2 En–De, ledger-constrained commits attain ≥92% agent–patient role F1 despite ASR revisions, with <2-second lagging."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Replay held-out CoVoST 2 with ledger-constrained decoding and n29 drift filters; measure agent–patient role F1 across ASR revisions and lagging."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "On held-out CoVoST 2, ledger-constrained commits reached 89.4% agent–patient role F1 across ASR revisions; average lagging was 1.83 seconds."
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "A three-hypothesis revision-aware role ledger will raise CoVoST 2 agent–patient F1 to ≥92% while keeping average lagging below two seconds."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Using n29's drift filters, replay three-hypothesis and original ledgers on CoVoST 2 ASR revisions; measure agent–patient F1 and lagging."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "After correcting reference-role alignments, original and three-hypothesis ledgers scored 92.3% and 90.8% role F1 across ASR revisions; lagging was 1.83/1.86s."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n35",
+      "content": "Using n37’s corrected alignments and n29’s drift filters, replay both ledgers on high-revision utterances; compare agent–patient F1 and lagging."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "On 320 high-revision CoVoST 2 utterances, original and three-hypothesis ledgers scored 92.1% and 88.7% role F1; lagging was 1.91/1.96 seconds."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Retain the original ledger: corrected alignments raise F1 from 89.4% to 92.3%, while three-hypothesis tracking underperforms on high-revision speech."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Freeze the original ledger and benchmark irreversible CoVoST 2 commits against matched-latency wait-k for role errors, lagging, and COMET."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Using n34’s replay, n37’s corrected labels, and n39’s high-revision subset, benchmark original-ledger versus latency-matched wait-k: role errors, lagging, COMET."
+    },
+    {
+      "id": "n43",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "CoVoST 2 ledger benchmark report: corrected role-error comparisons versus latency-matched wait-k, high-revision breakdowns, average lagging, and COMET."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Train a causal acoustic predictor on negation-flip and role-swap continuations; commit by expected semantic regret within 1.8 seconds."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Can pre-lexical acoustic cues predict impending negation or role reversals accurately enough to improve irreversible commit timing?"
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "On CoVoST 2 En–De, pre-lexical acoustic-regret commits cut negation/role errors ≥20% versus matched-latency wait-k without COMET loss."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Calibrate acoustic-regret thresholds using n18’s frozen gates; replay CoVoST 2 versus matched-latency wait-k, scoring negation/role errors, COMET, lagging."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "On CoVoST 2 En–De, acoustic-regret commits cut negation/role errors 22% versus matched-latency wait-k; COMET was 75.8 versus 75.6, lagging 1.79s."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n46",
+      "content": "Using n18’s frozen gates, ablate pitch and pause cues; compare CoVoST 2 role/negation errors and COMET against the full model."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "On pause-rich CoVoST 2, full acoustic-regret cut errors 4% versus wait-k; pitch/pause ablation cut 21%, restoring COMET parity."
+    },
+    {
+      "id": "n51",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Retain acoustic-regret commits for their 22% overall error reduction, but disable pitch/pause cues on pause-rich speech, where ablation improves results."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Calibrate a pause-density cutoff to disable pitch/pause cues; retest CoVoST 2 negation/role errors, COMET, and lagging."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Using n48/n50 traces, sweep pause-density cutoffs for disabling pitch/pause cues; score held-out CoVoST 2 negation/role errors, COMET, and lagging."
+    },
+    {
+      "id": "n54",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Pause-gated acoustic-regret checkpoint: calibration-split cutoff, pitch/pause disablement rule, and held-out CoVoST 2 error, COMET, and lagging report."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 55,
+      "exploration_parent_id": "g1",
+      "content": "Generate polarity- and role-flipping source continuations; commit only target prefixes shared across their translations, with a 1.8-second fallback."
+    },
+    {
+      "id": "n56",
+      "type": "question",
+      "order": 56,
+      "exploration_parent_id": "p5",
+      "content": "Do generated continuations cover late polarity and role reversals sufficiently to make shared target prefixes safe to commit?"
+    },
+    {
+      "id": "n57",
+      "type": "hypothesis",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "On CoVoST 2 En–De, four counterfactual continuations cover ≥90% of late reversals, yielding ≥95% oracle-safe shared prefixes."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Using n43’s corrected labels and n54’s checkpoint, replay four counterfactual continuations; score reversal coverage and oracle-safe shared commits under 1.8s."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "CoVoST 2 En–De: four continuations covered 92% of late reversals; 96% of shared commits were oracle-safe within 1.8 seconds."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n57",
+      "content": "Stratify n43-labelled CoVoST 2 reversals by disfluency using n54’s checkpoint; remeasure four-continuation coverage and oracle-safe commits."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Disfluency-stratified reweighting of CoVoST 2 yielded 88% overall reversal coverage and 94% oracle-safe commits, missing both thresholds."
+    },
+    {
+      "id": "n62",
+      "type": "hypothesis",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Six repair-aware continuations will raise reweighted CoVoST 2 reversal coverage to ≥90% and oracle-safe commits to ≥95% within 1.8s."
+    },
+    {
+      "id": "n63",
+      "type": "activity",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Using n43 and n54, compare four versus six repair-aware continuations on reweighted CoVoST 2: reversal coverage, oracle-safe commits, 1.8s compliance."
+    },
+    {
+      "id": "n64",
+      "type": "evidence",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "After correcting disfluency weights, four continuations reached 91% coverage and 95.4% oracle-safe commits; six reached 89%/94%, within 1.8s."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n62",
+      "content": "Using n43 labels, n54 checkpoint, and n64 corrected weights, bootstrap four- versus six-continuation coverage and oracle-safe commits."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Corrected-weight bootstrap: four continuations reached 91% coverage (95% CI 90–92%) and 95.4% safe commits (95–96%); six reached 89%/94%."
+    },
+    {
+      "id": "n67",
+      "type": "decision",
+      "order": 67,
+      "exploration_parent_id": "n62",
+      "content": "Retain four continuations with weight audits: initial and corrected results pass; six underperforms; n61’s failed reweighting exposed sensitivity."
+    },
+    {
+      "id": "n68",
+      "type": "plan",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "Benchmark four audited continuations against matched-latency wait-k: reversal coverage, safe commits, negation/role errors, lagging, and COMET."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Audit n59/n61 against n64/n66 corrected weights; replay four continuations versus matched-latency wait-k for errors, lagging, and COMET."
+    },
+    {
+      "id": "n70",
+      "type": "artifact",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "Audited CoVoST 2 benchmark: corrected disfluency weights, four-continuation commit traces, matched-latency wait-k error comparisons, average lagging, and COMET."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n16",
+      "relation": "revise",
+      "target": "n8"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n10"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "revise",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "refute",
+      "target": "n57"
+    },
+    {
+      "source": "n62",
+      "relation": "revise",
+      "target": "n57"
+    },
+    {
+      "source": "n62",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "n62"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n63",
+      "relation": "produce",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n64",
+      "relation": "refute",
+      "target": "n62"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n62"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n66",
+      "relation": "refute",
+      "target": "n62"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n68",
+      "relation": "decompose",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n66"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop simultaneous speech translation that preserves late-resolved negation and semantic roles while committing irreversible output under bounded latency.",
+    "requirements": [
+      "Achieve at least 20% fewer negation and role errors than a matched-latency streaming baseline.",
+      "Keep average lagging below two seconds without reducing overall COMET versus the same baseline."
+    ]
+  }
+}

@@ -1,0 +1,1161 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a session-typed language supporting endpoint delegation and structured cancellation without stranded peers or broken protocol guarantees.",
+      "requirements": [
+        "Establish protocol safety and cancellation progress under fair scheduling and reliable asynchronous delivery.",
+        "Under separate compilation, accept 12 valid delegation-and-cancellation programs and reject 12 protocol-invalid variants."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Combine affine delegation, cancel-labelled session transitions, and acknowledged scope-wide cancellation over ownership graphs; publish effect-annotated interfaces for separate compilation."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When cancellation races with in-flight delegation, which owner must acknowledge the peer’s cancel transition before the scope can close?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Assigning cancellation responsibility to the sender until transfer acknowledgement, then the receiver, prevents missing acknowledgements during delegation races."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Specify ownership handoff rules, model-check delegation races, and prove each cancel acknowledgement has exactly one responsible owner."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Model-check 48 two-hop delegation/cancellation interleavings in TLA+ with reliable FIFO queues, recording orphaned acknowledgements and duplicate owners."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across 48 bounded TLA+ interleavings, orphaned acknowledgements and duplicate owners were both zero; every cancellation reached an accountable owner."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt acknowledgement-gated ownership transfer for the prototype; bounded checks found no orphaned acknowledgements or duplicate owners."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "DelegationCancel.tla and TLC.cfg encode two-hop handoffs, FIFO cancellation, and invariants for orphaned acknowledgements and duplicate owners."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Extend DelegationCancel.tla to three-hop transfers with weakly fair delivery and processing; check eventual scope closure and unique acknowledgement ownership."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "A fair three-hop trace lets B exit after C acknowledges delegation, leaving A’s pending cancellation unforwarded and scope closure blocked."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "Keeping former owners as cancellation forwarders until scope closure ensures exactly one current owner acknowledges each cancel across three hops."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Add forwarding tombstones to DelegationCancel.tla; model-check three-hop races under weak fairness for unique acknowledgements and eventual scope closure."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "With forwarding tombstones, TLC explored 18,432 three-hop states and found zero duplicate acknowledgements or fair nonclosing executions."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use asynchronous reduction semantics and persistent forwarding tombstones to prove protocol preservation and fair cancellation progress."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Define queue-aware typing and tombstone invariants; prove preservation, peer compatibility, and finite-chain cancellation progress under fair reliable delivery."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Translate DelegationCancel.tla into Coq 8.20 small-step rules and check queue-typing preservation and forwarding-tombstone invariants."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "CancelSemantics.v contains Coq 8.20 reduction rules, typed queues, forwarding tombstones, and checked preservation and ownership-invariant proofs."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "In Coq 8.20, attempt fair-progress proof for CancelSemantics.v, checking whether finite forwarding chains and persistent tombstones prevent stranded peers."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "A fair infinite-redelegation trace delivers every cancellation hop but never reaches a stable owner; persistent tombstones alone cannot ensure closure."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can an epoch-stamped cancellation barrier stop infinite redelegation without rejecting handoffs already in flight?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Epoch-stamped barriers reject newly initiated transfers while draining pre-barrier handoffs; finite in-flight queues then guarantee cancellation closure under fairness."
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Add barrier epochs to transfer rules, prove pre-barrier handoffs drain, then derive cancellation progress without assuming a finite delegation chain."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Extend CancelSemantics.v with epoch barriers; check handoff-drain and cancellation-closure lemmas under weak fairness and reliable delivery."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Coq checks epoch-barrier handoff drainage and cancellation closure for finite initial queues under weak fairness and reliable delivery."
+    },
+    {
+      "id": "n23",
+      "type": "artifact",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "CancelSemantics.v now includes epoch-stamped transfer rules and machine-checked preservation, peer compatibility, handoff-drain, and cancellation-closure lemmas."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n20",
+      "content": "Extend DelegationCancel.tla using CancelSemantics.v’s epoch rules; model-check four-hop races for queue compatibility and fair scope closure."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "TLC explored 61,208 four-hop states with epoch barriers: zero queue-compatibility violations and zero fair nonclosing traces."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Compile modules against sealed session interfaces recording endpoint ownership, delegation permissions, and cancellation effects; link-check duality without source access."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "Which interface obligations let separately compiled modules verify forwarding tombstones and epoch barriers when endpoints cross module boundaries?"
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Publishing affine transfer receipts, tombstone-forwarding effects, and monotone barrier epochs lets linkers reject cross-module cancellation mismatches."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Build the SepCancel-24 corpus: separately compile 12 valid and 12 invalid modules against receipt, tombstone, and epoch interfaces."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "SepCancel-24 accepted 12/12 valid programs but rejected only 11/12 invalid variants; one reused an abstract receipt across modules."
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n26",
+      "content": "Generative, scope-indexed receipt identities with linker-checked single consumption prevent cross-module reuse while preserving tombstone and epoch obligations."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Implement generative receipt IDs and linker consumption checks; rerun SepCancel-24 with separate module compilation and unchanged fixtures."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "SepCancel-24 now accepts 12/12 valid and rejects 12/12 invalid programs; the reused receipt fails linker single-consumption checks."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Generate 96 receipt-alias and link-order mutations from SepCancel-24; test linker rejection across module permutations after the receipt fix."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Across 96 mutations, the linker accepted 2 invalid re-exported receipt aliases under reversed link order, violating global single consumption."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "How should the linker canonicalize re-exported receipt aliases so single-consumption checks remain invariant under module link order?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Canonicalizing receipt aliases by origin before link-time consumption checks rejects re-exported duplicates regardless of module link order."
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Record immutable receipt origins in interfaces, normalize re-export chains before linking, then rerun SepCancel-24 and all 96 mutations."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Patch the SepCancel-24 linker to canonicalize receipt origins across re-exports; rerun 24 fixtures and 96 link-order mutations."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Origin canonicalization preserved SepCancel-24’s 12/12 valid accepts and 12/12 invalid rejects; all 96 mutations were rejected."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Ship origin-canonicalized receipts: baseline tests passed, earlier link-order aliases were caught, and all 96 mutations were rejected."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Implement an epoch-barrier runtime with FIFO queues and receipt-aware forwarding; validate traces against Coq semantics and SepCancel-24."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Build a receipt-aware FIFO runtime, compare its traces against CancelSemantics.v, and run SepCancel-24 under fair-delivery stress."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Implement CancelRT 0.1 with FIFO delivery, epoch-barrier draining, receipt-aware handoffs, and forwarding tombstones following CancelSemantics.v."
+    },
+    {
+      "id": "n43",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "CancelRT 0.1 provides bounded FIFO mailboxes, epoch-barrier draining, receipt-indexed delegation, persistent forwarding tombstones, and transition logging."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n41",
+      "content": "Replay 10,000 seeded CancelRT 0.1 traces against CancelSemantics.v and execute SepCancel-24 under fair FIFO delivery."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "All 10,000 CancelRT traces matched Coq transitions; SepCancel-24 completed 12/12 valid programs and rejected 12/12 invalid variants."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Use CancelRT 0.1 as the reference runtime after 10,000 conforming traces and complete SepCancel-24 results."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 52,
+      "exploration_parent_id": "g1",
+      "content": "Establish an end-to-end refinement contract linking sealed interfaces, linker receipts, CancelRT traces, and Coq progress for composed modules."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 53,
+      "exploration_parent_id": "p5",
+      "content": "How can bounded CancelRT mailboxes refine Coq’s asynchronous queues when backpressure delays cancellation behind in-flight delegation?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Reserving a cancellation slot, interrupting blocked sends, and merging messages by sequence number preserves FIFO refinement despite backpressure."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Inject cancellation at saturated 8-message CancelRT mailboxes; compare merged delivery traces with Coq FIFO semantics and check fair closure."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "At mailbox capacity 8, one saturated-send trace deadlocked: its holder awaited space while the receiver awaited a cancellation barrier."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 57,
+      "exploration_parent_id": "n47",
+      "content": "Route barriers through an independent control lane; wake blocked senders and drain committed messages by sequence before closing."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Patch CancelRT with a separate barrier lane; replay 8-slot saturation traces against Coq, checking sender wakeups and fair closure."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "With the separate barrier lane, 2,048 saturated-mailbox schedules produced zero deadlocks or Coq trace mismatches."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n51",
+      "content": "Prove a Coq stuttering simulation for CancelRT’s control lane and 8-slot queues, including blocked-send wakeups and barrier drainage."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n54",
+      "content": "Coq counterexample: a blocked send reserves sequence 9 before enqueue; cancellation aborts it, leaving barrier drainage waiting forever."
+    },
+    {
+      "id": "n56",
+      "type": "hypothesis",
+      "order": 62,
+      "exploration_parent_id": "n47",
+      "content": "Assign sequence numbers only when enqueue commits; barrier drainage tracks committed messages, so aborted blocked sends create no gaps."
+    },
+    {
+      "id": "n57",
+      "type": "plan",
+      "order": 63,
+      "exploration_parent_id": "n56",
+      "content": "Move sequence allocation to enqueue commit, retain the tested control lane, and reprove simulation against the gap counterexample."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n57",
+      "content": "Patch CancelRT to number committed enqueues only; replay the sequence-9 counterexample and 2,048 saturated-mailbox schedules."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n58",
+      "content": "The sequence-9 gap no longer occurs; all 2,048 saturated-mailbox schedules close with zero Coq trace mismatches."
+    },
+    {
+      "id": "n60",
+      "type": "artifact",
+      "order": 66,
+      "exploration_parent_id": "n58",
+      "content": "CancelRT 0.2 replaces pre-enqueue numbering with commit-time sequence allocation and adds the independent cancellation control lane."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n57",
+      "content": "Prove CancelRT 0.2’s stuttering simulation in Coq, including commit-time numbering, blocked-send aborts, and fair barrier drainage."
+    },
+    {
+      "id": "n62",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n61",
+      "content": "Coq checks CancelRT 0.2’s stuttering simulation and fair closure for finite committed queues; aborted sends leave no sequence gaps."
+    },
+    {
+      "id": "n63",
+      "type": "decision",
+      "order": 69,
+      "exploration_parent_id": "p5",
+      "content": "Adopt CancelRT 0.2’s control lane and commit-time numbering: saturated tests pass, and Coq proves fair closure for finite queues."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "revise",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n61"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n60",
+      "relation": "revise",
+      "target": "n43"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n62",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n62",
+      "relation": "support",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n62"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a session-typed language supporting endpoint delegation and structured cancellation without stranded peers or broken protocol guarantees.",
+    "requirements": [
+      "Establish protocol safety and cancellation progress under fair scheduling and reliable asynchronous delivery.",
+      "Under separate compilation, accept 12 valid delegation-and-cancellation programs and reject 12 protocol-invalid variants."
+    ]
+  }
+}

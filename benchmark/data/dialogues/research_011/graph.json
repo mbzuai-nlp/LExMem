@@ -1,0 +1,729 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop knowledge editing that propagates temporally scoped factual changes through multi-hop reasoning without overwriting valid historical knowledge.",
+      "requirements": [
+        "Achieve at least 90% accuracy on held-out multi-hop questions requiring temporally scoped edited facts.",
+        "Keep historical and unrelated factual accuracy within one percentage point of the unedited model."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Attach interval-indexed fact patches to a frozen model; gate time-filtered multi-hop retrieval by edited entities while retaining historical versions."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can interval-indexed retrieval reject multi-hop paths with incompatible validity windows without suppressing valid historical paths?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Question-time-conditioned interval intersection will reach ≥90% TemporalHop multi-hop accuracy while limiting historical accuracy loss to ≤1 percentage point."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Construct TemporalHop dated two- and three-hop edits; compare interval-intersection versus recency-only routing on edited, historical, and unrelated accuracy."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Compare interval-intersection and recency-only routing on TemporalHop v1’s 1,200 held-out questions, measuring edited multi-hop, historical, and unrelated accuracy."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "TemporalHop v1: interval routing scored 92% edited versus 76% recency-only; historical/unrelated accuracy dropped 0.4/0.2 percentage points versus baseline."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt interval-intersection routing over recency-only: TemporalHop v1 exceeds 90% edited accuracy with under one-point historical and unrelated losses."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Following interval-routing adoption, construct TemporalHop v2 boundary-date and overlapping-edit splits; audit edited, historical, and unrelated accuracy."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Build TemporalHop v2’s 400 boundary-date and 400 overlapping-edit questions; score interval routing’s edited, historical, and unrelated accuracy."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "TemporalHop v2 audit bundle: 800 labeled questions; interval-routing accuracy 83% boundary, 89% overlapping; historical/unrelated losses 0.6/0.3 points versus baseline."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Audit 100 TemporalHop v2 errors for endpoint conventions, conflicting edits, and annotation defects to assess the bundle’s accuracy gaps."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Of 100 TemporalHop v2 errors, 58 involved patch endpoints, 27 overlap precedence, and 15 labels; historical accuracy lost 0.6 points."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n1",
+      "content": "Half-open intervals and latest-effective-date precedence should yield ≥90% accuracy on both TemporalHop v2 splits with ≤1-point historical/unrelated losses."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Implement half-open intervals and latest-effective-date precedence; evaluate both TemporalHop v2 splits for edited, historical, and unrelated accuracy."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "TemporalHop v2: boundary accuracy rose to 93%, but overlapping-edit accuracy remained 89%; historical/unrelated losses stayed 0.6/0.3 points."
+    },
+    {
+      "id": "n15",
+      "type": "hypothesis",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Replace latest-date-only precedence with provenance-aware supersession; half-open intervals should reach ≥90% on both v2 splits with ≤1-point historical/unrelated losses."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Implement explicit patch-supersession links; compare provenance-aware versus latest-date routing on both TemporalHop v2 splits and historical/unrelated controls."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "TemporalHop v2: provenance routing reached 94% boundary and 92% overlap, but historical/unrelated accuracy lost 1.3/0.3 points."
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "Onset-gated supersession should retain ≥90% accuracy on both v2 splits while restoring pre-edit history and limiting historical/unrelated losses ≤1 point."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "Gate supersession at each replacement’s onset; evaluate TemporalHop v2 splits and pre-edit historical/unrelated controls against the frozen baseline."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n19",
+      "content": "TemporalHop v2: onset gating scored 94% boundary, 92% overlap; historical/unrelated accuracy lost 1.2/0.3 points versus baseline."
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n20",
+      "content": "Version-pin historical paths while retaining onset-gated supersession; target ≥90% on both v2 splits and ≤1-point historical/unrelated losses."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n21",
+      "content": "Implement query-time version pinning for historical paths; rerun TemporalHop v2 splits and historical/unrelated controls against onset-gated routing."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n22",
+      "content": "TemporalHop v2: version pinning scored 94% boundary and 92% overlap, but historical/unrelated losses remained 1.1/0.3 points."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "Audit 100 version-pinned historical errors, stratified by query date, to test whether path-version pinning preserves pre-edit facts."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n24",
+      "content": "Among 100 version-pinned historical errors, 71 involved date parsing; onset-only routing made 19 additional pre-edit substitutions."
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n25",
+      "content": "Date normalization before version pinning should preserve ≥90% accuracy on both v2 splits and cap historical/unrelated losses at ≤1 point."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "n26",
+      "content": "Normalize explicit dates and year-only queries to canonical intervals, then rerun version-pinned TemporalHop v2 and historical/unrelated controls."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n27",
+      "content": "Implement ISO-date and year-interval parsing before version pinning; rescore TemporalHop v2 splits and historical/unrelated controls against baseline."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n28",
+      "content": "TemporalHop v2: date normalization preserved 94% boundary and 92% overlap accuracy; historical/unrelated losses were 0.7/0.3 points versus baseline."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "n29",
+      "content": "Adopt date-normalized version pinning: parsing errors dominated the audit; historical loss fell from 1.1 to 0.7 points."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Train sparse, date-gated low-rank adapters on multi-hop entailment chains; route historical queries through the frozen base model."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p2",
+      "content": "Can date-gated adapters generalize edits to unseen three-hop questions without activating on historically valid queries?"
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Training rank-8 adapters on dated entailment chains will score ≥90% unseen three-hop accuracy with ≤1-point historical/unrelated losses."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "Train rank-8 date-gated adapters on TemporalHop v1 two-hop chains; test unseen three-hop questions and historical/unrelated controls."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "TemporalHop v1 unseen three-hop accuracy reached 86%; historical/unrelated accuracy fell 0.8/0.4 points versus frozen baseline."
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n31",
+      "content": "Adding contrastive historical negatives to rank-8 adapter training should reach ≥90% unseen three-hop accuracy with ≤1-point preservation losses."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "Retrain date-gated rank-8 adapters with 2:1 contrastive historical negatives; evaluate unseen three-hop accuracy and historical/unrelated losses."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n36",
+      "content": "TemporalHop v1 unseen three-hop accuracy rose from 86% to 91%; historical/unrelated losses were 0.6/0.4 points versus baseline."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Apply timestamp-conditioned activation steering at entity–relation binding layers using contrastive edited/historical pairs, leaving model weights frozen."
+    },
+    {
+      "id": "n38",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "p3",
+      "content": "Can timestamp-conditioned steering persist across unseen multi-hop paraphrases without changing historical answers or unrelated entity–relation bindings?"
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Locate entity–relation binding layers, fit date-conditioned contrastive steering vectors, and benchmark TemporalHop unseen paraphrases plus historical/unrelated controls."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Probe 12 transformer layers for entity–relation binding; fit time-gated steering vectors on 600 edited/historical contrastive pairs."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "TimeSteer v1 checkpoint: layer-8 and layer-9 steering vectors, date gates, and 600 labeled edited/historical training pairs."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Test TimeSteer v1 on TemporalHop’s 500 unseen multi-hop paraphrases plus historical/unrelated controls against frozen-base accuracy."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "TimeSteer v1 scored 91% on 500 unseen multi-hop paraphrases; historical/unrelated accuracy losses were 0.8/0.5 points versus frozen base."
+    },
+    {
+      "id": "n44",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Advance TimeSteer to cross-method boundary-date evaluation: its paraphrase scores meet targets, adapters remain viable, and retrieval audits exposed endpoint risks."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n15",
+      "relation": "revise",
+      "target": "n12"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n44"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop knowledge editing that propagates temporally scoped factual changes through multi-hop reasoning without overwriting valid historical knowledge.",
+    "requirements": [
+      "Achieve at least 90% accuracy on held-out multi-hop questions requiring temporally scoped edited facts.",
+      "Keep historical and unrelated factual accuracy within one percentage point of the unedited model."
+    ]
+  }
+}

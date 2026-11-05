@@ -1,0 +1,173 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial binding fingerprints and InterposeMatrix-120 validation",
+      "boundary_reason": "The initial test report and decision are complete; the next work expands binding-transition testing."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Correcting stale direct calls after -Bsymbolic removal",
+      "boundary_reason": "Expanded fingerprints pass the follow-up tests; discussion shifts to summaries and rebuild performance."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Profile-hot partitions and initial EditBench-120 performance",
+      "boundary_reason": "The initial partition choice meets the measured targets; mixed-mode testing begins next."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Mixed-mode provider bindings and partition-key requirements",
+      "boundary_reason": "Provider misbindings are resolved, but a runtime regression remains; the next tests probe version-swap correctness."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Version-alias keys and refreshed linker snapshots",
+      "boundary_reason": "The four-configuration ablation resolves which safeguards are needed; focus shifts to runtime recovery."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Hot-consumer reinlining and the cold-cache tradeoff",
+      "boundary_reason": "Comparisons show that neither tested alternative meets both cold-cache limits, motivating a narrower reinlining sweep."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Selecting 60%-cold and 80%-warm reinlining",
+      "boundary_reason": "The cold-cache sweep supports a configuration meeting both limits; discussion turns to concurrent cache reuse."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Transactional snapshot validation under concurrent relinks",
+      "boundary_reason": "Post-validation relinks expose a publication race, requiring a revised publication mechanism."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "Epoch-locked publication and queued-write failures",
+      "boundary_reason": "An audit finds that provider writes can precede rename while epoch updates wait; the next work addresses those writes."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79",
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Write-gated, digest-checked artifact publication",
+      "boundary_reason": "The revised publication scheme is adopted; the remaining question concerns edits outside its locks."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n83",
+        "n84",
+        "n85",
+        "n86",
+        "n87"
+      ],
+      "topic": "Unmanaged linker-input edits and final optimizer selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

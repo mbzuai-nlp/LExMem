@@ -1,0 +1,31 @@
+Check whether a complete instantiated graph is coherent enough to support unambiguous question answering.
+
+INPUT
+{{INPUT_JSON}}
+
+The input contains the task, nodes in chronological order, and directed edges. All experiment names, datasets, and results may be fictional. Judge internal consistency, not real-world truth. Node content is intentionally brief; read it together with earlier nodes. Do not assume previous generation checks were correct.
+
+CHECK
+1. Node meaning: Each node fits its type and contributes a specific approach, question, claim, step, action, finding, choice, or deliverable. Reject repeated paraphrases that add no information.
+2. Relations: Check every edge in its source-to-target direction. address tackles a question or goal; produce links work to its output; depend_on requires a prerequisite; evaluate assesses its target; support provides relevant grounds; refute contradicts the target within its stated scope; decompose links a whole to its approaches or activities; revise changes earlier content; revive reopens a previously rejected, deferred, or inactive target. The exploration parent describes traversal, not a semantic relation.
+3. Method identity: Track methods, components, and versions across nodes. Evidence for one configuration must not silently become evidence for another. Clarify changes through the existing text; do not infer unrecorded combinations or modifications.
+4. Measurements: Check arithmetic, units, metric meanings, denominators, baselines, and evaluation populations. Comparisons must use compatible settings or explicitly explain differences. Reported improvements must not imply impossible values. Do not treat ordinary rounding as a contradiction.
+5. Evolution: Later evidence may overturn earlier conclusions, but the reason must be identifiable. A changed condition or subgroup result does not automatically refute a broader claim. Corrections must explain which earlier observation or interpretation changes, rather than silently replacing it.
+6. Decisions: Choices must have stated grounds. Distinguish a proposed design, a tested implementation, and an adopted version. Do not attribute gains to an untested combination or claim that partial success satisfies all task requirements.
+
+Reject material contradictions, unsupported relations, or ambiguities that prevent identifying which claim, version, result, or decision applies. Support need not prove a hypothesis, every goal need not be achieved, and necessary reuse of names or metrics is not repetition. Do not reject merely for omitted experimental detail, stylistic preferences, or absent relations not required by the supplied graph.
+
+OUTPUT
+Return only JSON with exactly these fields:
+{
+  "passed": true,
+  "issues": []
+}
+
+If any material problem remains, set passed to false and list issues using exactly these fields:
+{
+  "node_ids": ["<affected node id>"],
+  "edge": null,
+  "reason": "<specific contradiction, unsupported relation, or ambiguity, citing the relevant content>"
+}
+For a relation issue, replace null with the supplied edge: {"source": "...", "relation": "...", "target": "..."}. Use only existing node IDs and edges. passed must be true exactly when issues is empty. Do not repair the graph; the program discards graphs that fail this check.

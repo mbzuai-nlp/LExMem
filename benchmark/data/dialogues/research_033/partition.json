@@ -1,0 +1,119 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "topic": "Conservative graph-network surrogate and initial held-out benchmark",
+      "boundary_reason": "The initial benchmark meets both targets; the discussion turns to a specific near-well connectivity challenge."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Testing unseen high-contrast near-well dead-end channels",
+      "boundary_reason": "The DeadEnd-80 evaluation is complete; the next test shifts to braided channels."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Braided-channel failure and message-passing-radius investigation",
+      "boundary_reason": "The radius sweep produces matched checkpoints; the next discussion introduces a different architecture."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Initial evaluation of multiscale pathway attention",
+      "boundary_reason": "The first braided-channel evaluation meets the targets; testing shifts to new high-contrast maps."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "High-contrast attention failure, branch-ranking audit, and pressure-updated revision",
+      "boundary_reason": "The revised attention method is evaluated and adopted; the next discussion explores multigrid."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Initial topology-aware multigrid evaluation on braided channels",
+      "boundary_reason": "The braided-channel evaluation is complete; testing shifts to higher-contrast branching maps."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Branching-channel multigrid failure and aggregation-scale diagnosis",
+      "boundary_reason": "The narrow-branch flux findings lead to deferring 8×8 multigrid; the next proposal combines the approaches."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Hybrid method and high-contrast cohort benchmark",
+      "boundary_reason": "The hybrid meets both targets on the two high-contrast cohorts; the next stage broadens validation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Connectivity-300 validation and hybrid deployment decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

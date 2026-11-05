@@ -1,0 +1,1139 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop an open-world visual recognizer that distinguishes novel classes from domain shifts while learning new classes without forgetting.",
+      "requirements": [
+        "Achieve ≥80% novel-class recall at ≤5% false rejection of domain-shifted known classes.",
+        "After ten class additions, retain ≥95% initial known-class accuracy and achieve ≥70% added-class accuracy."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Calibrate frozen CLIP prototype novelty scores on shifted known images; learn new classes with replay-trained adapters and logit distillation."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can shift-calibrated CLIP prototypes prevent weather-induced false novelty without masking unseen classes?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "On WeatherShift-10, shift-calibrated prototypes will achieve ≥80% novel recall at ≤5% shifted-known false rejection, outperforming global CLIP thresholds."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Calibrate on shifted-known validation images; compare WeatherShift-10 novel recall against global CLIP thresholds at 5% false rejection."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Evaluate calibrated prototypes against global CLIP thresholds on held-out WeatherShift-10 weather, reporting novel recall at 5% shifted-known false rejection."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On held-out WeatherShift-10, calibrated prototypes achieved 83% novel recall at 5% shifted-known false rejection versus global CLIP’s 68%."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Adopt shift-calibrated prototypes for novelty detection; their 83% recall meets the target at 5% shifted-known false rejection."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Integrate the adopted novelty detector with replay-trained adapters; run ten sequential class additions, measuring known-class retention and added-class accuracy."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "WeatherShift-10 evaluation bundle containing calibrated-prototype checkpoints, ten adapter snapshots, and per-addition known-class retention and added-class accuracy logs."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 11,
+      "exploration_parent_id": "p1",
+      "content": "Which replay-buffer size and distillation weight preserve known-class accuracy after ten additions without suppressing added-class learning?"
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Sweep 20/50 replay exemplars per class and distillation weights 0.5/1.0 across ten WeatherShift-10 additions; measure retention and added-class accuracy."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "On WeatherShift-10, the best replay/distillation setting retained 92% of initial known-class accuracy after ten additions, despite 74% added-class accuracy."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Retain shift-calibrated novelty detection; replace shared adapters with class-specific low-rank modules and frozen known-class logits to reduce forgetting."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Train class-specific low-rank modules with frozen known logits through ten WeatherShift-10 additions; test retention, added accuracy, and novelty."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Use n10’s prototype checkpoint and baseline logs to train ten class-specific LoRA modules with frozen known logits and compare retention."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "WeatherShift-10 bundle containing ten class-specific LoRA checkpoints, a frozen known-class classifier, and per-addition retention comparisons against n10."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Evaluate n17 checkpoints on WeatherShift-10: ten-addition retention versus n10, added-class accuracy, and novel recall at 5% shifted-known false rejection."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "WeatherShift-10: LoRA yielded 96% initial-known retention versus 92% baseline, 72% added-class accuracy, and 82% novel recall at 5% shifted-known rejection."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "On unseen CameraShift-10 sensor shifts, does frozen calibration still hold shifted-known false rejection to ≤5% after ten LoRA additions?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "After ten LoRA additions, WeatherShift-10-calibrated thresholds will yield >5% shifted-known false rejection on unseen CameraShift-10."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Test n17’s ten-addition checkpoint on unseen CameraShift-10 without recalibration; measure shifted-known false rejection and novel-class recall."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "On unseen CameraShift-10, shifted-known false rejection was 4.8%, refuting the predicted breach; novel-class recall fell to 76%."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n21",
+      "content": "Bootstrap CameraShift-10 sensor groups for 95% confidence bounds on shifted-known false rejection after ten LoRA additions without recalibration."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Sensor-balanced CameraShift-10 bootstrap estimated 6.1% shifted-known false rejection (95% CI 5.2–7.0%), despite the sample-weighted 4.8%."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Defer CameraShift-10 deployment: 4.8% sample-weighted rejection masks 6.1% sensor-balanced rejection, while novel recall reaches only 76%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Augment CLIP prototypes with simulated sensor artifacts and calibrate sensor-balanced novelty margins, retaining frozen-logit class-specific LoRA modules."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "Simulate Bayer noise and compression; calibrate sensor-balanced margins, then test CameraShift-10 recall, rejection, known retention, and added accuracy."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Generate Bayer-noise and JPEG-quality-30 known-class variants; recompute CLIP prototypes and fit equal-artifact-weight novelty margins without CameraShift-10 data."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "SensorCal-v1 checkpoint containing artifact-augmented CLIP prototypes, equal-artifact-weight novelty margins, and the unchanged ten-addition LoRA modules."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Evaluate SensorCal-v1 on held-out CameraShift-10 using fixed margins; report sensor-balanced rejection, novel recall, and ten-addition retention and added-class accuracy."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "CameraShift-10: SensorCal-v1 reduced sensor-balanced rejection to 4.7%, but novel recall reached only 78%; retention was 96%, added-class accuracy 72%."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "Does Bayer-noise or JPEG augmentation cause SensorCal-v1’s missed novel classes on CameraShift-10?"
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Ablate Bayer-noise and JPEG augmentation in SensorCal-v1; compare CameraShift-10 novel recall and sensor-balanced rejection using simulation-calibrated margins."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "CameraShift-10: Bayer-only calibration achieved 82% novel recall at 4.9% sensor-balanced rejection; JPEG-only achieved 75% at 4.8%."
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "n33",
+      "content": "JPEG augmentation broadens known-class similarity neighborhoods, causing at least 5-point lower CameraShift-10 novel recall than Bayer-only calibration."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Compare paired CameraShift-10 novel-to-known cosine margins under Bayer-only versus JPEG-only prototypes; bootstrap recall gaps and inspect JPEG-only missed detections."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "JPEG-only prototypes raised median novel-to-known cosine similarity by 0.04 versus Bayer-only; novel recall fell seven points (95% CI 5–9)."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n36",
+      "content": "Sweep JPEG quality 30/60/90 atop Bayer augmentation; measure known-prototype neighborhood occupancy and CameraShift-10 novel recall at 5% rejection."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "With margins recalibrated to 5% rejection, Bayer+JPEG quality 30/60/90 retained 81–83% recall versus Bayer-only’s 82%; neighborhood occupancy rose ≤1%."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Adopt Bayer+JPEG with recalibrated margins; JPEG-only loses seven recall points, but combined variants retain 81–83%."
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n33",
+      "content": "Bayer coverage, not JPEG-broadened neighborhoods, drives errors; adding Bayer to JPEG-only prototypes raises held-out-sensor recall ≥5 points at ≤5% rejection."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Add Bayer variants to JPEG-only prototypes, recalibrate both to 5% rejection, and compare held-out-sensor recall and prototype coverage."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Simulation-calibrate matched JPEG-only and JPEG+Bayer prototypes; compare CameraShift-10 sensor coverage and novel recall at 5% rejection."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "CameraShift-10: adding Bayer increased sensor coverage from 78% to 89% and novel recall from 75% to 82% at 5% rejection."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n42",
+      "content": "Leave one Bayer mosaic pattern out of prototype augmentation; measure CameraShift-10 sensor-wise coverage and novel recall at 5% rejection."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "On held-out RGGB sensors, JPEG-only recall was 74%; Bayer augmentation without RGGB reached 76% at 5% rejection despite 88% coverage."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Include all tested Bayer patterns, but defer unrepresented-sensor deployment: full coverage reached 82% recall; withheld RGGB reached only 76%."
+    },
+    {
+      "id": "n49",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Mosaic-pattern match, not aggregate sensor coverage, determines recall: including RGGB augmentation restores ≥80% RGGB novel recall at ≤5% rejection."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "On RGGB CameraShift-10, compare JPEG-only prototypes with matched and mismatched Bayer variants, measuring novel recall at 5% sensor-balanced rejection."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "On RGGB CameraShift-10, matched Bayer raised recall from JPEG-only’s 74% to 82%; mismatched Bayer reached 76%, all at 5% rejection."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n49",
+      "content": "Repeat matched-versus-mismatched Bayer augmentation on BGGR sensors with equal prototype counts; measure novel recall at 5% rejection."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "On BGGR CameraShift-10, matched Bayer yielded 78% novel recall versus mismatched Bayer’s 82%, with equal prototype counts at 5% rejection."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "Use diverse Bayer prototypes with sensor-wise validation: matched RGGB reaches 82% recall, but unmatched RGGB and matched BGGR miss 80%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 55,
+      "exploration_parent_id": "g1",
+      "content": "Learn sensor-conditioned Bayer-prototype weights using held-out proxy classes; calibrate worst-sensor rejection while retaining frozen-logit LoRA."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p4",
+      "content": "Train sensor-conditioned weights on disjoint proxy classes; calibrate worst-sensor rejection, then test CameraShift-10 recall, retention, and added-class accuracy."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Initialize from n10’s prototypes; train sensor-conditioned Bayer weights on disjoint proxy classes, retain n17’s LoRA, and calibrate worst-sensor rejection."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "SensorGate-v1 checkpoint with proxy-trained Bayer weighting, worst-sensor novelty thresholds, frozen known logits, and ten class-specific LoRA modules."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Evaluate SensorGate-v1 on held-out CameraShift-10: per-sensor rejection and novel recall, plus ten-addition initial-known retention and added-class accuracy."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "CameraShift-10: SensorGate-v1 achieved 83% novel recall (worst sensor 80%), maximum sensor rejection 4.9%, 96% retention, and 72% added-class accuracy."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Adopt SensorGate-v1 for CameraShift-10: it meets novelty, worst-sensor rejection, known-class retention, and added-class accuracy targets."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 62,
+      "exploration_parent_id": "g1",
+      "content": "Extend SensorGate-v1 with image-derived sensor embeddings and uncertainty-gated prototype mixing for unseen cameras, preserving frozen-logit LoRA."
+    },
+    {
+      "id": "n63",
+      "type": "question",
+      "order": 63,
+      "exploration_parent_id": "p5",
+      "content": "Can image-derived sensor embeddings select reliable prototypes for unseen cameras without increasing shifted-known rejection above 5%?"
+    },
+    {
+      "id": "n64",
+      "type": "hypothesis",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "On UnseenCam-6, uncertainty-gated sensor embeddings achieve ≥80% novel recall with ≤5% shifted-known rejection per camera."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Using n58, train image-derived, uncertainty-gated sensor embeddings on proxy cameras; test UnseenCam-6 per-camera novel recall and shifted-known rejection."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "UnseenCam-6: gated embeddings achieved 84% pooled novel recall, 80% minimum per-camera recall, and 4.8% maximum shifted-known rejection."
+    },
+    {
+      "id": "n67",
+      "type": "decision",
+      "order": 67,
+      "exploration_parent_id": "n63",
+      "content": "Adopt uncertainty-gated embeddings for unseen-camera novelty detection; minimum recall reached 80% with maximum shifted-known rejection 4.8%."
+    },
+    {
+      "id": "n68",
+      "type": "plan",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "Integrate adopted embeddings with ten-addition LoRA; evaluate UnseenCam-6 novelty recall, per-camera rejection, known-class retention, and added-class accuracy."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Combine n17’s ten-addition LoRA modules with n58’s sensor gate and adopted embeddings; measure UnseenCam-6 retention, added accuracy, recall, and rejection."
+    },
+    {
+      "id": "n70",
+      "type": "artifact",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "UnseenCam-6 integration bundle with gated sensor embeddings, ten LoRA checkpoints, and per-camera recall, rejection, retention, and added-accuracy logs."
+    },
+    {
+      "id": "n71",
+      "type": "activity",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Audit n70 on a held-out UnseenCam-6 split after ten additions, measuring per-camera recall, rejection, known-class retention, and added-class accuracy."
+    },
+    {
+      "id": "n72",
+      "type": "evidence",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "After ten additions, UnseenCam-6 achieved 82% novel recall, 4.9% maximum camera rejection, 95.5% known-class retention, and 71% added-class accuracy."
+    },
+    {
+      "id": "n73",
+      "type": "decision",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "Advance separately validated WeatherShift-10, CameraShift-10, and UnseenCam-6 configurations; each meets novelty and ten-addition accuracy targets."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "refute",
+      "target": "n49"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "decompose",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n71",
+      "relation": "produce",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "n73"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n73"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n73"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop an open-world visual recognizer that distinguishes novel classes from domain shifts while learning new classes without forgetting.",
+    "requirements": [
+      "Achieve ≥80% novel-class recall at ≤5% false rejection of domain-shifted known classes.",
+      "After ten class additions, retain ≥95% initial known-class accuracy and achieve ≥70% added-class accuracy."
+    ]
+  }
+}

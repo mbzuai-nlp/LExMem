@@ -1,0 +1,981 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build an incremental interprocedural alias analysis that preserves soundness across pointer escapes, indirect calls, and changing function summaries.",
+      "requirements": [
+        "Soundly handle heap objects, pointer casts, recursion, and opaque external calls under documented IR semantics.",
+        "After single-function edits, match full recomputation’s alias answers while reducing median analysis latency by 50%."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use allocation-site points-to constraints, cast-preserving propagation, indirect-call target expansion, conservative external escape summaries, and SCC-based summary invalidation."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can changed escape summaries and indirect-call targets invalidate transitive callers without recomputing unaffected SCCs?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Versioned escape and call-target dependencies limit recomputation to impacted caller SCCs while preserving full-recompute alias answers."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Validate versioned SCC dependencies, implement conservative external summaries, then benchmark alias equivalence and median edit latency versus full recomputation."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run EditSCC-200 single-function edit tests covering escapes, recursion, and indirect calls; compare invalidated SCCs and aliases against full recomputation."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "EditSCC-200 found 3/200 alias mismatches: newly escaped global function pointers introduced callees absent from cached caller-SCC dependencies."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adding global-escape watchers to versioned call-target dependencies will eliminate EditSCC-200 alias mismatches without recomputing unaffected SCCs."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Add global-escape watchers, rerun EditSCC-200 against full recomputation, and measure alias mismatches, invalidated SCCs, and median latency."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "EditSCC-200: 0/200 alias mismatches; only dependency-reachable SCCs recomputed; median edit latency 42 ms versus 110 ms full."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Adopt global-escape watchers for SCC invalidation; EditSCC-200 resolves three prior mismatches and cuts median latency 62%."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Implement allocation-site heaps, conservative pointer casts, and opaque-call read/write/escape summaries; test recursive calls in IRSemantics-40."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Alias engine and IRSemantics-40 tests cover allocation-site heaps, conservative pointer casts, recursive SCC summaries, and opaque-call read/write/escape effects."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Which pointer-cast and opaque-call effects must recursive SCC summaries propagate to preserve sound allocation-site heap aliases?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Add grammar-generated IR edit fuzzing with full-recompute alias checks and latency gates for casts, opaque calls, and escaped function pointers."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Document cast and opaque-call semantics, build a full-recompute oracle, and baseline median latency on recursive single-function edits."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Extend IRSemantics-40 with cast round-trips, opaque-call escapes, and recursive heap edits; compare incremental aliases and timing against full recomputation."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "IRSemantics-40 oracle suite records incremental/full alias diffs and edit latency for cast round-trips, opaque escapes, and recursive heap edits."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Run 10,000 grammar-generated single-function cast, escape, and recursion edits through IRSemantics-40; check oracle agreement and ≥50% median latency reduction."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Across 10,000 generated edits, alias mismatches were 0; median edit latency was 43 ms versus 112 ms full."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Adopt global-escape SCC invalidation and generated-edit CI gates; both benchmarks show zero mismatches and >50% median latency reductions."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n13",
+      "content": "Document pointer–integer cast provenance and opaque-call read/write/escape/return rules; test recursive SCC fixed points against IRSemantics-40."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "IRSemantics-40 found two soundness failures in both modes: opaque-call returns could alias escaped heap objects but were modeled as fresh."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Which generated edit combinations exercise cast-induced escapes and indirect-call target changes together, beyond fixed regression cases?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Staged pointer-cast escapes, opaque-call returns, and indirect-call retargeting edits will expose may-alias omissions despite full-recompute parity."
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "Editing heap-stored function pointers after cast-mediated opaque escapes will reveal missed caller invalidations absent when edits precede escapes."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Model opaque returns with escaped-object closure and an external-unknown heap node; invalidate dependent SCCs when that closure changes."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "How can opaque-call returns include newly escaped heap objects without leaving cached caller summaries stale?"
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Implement versioned opaque-return escape closure with caller invalidation; test staged cast escapes and heap function-pointer retargeting against semantic/full-recompute oracles."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Staged cast/indirect-call edits exposed two pre-fix may-alias omissions shared with full recomputation; 0/500 post-escape heap-pointer retargets missed caller invalidation."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n24",
+      "content": "Compare 1,000 before- versus after-escape heap function-pointer retargets; trace closure versions and caller invalidations against full recomputation."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "NestedReturn-1000 added cast-mediated nested opaque returns absent from n26: caller invalidation missed 2/500 post-escape retargets, 0/500 pre-escape."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "How should escaped-object closure track cast-mediated nested opaque returns that expose heap-stored function pointers?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Propagating nested opaque-return closure versions through cast provenance into heap-slot call-target dependencies will invalidate the two missed callers."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Use n26 and n28 failure traces to wire nested-return closure versions into heap-slot dependencies; rerun NestedReturn-1000 against full recomputation."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "NestedReturn-1000: missed post-escape invalidations fell from 2/500 to 0/500; incremental and full aliases matched on all edits."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Adopt opaque-return escaped-object closure and nested heap-slot dependencies; n26 exposed omissions, n28 exposed invalidations, and n32 eliminated invalidations."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Replace coarse caller-SCC invalidation with versioned delta propagation over escaped-object closures, using wildcard heap slots for provenance-losing casts."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "p4",
+      "content": "Extend adopted escaped-object closure with wildcard cast slots, propagate versioned SCC deltas, then benchmark semantic-oracle soundness, parity, and latency."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Extend IRSemantics-40 oracle suite with provenance-losing casts and nested opaque returns; verify closure and wildcard-slot may-alias rules."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "IRSemantics-64 replaces the IRSemantics-40 oracle with 24 nested-return and provenance-losing-cast cases and explicit wildcard-slot may-alias expectations."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Run both oracle suites against incremental and full analysis; report soundness gaps separately from incremental/full alias discrepancies."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "IRSemantics-64 found 4 wildcard-slot soundness gaps shared by incremental/full analysis; IRSemantics-40 showed zero incremental/full discrepancies."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n34",
+      "content": "Fix four IRSemantics-64 wildcard-slot gaps with conservative cast propagation; implement versioned SCC deltas and benchmark alias parity and latency."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "IRSemantics-64 v2 strengthens four wildcard-slot expectations; the analyzer now propagates cast-lost heap slots and versioned SCC deltas."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Rerun IRSemantics-64 v2 and the original oracle after the four-gap fix; measure may-alias omissions and incremental/full parity."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "IRSemantics-64 v2: wildcard-slot may-alias omissions fell from 4 to 0; incremental/full discrepancies remained 0 across 64 cases."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n40",
+      "content": "Keep conservative wildcard-slot propagation: it eliminates the four documented soundness gaps while retaining zero incremental/full discrepancies."
+    },
+    {
+      "id": "n44",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p4",
+      "content": "Can versioned closure deltas preserve ≥50% median latency reduction when wildcard heap slots expand indirect-call targets?"
+    },
+    {
+      "id": "n45",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Deduplicating wildcard-slot delta subscriptions per caller SCC should preserve oracle parity and keep median edit latency below half full recomputation."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Deduplicate wildcard-slot subscriptions per caller SCC; run WildSlot-1000 edits, checking oracle parity and median latency against full recomputation."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "WildSlot-1000: 0 oracle or full-recompute discrepancies; median edit latency 48 ms versus 112 ms full, a 57% reduction."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 53,
+      "exploration_parent_id": "g1",
+      "content": "Use generation-stamped dependency snapshots and SCC-local rebuilds for deleted call targets and shrinking summaries, avoiding stale alias edges."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "p5",
+      "content": "Retain sound wildcard propagation and deduplicated subscriptions; snapshot generations, rebuild deletion-affected SCCs, verify parity and ≥50% latency reduction."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Implement generation-stamped dependency snapshots atop versioned SCC deltas; rebuild affected SCCs when call targets or summaries shrink."
+    },
+    {
+      "id": "n50",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "Generation-snapshot rebuild module records removed call-target and summary edges, then reconstructs only dependency-reachable SCCs from current IR."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Run ShrinkSCC-1000 call-target deletions and summary contractions; compare aliases and median latency against full recomputation and WildSlot-1000 baseline."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "ShrinkSCC-1000: 0/1,000 alias mismatches after deletions; median edit latency 51 ms versus 112 ms full, a 54% reduction."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "p5",
+      "content": "Adopt snapshot rebuilds with global-escape watchers, opaque-return closure, and wildcard slots: ShrinkSCC-1000 shows parity and 54% lower latency."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "depend_on",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n33"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build an incremental interprocedural alias analysis that preserves soundness across pointer escapes, indirect calls, and changing function summaries.",
+    "requirements": [
+      "Soundly handle heap objects, pointer casts, recursion, and opaque external calls under documented IR semantics.",
+      "After single-function edits, match full recomputation’s alias answers while reducing median analysis latency by 50%."
+    ]
+  }
+}

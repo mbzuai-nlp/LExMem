@@ -1,0 +1,139 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Test local admission caps under backend failures and delayed telemetry",
+      "boundary_reason": "Intermittent failures expose a fairness shortfall, prompting a diagnosis of cap resets."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Investigate cap hysteresis and the remaining transient fairness dip",
+      "boundary_reason": "The decision retains hysteresis and identifies deficit rebasing as the next change."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Test deficit rebasing across concurrent failures and unequal tenant weights",
+      "boundary_reason": "Two-backend flaps reveal a new fairness shortfall for the 1:8 tenant-weight case."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Investigate preserved deficit credit and per-tenant admission caps",
+      "boundary_reason": "The capped and uncapped results raise a specific question about recovered-slot access."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Choose a high-weight occupancy cap using fairness and backend-speed results",
+      "boundary_reason": "The 95% cap is adopted, completing this cap-selection discussion."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Test retry budgets across balancer migrations and adopt request-scoped tokens",
+      "boundary_reason": "The migration audit supports replacing replica-local retry accounting."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Test request-scoped retries and fairness during balancer partitions",
+      "boundary_reason": "Partition results defer the proposal and shift attention to the fairness shortfall."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79"
+      ],
+      "topic": "Evaluate partition-stable reservations and owner fencing, then consolidate the design decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

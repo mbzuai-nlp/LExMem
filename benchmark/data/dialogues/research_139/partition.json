@@ -1,0 +1,176 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "SignalSep identifiability, initial NicheMix-1 results, and the NicheMix-2 validation plan",
+      "boundary_reason": "The initial result leads to a decision and validation plan; the next nodes execute that plan."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "NicheMix-2 audit and independent verification of SignalSep",
+      "boundary_reason": "Verification concludes before the focus shifts to expression-dependent dropout."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Whether expression-dependent ligand dropout creates falsely identifiable SignalSep edges",
+      "boundary_reason": "Propensity reweighting exposes detection-driven edges, prompting a more targeted dropout-regime question."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Ambiguity detection under niche-dependent ligand dropout",
+      "boundary_reason": "The calibration and held-out tests end before the discussion turns to reciprocal signaling."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Directional identifiability and abstention for reciprocal ligand–receptor interactions",
+      "boundary_reason": "The reciprocal-feedback benchmark package closes this SignalSep discussion; the next node introduces NicheMatch."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p2",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "NicheMatch receptor-negative controls and held-out density-dependent-dropout performance",
+      "boundary_reason": "The held-out result concludes the NicheMatch evaluation before a different proposal begins."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "PerturbMap mosaic-knockout benchmark and spillover audit",
+      "boundary_reason": "The baseline audit concludes before knockout-induced niche remodeling is examined."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "PerturbMap exclusion violations from knockout-induced hypoxia",
+      "boundary_reason": "The hypoxia failure motivates a new question about independent hypoxia measurements."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Independent hypoxia assays, adjusted PerturbMap calls, and held-out validation",
+      "boundary_reason": "The validation report closes the PerturbMap discussion before CrossNiche is introduced."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "CrossNiche environmental sentinels and invariant shared-factor effects",
+      "boundary_reason": "The sentinel tests conclude before the focus shifts to composition gradients."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "CrossNiche composition shifts, adjustment requirements, and gradient benchmark",
+      "boundary_reason": "The gradient benchmark closes this discussion before PulseTrace is introduced."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "p5",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "PulseTrace eight-frame benchmark and directional-edge audit",
+      "boundary_reason": "The baseline audit concludes before asynchronous niche waves are examined."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75"
+      ],
+      "topic": "PulseTrace niche-wave controls, optional sensors, and revised validation benchmark",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

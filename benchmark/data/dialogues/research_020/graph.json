@@ -1,0 +1,798 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop offline policy improvement certificates that remain valid under bounded hidden confounding without requiring full action coverage.",
+      "requirements": [
+        "Certificates attain at least 95% coverage of true policy gains under the stated confounding bound.",
+        "Certify strictly positive gains over the behavior policy in a nontrivial, explicitly characterized regime."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use sample-split Γ-odds sensitivity bounds to certify supported-action policy switches when their 95% lower gain bound exceeds zero."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What overlap and reward-gap conditions yield positive Γ-robust lower gain bounds for supported-action switches?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "In eight-stratum binary bandits with unit-bounded rewards, Γ≤1.25, switched-action propensity≥0.2, switch-mass≥0.1, and observed gap≥0.3 yield positive 95% bounds at n≥20,000."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Simulate 10,000 confounded eight-stratum bandits (n=20,000, Γ=1.25, propensity≥0.2, switch-mass≥0.1, gap≥0.3); measure true-gain coverage and positive-certification frequency."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Across 10,000 eight-stratum bandits meeting the hypothesized thresholds (n=20,000), true-gain coverage was 95.4%; every lower bound was positive."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Audit 2,000 boundary bandits (n=20,000; Γ=1.25; gap=0.3; switch-mass=0.1) with unsupported unswitched actions; measure coverage and certification."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Among 2,000 boundary bandits (switched-action propensity=0.20, gap=0.30, switch-mass=0.10), 11% had nonpositive bounds; true-gain coverage was 95.2%."
+    },
+    {
+      "id": "n9",
+      "type": "hypothesis",
+      "order": 9,
+      "exploration_parent_id": "n3",
+      "content": "Raising the observed gap threshold to 0.40 should yield ≥95% positive certificates while maintaining ≥95% true-gain coverage."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Rerun 2,000 boundary bandits with gap≥0.40, propensity≥0.2, switch-mass≥0.1, n=20,000, Γ=1.25; measure positive-certification rate and true-gain coverage."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "In 2,000 boundary bandits with gap≥0.40, positive-certification rate reached 97.1% and true-gain coverage reached 95.3%."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Stress-test 5,000 Γ=1.25 adversarially confounded bandits with unsupported unswitched actions and gap≥0.40; measure positive-certification rate and true-gain coverage."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Across 5,000 adversarial bandits (n=20,000, Γ=1.25, switched-action propensity≥0.2, switch-mass≥0.1, gap≥0.40), positive-certification was 91.8%; true-gain coverage was 95.2%."
+    },
+    {
+      "id": "n14",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n9",
+      "content": "With n≥20,000, propensity≥0.2, switch-mass≥0.1, and Γ-adjusted gap≥0.20, predict ≥95% positive certification and coverage under adversarial Γ=1.25."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Derive Γ-robust switched-stratum gain bounds with simultaneous 95% confidence correction, then stress-test the Γ-adjusted gap≥0.20 regime."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Simulate 5,000 adversarial Γ=1.25 bandits (n=20,000; propensity≥0.2; switch-mass≥0.1; adjusted gap≥0.20) with unsupported unswitched actions; measure certification and coverage."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Among 5,000 adversarial bandits with Γ-adjusted gap≥0.20, positive certification reached 96.4% and true-gain coverage reached 95.3%."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n16",
+      "content": "AdversarialBandit-5K contains 5,000 seeded Γ=1.25 simulations, unsupported-action masks, certificate bounds, and true-gain coverage records."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "p1",
+      "content": "Adopt Γ-adjusted gap≥0.20: raw gap≥0.40 certified 97.1% in boundary cases but 91.8% adversarially, versus 96.4% with ≥95% coverage."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Use negative-control proxy bridges and Γ-robust 95% bounds to certify supported switches without evaluating unchanged unsupported actions."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Fit proxy bridges in 5,000 simulated eight-stratum bandits (Γ=1.25, n=20,000) with unsupported unswitched actions; measure true-gain coverage and positive certification."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Across 5,000 Γ=1.25 bandits with valid negative controls and adjusted gap≥0.20, proxy-bridge bounds achieved 95.5% coverage and 97.0% positive certification."
+    },
+    {
+      "id": "n23",
+      "type": "artifact",
+      "order": 23,
+      "exploration_parent_id": "n21",
+      "content": "ProxyBridge-5K includes seeded eight-stratum bandits, valid negative-control proxies, fitted bridges, unsupported-action masks, and 95% gain certificates."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Adopt proxy bridges only with defensible negative controls: simulated coverage reached 95.5% and positive certification reached 97.0%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Intersect 97.5% gain intervals from randomized audit and Γ-confounded logs on supported switches to obtain 95% certificates."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "How many randomized audit samples per switched stratum make intersected 95% gain bounds positive at Γ=1.25?"
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "At Γ=1.25, 800 audit samples per switched stratum (400 per action) yield ≥95% positive certificates for true gaps≥0.25."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Test intersected 97.5% intervals across 5,000 Γ=1.25 bandits with 800 audits/switched stratum and true gap≥0.25; measure coverage and certification."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Across 5,000 Γ=1.25 bandits, intersected bounds with 800 audits/switched stratum achieved 95.4% true-gain coverage and 96.2% positive certification."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n28",
+      "content": "In the 1,000 eight-switch subset, uncorrected stratumwise intersections covered total gain only 92.8%, below the promised 95%."
+    },
+    {
+      "id": "n31",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "Reject uncorrected stratumwise intersections despite 96.2% positive certification; require simultaneous correction because eight-switch gain coverage fell to 92.8%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Certify total switched-stratum gain directly using Γ-robust aggregate bounds and a single 95% confidence interval, avoiding stratumwise intersections."
+    },
+    {
+      "id": "n33",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "p4",
+      "content": "Derive one 95% Γ-robust aggregate bound for supported switches; test coverage and positive certification on ProxyBridge-5K at adjusted gap≥0.20."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "On ProxyBridge-5K, compute single 95% Γ=1.25 aggregate switched-gain bounds for adjusted gaps≥0.20; measure true-gain coverage and positive certification."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "On ProxyBridge-5K, aggregate Γ=1.25 bounds covered true policy gain in 95.6% of runs and certified positive gain in 96.1%."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n33",
+      "content": "On ProxyBridge-5K eight-switch cases, test aggregate Γ=1.25 bounds for gain coverage and positive certification with unsupported unswitched actions."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "In 1,000 ProxyBridge-5K eight-switch cases, aggregate bounds covered true gain only 93.6%, despite 96.0% positive certification."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n36",
+      "content": "EightSwitchAudit-v1 contains 1,000 ProxyBridge-5K eight-switch cases, aggregate bounds, true gains, and the 93.6% coverage diagnostic."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "p4",
+      "content": "Reject uncorrected aggregate bounds: overall coverage was 95.6%, but eight-switch coverage fell to 93.6%, violating the 95% target."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Use sample-split Γ-robust switch bounds with simultaneous Bonferroni-Hoeffding radii, certifying positive gains without evaluating unchanged unsupported actions."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p5",
+      "content": "Does simultaneous Bonferroni-Hoeffding correction retain positive certificates for eight switches at n=20,000 and Γ-adjusted gap≥0.20?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "For eight switches at n=20,000 and adjusted gaps≥0.20, simultaneous bounds achieve ≥95% true-gain coverage and ≥80% positive certification."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Recompute simultaneous Bonferroni-Hoeffding bounds on EightSwitchAudit-v1 (n=20,000, Γ=1.25, adjusted gap≥0.20); estimate coverage and positive-certification rates."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "On 1,000 EightSwitchAudit-v1 cases, simultaneous bounds covered true gain in 96.1% but certified positive gain in only 73.4%."
+    },
+    {
+      "id": "n45",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n41",
+      "content": "At n=20,000, raising eight-switch Γ-adjusted gaps to ≥0.30 yields ≥80% positive certificates and ≥95% true-gain coverage."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Filter EightSwitchAudit-v1 for eight-switch cases with Γ-adjusted gaps≥0.30; recompute simultaneous bounds and measure coverage and positive-certification rate."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Among 500 EightSwitchAudit-v1 cases with Γ-adjusted gaps≥0.30, simultaneous bounds achieved 96.0% true-gain coverage and 84.2% positive certification."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n46",
+      "content": "EightSwitchAudit-v2 adds simultaneous Bonferroni-Hoeffding gain bounds and adjusted-gap≥0.30 flags for 500 qualifying cases."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "p5",
+      "content": "Retain simultaneous bounds with eight-switch adjusted gap≥0.30: certification rose from 73.4% to 84.2%, with 96.0% coverage."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Use Γ-adjusted sensitivity bounds (gap≥0.20), validated proxies when available, and simultaneous correction for eight switches (gap≥0.30); reject uncorrected alternatives."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n9",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n9"
+    },
+    {
+      "source": "n14",
+      "relation": "revise",
+      "target": "n9"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop offline policy improvement certificates that remain valid under bounded hidden confounding without requiring full action coverage.",
+    "requirements": [
+      "Certificates attain at least 95% coverage of true policy gains under the stated confounding bound.",
+      "Certify strictly positive gains over the behavior policy in a nontrivial, explicitly characterized regime."
+    ]
+  }
+}

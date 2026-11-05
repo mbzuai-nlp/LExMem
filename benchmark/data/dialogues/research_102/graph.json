@@ -1,0 +1,1043 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable speech–gesture reference resolution that distinguishes gesture-dependent meaning from speaker-specific correlations under uncertain cross-modal timing.",
+      "requirements": [
+        "Achieve ≥10 percentage-point accuracy gains over speech-only models on gesture-dependent references from unseen speakers.",
+        "Limit accuracy degradation to 5 percentage points under irrelevant-gesture substitutions and ±300-millisecond audiovisual offsets."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train ShiftGuard using speaker-adversarial embeddings, ±300 ms temporal marginalization, irrelevant-gesture invariance, and label-updated relevant-gesture swaps."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can label-updated gesture swaps preserve referent-bearing motion while speaker-adversarial training removes identity cues under ±300 ms jitter?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "ShiftGuard’s label-updated swaps and speaker-adversarial training yield ≥10-point accuracy gains over speech-only on unseen-speaker GestureRef, with ≤5-point ±300-ms jitter/irrelevant-swap loss."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Train ShiftGuard and swap/adversary ablations on speaker-disjoint GestureRef; measure speech-only gains, speaker-probe accuracy, and ±300-ms/irrelevant-gesture losses."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Evaluate ShiftGuard and swap/adversary ablations on speaker-disjoint GestureRef: referent accuracy versus speech-only, speaker-probe accuracy, and irrelevant-swap/±300-ms degradation."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On unseen-speaker GestureRef, referent accuracy was 76% versus speech-only 64%; irrelevant-swap/±300-ms-jitter losses were 3/4 points; binary speaker-probe accuracy was 52%."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Advance ShiftGuard to independent replication: its 12-point gain and 3/4-point robustness losses meet both thresholds."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Replicate ShiftGuard on independent GestureRef-2 speakers, measuring speech-only accuracy gains and worst-case irrelevant-gesture and ±300-ms offset losses."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "GestureRef-2 replication report with independent speaker splits, ShiftGuard checkpoints, speech-only comparisons, and irrelevant-gesture/±300-ms offset accuracy tables."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 11,
+      "exploration_parent_id": "p1",
+      "content": "Can temporal marginalization identify the correct referent when two nearby pointing gestures target different objects within ±300 ms?"
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "On competing-point GestureRef-2 trials, ShiftGuard stays within 5 accuracy points of aligned trials at ±300 ms, outperforming nearest-gesture alignment."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Score ShiftGuard and nearest-gesture alignment on GestureRef-2 competing-point trials at 0 and ±300 ms; compare referent-accuracy drops."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "On GestureRef-2 competing-point trials, ShiftGuard accuracy fell from 74% aligned to 62% at +300 ms; nearest-gesture scored 58%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Add deictic-word-anchored gesture assignment to ShiftGuard, trained with competing-point negatives to prevent target blending under audiovisual offsets."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Train anchored ShiftGuard with competing-point negatives; evaluate speaker-disjoint GestureRef-2 against speech-only and baseline under irrelevant swaps and ±300-ms offsets."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Initialize anchored ShiftGuard from GestureRef-2 replication checkpoints; reuse its speaker splits to train competing-point negatives and test offset robustness."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Anchored ShiftGuard checkpoint and GestureRef-2 competing-point negative pairs, with fixed speaker splits and ±300-ms offset evaluation scripts."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Evaluate anchored and original ShiftGuard checkpoints using GestureRef-2 competing-point pairs: unseen-speaker accuracy, speech-only gains, irrelevant-swap and ±300-ms losses."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "On GestureRef-2 competing-point trials, anchored scored 78%/75% aligned/+300 ms versus original 74%/62%; speech-only 64%; anchored irrelevant-swap loss: 3 points."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Does anchored ShiftGuard retain its accuracy gain on gesture-dependent references without explicit deictic words?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Anchored ShiftGuard’s 14-point competing-point advantage persists as ≥10-point speech-only gains on implicit-deixis trials, with ≤5-point ±300-ms loss."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Evaluate anchored ShiftGuard versus speech-only on speaker-disjoint GestureRef-2 implicit-deixis trials, reporting aligned accuracy and worst ±300-ms loss."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "On unseen-speaker GestureRef-2 implicit-deixis trials, anchored scored 76% versus speech-only 65%; worst ±300-ms accuracy was 72%."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Advance anchored ShiftGuard to deployment validation: competing-point/implicit-deixis gains are 14/11 points, with ≤4-point offset and 3-point irrelevant-swap losses."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n16",
+      "content": "Validate anchored ShiftGuard on fresh speakers’ implicit-deixis clips, measuring speech-only gains and irrelevant-gesture/±300-ms losses."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Train a counterfactual gesture-relevance gate using irrelevant-swap negatives and offset-averaged alignment, falling back to speech-only when gesture evidence is weak."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "Can the relevance gate reject irrelevant gestures without suppressing implicit-deixis cues under ±300-ms audiovisual offsets?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "On unseen-speaker GestureRef-2, gating limits irrelevant-swap loss to ≤2 points while preserving ≥10-point implicit-deixis gain and ≤5-point offset loss."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Using GestureRef-2 replication splits and checkpoints, train the relevance gate; test implicit-deixis gains and irrelevant-swap/±300-ms losses on unseen speakers."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "On unseen-speaker GestureRef-2 implicit-deixis, gating scored 72% versus speech-only 65%, a 7-point gain; irrelevant-swap/±300-ms losses were 1/3 points."
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Replacing hard rejection with soft gesture–referent gating should recover ≥10-point implicit-deixis gains, retaining ≤2-point irrelevant-swap and ≤5-point offset losses."
+    },
+    {
+      "id": "n33",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Train soft gesture–referent gating on GestureRef-2; compare hard gating on unseen-speaker implicit-deixis gains and swap/offset losses."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Train soft gesture–referent gating and compare against hard gating on GestureRef-2 implicit-deixis gains, irrelevant-swap losses, and ±300-ms offsets."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "On unseen-speaker GestureRef-2 implicit-deixis, soft gating scored 76% versus speech-only 65% and hard gating 72%; irrelevant-swap/±300-ms losses: 2/4 points."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Adopt soft gating over hard gating: it matches anchored ShiftGuard’s 76% implicit-deixis accuracy with 2/4-point substitution/offset losses."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Calibrate adopted soft-gate thresholds on held-out GestureRef-2 speakers, then audit false rejections by gesture relevance and deictic-word presence."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "GestureRef-2 soft-gate calibration card with selected threshold, held-out-speaker rejection rates, and implicit-deixis false-rejection breakdown."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "Can soft relevance gating reject same-speaker, trajectory-matched irrelevant gestures without relying on speaker style as referent evidence?"
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Train ObjectBind with scene-grounded gesture rays and within-speaker counterfactual swaps, using latent-offset contrastive binding to reject style shortcuts."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "p4",
+      "content": "Compare referent accuracy for ObjectBind, ShiftGuard, and calibration-card-threshold soft gating on GestureRef-2 same-speaker trajectory-matched swaps and ±300-ms offsets."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "On unseen-speaker GestureRef-2 trajectory-matched swaps, ObjectBind/ShiftGuard/soft-gate scored 78%/75%/70% aligned and 75%/71%/67% at +300 ms."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Advance ObjectBind to combined stress testing: its 78%/75% aligned/+300-ms swap scores match anchored ShiftGuard’s competing-point scores."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Stress-test ObjectBind on same-speaker, trajectory-matched irrelevant swaps combined with ±300-ms offsets; compare referent accuracy and speaker-probe leakage against anchored ShiftGuard."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Run GestureRef-2 factorial tests combining same-speaker trajectory-matched swaps with ±300-ms offsets; compare ObjectBind and anchored ShiftGuard accuracy and speaker-probe leakage."
+    },
+    {
+      "id": "n46",
+      "type": "artifact",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "GestureRef-2 factorial stress-test report with paired same-speaker swaps, ±300-ms offset accuracy tables, and ObjectBind/anchored ShiftGuard speaker-probe results."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Can ObjectBind distinguish nearby scene objects under imprecise gesture rays without learning speaker-specific pointing biases?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "On unseen-speaker GestureRef-2 object pairs separated by ≤10°, ObjectBind gains ≥10 points over speech-only, with binary speaker-probe accuracy ≤55%."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Stratify GestureRef-2 factorial stress-test results by ≤10° object separation; measure ObjectBind’s speech-only accuracy gain and binary speaker-probe accuracy."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "On unseen-speaker GestureRef-2 ≤10° object pairs, ObjectBind scored 75% versus speech-only 63%; binary speaker-probe accuracy was 53%."
+    },
+    {
+      "id": "n51",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Retain scene-grounded ObjectBind for close-object trials: it gains 12 points over speech-only with 53% binary speaker-probe accuracy."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 52,
+      "exploration_parent_id": "g1",
+      "content": "Fuse ObjectBind’s scene-grounded rays with anchored ShiftGuard’s deictic assignments through a calibrated offset posterior and within-speaker counterfactual training."
+    },
+    {
+      "id": "n53",
+      "type": "question",
+      "order": 53,
+      "exploration_parent_id": "p5",
+      "content": "Can the fused offset posterior choose the correct nearby object when deictic timing and gesture rays favor different referents?"
+    },
+    {
+      "id": "n54",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Train the fused posterior on GestureRef-2; compare referent accuracy against ObjectBind and anchored ShiftGuard on timing–ray conflicts at ±300 ms."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Benchmark fused posterior, ObjectBind, anchored ShiftGuard, and calibrated soft gate on unseen-speaker GestureRef-2 timing–ray conflicts, irrelevant swaps, and ±300-ms offsets."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "On GestureRef-2 timing–ray conflicts, fused accuracy was 79% versus ObjectBind 72% and anchored ShiftGuard 70%; irrelevant-swap/±300-ms losses were 2/3 points."
+    },
+    {
+      "id": "n57",
+      "type": "hypothesis",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "On newly held-out GestureRef-2 speakers, fusion maintains ≥75% timing–ray-conflict accuracy and ≤5-point irrelevant-swap/±300-ms losses."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Reuse the GestureRef-2 factorial report’s swap/offset protocol; score fusion on new speakers for timing–ray-conflict accuracy and swap/offset losses."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "On newly held-out GestureRef-2 speakers, fusion reached 77% timing–ray-conflict accuracy; irrelevant-swap and worst ±300-ms losses were 3/4 points."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Adopt fusion for timing–ray conflicts (77%, ≤4-point robustness losses); retain ObjectBind for ≤10° objects (75% versus speech-only 63%)."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "n54",
+      "content": "Benchmark adopted fusion against ObjectBind, anchored ShiftGuard, and calibration-card-thresholded soft gating on unseen-speaker timing–ray conflicts at ±300 ms."
+    },
+    {
+      "id": "n62",
+      "type": "artifact",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "GestureRef-2 calibration card v2 adds fusion routing criteria and unseen-speaker ±300-ms timing–ray-conflict comparisons to the soft-gate guidance."
+    },
+    {
+      "id": "n63",
+      "type": "activity",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Audit calibration card v2 routing on held-out GestureRef-2 speakers, comparing routed accuracy and swap/offset losses against fixed fusion and ObjectBind."
+    },
+    {
+      "id": "n64",
+      "type": "evidence",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "On held-out GestureRef-2, card-v2 routing scored 78% versus fixed fusion 76% and ObjectBind 74%; irrelevant-swap/±300-ms losses were 2/4 points."
+    },
+    {
+      "id": "n65",
+      "type": "decision",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Adopt card-v2 routing: 78% held-out accuracy, 2/4-point swap/offset losses, supported by soft gating’s 76% implicit-deixis and ObjectBind’s 75% close-object accuracy."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n61"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "revise",
+      "target": "n38"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "n62"
+    },
+    {
+      "source": "n63",
+      "relation": "produce",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "n65"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n65"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n50"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable speech–gesture reference resolution that distinguishes gesture-dependent meaning from speaker-specific correlations under uncertain cross-modal timing.",
+    "requirements": [
+      "Achieve ≥10 percentage-point accuracy gains over speech-only models on gesture-dependent references from unseen speakers.",
+      "Limit accuracy degradation to 5 percentage points under irrelevant-gesture substitutions and ±300-millisecond audiovisual offsets."
+    ]
+  }
+}

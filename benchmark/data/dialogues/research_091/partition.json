@@ -1,0 +1,128 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Initial confidence-gated residual adapter and PartnerShift-PO threshold sweep",
+      "boundary_reason": "The 0.8 gate is selected and the sweep report is complete; evaluation on disjoint partner families follows."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11"
+      ],
+      "topic": "Disjoint-family test of the selected 0.8 gate",
+      "boundary_reason": "The test misses both targets, prompting a revised gating approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Change-point calibration and residual-clip tuning",
+      "boundary_reason": "The tuning identifies an eight-step calibration window and 0.3 clip; the next stage tests switch-frequency robustness."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Switch-frequency evaluation and withheld-calibration ablation",
+      "boundary_reason": "The withheld four-step result exposes a limitation and leads to a new rollback design."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Multi-timescale gates and uncertainty-triggered rollback",
+      "boundary_reason": "The aliased-switcher ablation reveals a gain–retention trade-off, motivating a different rollback trigger."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Reward-trend rollback, matched-split retesting, and patience selection",
+      "boundary_reason": "Four-step reward-trend rollback is selected; the graph then turns to a separate convention-ensemble proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p2",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Trajectory-predictive shielded mixing and near-identical-convention stress test",
+      "boundary_reason": "Mixing is deferred and its stress report recorded; a diagnostic-action proposal follows."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Diagnostic probes and high-aliasing regret audit",
+      "boundary_reason": "High-aliasing probe regret and retention shortfalls motivate regret-gated probes."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Regret-gated probes, delayed-reward retention, and rollout decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

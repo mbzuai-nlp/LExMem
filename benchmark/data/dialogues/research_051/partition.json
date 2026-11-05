@@ -1,0 +1,122 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Initial test of audited one-hop policy inference",
+      "boundary_reason": "The initial simulation supports a decision; the next node begins a follow-up plan."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1"
+      ],
+      "topic": "Plan and produce audited-identification and unaudited-MNAR results",
+      "boundary_reason": "The report is produced; the next discussion audits its derivations and results."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "a3",
+        "e2",
+        "a4",
+        "e3",
+        "d2"
+      ],
+      "topic": "Audit verification-rate results and test degree-dependent verification",
+      "boundary_reason": "A decision sets the limits of the audited approach before a new proposal begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h2",
+        "a5",
+        "e4",
+        "a6",
+        "e5",
+        "d3"
+      ],
+      "topic": "Test random cluster censuses under arbitrary within-cluster interference",
+      "boundary_reason": "The baseline and rare-bridge results lead to a decision; the next node proposes a bridge-specific revision."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "h3",
+        "a7",
+        "e6",
+        "d4"
+      ],
+      "topic": "Test bridge-stratified intervals for censused clusters",
+      "boundary_reason": "The bridge-specific decision concludes this approach before a different identification proposal begins."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h4",
+        "a8",
+        "e7",
+        "d5"
+      ],
+      "topic": "Examine identification using three tie reporters",
+      "boundary_reason": "The reporter-based approach reaches a decision before the discussion shifts to randomized policy trials."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "a9",
+        "e8",
+        "a10",
+        "e9",
+        "d6"
+      ],
+      "topic": "Compare cluster-mean and size-weighted policy contrasts",
+      "boundary_reason": "A decision distinguishes representative from size-biased enrollment; the next node proposes an enrollment-weighted remedy."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "h6",
+        "a11",
+        "e10",
+        "a12",
+        "e11",
+        "a13",
+        "e12",
+        "d7"
+      ],
+      "topic": "Evaluate inverse-inclusion weighting for population effects",
+      "boundary_reason": "The weighting decision is reached; the next node starts a proof and benchmark plan."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "l2",
+        "a14",
+        "r2",
+        "a15",
+        "e13",
+        "d8"
+      ],
+      "topic": "Verify isolated-cluster identification and finalize the preferred approach",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

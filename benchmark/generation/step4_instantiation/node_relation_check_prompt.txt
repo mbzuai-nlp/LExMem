@@ -1,0 +1,38 @@
+Check the current node's content against the supplied task, accepted prefix, and relations.
+
+INPUT
+{{INPUT_JSON}}
+
+- task: objective and requirements; the goal is fixed by the program.
+- prefix_graph: accepted earlier nodes and their relations.
+- current_node: the candidate node, including content.
+- current_edges: its relations to earlier nodes, in either direction.
+
+CHECKS
+1. Content is an English sentence or phrase.
+2. It fits the node type: proposal = approach; question = unresolved issue; hypothesis = testable claim; plan = intended steps; activity = concrete work; evidence = finding; decision = choice with reason; artifact = deliverable.
+3. It adds information appropriate to that role. Reject a paraphrase of earlier content that adds no specific issue, claim, step, action, finding, choice, or deliverable. Reject repeated background or requirements that are unnecessary to identify the current claim or comparison. Reusing names and metrics is allowed.
+4. Every current edge holds when the content is read with the prefix. Do not require the node to repeat setup, definitions, or premises already established there. If a reference has multiple possible meanings, identify the ambiguity.
+5. Concrete details make the claim, action, or finding identifiable. Flag vague measurable comparisons such as "performs better" when neither the node nor prefix identifies the metric and comparison. Accept plausible invented metrics, values, experiment or dataset names, and versions; do not require a number or new name in every node.
+6. Names, units, conditions, and chronology are consistent. Interpret values with their metrics and units in the prefix; check numerical comparisons. Fictional details need no external verification. New evidence may challenge earlier conclusions, but must not silently replace recorded observations or invent earlier decisions.
+
+RELATIONS (source -> target)
+- address: source tackles the target question or advances the goal.
+- produce: target is an output of source activity.
+- depend_on: target is required for source, not merely related to it.
+- evaluate: source activity tests or assesses target.
+- support: source evidence gives grounds for target; proof is not required.
+- refute: source evidence contradicts the actual target claim or shows a proposal fails an applicable requirement; unrelated conditions are insufficient.
+- decompose: target is an approach or activity within source.
+- revise: source substantively changes the earlier target; paraphrasing is insufficient and adoption is not implied.
+- revive: prefix establishes prior rejection, deferral, or inactivity, and source gives grounds for reconsideration; refutation alone is insufficient.
+
+The edges are fixed by the graph: judge whether the content is consistent with each given edge, not whether the edges themselves were well chosen. Check only the supplied content and edges. An empty edge list is valid. The exploration parent is traversal metadata. Do not demand future nodes, detailed procedures, or extra background. Report missing historical premises explicitly.
+
+OUTPUT
+Return only JSON with exactly node_id, passed, and issues:
+{"node_id": "<current node id>", "passed": true, "issues": []}
+
+If any check fails, set passed to false and list specific problems:
+{"edge": {"source": "...", "relation": "...", "target": "..."}, "reason": "<specific mismatch or missing information>"}
+Use a supplied edge, or null for a content-only issue. passed is true exactly when issues is empty. Do not rewrite the node; the program handles regeneration.

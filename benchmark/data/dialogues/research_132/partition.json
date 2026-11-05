@@ -1,0 +1,156 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Test a fixed probe-error gate with scratch fallback and diagnose its shortcomings",
+      "boundary_reason": "The fixed-gate benchmark and fallback ablation conclude; the next discussion turns to mixed shifts."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Test option-level gating when grasp dynamics remain compatible but placement dynamics change",
+      "boundary_reason": "The mixed-shift trials produce results and a dataset; the next proposal develops calibrated gating."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Evaluate calibrated option gates, diagnose held-out deficits, and prioritize gate calibration",
+      "boundary_reason": "The diagnosis leads to fitting per-option conformal gates; the next discussion tests their performance."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Benchmark conformal compatibility gates against scratch and the fixed gate",
+      "boundary_reason": "The conformal-gate benchmark concludes; the next proposal explores value-based transfer gating."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Assess whether 200 contact probes support safe pessimistic skill-value gating",
+      "boundary_reason": "The initial evaluations reveal differing useful-skill retention; the next discussion investigates why."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Investigate intermittent-slip probes as a cause of low useful-skill retention",
+      "boundary_reason": "Slip-enriched probing explains and improves retention; the next proposal uses adaptive sampling."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Benchmark adaptive slip probing and prepare held-out manipulation tests",
+      "boundary_reason": "The benchmark and held-out test artifact are complete; the next discussion audits probe efficiency."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Audit adaptive probing for rare-slip detection and wasted compatible-target probes",
+      "boundary_reason": "The audits find that adaptive probing misses its detection and probe-count targets; the next discussion tests a different trigger."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Test and adopt conformal uncertainty-triggered slip probes",
+      "boundary_reason": "The trigger meets both probe targets and a decision is made; the next proposal integrates it with option gating."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n64",
+        "n65",
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "Evaluate probe-inclusive combined gating and select it over adaptive-only gating",
+      "boundary_reason": "Probe-inclusive benchmarks and the matched comparison support a selection; the next work validates new shifts."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n74",
+        "n75"
+      ],
+      "topic": "Prepare probe-inclusive validation on payload and gripper-delay shifts",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Test shear residuals, then adopt calibrated propagation after reducing deformation false alarms",
+      "boundary_reason": "The model choice is made; the next nodes begin a frozen-model streaming audit."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Audit fixed-threshold propagation across abrasion grades and independent wear batches",
+      "boundary_reason": "Deployment is deferred after the independent-wear failure and missing batch IDs; a different proposal follows."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Select 40 per-batch deformation probes for conformal motion-ratio alerts",
+      "boundary_reason": "The 40-probe approach is advanced for validation; the next proposal uses different signals."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Revise shear-wave and strain-hysteresis fusion with a diffuse-strain veto",
+      "boundary_reason": "The revised veto meets pooled targets; the next test examines performance by abrasion grade."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Test abrasion-adaptive vetoes and their transfer to new severe-wear batches",
+      "boundary_reason": "Frozen thresholds fail on new batches, prompting a normalization revision."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Compare quiet-contact normalization with recalibrated abrasion-adaptive vetoes",
+      "boundary_reason": "The comparison ends in a model-selection decision; a new microdither proposal follows."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Test whether microdither phase predicts slip without substantially inducing slips",
+      "boundary_reason": "The randomized test supports the configuration; the next nodes audit its frozen deployment."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Audit frozen microdither alerts on new sensor batches",
+      "boundary_reason": "The streaming audit is assessed; a separate microphone–shear proposal follows."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Test chirp–shear timing and identify a low-damping result",
+      "boundary_reason": "Overall false alarms remain above target, motivating damping-conditioned alignment."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70"
+      ],
+      "topic": "Evaluate damping-conditioned alignment on independent wear and new high-damping materials",
+      "boundary_reason": "Frozen-model performance fails on new high-damping materials, prompting batch-specific calibration."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79"
+      ],
+      "topic": "Determine and validate an 80-probe recoil-null calibration protocol",
+      "boundary_reason": "The calibrated protocol is advanced; the next nodes initiate prospective logging."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Plan and record a prospective chirp–shear timing audit",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

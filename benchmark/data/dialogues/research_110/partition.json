@@ -1,0 +1,168 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "PerturbID coverage and sampling requirements",
+      "boundary_reason": "The coverage and timing recommendation is reached; the next discussion tests a lower-coverage alternative."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Targeted double perturbations at 50% coverage",
+      "boundary_reason": "The benchmark refutes the proposed precision target and produces a reusable package."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "PerturbID-70 calibration and identifiability assumptions",
+      "boundary_reason": "The calibrated release completes this stage before a different method is proposed."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "AnchorIV development and initial fast-feedback comparison",
+      "boundary_reason": "The initial comparison establishes a result; the next discussion probes off-target sensitivity."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "AnchorIV paired-guide off-target tolerance",
+      "boundary_reason": "The off-target sweep resolves the immediate threshold question."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Feedback-stratified choice between AnchorIV and PerturbID",
+      "boundary_reason": "The comparative decision closes this stage before ClampBound is introduced."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "ClampBound pulse timing and proposed validation",
+      "boundary_reason": "A pulse-and-sampling design is selected for held-out validation."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Held-out timing results and revised method priorities",
+      "boundary_reason": "The held-out result leads to a decision to run matched-timing trials."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Matched-timing benchmark of three methods",
+      "boundary_reason": "The benchmark reports its comparison; the next discussion tests a specific ClampBound vulnerability."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "ClampBound sensitivity to state-dependent degron efficacy",
+      "boundary_reason": "The sensitivity result yields a qualification rule before RescueMap is proposed."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "RescueMap lineage balance under strong confounding",
+      "boundary_reason": "The initial balance hypothesis is tested; the next discussion examines whether its constraint is universal."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "RescueMap imbalance exceptions and eligibility atlas",
+      "boundary_reason": "The atlas and stratified test characterize the imbalance issue; the next question concerns estimating confounding."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Negative controls for relaxing RescueMap balance requirements",
+      "boundary_reason": "The negative-control test supplies evidence for a conditional eligibility rule."
+    },
+    {
+      "session_id": "S14",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "RescueMap eligibility validation and final method choice",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

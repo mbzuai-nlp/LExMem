@@ -1,0 +1,154 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "pl1",
+        "a1",
+        "e1"
+      ],
+      "topic": "Initial test of instance-aligned background consistency in OrderBind",
+      "boundary_reason": "Initial results are available; the next discussion tests whether they hold on unseen scene swaps."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "a2",
+        "e2",
+        "d1"
+      ],
+      "topic": "Held-out scene-swap collapse and a decision to add cross-scene negatives",
+      "boundary_reason": "The failure is interpreted and a remedy is chosen."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a3",
+        "e3"
+      ],
+      "topic": "Testing cross-scene negatives for separation and background robustness",
+      "boundary_reason": "The next question shifts from background swaps to absolute-timestamp shortcuts."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "a4",
+        "ar1"
+      ],
+      "topic": "Preparing a time-shift test of OrderBind’s event-order grounding",
+      "boundary_reason": "ShiftSet is produced; the discussion then moves to a different grounding proposal."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h3",
+        "a5",
+        "e4",
+        "h4",
+        "a6",
+        "e5",
+        "d2"
+      ],
+      "topic": "RelGraphGround’s dependence on brief and surviving temporal anchors",
+      "boundary_reason": "The stratified anchor results lead to a primary-model decision."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "pl2",
+        "a7",
+        "ar2",
+        "a8",
+        "e6"
+      ],
+      "topic": "Two-anchor-gated fusion on clean and unseen-object-edited clips",
+      "boundary_reason": "Fusion results are reported; the next question concerns moving distractors."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "q4",
+        "a9",
+        "e7",
+        "d3"
+      ],
+      "topic": "False anchors from moving distractors and the fusion policy",
+      "boundary_reason": "The moving-distractor finding leads to a decision on when to disable fusion."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "q5",
+        "h5",
+        "a10",
+        "e8",
+        "a11",
+        "e9"
+      ],
+      "topic": "ActorTrace grounding under brief occlusions and corrected ID-switch scoring",
+      "boundary_reason": "The occlusion result is corrected; the next discussion turns to object exchanges."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "q6",
+        "pl3",
+        "a12",
+        "ar3",
+        "a13",
+        "e10",
+        "d4"
+      ],
+      "topic": "ActorTrace on similar-actor object exchanges",
+      "boundary_reason": "The exchange benchmark supports a model-selection decision."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "q7",
+        "h6",
+        "a14",
+        "e11"
+      ],
+      "topic": "Initial StateChain test on identical object-state cycles",
+      "boundary_reason": "The initial hypothesis is not met, prompting a revised approach."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "h7",
+        "pl4",
+        "a15",
+        "e12",
+        "a16",
+        "e13"
+      ],
+      "topic": "Contact-onset augmentation and matched-epoch StateChain ablations",
+      "boundary_reason": "Adjudicated-onset results are established; the next question concerns automatic detection under distractors."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "q8",
+        "pl5",
+        "a17",
+        "ar4",
+        "a18",
+        "e14",
+        "d5"
+      ],
+      "topic": "Automatic contact onsets and StateChain robustness to moving distractors",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

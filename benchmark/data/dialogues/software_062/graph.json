@@ -1,0 +1,1164 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a distributed scheduler preserving tenant quota ownership and performance isolation during tenant migration, adversarial workloads, and network partitions.",
+      "requirements": [
+        "Quota ownership never duplicates during migration, crashes, or partitions; disconnected schedulers cannot exceed assigned quotas.",
+        "On healthy workers, unaffected tenants’ p99 dispatch latency remains within 2× their workload-matched isolated baseline."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use consensus-backed escrow credits with expiry-gated lease transfers, worker-enforced fencing, and per-tenant dispatch lanes using weighted fair queuing."
+    },
+    {
+      "id": "n03",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What lease-expiry and worker-fencing protocol prevents overlapping quota spending during partitioned migration without indefinitely stranding credits?"
+    },
+    {
+      "id": "n04",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n03",
+      "content": "With ≤2-second clock skew, epoch-fenced workers and reassignment after 30-second leases expire plus skew prevent overlap and bound stranding."
+    },
+    {
+      "id": "n05",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n04",
+      "content": "Specify 30-second leases, expiry-plus-skew reassignment, worker epoch fencing, and TLA+ checks for overlapping credit use across crashes and partitions."
+    },
+    {
+      "id": "n06",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n05",
+      "content": "Model-check LeaseFence.tla with three schedulers, epoch-fenced workers, 30-second leases, ±2-second skew, crashes, and partitions for overlap and stranding."
+    },
+    {
+      "id": "n07",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n06",
+      "content": "LeaseFence.tla checked 1.2M states: zero duplicate quota owners; stranded credits reassigned within 34 seconds when quorum remained available."
+    },
+    {
+      "id": "n08",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n07",
+      "content": "Adopt 30-second epoch-fenced leases with quorum-backed expiry-plus-skew transfers, contingent on enforced clock-skew bounds and worker rejection of stale epochs."
+    },
+    {
+      "id": "n09",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n06",
+      "content": "LeaseFence.tla specifies quorum-backed lease transfers, expiry-plus-skew guards, epoch-fenced worker admission, and invariants for credit ownership and stranding."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n05",
+      "content": "Extend LeaseFence.tla with in-flight dispatches and asymmetric partitions; model-check per-tenant credit conservation and stale-epoch rejection during migration."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Extended LeaseFence.tla found a 17-step partition trace: an in-flight old-epoch dispatch survived reassignment, consuming 101/100 credits concurrently."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "p1",
+      "content": "Can in-flight old-epoch dispatches overspend escrow credits after asymmetric partitions and lease reassignment?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 13,
+      "exploration_parent_id": "g1",
+      "content": "Transfer only reconciled unused credits; hold in-flight reservations until worker-confirmed completion or enforced execution expiry plus clock-skew margin."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "p2",
+      "content": "Implement reservation-aware transfers and per-tenant dispatch lanes; test partitioned-migration credit conservation and healthy-worker p99 against ≤2× workload-matched isolation."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Extend LeaseFence.tla with in-flight reservations and worker-enforced execution expiry; model-check credit conservation across partitioned migrations."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "LeaseFence-v2.tla tracks spent, reserved, and transferable credits, requiring worker-confirmed completion or enforced execution expiry before transfer."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Model-check LeaseFence-v2.tla across three schedulers, 100 credits, asymmetric partitions, crashes, and delayed completions for ownership and conservation invariants."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "LeaseFence-v2.tla checked 2.4M states without ownership or conservation violations; peak committed-plus-reserved credits stayed at 100/100."
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "For a 100-credit tenant, worker-enforced expiry and transfers excluding in-flight reservations prevent old-epoch dispatches from exceeding allocated credits."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Run PartitionMigration-100 chaos tests with 100 credits, delayed acknowledgments, 60-second partitions, and ±2-second skew; track maximum committed-plus-reserved credits."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Across 10,000 PartitionMigration-100 migrations, no old-epoch dispatch overspent; peak committed-plus-reserved credits remained 100/100."
+    },
+    {
+      "id": "n22",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Adopt reservation-aware transfers with worker-enforced expiry; model checking and 10,000 partitioned migrations maintained the 100-credit cap."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n14",
+      "content": "Benchmark IsolateMix-24 with reservation-aware partitioned migrations and adversarial floods; compare unaffected tenants’ healthy-worker p99 dispatch to matched isolation."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "IsolateMix-24: reservation-aware migration's shared reconciliation mutex raised unaffected healthy-worker p99 dispatch from 2.4 ms isolated to 8.4 ms (3.5×)."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "Does reservation-aware reconciliation delay unaffected tenants’ dispatch beyond 2× isolated p99 under adversarial floods and partitioned migrations?"
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 26,
+      "exploration_parent_id": "g1",
+      "content": "Shard reconciliation locks by tenant and use worker-local weighted fair dispatch, preserving reservation-aware credit transfers."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "p3",
+      "content": "Under IsolateMix-24 floods and partitions, tenant-sharded reconciliation and worker-local fair queues keep unaffected healthy-worker p99 ≤4.8 ms (2× isolated)."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Benchmark IsolateMix-24 floods and partitioned migrations with sharded reconciliation and worker-local fair queues; compare unaffected healthy-worker p99 against 4.8 ms."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "IsolateMix-24 sharding cut unaffected healthy-worker p99 to 5.9 ms, but shared completion-ring contention exceeded 4.8 ms (2.46× isolated)."
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Adding per-tenant completion rings with 32-event drain budgets to sharded reconciliation should keep IsolateMix-24 unaffected p99 ≤4.8 ms."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Which completion-processing mechanism removes shared-ring contention enough to bring IsolateMix-24 unaffected p99 below 4.8 ms?"
+    },
+    {
+      "id": "n32",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Implement per-tenant completion rings with 32-event drain budgets; rerun IsolateMix-24 latency benchmarks and reservation-conservation checks."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Implement per-tenant 32-event completion drains under LeaseFence-v2 accounting; test IsolateMix-24 p99 ≤4.8 ms and partitioned credit conservation."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "IsolateMix-24 measured unaffected healthy-worker p99 at 3.8 ms (1.58× isolated); 10,000 partitioned migrations kept peak credits at 100/100."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n32",
+      "content": "Replay IsolateMix-24 completion bursts and worker crashes using LeaseFence-v2 reservation transitions; measure 32-event-drain p99 and credit conservation."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "IsolateMix-24 crash-burst replay measured unaffected healthy-worker p99 at 6.1 ms (2.54× isolated), despite 100/100-credit conservation."
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Reserve worker-local dispatch cores and cap crash-recovery drains at eight events per tenant per tick; predict p99 ≤4.8 ms."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Replay IsolateMix-24 crash bursts with dedicated dispatch cores and eight-event drains; check healthy-worker p99 ≤4.8 ms and LeaseFence-v2 credit conservation."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "IsolateMix-24 crash-burst replay measured unaffected healthy-worker p99 at 4.3 ms (1.79× isolated), with peak credits 100/100."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 40,
+      "exploration_parent_id": "n38",
+      "content": "IsolateMix-24 replay bundle adds worker-crash bursts, dedicated dispatch-core configuration, eight-event drain limits, p99 traces, and LeaseFence-v2 conservation assertions."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Adopt reservation-aware tenant-sharded reconciliation, per-tenant completion rings, dedicated dispatch cores, and eight-event drains; 32-event drains breach crash-burst p99."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 42,
+      "exploration_parent_id": "g1",
+      "content": "Pair quorum-certified per-worker quota slices with expiry-fenced reservations and dedicated dispatch cores; partitioned workers spend only preassigned credits."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "p4",
+      "content": "How can quorum-certified slices be reclaimed from partitioned workers without overlapping outstanding reservations?"
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Specify slice-expiry and reservation-settlement guards, then model-check partitioned-worker reclamation before benchmarking healthy-worker dispatch isolation."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Extend the IsolateMix-24 replay bundle with partitioned quorum-certified slices and expiry-fenced reservations; check duplicate ownership and healthy-worker p99."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "IsolateMix-24: 10,000 partitioned slice migrations showed no overlapping ownership, peak credits 100/100, and unaffected healthy-worker p99 4.2 ms (1.75× isolated)."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n44",
+      "content": "Model-check slice reclamation under asymmetric partitions, delayed acknowledgments, and ±2-second skew; assert credits remain reserved until worker-enforced expiry."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Slice-reclamation model found a 14-step trace: reclaim at 30 seconds overlapped a reservation expiring at 40, reaching 101/100 credits."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "p4",
+      "content": "Defer quorum-certified slices despite 4.2 ms p99; 30-second reclamation overlaps 40-second reservations, exceeding the 100-credit cap."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Reclaim quorum-certified slices only after slice and outstanding reservation expiries plus skew; retain dedicated dispatch cores and eight-event drains."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Waiting until max(slice expiry, reservation expiries) plus 4-second skew margin prevents duplicate ownership while retaining ≤4.8 ms unaffected p99."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Extend IsolateMix-24 replay bundle with 40-second reservations and ±2-second skew; test expiry-gated reclamation, credit ownership, and p99 ≤4.8 ms."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Across 10,000 IsolateMix-24 migrations, expiry-gated reclamation kept peak credits 100/100 and unaffected healthy-worker p99 4.4 ms (1.83× isolated)."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n51",
+      "content": "Replay IsolateMix-24 with reservation renewals, asymmetric partitions, and ±2-second skew; audit 100-credit cap and unaffected healthy-worker p99."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "IsolateMix-24 renewal replay hit 101/100 credits: an unreported partitioned-worker extension outlived the controller's recorded reservation expiry."
+    },
+    {
+      "id": "n56",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n51",
+      "content": "Quorum-committed renewal certificates, verified before worker extension, should prevent partitioned overspend while keeping unaffected p99 ≤4.8 ms."
+    },
+    {
+      "id": "n57",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Require quorum-committed renewal certificates before worker extensions; model-check partitioned reclamation and rerun IsolateMix-24 credit-cap and p99 tests."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Replay IsolateMix-24 asymmetric partitions and renewal bursts with quorum certificates; check 100-credit conservation and unaffected healthy-worker p99 ≤4.8 ms."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "With quorum-certified renewals, 10,000 IsolateMix-24 migrations stayed at 100/100 credits; unaffected healthy-worker p99 was 4.5 ms (1.88× isolated)."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n57",
+      "content": "Replay IsolateMix-24 controller crashes between renewal commit and worker receipt; audit duplicate credits and unaffected healthy-worker p99."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Controller-crash replay kept credits at 100/100, but shared certificate-log recovery raised unaffected healthy-worker p99 to 5.6 ms (2.33× isolated)."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n57",
+      "content": "Replay IsolateMix-24 worker restarts with duplicated, out-of-order renewal certificates and 60-second partitions; measure credit cap and healthy-worker p99."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Worker-restart replay rejected stale renewal certificates across 10,000 migrations; peak credits stayed 100/100 and unaffected p99 was 4.6 ms."
+    },
+    {
+      "id": "n64",
+      "type": "artifact",
+      "order": 64,
+      "exploration_parent_id": "n62",
+      "content": "RenewalRestart replay fixture adds persisted worker epochs, duplicated and reordered certificates, 60-second partitions, and 100-credit conservation assertions."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n57",
+      "content": "Combine RenewalRestart and IsolateMix-24 replays with controller crashes mid-renewal; verify epoch persistence, 100-credit conservation, and unaffected p99 ≤4.8 ms."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "With certificate-log recovery confined to non-dispatch cores, combined crash/restart replay kept credits 100/100 and unaffected healthy-worker p99 at 4.7 ms."
+    },
+    {
+      "id": "n67",
+      "type": "decision",
+      "order": 67,
+      "exploration_parent_id": "n56",
+      "content": "Adopt quorum-certified renewals, persisted epochs, and off-dispatch-core recovery; shared recovery breached p99, while the revised design achieved 4.7 ms."
+    },
+    {
+      "id": "n68",
+      "type": "decision",
+      "order": 68,
+      "exploration_parent_id": "p5",
+      "content": "Adopt expiry-gated slices with quorum-certified renewals and off-core recovery; uncertified extensions overspent, while certified trials held 100/100 credits."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n04",
+      "relation": "address",
+      "target": "n03"
+    },
+    {
+      "source": "n05",
+      "relation": "address",
+      "target": "n03"
+    },
+    {
+      "source": "n05",
+      "relation": "decompose",
+      "target": "n06"
+    },
+    {
+      "source": "n05",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n06",
+      "relation": "evaluate",
+      "target": "n04"
+    },
+    {
+      "source": "n06",
+      "relation": "produce",
+      "target": "n07"
+    },
+    {
+      "source": "n06",
+      "relation": "produce",
+      "target": "n09"
+    },
+    {
+      "source": "n07",
+      "relation": "support",
+      "target": "n04"
+    },
+    {
+      "source": "n07",
+      "relation": "support",
+      "target": "n08"
+    },
+    {
+      "source": "n08",
+      "relation": "depend_on",
+      "target": "n07"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n09"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n09"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "revise",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "refute",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n64"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n66"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n68"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n68"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n67"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a distributed scheduler preserving tenant quota ownership and performance isolation during tenant migration, adversarial workloads, and network partitions.",
+    "requirements": [
+      "Quota ownership never duplicates during migration, crashes, or partitions; disconnected schedulers cannot exceed assigned quotas.",
+      "On healthy workers, unaffected tenants’ p99 dispatch latency remains within 2× their workload-matched isolated baseline."
+    ]
+  }
+}

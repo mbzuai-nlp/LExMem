@@ -1,0 +1,845 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a semantic parser that generalizes variable binding and quantifier scope to unseen compositions without sacrificing familiar-construction accuracy.",
+      "requirements": [
+        "Achieve ≥90% logical-form exact match on withheld scope–binding combinations with matched vocabulary and length distributions.",
+        "Keep familiar-construction exact-match accuracy within two percentage points of an equally sized supervised baseline."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train ScopeBind to decode alpha-normalized logical forms via binder-link and scope-permutation actions, using counterfactual recombination plus familiar-example rehearsal."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should ScopeBind filter counterfactual recombinations that violate binder accessibility under nested quantifier scopes?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Filtering recombinations by scope-tree dominance and binder-type compatibility will achieve ≥90% withheld exact match without exceeding a two-point familiar-accuracy deficit."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Generate ScopeBind recombinations; filter by scope-tree dominance and binder type; compare withheld and familiar exact match against supervised baseline."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run three-seed ScopeBind ablations on matched withheld/familiar splits, comparing dominance/type-filtered recombination against unfiltered and supervised baselines by exact match."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across three seeds, filtered ScopeBind reached 91.8% withheld exact match versus 76.4% unfiltered; familiar accuracy was 94.1% versus 95.3% supervised."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n3",
+      "content": "Ablate dominance and binder-type filters separately; audit 200 nested-scope examples for accessibility errors and measure withheld/familiar exact match."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "On an independent vocabulary/length-matched withheld scope–binding split, filtered ScopeBind scored 86% exact match; 23/200 audited cases violated accessibility."
+    },
+    {
+      "id": "n8",
+      "type": "question",
+      "order": 10,
+      "exploration_parent_id": "p1",
+      "content": "Can scope-state-constrained decoding eliminate the 23/200 audited accessibility violations without exceeding the two-point familiar-accuracy margin?"
+    },
+    {
+      "id": "n9",
+      "type": "hypothesis",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Scope-state decoding atop filtered ScopeBind should yield ≥90% withheld exact match and ≤2/200 accessibility errors, with ≤2-point familiar deficit."
+    },
+    {
+      "id": "n10",
+      "type": "plan",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Implement a scope-state decoder masking inaccessible binder links, then rerun matched-split exact-match tests and the 200-case accessibility audit."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Implement scope-stack binder masking in ScopeBind; rerun three-seed independent withheld/familiar exact-match tests and the 200-case accessibility audit."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Scope-stack masking yielded 1/200 accessibility errors and 94.0% familiar exact match, but only 88.7% independent withheld exact match."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "n9",
+      "content": "Are residual withheld errors driven by incorrect quantifier ordering rather than binder accessibility after scope-stack masking?"
+    },
+    {
+      "id": "n14",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Adding quantifier-order ranking to scope-state ScopeBind should reach ≥90% withheld exact match, ≤2/200 accessibility errors, and ≤2-point familiar deficit."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Classify residual withheld errors, train a quantifier-order reranker over scope-valid candidates, and rerun matched-split exact match and accessibility audits."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Classify errors from the 88.7% withheld run; train a scope-valid quantifier-order reranker and measure exact match and accessibility."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Quantifier-order errors comprised 68/100 audited residual cases; reranking reached 91.2% withheld, 94.0% familiar exact match, and 1/200 accessibility errors."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 20,
+      "exploration_parent_id": "n14",
+      "content": "Adopt scope-state ScopeBind with quantifier-order reranking: 91.2% withheld exact match and a 1.3-point familiar deficit meet both targets."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n14",
+      "content": "Audit 100 residual errors from adopted ScopeBind on the independent withheld split, classifying quantifier-order, binder-link, and lexical mistakes."
+    },
+    {
+      "id": "n20",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n19",
+      "content": "ScopeBind Residual-100 audit sheet with gold and predicted logical forms, labeling 100 withheld failures by quantifier-order, binder-link, or lexical error."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 23,
+      "exploration_parent_id": "g1",
+      "content": "Build a typed CCG chart parser enumerating binding-safe scope derivations, with a neural ranker trained on recombinations and familiar examples."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Does a 64-derivation-per-cell typed CCG chart cover ≥95% of gold withheld logical forms?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "A 64-derivation-per-cell typed CCG chart will include ≥95% of gold withheld logical forms while preserving familiar derivations."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Measure gold-form chart coverage and neural-ranker exact match for 64-beam typed CCG on matched withheld/familiar splits versus supervised baseline."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Typed CCG chart covered 97.1% of withheld gold forms; ranker achieved 90.6% withheld and 94.2% familiar exact match (95.3% baseline)."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Retrieve familiar quantifier and binding fragments, unify typed argument slots into novel scope graphs, then rerank compiled logical forms."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Index typed fragments, unify accessible binder slots, rerank compiled forms, and compare matched withheld/familiar exact match against the supervised baseline."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Independently validate Residual-100 error labels, then benchmark typed-fragment unification on withheld and familiar splits by error class and exact match."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Typed-fragment unification scored 87.9% withheld and 94.4% familiar exact match; 41/100 Residual-100 cases lacked compatible scope fragments."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Reject typed-fragment unification as the primary parser: 87.9% withheld exact match misses 90%, and 41/100 failures lack compatible fragments."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Train a variable-free continuation parser with typed composition and familiar-example rehearsal; deterministically compile programs into alpha-normalized logical forms."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p4",
+      "content": "Can variable-free continuation programs represent every withheld scope–binding gold form without collapsing distinct quantifier readings?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "Typed continuation programs will compile ≥99% of withheld gold forms and preserve distinct logical forms for ≥99% of scope-contrast pairs."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "Convert withheld gold forms to typed continuation programs; measure round-trip alpha-normalized exact match and scope-contrast preservation."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "Convert withheld gold forms to typed continuations, train rehearsed decoder, and measure round-trip coverage, contrast preservation, and splitwise exact match."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "Typed continuations round-tripped 99.6% of withheld forms, preserved 99.2% of scope contrasts, and achieved 90.4%/94.0% withheld/familiar exact match."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n31",
+      "content": "Recheck withheld round-trip coverage by nesting depth and compile 300 scope-contrast pairs, scoring distinct alpha-normalized logical forms."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "On 300 independent scope-contrast pairs, only 294 (98.0%) compiled distinctly; depth-three withheld forms round-tripped at 96.8%."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "n30",
+      "content": "Do the six collapsed scope contrasts arise from missing quantifier-order annotations in depth-three continuation programs?"
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Adding explicit quantifier-order tags to depth-three continuations will separate all six collapsed contrasts and raise round-trip coverage to ≥99%."
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Annotate depth-three continuations with quantifier-order tags, recompile six collapsed contrasts, and measure depth-three round-trip coverage."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Tag depth-three continuations and retrain the decoder; retest six collapsed contrasts and coverage, comparing accuracy against 90.4%/94.0% withheld/familiar."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Quantifier-order tags separated all six contrasts and raised depth-three round-trip coverage from 96.8% to 99.3%; withheld/familiar exact match was 90.8%/94.1%."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n37",
+      "content": "Adopt tagged continuations over untagged: all six collapsed contrasts resolve, and withheld/familiar exact match rises from 90.4%/94.0% to 90.8%/94.1%."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n37",
+      "content": "Ablate quantifier-order tags in the adopted continuation parser; inspect six formerly collapsed contrasts and 100 depth-three pairs for scope collisions."
+    },
+    {
+      "id": "n43",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "ScopeTag Ablation Report: tag-on/off logical forms for six formerly collapsed contrasts and 100 depth-three pairs, with scope-collision labels."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Cross-check ScopeTag collision labels against Residual-100 categories, then rerun tagged continuations on audited failures to quantify recovered exact matches."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Cross-check identified 19/100 Residual-100 failures with ScopeTag collision signatures; tagged continuations recovered 12/19 exact forms."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Select ScopeBind (91.2%) as primary, tagged continuations for collision fallback (12/19 recoveries); retain CCG comparator, reject subthreshold fragments."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n9"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n14",
+      "relation": "revise",
+      "target": "n9"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n41"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a semantic parser that generalizes variable binding and quantifier scope to unseen compositions without sacrificing familiar-construction accuracy.",
+    "requirements": [
+      "Achieve ≥90% logical-form exact match on withheld scope–binding combinations with matched vocabulary and length distributions.",
+      "Keep familiar-construction exact-match accuracy within two percentage points of an equally sized supervised baseline."
+    ]
+  }
+}

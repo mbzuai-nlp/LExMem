@@ -1,0 +1,126 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Consistent cuts and exactly-once commits across reordered migration handoffs",
+      "boundary_reason": "Crash tests support fenced epoch handoffs; the remaining throughput target becomes the next focus."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Group-committed channel logs and prototype v0.3",
+      "boundary_reason": "The implementation and benchmark work is packaged in prototype v0.3."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Testing unaligned buffer persistence during handoffs",
+      "boundary_reason": "Crash tests identify omitted pre-handoff records and refute this approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Sender-outbox replay and frontier–bitmap gap detection",
+      "boundary_reason": "GapReplay-10k validates replay for reordered handoffs; the next stage integrates and benchmarks it."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n19",
+        "n20"
+      ],
+      "topic": "Outbox replay integration exposes pruning failures and a throughput shortfall",
+      "boundary_reason": "The integration results raise a new question about safe pruning and performance."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Durable acknowledgments and manifest-gated outbox pruning",
+      "boundary_reason": "Fault tests reveal premature pruning, and manifest-gated GC passes the reported recovery and throughput tests."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Outbox retention for overlapping migrations and older-checkpoint fallback",
+      "boundary_reason": "Manifest-scoped pins and fallback tests are incorporated into prototype v0.4."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Shadow migration, late records, and pinned replica logs",
+      "boundary_reason": "Revised log pinning passes the ShadowSwitch-2k recovery tests."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Key-local barriers for migrating hot keys",
+      "boundary_reason": "Crash and throughput results lead to a decision to adopt key-local barriers."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Integrating key-local barriers into prototype v0.5",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

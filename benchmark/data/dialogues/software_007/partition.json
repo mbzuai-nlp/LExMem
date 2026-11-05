@@ -1,0 +1,108 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Evaluate indexed snapshot-pinned segments for write savings and point-read latency",
+      "boundary_reason": "The snapshot sweep challenges the initial latency hypothesis, prompting a focused investigation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Investigate epoch-index eviction and decide whether to pin metadata",
+      "boundary_reason": "The metadata-pinning decision closes this read-latency investigation; the next proposal shifts to value-log durability."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Test value-log-before-WAL syncing across power failures and segment creation",
+      "boundary_reason": "Failures involving vanished segments raise a new question about directory persistence."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Test creation-time directory fsync for value-log segment durability",
+      "boundary_reason": "Missing renamed segments show that creation-time directory fsync is insufficient, leading to a rename-specific test."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Verify post-rename directory fsync and finalize value-log commit ordering",
+      "boundary_reason": "The durability ordering is decided; the next proposal explores a different storage design."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Evaluate eight-version consolidation for snapshot-pinned B-tree deltas",
+      "boundary_reason": "The consolidation choice is made; discussion shifts to copy-on-write hash buckets."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Sweep copy-on-write hash bucket sizes and assess write and read targets",
+      "boundary_reason": "The hash-bucket approach is rejected; the next proposal uses snapshot preimage overlays."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Evaluate visibility-interval sharing of snapshot preimages",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

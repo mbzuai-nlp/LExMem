@@ -1,0 +1,154 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Testing passive contact-anchored fusion for slip-versus-drift diagnosis during occlusion",
+      "boundary_reason": "The initial test falls short of the accuracy target, prompting a revised approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Testing and adopting contact-preserving probes for slip diagnosis",
+      "boundary_reason": "The probe-based diagnostic approach is adopted; discussion shifts to repositioning control."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Integrating probes into ProbePush-v1 and posing the placement-success test",
+      "boundary_reason": "The controller and placement hypothesis are established before a different filtering approach begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Benchmarking wall-plane-anchored filtering against the two targets",
+      "boundary_reason": "The initial wall-anchored benchmark misses both targets, leading to an investigation of its errors."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Investigating corner misassociation and reviving wall-anchored filtering",
+      "boundary_reason": "Corner gating resolves the identified weakness; the discussion moves to a broader comparison."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n24",
+        "n25"
+      ],
+      "topic": "Comparing ProbePush-v1 placement with corner-gated WallPush performance",
+      "boundary_reason": "The comparative scoring concludes before a new acoustic–IMU approach is introduced."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Testing acoustic–IMU slip diagnosis on carpet",
+      "boundary_reason": "Classification results motivate a separate test of whether alerts improve placement."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Testing and adopting acoustic–IMU-assisted control for carpet placement",
+      "boundary_reason": "Carpet placement and noisy-room replication support adoption; attention shifts to tile."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Comparing acoustic–IMU and corner-gated diagnosis on tile",
+      "boundary_reason": "Tile results favor corner gating, motivating a surface-dependent approach."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Testing hard surface-gated fusion across carpet–tile transitions",
+      "boundary_reason": "Hard gating misses both targets, prompting a blending revision."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Revising transition fusion with change-point blending",
+      "boundary_reason": "The revised approach clears both targets in reruns; discussion moves to held-out comparison."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Benchmarking and adopting blended fusion for transitions",
+      "boundary_reason": "The comparative result supports adoption before a larger benchmark begins."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n53",
+        "n54"
+      ],
+      "topic": "Preparing the BlendPush-200 unseen-furniture benchmark",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

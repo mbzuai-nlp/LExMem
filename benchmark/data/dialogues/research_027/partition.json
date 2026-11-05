@@ -1,0 +1,118 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Initial 64-mode Hermite closure and held-out pulse-delay test",
+      "boundary_reason": "EchoDelay-v1 meets both thresholds, and the closure is retained for broader validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Three-pulse and chirped-history validation of the 64-mode closure",
+      "boundary_reason": "EchoHistory-v2 analysis is complete; the next discussion tests longer pulse delays."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Long-delay phase mixing and high-mode reflection in the 64-mode closure",
+      "boundary_reason": "EchoDelay-Long refutes the predicted threshold failure; attention shifts to cross-wavenumber echoes."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Difference-wavenumber echo benchmark for unseen pulse pairs",
+      "boundary_reason": "The EchoK-v1 benchmark table is produced; the next discussion introduces another closure."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Port-Hamiltonian memory closure, cross-wavenumber coupling, and advancement decision",
+      "boundary_reason": "Antisymmetric coupling meets the EchoK-v1 thresholds, and both closures advance to matched benchmarking."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Matched mixed-history benchmark and worst-case audit of both closures",
+      "boundary_reason": "The joint-history results and audit are complete; the next discussion probes longer delays for the coupled 32-pole closure."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Long-delay limit of coupled 32-pole memory",
+      "boundary_reason": "The long-delay echo error exceeds the threshold, prompting a decision to expand memory."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "64-pole coupled-memory expansion and long-delay retest",
+      "boundary_reason": "Coupled64-v1 meets the long-delay echo and energy thresholds; the next discussion tests different unseen drives."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Four-pulse chirped-drive validation and final closure selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

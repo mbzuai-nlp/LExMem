@@ -1,0 +1,133 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Cardinality-based ambiguity detection and Parser API v0.1",
+      "boundary_reason": "The initial evaluation leads to adoption and an API artifact; the next discussion tests paraphrase stability."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Paraphrase-stability test of ambiguity predictions",
+      "boundary_reason": "The stability hypothesis is tested and not met; the next discussion addresses that weakness through training."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Paraphrase-consistent cardinality training and v0.2 audit",
+      "boundary_reason": "The v0.2 audit reports the training outcome; the next discussion introduces a different detection approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Conformal support on recursive compositions and its execution trade-off",
+      "boundary_reason": "Conformal support meets the ambiguity target but misses the execution baseline, prompting a revised design."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Grammar-constrained conformal gating with unchanged execution decoding",
+      "boundary_reason": "The revised gate is adopted and implemented as v0.3; the next discussion concerns equivalent logical forms in its beams."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Semantic-equivalence clustering and selection of v0.4",
+      "boundary_reason": "The clustering audit leads to selection of v0.4; the next discussion explores contrastive verification."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Contrastive verification and hard-positive augmentation",
+      "boundary_reason": "Hard-positive verification is adopted; the next discussion tests a bootstrap-recurrence alternative."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Bootstrap recurrence audit and shared-error false alarms",
+      "boundary_reason": "The audit finds shared-error false alarms and lower F1; the next discussion tests template stratification."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Template-stratified bootstraps and production decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Design and benchmark adaptive 2D grid routing for dual-large hot keys",
+      "boundary_reason": "The benchmark supports the approach, and an implementation plan is set."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Implement and test GridRouter v1",
+      "boundary_reason": "Initial implementation testing ends before a separate retry and bag-semantics stress test."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Diagnose missing retry matches and plan stable row IDs",
+      "boundary_reason": "The release-blocking defect has an identified fix and implementation plan."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Patch and validate GridRouter v2",
+      "boundary_reason": "Validation concludes before discussion shifts to a sort-merge alternative."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Size sort-merge tiles and assess duplicate-run memory risk",
+      "boundary_reason": "The tile approach is deferred after its memory-cap violation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Investigate disk-backed duplicate runs and plan prefetch",
+      "boundary_reason": "Corrected equal-resource results leave the approach deferred, with a prefetch optimization planned."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Implement, benchmark, and adopt TileMerge v2",
+      "boundary_reason": "TileMerge v2 is adopted before discussion shifts to live migration."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Test retry-safe live migration and identify dual-large-key memory risk",
+      "boundary_reason": "Live migration is deferred after the dual-large-key memory-cap breach."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Evaluate spill-backed migration handoffs and plan implementation",
+      "boundary_reason": "The spill-backed approach meets the tested targets and has an implementation plan."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Validate LiveShard v2 and choose the executor configuration",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

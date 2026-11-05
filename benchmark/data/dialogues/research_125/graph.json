@@ -1,0 +1,1224 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Determine when unpaired RNA and chromatin accessibility measurements support transferable perturbation-response prediction despite donor–batch confounding.",
+      "requirements": [
+        "Reduce perturbation-response RMSE by 15% versus RNA-only models on unseen donors and perturbations.",
+        "Characterize identifiability assumptions separating biological coupling from batch effects, including cases where separation is impossible."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fit batch-aware latent RNA–ATAC alignment via shared cell-state anchors; test donor/perturbation holdouts and flag rank-deficient donor–batch designs."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which donor–batch incidence patterns make shared-anchor RNA–ATAC coupling identifiable, and when does complete donor nesting make separation impossible?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Under additive batch effects, invariant anchors and crossed donor–batch observations identify RNA–ATAC coupling; nested designs confound donor and batch."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Simulate crossed and nested donor–batch layouts, vary anchor invariance, and quantify coupling identifiability with profile likelihood and held-out RMSE."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Simulate six donors across three crossed or nested batches with 0–20% anchor shifts; measure coupling-profile curvature and holdout RMSE."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "With invariant anchors, normalized coupling-profile curvature was 0.42 in crossed designs versus <0.01 in nested designs."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Restrict identifiable-coupling claims to crossed donor–batch designs with invariant anchors; flag nested layouts as nonidentifiable."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "DonorBatchSim v1 contains crossed/nested simulations, anchor-shift sweeps, coupling-profile curvature plots, and held-out perturbation RMSE tables."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Using DonorBatchSim v1 replicates, profile RNA–ATAC coupling under 0%, 10%, and 20% anchor drift across crossed and nested layouts."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "DonorBatchSim v1: crossed donors, additive batches, and two shared invariant anchors with identical RNA profiles gave coupling-profile curvature <0.01."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Coupling requires crossed donor–batch observations and full-rank, matched cell-state anchors; identical anchors or nested designs preclude separation."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "At what anchor rank and donor–batch overlap does unpaired ATAC lower joint donor–perturbation holdout RMSE by ≥15%?"
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Grid-search DonorBatchSim v1 across anchor ranks 1–4 and 0–3 cross-batch donors; compare RNA–ATAC against RNA-only unseen-donor/perturbation RMSE."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "AnchorOverlapGrid v1 reports anchor rank, cross-batch donor overlap, joint donor–perturbation holdout RMSE, and improvement versus RNA-only."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "AnchorOverlapGrid v1: rank-3 anchors and three cross-batch donors yielded joint-holdout RNA–ATAC RMSE 0.66 versus RNA-only 0.80 (17.5% lower)."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n11",
+      "content": "Using AnchorOverlapGrid v1, ablate batch correction across anchor ranks and donor overlaps; compare joint-holdout RMSE against RNA-only."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "With rank-3 anchors but one cross-batch donor, batch-corrected RNA–ATAC RMSE was 0.83 versus RNA-only 0.80 on joint holdouts."
+    },
+    {
+      "id": "n17",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Advance RNA–ATAC for rank-3 anchors with three cross-batch donors; one-donor overlap underperforms RNA-only."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Augment RNA-only predictors with ATAC-derived target-to-gene priors, calibrated using cross-batch donor replicates and negative-control peaks."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can negative-control peaks distinguish transferable target-to-gene links from batch-driven accessibility correlations in unpaired ATAC?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "With crossed donors, batch-only control peaks and validated target–peak–gene maps identify target-specific coupling despite rank-deficient shared anchors."
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Compare validated target–peak–gene priors with and without batch-only control-peak adjustment across crossed/nested designs, measuring identifiability and joint-holdout RMSE."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "In DonorBatchSim v1, ablate control-peak adjustment with known target–peak–gene links and rank-1 anchors; compare crossed/nested curvature and joint-holdout RMSE."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Crossed rank-1 designs with validated links: control-peak adjustment raised target-coupling curvature from <0.01 to 0.29; nested designs remained <0.01."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n20",
+      "content": "Stress-test crossed rank-1 designs by corrupting 0–50% of target–peak–gene links; measure coupling curvature and joint-holdout RMSE."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "At 0% link corruption, crossed rank-1 donors with batch-exclusive perturbations retained curvature <0.01 despite validated maps and batch-only controls."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "In crossed-donor designs, validated links and batch-only controls identify target coupling with rank-1 anchors only when perturbations bridge batches."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "With validated maps and crossed rank-1 donors, vary perturbation batch overlap and control-peak adjustment; measure coupling curvature and joint-holdout RMSE."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "In crossed rank-1 simulations, compare batch-exclusive versus batch-bridging perturbations with/without control-peak adjustment; measure target-coupling curvature and joint-holdout RMSE."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "With three cross-batch donors and validated links, control-adjusted batch-exclusive perturbations yielded coupling curvature 0.23 versus <0.01 unadjusted."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n26",
+      "content": "Match three cross-batch donors across batch-exclusive/bridging perturbations; contaminate control peaks with biological signal and measure coupling curvature and RMSE."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "With 20% biological contamination in control peaks, batch-exclusive perturbations had coupling curvature <0.01; batch-bridging perturbations retained 0.18."
+    },
+    {
+      "id": "n31",
+      "type": "artifact",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "ControlPeakStress v1 records donor-matched exclusive/bridging perturbations, 0–20% control contamination, coupling curvature, and joint-holdout RMSE."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n26",
+      "content": "Allow batch-exclusive perturbations only with verified batch-only controls; require batch-bridging perturbations when controls carry biological signal."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 36,
+      "exploration_parent_id": "g1",
+      "content": "Transport within-batch RNA perturbation contrasts using unpaired ATAC module scores, donor-overlap weighting, and placebo-batch falsification."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Do ATAC module scores predict perturbation-effect variation across donors, or merely encode batch structure after within-batch differencing?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "With crossed donors and batch-overlapping perturbations, residual ATAC module scores explain donor-specific RNA contrasts beyond batch labels and placebo modules."
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Evaluate donor-held-out RNA contrasts predicted from residual ATAC modules against batch labels and permuted placebo modules, stratifying perturbation overlap."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Using ControlPeakStress v1, predict held-out donor RNA contrasts from residual ATAC modules versus batch labels/placebos, stratified by perturbation overlap."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "ControlPeakStress v1: crossed, bridging designs yielded donor-holdout contrast RMSE 0.67 with residual modules versus 0.81 batch-only and 0.80 placebo."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Benchmark overlap-weighted within-batch RNA-contrast transport using ATAC modules against RNA-only on joint donor–perturbation holdouts and placebo-batch permutations."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "On crossed, bridging joint holdouts, ATAC-module transport RMSE was 0.78 versus RNA-only 0.80, missing the 15% improvement target."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n35",
+      "content": "Using ControlPeakStress v1, swap batch labels and permute donor-matched ATAC modules during transport; compare joint-holdout RMSE by control contamination."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "With uncontaminated controls and three cross-batch donors, transport RMSE was 0.66 versus 0.80 RNA-only and 0.81 module-permuted."
+    },
+    {
+      "id": "n42",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n35",
+      "content": "Retain transport only with uncontaminated controls and three cross-batch donors; otherwise 0.78 RMSE fails the 15% target."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Train a partial-identification-gated RNA–ATAC ensemble, using ATAC only when donor overlap and negative-control bounds exclude batch-only explanations."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "p4",
+      "content": "What coupling-bound width safely gates ATAC use under control-peak contamination while preserving ≥15% joint-holdout RMSE improvement?"
+    },
+    {
+      "id": "n44",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Zero-excluding coupling bounds ≤0.20 wide yield gated joint-holdout RMSE ≤0.68 versus 0.80 RNA-only across 0–20% control contamination."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Sweep coupling-bound widths and control contamination in donor-overlap strata; assess gating decisions, bound coverage, and joint-holdout RMSE."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Using ControlPeakStress v1, sweep zero-excluding bound-width gates (0.10–0.30) across contamination and donor overlap; measure coverage and joint-holdout RMSE."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "With three cross-batch donors, ≤0.20 gates achieved joint-holdout RMSE 0.68 versus 0.80 RNA-only across 0–20% control contamination."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n45",
+      "content": "Using ControlPeakStress v1, introduce perturbation-correlated contamination into control peaks; audit ≤0.20 gates for coupling-bound coverage and joint-holdout RMSE."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "At 20% perturbation-correlated control contamination, ≤0.20 gates yielded joint-holdout RMSE 0.75 versus 0.80 RNA-only, missing 15% improvement."
+    },
+    {
+      "id": "n50",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "A ≤0.20 zero-excluding bound gate achieves RMSE ≤0.68 only when controls pass perturbation-independence tests and three donors cross batches."
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Screen controls with within-batch perturbation permutations, then test ≤0.20 gates on three-crossed-donor joint-holdout RMSE and bound coverage."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "On ControlPeakStress v1, compare permutation-screened versus unscreened ≤0.20 gates across 0–20% perturbation-correlated contamination; record three-crossed-donor joint-holdout RMSE and coverage."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Among batch-bridging perturbations, three crossed donors with 20% correlated, independence-failing controls achieved gated RMSE 0.67 versus RNA-only 0.80."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n51",
+      "content": "Using ControlPeakStress v1, compare screened/unscreened ≤0.20 gates across perturbation overlap with 20% correlated contamination; measure three-donor RMSE."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "At 20% contamination, batch-exclusive designs with three crossed donors yielded RMSE 0.67 with independence-passing controls versus 0.75 with failing controls."
+    },
+    {
+      "id": "n56",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n54",
+      "content": "GateAudit v1 tabulates control-independence results, perturbation overlap, coupling-bound widths, three-donor joint-holdout RMSE, and bound coverage."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n51",
+      "content": "Using GateAudit v1, stratify three-crossed-donor ≤0.20 gates by control independence and perturbation overlap; test joint-holdout RMSE ≤0.68 and bound coverage."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "GateAudit v1: batch-exclusive gates with three crossed donors and independence-passing controls yielded 0.67 RMSE versus 0.80 RNA-only."
+    },
+    {
+      "id": "n59",
+      "type": "decision",
+      "order": 64,
+      "exploration_parent_id": "n51",
+      "content": "Deploy ≤0.20 gates with three crossed donors: require independence-passing controls for batch-exclusive perturbations, but allow batch-bridging despite failing controls."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "p4",
+      "content": "Using GateAudit v1, test gated RNA–ATAC against RNA-only on PerturbTransfer-6 unseen-donor/perturbation holdouts; assess ≥15% RMSE improvement and nested-design identifiability."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "PerturbTransfer-6: gated joint-holdout RMSE was 0.67 versus RNA-only 0.80 (16.3% lower) with three crossed donors; nested designs defaulted to RNA-only."
+    },
+    {
+      "id": "n62",
+      "type": "question",
+      "order": 67,
+      "exploration_parent_id": "p4",
+      "content": "Do donor-by-batch interactions invalidate zero-excluding coupling bounds despite three crossed donors and batch-bridging perturbations?"
+    },
+    {
+      "id": "n63",
+      "type": "plan",
+      "order": 68,
+      "exploration_parent_id": "n62",
+      "content": "Inject donor-by-batch accessibility interactions, then audit bound coverage, false ATAC gating, and joint-holdout RMSE across interaction strengths."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n63",
+      "content": "Extend GateAudit v1 with 0–30% donor-by-batch ATAC interactions; measure coupling-bound coverage, false gating, and joint-holdout RMSE in bridging designs."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n64",
+      "content": "At 25% donor-by-batch interaction, coupling-bound coverage fell to 72% and gated RMSE rose to 0.77 versus RNA-only 0.80."
+    },
+    {
+      "id": "n66",
+      "type": "decision",
+      "order": 71,
+      "exploration_parent_id": "n62",
+      "content": "Retain gated ATAC for additive-batch designs; fall back to RNA-only when donor-by-batch interactions threaten coupling-bound coverage."
+    },
+    {
+      "id": "n67",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "p4",
+      "content": "Implement TransferGate v1 with rank/overlap, control-independence, perturbation-bridging, transport-eligibility, and interaction checks; benchmark joint-holdout RMSE and nonidentifiable-design fallbacks."
+    },
+    {
+      "id": "n68",
+      "type": "artifact",
+      "order": 73,
+      "exploration_parent_id": "n67",
+      "content": "TransferGate v1 packages eligibility checks, RNA-only fallbacks, coupling-bound diagnostics, and joint donor–perturbation holdout RMSE reports."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "revise",
+      "target": "n10"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "n25",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n28",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "refute",
+      "target": "n44"
+    },
+    {
+      "source": "n50",
+      "relation": "revise",
+      "target": "n44"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n53",
+      "relation": "refute",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "n62"
+    },
+    {
+      "source": "n63",
+      "relation": "decompose",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n62"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n67",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "produce",
+      "target": "n68"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Determine when unpaired RNA and chromatin accessibility measurements support transferable perturbation-response prediction despite donor–batch confounding.",
+    "requirements": [
+      "Reduce perturbation-response RMSE by 15% versus RNA-only models on unseen donors and perturbations.",
+      "Characterize identifiability assumptions separating biological coupling from batch effects, including cases where separation is impossible."
+    ]
+  }
+}

@@ -1,0 +1,963 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Reconstruct sparse-view 3D geometry with calibrated uncertainty distinguishing unobserved structure from ambiguities caused by reflective surfaces.",
+      "requirements": [
+        "Achieve 85–95% coverage for nominal 90% surface-depth intervals, separately on occluded and reflective regions.",
+        "Reduce mean interval width by 20% versus a calibrated ensemble at matched observed-surface reconstruction error."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Build VisBRDF-SDF, a visibility-conditioned neural SDF posterior with view-dependent reflectance and separately calibrated occluded and reflective depth intervals."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can VisBRDF-SDF distinguish reflection-induced depth ambiguity from unobserved geometry when reflective surfaces partially occlude the same ray?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Visibility and specular-residual factors will distinguish mixed-ray ambiguities with 85–95% coverage per region and 20% narrower intervals than calibrated ensembles."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Create MirrorOcclude-3V mixed-ray scenes; ablate visibility/specular factors, then calibrate intervals and compare regionwise coverage and width against matched-error ensembles."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Fit held-out regional calibrators; run five-seed MirrorOcclude-3V visibility/specular ablations against error-matched ensembles, measuring 90% depth coverage and width."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On five-seed MirrorOcclude-3V, VisBRDF-SDF achieved 91% occluded but 81% reflective coverage; intervals were 12% narrower than error-matched ensembles."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Separating specular-ray modes from occlusion priors should yield 85–95% coverage regionwise and ≥20% narrower intervals than matched-error ensembles."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Use n7's reflective failures to fit specular-ray mixture heads; compare regional coverage and width against matched-error ensembles on held-out MirrorOcclude-3V."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Held-out MirrorOcclude-3V: mixture heads achieved 90% occluded and 88% reflective coverage, with 23% narrower intervals than matched-error ensembles."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt specular-ray mixture heads over original model: reflective coverage improved from 81% to 88%; intervals narrowed 23% versus ensembles."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Stratify MirrorOcclude-3V ablation predictions by mixed versus pure rays, measuring 90% interval coverage and width for each factor."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "MirrorOcclude-3V ablation report with mixed/pure-ray 90% depth-interval coverage and mean width for visibility-only, specular-only, and joint variants."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How do visibility-only, specular-only, and joint variants trade 90% interval coverage against width on mixed versus pure rays?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use a diffusion geometry prior with visibility masks and a specular likelihood; conformalize occluded and reflective depth intervals separately."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Train visibility-masked diffusion with a specular likelihood; conformalize by region and compare held-out coverage and width against error-matched ensembles."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Use the MirrorOcclude-3V ablation report’s ray strata to test conformalized diffusion intervals against error-matched ensembles on occluded and reflective regions."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "DiffusionBench-v1 report tabulating regional 90% depth coverage and interval width versus error-matched ensembles across MirrorOcclude-3V ray strata."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Audit DiffusionBench-v1 against reruns of VisBRDF-SDF mixture and diffusion on matched-error MirrorOcclude-3V splits; compare regional coverage and width."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "DiffusionBench-v1 audit: diffusion achieved 91% occluded and 90% reflective coverage, with 27% narrower intervals than error-matched ensembles."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Select conformalized diffusion over mixture heads: regional coverage rises from 90%/88% to 91%/90%, and ensemble-relative narrowing from 23% to 27%."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "Does regionwise conformal coverage remain 85–95% under unseen surface roughness and lighting, or does reflective calibration fail?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Under unseen roughness and lighting, regionwise conformalization will under-cover reflective depths (<85%) while occluded coverage remains ≥85%."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Test frozen diffusion calibrators on MirrorOcclude-3V-Shift’s unseen roughness and lighting, measuring occluded and reflective 90% depth-interval coverage."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Factorize a particle-filter posterior into visibility-driven missing-surface particles and microfacet-BRDF particles; calibrate regional depth quantiles separately."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Will particle-filter depth intervals retain coverage on reflective–occluded intersections without widening beyond calibrated ensembles?"
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Fit regional calibrators and run a 1,024-particle visibility/BRDF filter on MirrorOcclude-3V intersections; compare 90% coverage and width against error-matched ensembles."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "MirrorOcclude-3V-Shift diffusion retained 88% reflective/90% occluded coverage; particle intersections covered 86% with 5% wider intervals than matched-error ensembles."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Across held-out mixed-ray scenes, unpruned 1,024-particle posteriors will retain 85–95% coverage but exceed matched-error ensemble width."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Evaluate unpruned 1,024-particle filtering on held-out MirrorOcclude-3V objects; measure mixed-ray 90% coverage and width versus error-matched ensembles."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "On held-out MirrorOcclude-3V objects, unpruned particles covered only 82% of mixed rays; intervals were 7% wider than matched-error ensembles."
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Visibility-stratified particle resampling plus mixed-ray conformal calibration will restore 85–95% coverage and shrink intervals ≥20% versus ensembles."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Implement visibility-stratified resampling and mixed-ray conformal calibration; benchmark held-out MirrorOcclude-3V coverage and width against error-matched ensembles."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Held-out MirrorOcclude-3V: stratified particles achieved 89% mixed-ray coverage with 21% narrower intervals than error-matched ensembles."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n32",
+      "content": "Stress-test stratified particles on MirrorOcclude-3V-Shift, measuring separate occluded/reflective coverage and ensemble-relative interval width at matched reconstruction error."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "On MirrorOcclude-3V-Shift, stratified particles covered 90% occluded but 83% reflective depths; intervals narrowed only 14% versus error-matched ensembles."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Does shifted microfacet roughness corrupt reflective particle weights, explaining 83% coverage despite visibility-stratified resampling?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Roughness-shifted BRDF weights cause undercoverage; roughness marginalization should restore 85–95% reflective-intersection coverage and ≥20% narrower intervals versus ensembles."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Ablate roughness marginalization versus original stratified particles on MirrorOcclude-3V-Shift; measure reflective-intersection coverage, particle effective sample size, and ensemble-relative width."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "On MirrorOcclude-3V-Shift, roughness-marginalized stratified particles achieved 89% mixed-ray coverage and 21% narrowing versus matched-error ensembles, but reflective intersections covered 82%."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Defer particles: 89% held-out mixed-ray coverage and 21% shifted mixed-ray narrowing cannot offset 83% shifted reflective or 82% intersection coverage."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "n38",
+      "content": "Does multi-bounce reflection, rather than roughness mismatch, explain the remaining 82% coverage at reflective–occluded intersections?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Unmodeled second-bounce specular paths cause intersection undercoverage; adding two-bounce likelihoods will raise intersection coverage from 82% to ≥85%."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Re-evaluate n36/n40 shifted failure rays with two-bounce likelihoods versus roughness-marginalized particles; measure reflective-intersection coverage and interval width."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "On MirrorOcclude-3V-Shift, two-bounce likelihoods raised reflective-intersection coverage from 82% to 88%, with intervals 19% narrower than ensembles."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Retain particle deferral: two-bounce repairs intersection coverage to 88%, but 19% narrowing falls short locally; prioritize selected diffusion."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Train a ray-causal normalizing flow with explicit occlusion and specular-path latents, then conformalize depth intervals by visibility class."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "p4",
+      "content": "Train ray-causal flow with two-bounce path latents; calibrate occluded and reflective depths, then benchmark coverage and width against matched-error ensembles."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Using DiffusionBench-v1’s matched-error splits and ensemble baselines, train and calibrate two-bounce ray-causal flow; measure regional coverage and interval width."
+    },
+    {
+      "id": "n50",
+      "type": "artifact",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "FlowBench-v1 report with calibrated occluded/reflective depth coverage and mean interval width versus matched-error ensembles on DiffusionBench-v1 splits."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Audit FlowBench-v1 by rerunning flow and diffusion on matched splits; compare regional 90% depth coverage and ensemble-relative interval width."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "FlowBench-v1 audit: ray-causal flow achieved 92% occluded and 91% reflective coverage, with 30% narrower intervals than matched-error ensembles."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Select ray-causal flow over diffusion: regional coverage improves from 91%/90% to 92%/91%, and ensemble-relative narrowing from 27% to 30%."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 54,
+      "exploration_parent_id": "g1",
+      "content": "Fit sparse Gaussian-process SDFs with visibility-conditioned priors and highlight-motion likelihoods; conformalize occluded and reflective depths separately."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 55,
+      "exploration_parent_id": "p5",
+      "content": "Train visibility-conditioned GP-SDFs on sparse views, calibrate regionwise depths, and compare coverage and width against error-matched ensembles."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Using FlowBench-v1 matched splits and baselines, fit GP-SDFs with highlight-motion likelihoods; measure regional 90% coverage and interval width."
+    },
+    {
+      "id": "n57",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "GPSDFBench-v1 report listing occluded/reflective 90% depth coverage and ensemble-relative interval width on FlowBench-v1 matched splits."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Audit GPSDFBench-v1 against ray-causal flow reruns on matched-error splits, comparing regional 90% coverage and ensemble-relative mean interval width."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "GPSDFBench-v1 audit: GP-SDF achieved 90% occluded and 89% reflective coverage, with intervals 22% narrower than matched-error ensembles."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Retain ray-causal flow: 30% narrowing exceeds GP-SDF’s 22%, diffusion’s 27%, and mixture heads’ 23%; particles remain deferred."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "n32"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n32"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Reconstruct sparse-view 3D geometry with calibrated uncertainty distinguishing unobserved structure from ambiguities caused by reflective surfaces.",
+    "requirements": [
+      "Achieve 85–95% coverage for nominal 90% surface-depth intervals, separately on occluded and reflective regions.",
+      "Reduce mean interval width by 20% versus a calibrated ensemble at matched observed-surface reconstruction error."
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Develop and adopt shift-weighted, mode-pruned calibration for multimodal motion tubes",
+      "boundary_reason": "The calibration choice is made; the next segment reports a follow-up comparison using it."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n12",
+        "n13"
+      ],
+      "topic": "Compare pooled and stratified calibration for the adopted tubes",
+      "boundary_reason": "The calibration report is produced; discussion shifts to preserving motion modes in diffusion."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Assess masked equivariant diffusion and diagnose unseen-azimuth failures",
+      "boundary_reason": "A decision defers cross-dataset deployment; the next proposal targets the identified failures."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Recover rear-oblique modes with camera-latent refinement and augmentation",
+      "boundary_reason": "The approach is adopted; the next proposal explores a different motion model."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Improve rare-action mode retention in a camera-marginalized flow",
+      "boundary_reason": "The revised flow meets the tested targets; the next segment tests harder subjects and occlusion."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Test invariant-prior adaptive flow under disjoint- and new-subject shifts",
+      "boundary_reason": "New-subject validation falls short, prompting a different adaptation strategy."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Evaluate bone-length adaptation and limit flow use by shape mismatch",
+      "boundary_reason": "Deployment is limited to the successful mismatch stratum; a new proposal addresses larger mismatch."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Validate shape-marginalized inverse kinematics for high-mismatch subjects",
+      "boundary_reason": "Worst-bin replication completes the IK assessment; discussion shifts to long occlusions."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Test foot-contact motion bridges and identify a high-confidence stratum",
+      "boundary_reason": "Confidence-stratified results motivate a gated-contact revision."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70"
+      ],
+      "topic": "Evaluate confidence-gated contact bridges and disjoint-subject transfer",
+      "boundary_reason": "The frozen gate falls short on disjoint subjects, prompting subject-adaptive gating."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79"
+      ],
+      "topic": "Develop and adopt reprojection-based contact/contact-free switching",
+      "boundary_reason": "The switch is adopted; the next segment audits its results by azimuth."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Audit adopted switched bridges across unseen azimuths",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

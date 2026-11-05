@@ -1,0 +1,120 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Assay-coverage calibration for distinguishing novel functions from annotation gaps",
+      "boundary_reason": "The adjudicated test supports retaining calibration; the discussion shifts to held-out GO prediction."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "pl1",
+        "a2",
+        "ar1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Pfam-disjoint temporal evaluation of Foldseek–ESM-2 against sequence-only transfer",
+      "boundary_reason": "The benchmark audit and macro-AUPRC comparison are complete; the discussion returns to how coverage is measured."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Assay-provenance versus annotation-count coverage for novelty triage",
+      "boundary_reason": "The paired comparison resolves this coverage hypothesis; a new question turns to rare GO terms."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "pl2",
+        "a5",
+        "ar2"
+      ],
+      "topic": "Stratifying rare catalytic and binding GO terms",
+      "boundary_reason": "The stratification report is produced; the next discussion proposes a reaction-graph approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h3",
+        "a6",
+        "e4"
+      ],
+      "topic": "Testing leakage-filtered reaction edges for substrate-specific GO prediction",
+      "boundary_reason": "The initial gain falls below the target, prompting a narrower pocket-confidence hypothesis."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "h4",
+        "a7",
+        "e5",
+        "a8",
+        "e6"
+      ],
+      "topic": "Verified reaction edges in high-confidence pockets and a 2026-only test",
+      "boundary_reason": "Different pooled and 2026-only results motivate a revised, explicitly scoped hypothesis."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "h5",
+        "a9",
+        "e7",
+        "d2"
+      ],
+      "topic": "Provenance audit and decision on verified-edge reranking",
+      "boundary_reason": "The audit leads to a decision to defer broad deployment and seek independent replication."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "pl3",
+        "a10",
+        "ar3"
+      ],
+      "topic": "Independent replication cohort for the verified-edge pilot",
+      "boundary_reason": "The replication artifact is produced; the discussion shifts to an operon-neighborhood proposal."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p3",
+        "q4",
+        "h6",
+        "a11",
+        "e8"
+      ],
+      "topic": "Initial test of operon attention on matched unseen-family proteins",
+      "boundary_reason": "The matched-cohort result supports a follow-up test with clade holdout and edge ablation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "pl4",
+        "a12",
+        "ar4",
+        "a13",
+        "e9"
+      ],
+      "topic": "Genus-held-out operon attention, leakage audit, and edge ablation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

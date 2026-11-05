@@ -1,0 +1,136 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Test invariant-prefix commits with a 95%-mass lattice and 1.5-second gate",
+      "boundary_reason": "The initial test supports retaining the gate; discussion shifts to clause-stratified calibration."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Calibrate and audit the gate on late-negation and role-swap cases",
+      "boundary_reason": "The ClauseCal-v1 audit concludes; discussion shifts to a separate hazard-score hypothesis."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Test clause-specific hazards for unsafe commits",
+      "boundary_reason": "Hazard recall falls below the proposed threshold; the next stage integrates late-cue forecasts."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Build and benchmark the LateCueGate-v1 forecast decoder",
+      "boundary_reason": "The decoder and benchmark logs are produced; discussion shifts to role-neutral reordering."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Compare role-neutral lead-ins with lattice-only gating",
+      "boundary_reason": "Lattice-only gating advances, while the initial lead-ins are deferred for insufficient grammaticality."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Test syntax-verified lead-ins at gate stalls",
+      "boundary_reason": "The revised lead-ins meet the tested targets; discussion moves to speaker-disjoint validation."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Validate and adopt stall lead-ins on held-out speakers",
+      "boundary_reason": "The held-out audit supports adoption; discussion shifts to counterfactual encoder training."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Train SwapEnc-v1 and test its speaker-disjoint gains",
+      "boundary_reason": "SwapEnc-v1 is adopted on the initial comparison; the next test examines component contributions."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n39",
+        "n40"
+      ],
+      "topic": "Ablate SwapEnc-v1 and syntax-verified lead-ins",
+      "boundary_reason": "The ablation is reported; discussion shifts to possible overfitting on natural late cues."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Test natural late cues and reconsider SwapEnc-v1",
+      "boundary_reason": "Natural late-cue results lead to deferring SwapEnc-v1; discussion returns to validating the retained system."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Validate and finalize the original-encoder gate with stall lead-ins",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

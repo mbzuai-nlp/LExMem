@@ -1,0 +1,150 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Initial wavelet-penalty and distillation test against matched adversarial training",
+      "boundary_reason": "The initial evaluation misses the five-point robustness target, prompting a revised penalty."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Sensitivity-weighted wavelet penalties and the decision to seek stronger attack validation",
+      "boundary_reason": "The PGD-20 result clears both targets, but the decision identifies AutoAttack validation as the next stage."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n14",
+        "n15"
+      ],
+      "topic": "Wavelet-only and distillation-only ablations",
+      "boundary_reason": "The component comparison concludes before the discussion shifts to disagreement distillation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Initial disagreement-distillation test under AutoAttack",
+      "boundary_reason": "Students underperform PGD-AT, leading to a question about the mined disagreements."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "High-frequency disagreement filtering and failure analysis",
+      "boundary_reason": "Filtered distillation is deferred and its failure atlas is produced before a new Fourier-PGD proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Initial clean-derived Fourier-PGD test",
+      "boundary_reason": "The promising three-seed result leads to an independent-run reproducibility test."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Fresh paired-seed replication of Fourier-PGD",
+      "boundary_reason": "Fresh runs miss the five-point target, motivating retuning."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Clean-only Fourier-PGD retuning, evaluation, and selection",
+      "boundary_reason": "Fourier-PGD v2 is selected, with complementary filtered-student errors motivating an ensemble test."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Initial differentiable-gate ensemble test",
+      "boundary_reason": "The gate fails the clean-accuracy budget, prompting a regularization question."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Clean-logit regularization of the gate and paired evaluation",
+      "boundary_reason": "The regularized gate clears its stated thresholds before the discussion shifts to multi-resolution training."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Multi-resolution PGD comparison with Gate-KL",
+      "boundary_reason": "Multi-resolution PGD is selected, followed by a plan for an independent frozen-checkpoint audit."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Frozen-checkpoint audit and final method selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

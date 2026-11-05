@@ -1,0 +1,123 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Randomized-probe identifiability and limits of observational estimates",
+      "boundary_reason": "The initial derivation, decision, and identifiability note are complete; the next nodes audit the note’s counterexamples."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "Counterexample audit under censored reward follow-up",
+      "boundary_reason": "The censored-log finding prompts a revised full-horizon hypothesis."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Testing whether full-horizon probes identify intervention effects",
+      "boundary_reason": "The full-horizon contrast differs from the forced-action effect, prompting a compliance-focused revision."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Actuator compliance and assignment versus forced-action effects",
+      "boundary_reason": "The compliance comparison ends in a reporting decision and audit artifact; the next proposal turns to learning efficiency."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "ProbeCredit learning efficiency, negative controls, and the correlated-distractor ablation",
+      "boundary_reason": "The decision retains standard-task results but rejects the tested 90%-correlated configuration; the next proposal redesigns probe selection."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "AdaptiveProbe efficiency and propensity-logging audit",
+      "boundary_reason": "The corrected run leads to adoption and an audit artifact; the next proposal addresses latent event attribution."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "EventBridge attribution and component ablations on SignalMaze-100",
+      "boundary_reason": "The held-out ablation result motivates a revised generalization hypothesis."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Pilot test of frozen EventBridge on unseen 95%-correlated distractors",
+      "boundary_reason": "The pilot result leads to a larger fresh-seed evaluation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Fresh-seed EventBridge evaluation and event-stratified applicability audit",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

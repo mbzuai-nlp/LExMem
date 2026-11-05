@@ -1,0 +1,1307 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable mobile manipulators to distinguish object slip from localization drift while maintaining contact during furniture repositioning.",
+      "requirements": [
+        "Reposition unseen furniture within 5 cm in 90% of trials with intermittent visual occlusion.",
+        "Identify slip versus localization drift with 90% balanced accuracy without external tracking during execution."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fuse tactile shear, wheel odometry, and intermittent RGB-D in a contact-constrained estimator distinguishing slip from drift for furniture control."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which tactile–odometric residuals distinguish gripper–furniture slip from map-frame localization drift during five-second RGB-D occlusions?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "During five-second RGB-D occlusions, shear transients indicate slip; shear-stable wheel–contact residuals indicate drift, yielding ≥90% balanced accuracy."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Label slip/drift with training-only motion capture; train a shear–odometry classifier; evaluate unseen furniture through five-second occlusions without external tracking."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run 120 OccludedFurniture trials on unseen furniture with induced slip or localization drift; ablate shear and score five-second-occlusion balanced accuracy."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Across 120 OccludedFurniture trials, shear–odometry achieved 84% balanced accuracy during five-second occlusions, below the hypothesized 90%."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Latency-aligned shear–arm closure residuals plus wheel odometry distinguish slip from drift at ≥90% balanced accuracy during five-second occlusions."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Evaluate latency-aligned shear–arm closure residuals against unaligned shear–odometry on 120 held-out OccludedFurniture slip/drift trials without execution-time tracking."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "On 120 held-out OccludedFurniture trials, latency-aligned residuals reached 92% balanced accuracy versus 84% unaligned during five-second occlusions."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Replace the 84%-accurate baseline with latency-aligned shear–arm closure residuals, which achieved 92% balanced accuracy."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Test selected estimator in 100 unseen-furniture repositionings with five-second occlusions and no execution tracking; score post-run 5-cm success."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "OccludedFurniture-100 report contains trial logs, post-run position errors, and the 5-cm success rate for the selected estimator."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How can contact-constrained estimation bound furniture-pose error when RGB-D is occluded and wheel odometry accumulates drift?"
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Measure contact-constrained versus odometry-only pose error in 60 contact-maintained, five-second-occlusion pushes with 2-cm/s wheel bias, using evaluation-only motion capture."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Across 60 biased, five-second-occlusion pushes, contact constraints reduced median furniture-to-gripper pose error from 8.7 to 2.4 cm."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Audit contact-constrained RGB-D fusion on OccludedFurniture-100: quantify 95% furniture-pose bound coverage during five-second occlusions, stratified by slip/drift."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "OccludedFurniture-100 achieved 84/100 within-5-cm repositionings, below the 90% target; nominal 95% pose bounds covered 68% of slip intervals."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n14",
+      "content": "Reanalyze OccludedFurniture-100 logs to calibrate slip-conditioned pose bounds against post-run errors and identify occlusion-driven >5-cm misses."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "OccludedFurniture-100: 11/16 >5-cm misses followed occluded slip; retrospective slip-conditioned bounds raised slip-interval coverage from 68% to 94%."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Retain contact constraints; pause for visual reacquisition when slip-conditioned pose bounds exceed 5 cm, targeting occluded-slip misses."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 22,
+      "exploration_parent_id": "g1",
+      "content": "Use force-limited 1-cm contact micro-dithers to distinguish grip slip from map drift, then correct placement after RGB-D reacquisition."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "Can force-limited, 1-cm contact micro-dithers distinguish grip slip from map drift during occlusion without breaking contact?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Slip induces >30-ms shear–arm phase lag during 1-cm micro-dithers; drift does not, enabling ≥90% balanced accuracy without contact loss."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Run 100 unseen-furniture pushes with force-limited 1-cm micro-dithers; score phase-lag accuracy, contact loss, and post-reacquisition 5-cm placement."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Across 100 unseen-furniture pushes, micro-dithers achieved 92% slip/drift balanced accuracy, 93% within-5-cm placement after reacquisition, and zero contact losses."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Adopt force-limited micro-dithers with visual reacquisition: 92% slip/drift balanced accuracy and 93% within-5-cm placement without contact loss."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Fuse wrist-mounted mmWave furniture range-rate with tactile shear to distinguish contact slip from map drift through RGB-D occlusions."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Can wrist mmWave range-rate separate grip slip from map drift despite self-motion and metal-leg multipath during five-second occlusions?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Ego-motion-compensated mmWave range-rate plus shear distinguishes slip from drift at ≥90% balanced accuracy despite metal-leg multipath during five-second occlusions."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Run 120 occluded pushes across metal-legged and wooden furniture; compare compensated mmWave–shear classification with shear-only using evaluation-only ground truth."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Across 120 occluded pushes, compensated mmWave–shear achieved 78% balanced accuracy on metal-legged furniture versus 92% on wood."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Gating multipath-inconsistent mmWave returns and falling back to shear–arm closure residuals should achieve ≥90% balanced accuracy on metal-legged furniture."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Test gated mmWave–shear fusion against ungated and closure-only baselines on 120 held-out metal/wood pushes; score balanced accuracy and 5-cm placement."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "On 120 held-out pushes, gated fusion achieved 92% metal-leg balanced accuracy and 91% within-5-cm placement; ungated achieved 77% accuracy."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n33",
+      "content": "Stress-test gated fusion on 80 unseen chrome-legged furniture pushes with five-second occlusions; log multipath rejection and slip/drift balanced accuracy."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "On 80 unseen chrome-legged pushes, gated fusion reached 84% balanced accuracy; coherent multipath evaded rejection during five-second occlusions."
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Two-angle radar beam steering rejects coherent multipath; shear–arm closure fallback yields ≥90% slip/drift balanced accuracy on unseen chrome-legged furniture."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Run 100 held-out chrome-legged pushes with five-second occlusions; compare two-angle steering plus fallback against single-angle gating for balanced accuracy."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "On 100 held-out chrome-legged pushes, two-angle steering plus fallback reached 91% slip/drift balanced accuracy versus 83% single-angle gating."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n38",
+      "content": "Test validated two-angle fusion on 100 unseen chrome-legged pushes under five-second occlusions; score balanced accuracy and 5-cm placement."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "On 100 unseen chrome-legged pushes, two-angle fusion achieved 86% balanced accuracy and 88% within-5-cm placement; specular returns persisted."
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Polarization-diverse radar flags persistent specular returns; shear–arm closure fallback yields ≥90% slip/drift balanced accuracy on unseen chrome-legged furniture."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Compare polarization-diverse rejection against two-angle steering, both with shear–arm fallback, across 120 unseen chrome-legged pushes; score five-second-occlusion balanced accuracy."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "On 120 unseen chrome-legged pushes, two-angle fusion achieved 91% balanced accuracy versus 86% for polarization-diverse fusion."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n43",
+      "content": "Stress-test polarization-diverse radar on 80 unseen chrome-legged pushes during five-second occlusions; measure specular-return recall and fallback slip/drift balanced accuracy."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "On 80 unseen chrome-legged pushes, polarization-diverse fallback achieved 91% balanced accuracy and 94% specular-return recall during five-second occlusions."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Retain both radar variants for cross-cohort validation: two-angle outperformed polarization head-to-head, but polarization reached 91% in a separate cohort."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Combine onboard lidar wall anchors with gripper–furniture kinematics in a factor graph to detect slip and correct placement during occlusions."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p4",
+      "content": "Do lidar wall-anchor residuals remain independent of gripper slip when furniture occludes most room geometry?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "With ≥20% visible wall returns, anchor residuals track localization drift independently of gripper slip, enabling ≥90% balanced accuracy."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Collect wall-visibility-stratified pushes; fit lidar-anchor and contact factors; compare slip/drift accuracy and placement under five-second RGB-D occlusions."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Run 120 occluded unseen-furniture pushes stratified by ≥20% versus <20% wall returns; measure anchor–slip residual correlation and balanced accuracy."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "In 60 pushes with ≥20% wall returns, anchor–slip residual correlation was 0.07; slip/drift balanced accuracy reached 92%."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n52",
+      "content": "Apply anchor factors validated at ≥20% wall visibility to 60 low-visibility pushes; measure slip/drift balanced accuracy and 5-cm placement."
+    },
+    {
+      "id": "n56",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "WallAnchor-LowVis report contains per-trial wall-return fractions, anchor residuals, slip/drift predictions, and post-run placement errors for 60 pushes."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "Audit WallAnchor-LowVis report for missing records and residual-label consistency; compute low-visibility balanced accuracy and within-5-cm placement."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "All 60 low-visibility records passed audit; lidar–contact fusion achieved 92% slip/drift balanced accuracy and 55/60 within-5-cm placements."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 59,
+      "exploration_parent_id": "g1",
+      "content": "Fuse contact-wrench change points with ceiling-feature visual odometry, rejecting slip-corrupted contact factors while correcting base drift during furniture pushes."
+    },
+    {
+      "id": "n60",
+      "type": "question",
+      "order": 60,
+      "exploration_parent_id": "p5",
+      "content": "Can ceiling-feature odometry distinguish base drift from grip slip when lighting changes coincide with contact-wrench transients?"
+    },
+    {
+      "id": "n61",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Photometrically normalized ceiling odometry plus wrench change points yields ≥90% slip/drift balanced accuracy under alternating overhead lighting."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Run 120 unseen-furniture pushes with synchronized lighting switches and induced slip/drift; compare normalized ceiling odometry against raw using balanced accuracy."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Across 120 lighting-switch pushes, normalized ceiling odometry reached 82% balanced accuracy versus 76% raw; switching shadows mimicked drift."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n61",
+      "content": "Run 80 paired pushes with lighting switches coincident versus staggered 2 s from wrench transients; compare normalized-odometry balanced accuracy."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "In 80 paired pushes, normalized ceiling–wrench fusion achieved 92% balanced accuracy with staggered lighting, versus 78% coincident."
+    },
+    {
+      "id": "n66",
+      "type": "hypothesis",
+      "order": 66,
+      "exploration_parent_id": "n61",
+      "content": "Gate shadow-contaminated ceiling features for 300 ms, bridging with inertial odometry, to achieve ≥90% slip/drift balanced accuracy under coincident switches."
+    },
+    {
+      "id": "n67",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Compare 300-ms shadow gating plus inertial bridging against normalized ceiling–wrench fusion on 100 held-out coincident-switch pushes; score balanced accuracy."
+    },
+    {
+      "id": "n68",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "On 100 held-out coincident-switch pushes, shadow gating plus inertial bridging reached 91% balanced accuracy versus 79% ungated fusion."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n66",
+      "content": "Deploy validated shadow gating in 100 unseen-furniture repositionings with coincident lighting switches and five-second RGB-D occlusions; score accuracy and placement."
+    },
+    {
+      "id": "n70",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "On 100 unseen-furniture repositionings, shadow gating achieved 86% balanced accuracy under coincident switches, below the hypothesized 90%."
+    },
+    {
+      "id": "n71",
+      "type": "hypothesis",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Adaptive shadow gating until ceiling-inlier recovery, with inertial bridging, restores ≥90% balanced accuracy under coincident lighting switches."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "Using n70 failure logs, compare inlier-recovery gating with fixed 300-ms gating on 100 new coincident-switch pushes; score balanced accuracy."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "On 100 new coincident-switch pushes, inlier-recovery gating reached 87% balanced accuracy versus 85% fixed gating, below 90%."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 74,
+      "exploration_parent_id": "n71",
+      "content": "Stratify 120 held-out coincident-switch pushes by ceiling-inlier recovery delay; measure adaptive-gating slip/drift accuracy for ≤500-ms versus >500-ms delays."
+    },
+    {
+      "id": "n75",
+      "type": "evidence",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "Across 120 held-out pushes, adaptive gating reached 94% balanced accuracy for ≤500-ms inlier recovery versus 80% for slower recovery."
+    },
+    {
+      "id": "n76",
+      "type": "hypothesis",
+      "order": 76,
+      "exploration_parent_id": "n75",
+      "content": "Trigger force-limited micro-dithers when ceiling-inlier recovery exceeds 500 ms; combined classification reaches ≥90% balanced accuracy under coincident switches."
+    },
+    {
+      "id": "n77",
+      "type": "activity",
+      "order": 77,
+      "exploration_parent_id": "n76",
+      "content": "Using failed adaptive-gating baseline and recovery-delay stratification, compare >500-ms-triggered micro-dithers against adaptive gating on 100 coincident-switch pushes; score balanced accuracy."
+    },
+    {
+      "id": "n78",
+      "type": "evidence",
+      "order": 78,
+      "exploration_parent_id": "n77",
+      "content": "On 100 coincident-switch pushes, recovery-triggered micro-dithers reached 92% slip/drift balanced accuracy versus 86% adaptive gating alone."
+    },
+    {
+      "id": "n79",
+      "type": "decision",
+      "order": 79,
+      "exploration_parent_id": "n78",
+      "content": "Use adaptive ceiling gating for ≤500-ms recovery; otherwise trigger micro-dithers, raising coincident-switch balanced accuracy to 92%."
+    },
+    {
+      "id": "n80",
+      "type": "plan",
+      "order": 80,
+      "exploration_parent_id": "n79",
+      "content": "Validate selected gating/micro-dither policy on 100 unseen-furniture moves with coincident lighting switches; score occluded balanced accuracy and 5-cm placement."
+    },
+    {
+      "id": "n81",
+      "type": "activity",
+      "order": 81,
+      "exploration_parent_id": "n80",
+      "content": "Execute 100 unseen-furniture moves using selected gating/micro-dither policy through five-second occlusions; measure slip/drift accuracy and post-run 5-cm success."
+    },
+    {
+      "id": "n82",
+      "type": "artifact",
+      "order": 82,
+      "exploration_parent_id": "n81",
+      "content": "GatedDither-100 report contains per-trial slip/drift predictions, post-run placement errors, occlusion intervals, and contact-loss flags for 100 moves."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "revise",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "refute",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "revise",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n67",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "produce",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "support",
+      "target": "n66"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "refute",
+      "target": "n66"
+    },
+    {
+      "source": "n71",
+      "relation": "revise",
+      "target": "n66"
+    },
+    {
+      "source": "n71",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n71"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "refute",
+      "target": "n71"
+    },
+    {
+      "source": "n74",
+      "relation": "evaluate",
+      "target": "n71"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "n71"
+    },
+    {
+      "source": "n76",
+      "relation": "revise",
+      "target": "n71"
+    },
+    {
+      "source": "n76",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n77",
+      "relation": "evaluate",
+      "target": "n76"
+    },
+    {
+      "source": "n77",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n77",
+      "relation": "depend_on",
+      "target": "n75"
+    },
+    {
+      "source": "n77",
+      "relation": "produce",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "support",
+      "target": "n76"
+    },
+    {
+      "source": "n73",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n78",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n80",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n80",
+      "relation": "decompose",
+      "target": "n81"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n81",
+      "relation": "produce",
+      "target": "n82"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable mobile manipulators to distinguish object slip from localization drift while maintaining contact during furniture repositioning.",
+    "requirements": [
+      "Reposition unseen furniture within 5 cm in 90% of trials with intermittent visual occlusion.",
+      "Identify slip versus localization drift with 90% balanced accuracy without external tracking during execution."
+    ]
+  }
+}

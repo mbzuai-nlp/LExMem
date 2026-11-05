@@ -1,0 +1,136 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Acknowledgement-gated ownership transfer in two-hop delegation races",
+      "boundary_reason": "The bounded check supports a prototype decision; the next work extends the model to three hops."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Three-hop cancellation failure and forwarding tombstones",
+      "boundary_reason": "The revised handoff model passes its three-hop check; discussion shifts to formal semantics and proofs."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Queue-aware semantics and the infinite-redelegation obstacle to cancellation progress",
+      "boundary_reason": "The fair-progress attempt exposes a counterexample, prompting a different mechanism."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Epoch barriers for handoff drainage and fair cancellation closure",
+      "boundary_reason": "Proof and four-hop model checks complete this mechanism; the next discussion turns to separate compilation."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Sealed interfaces and scope-indexed receipts for separate compilation",
+      "boundary_reason": "The receipt fix passes the 24-program corpus; subsequent mutation tests begin a further linker check."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Link-order-independent canonicalization of re-exported receipts",
+      "boundary_reason": "The linker revision passes the baseline and mutation tests and reaches a shipping decision."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "CancelRT 0.1 implementation and trace validation",
+      "boundary_reason": "The reference runtime is selected; the next discussion examines bounded-mailbox refinement."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Bounded-mailbox cancellation, control-lane testing, and a sequence-gap counterexample",
+      "boundary_reason": "A proof counterexample reveals that the tested control-lane design still needs a sequencing change."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63"
+      ],
+      "topic": "Commit-time sequence numbering and CancelRT 0.2 refinement",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

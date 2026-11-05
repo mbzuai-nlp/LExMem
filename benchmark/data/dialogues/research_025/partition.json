@@ -1,0 +1,111 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Set-supervised validity head with counterfactual negatives on CompSplit-1",
+      "boundary_reason": "The initial evaluation supports adoption and is recorded in a report; the next discussion turns to candidate-beam coverage."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Candidate-beam coverage and calibrated ambiguity detection on CompSplit-2",
+      "boundary_reason": "Beam-32 calibration is evaluated; the next proposal introduces a typed-grammar approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Typed grammar versus the validity head on CompSplit-2",
+      "boundary_reason": "The five-seed comparison leads to selection of TypedGrammar-v1; the next work stress-tests it on deeper compositions."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n24",
+        "n25"
+      ],
+      "topic": "TypedGrammar-v1 depth-four stress test",
+      "boundary_reason": "The coverage and F1 shortfall motivates a focused investigation of missing composition rules."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Scope-lifting rules and re-adjudicated CompSplit-3 results",
+      "boundary_reason": "Re-adjudication overturns the initial coverage gain and prompts a revised rule hypothesis."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Type-constrained scope lifting and coordinated-relative attachment",
+      "boundary_reason": "The combined-rule evaluation leads to adoption; the next proposal explores contrastive execution worlds."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Contrastive worlds for separating and validating interpretations",
+      "boundary_reason": "World-edit separation and ambiguity filtering are evaluated; the next proposal uses clarification questions."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Clarification gating and final CompSplit-3 comparison",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

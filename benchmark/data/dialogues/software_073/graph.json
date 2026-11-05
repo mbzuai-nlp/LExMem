@@ -1,0 +1,1385 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build a loop vectorizer preserving scalar semantics across data-dependent exits, potentially aliasing accesses, and faulting loads.",
+      "requirements": [
+        "Preserve observable write ordering and precise faults without accessing memory beyond the scalar exit.",
+        "Achieve 1.3× throughput versus optimized scalar code on three representative loops combining exits and aliasing."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Guard chunk dereferenceability and disjointness, scan exits sequentially, mask live-lane loads, commit ordered stores; otherwise fall back to scalar."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When a store aliases a later exit-predicate load, can exit scanning precede ordered stores without changing the exit lane?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Earlier stores aliasing later predicate loads invalidate precommit scans; a cross-lane overlap guard with scalar fallback preserves exit lanes."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Implement cross-lane predicate/store overlap checks, sequential exit scans, and scalar fallback; validate fault addresses and store traces against scalar."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run ExitAlias-12 differential tests with cross-lane predicate/store overlaps and guard pages; compare fallback decisions, exits, store traces, and faults."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ExitAlias-12 found 2/12 wrong exit lanes: range-based overlap guards missed indexed stores aliasing later predicate loads."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Precommit exit scans require dereference-free exact-address proofs, including indexed stores, excluding earlier-store/later-predicate overlaps; otherwise fall back to scalar."
+    },
+    {
+      "id": "n9",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Prove dereference-free cross-lane addresses and predicate-load safety; scan predicates sequentially, scalarize unprovable cases, rerun ExitAlias-12."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Compare range-guard and exact-address prototypes on ExitAlias-12, recording exit lanes, fallback choices, store traces, and guard-page faults."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Bounded-index overlap guards matched scalar exits, stores, and faults in 12/12 cases, vectorizing 4/12; exact-address proofs scalarized all."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "n8",
+      "content": "Can bounded-index guards reach 1.3× optimized-scalar throughput on three exit-and-alias loops despite 8/12 ExitAlias-12 fallbacks?"
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Use indexed-store failures and validated bounded-index guards to benchmark three exit-alias kernels for ≥1.3× optimized-scalar speedup."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Using n13’s three indexed-store-derived kernels and scalar baseline, benchmark bounded-index versus exact-address guards; log speedups, exits, stores, faults."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Exact-address guards scalarized all three indexed-store kernels, matching scalar exits, store traces, and faults; speedups were 0.98–1.01×."
+    },
+    {
+      "id": "n16",
+      "type": "decision",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Select bounded-index guards with scalar fallback: naive ranges mis-exit; exact-address guards scalarize all three benchmark kernels."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Scalar-scan guarded predicates; vectorize dereferenceable exit-free prefixes, commit stores in order, and scalarize uncertain tails."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "What proof permits batching prefix loads without bypassing earlier aliasing stores or reporting a later-lane fault first?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Batch only when dereference-free checks prove prefix loads cannot fault or overlap preceding writes; otherwise execute lanes in scalar order."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Benchmark guarded-prefix batching with scalar tails on ExitAlias-12 and three kernels; compare exits, store traces, first faults, and throughput."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "ExitAlias-12 matched scalar exit lanes, store traces, first faults, and zero beyond-exit accesses; guarded-prefix speedups: 1.34×/1.38×/1.32×."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "n19",
+      "content": "How can guards prove prefix loads nonfaulting for unknown pointer provenance without speculative dereferences or page-mapping assumptions?"
+    },
+    {
+      "id": "n23",
+      "type": "plan",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Batch only within proven dereferenceable object bounds using checked offsets; scalarize unknown-provenance pointers and verify fault ordering with guard pages."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Implement checked-offset provenance guards; run guard-page ProvenanceFault-24 across bounded and unknown pointers, comparing scalar fault order and access traces."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "ProvenanceFault-24 found 3/24 mismatched first faults: predicate scans faulted before earlier stores despite nonfaulting batched data loads."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Retain the 1.32–1.38× guarded-prefix path only when predicate scans are nonfaulting and independent of preceding stores; otherwise scalarize."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n19",
+      "content": "Batch only exit-free prefixes after proving predicate scans and loads nonfaulting and independent of earlier stores; otherwise scalarize."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Do stricter predicate-safety guards retain ≥1.3× throughput on all three kernels, or trigger excessive scalar fallback?"
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Implement stricter predicate guards; rerun ProvenanceFault-24 and benchmark three kernels versus prior 1.32–1.38×, recording fallbacks and faults."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Run ProvenanceFault-24 and three-kernel benchmarks with original and predicate-safe guards; record fault order, beyond-exit accesses, fallbacks, and scalar-relative speedups."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Predicate-safe guards achieved 1.27×/1.33×/1.31×; disjoint nonfaulting loads matched scalar, but 1/24 predicate scans crossed a faulting store."
+    },
+    {
+      "id": "n32",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Scalarize chunks with unproven store safety; test 4-lane guarded prefixes against the 1.27× kernel, then rerun fault and throughput benchmarks."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Implement 4-lane prefixes with scalar fallback for unproven predicate/store safety; rerun ProvenanceFault-24 and three-kernel fault/throughput benchmarks."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "ProvenanceFault-24 matched scalar faults and stores 24/24 with zero beyond-exit accesses; 4-lane kernel speedups: 1.31×/1.34×/1.32×."
+    },
+    {
+      "id": "n35",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n28",
+      "content": "Adopt 4-lane predicate/store-safe prefixes with scalar fallback: all three kernels exceed 1.3×, and ProvenanceFault-24 matches scalar."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 36,
+      "exploration_parent_id": "g1",
+      "content": "Use vector conflict detection and dereferenceability guards to dispatch safe first-exit-masked chunks; execute conflicting or fault-uncertain chunks scalar."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Can vector conflict detection identify indexed store-to-predicate hazards without evaluating faulting addresses or loads beyond the first scalar exit?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "With arithmetic-only indices and proven-nonfaulting stores and predicates, checked-address conflict masks reject hazards before sequential exit scans and masked loads."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Implement checked-address conflict masks for arithmetic-only indices; scalarize unsafe stores or predicates; validate exits, access traces, faults, and throughput."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Run ConflictMask-32 differential cases with indexed stores, faulting predicates, and guard pages; record pre-exit accesses, conflicts, faults, and speedups."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "ConflictMask-32 found 2/32 exit mismatches: offset indexed stores overlapped predicate loads by bytes but escaped start-address conflict masks."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "n38",
+      "content": "Replace start-address masks with checked byte-interval overlap tests; scalarize overflow or unproven bounds, then rerun ConflictMask-32."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Implement checked byte-interval conflict masks, then rerun ConflictMask-32 against scalar exit lanes, store traces, first faults, and access bounds."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Checked byte-interval masks matched scalar exits, store traces, and first faults in 32/32 ConflictMask cases, with zero beyond-exit accesses."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "n38",
+      "content": "Do checked byte-interval masks outperform 4-lane guarded prefixes on indexed-store kernels while keeping all three speedups above 1.3×?"
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Checked byte-interval masks will outperform 4-lane guarded prefixes on indexed-store kernels while maintaining ≥1.3× scalar throughput across all three."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Benchmark corrected byte-interval masks against 4-lane prefixes on three indexed-store kernels; verify scalar-equivalent traces and ≥1.3× speedups."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "On the three indexed-store kernels, compare checked byte-interval masks with 4-lane prefixes; log scalar-relative throughput and exit/fault/store traces."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Byte-interval masks matched scalar traces and delivered 1.36×/1.37×/1.35× versus 4-lane prefixes’ 1.31×/1.34×/1.32×."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "Choose checked byte-interval masks over start-address conflicts and 4-lane prefixes: correct indexed overlaps and 1.35–1.37× throughput."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Apply intra-iteration SLP to independent arithmetic and proven-nonfaulting loads, leaving exit checks, faulting accesses, and stores scalar-ordered."
+    },
+    {
+      "id": "n52",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "Can intra-iteration SLP exceed 1.3× on all three kernels despite scalar exit checks and ordered stores?"
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Packing four independent arithmetic chains per iteration will achieve ≥1.3× on all three kernels without reordering exits, faults, or stores."
+    },
+    {
+      "id": "n54",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Prototype four-chain SLP after scalar predicate checks; compare scalar traces and optimized-scalar throughput on three exit-alias kernels."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Run SLP4 on three exit-alias kernels, comparing optimized-scalar cycles/iteration, exit lanes, store traces, first faults, and beyond-exit accesses."
+    },
+    {
+      "id": "n56",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "SLP4 comparison report records cycles/iteration, exit lanes, store traces, first faults, and beyond-exit accesses for three kernels."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n54",
+      "content": "Audit the SLP4 report for trace equivalence and recompute scalar-relative speedups from cycles/iteration on all three kernels."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "SLP4 matched scalar exits, stores, faults, and access bounds, but achieved only 1.12×/1.18×/1.09× versus optimized scalar."
+    },
+    {
+      "id": "n59",
+      "type": "plan",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Profile SLP4’s scalar predicate/store bottlenecks and test eight-chain packing plus software pipelining against the three 1.09–1.18× baselines."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Using SLP4’s report, profile predicate/store stalls and benchmark eight-chain SLP with software pipelining; verify scalar-equivalent fault and store traces."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Software-pipelined SLP4 matched scalar traces and reached 1.31×/1.33×/1.32×; SLP8 improved throughput by at most 0.02×."
+    },
+    {
+      "id": "n62",
+      "type": "question",
+      "order": 62,
+      "exploration_parent_id": "n53",
+      "content": "Can software-pipelined SLP4 avoid beyond-exit preloads on guard-page loops while retaining ≥1.3× on all three kernels?"
+    },
+    {
+      "id": "n63",
+      "type": "hypothesis",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Predicate-gated software-pipelined SLP4, not packing alone, preserves zero beyond-exit loads on guard-page loops while retaining ≥1.3× on three kernels."
+    },
+    {
+      "id": "n64",
+      "type": "plan",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Gate SLP4 pipeline loads after scalar predicate checks; rerun guard-page ExitAlias-12 and three-kernel throughput benchmarks."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Use SLP4’s scalar baseline to test predicate-gated pipelining on guard-page ExitAlias-12 and three kernels; record access traces and speedups."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Gated SLP4 matched scalar exits, stores, and faults at 1.31×/1.33×/1.32×, but one ExitAlias-12 case read beyond exit."
+    },
+    {
+      "id": "n67",
+      "type": "decision",
+      "order": 67,
+      "exploration_parent_id": "n62",
+      "content": "Reject pipelined SLP4 despite ≥1.3× throughput: gated loads still access beyond exit; ordinary SLP4 misses the throughput target."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 68,
+      "exploration_parent_id": "g1",
+      "content": "Certify exit-free chunks using register-only monotone bounds; vectorize proven-safe accesses and ordered stores, scalarizing uncertified chunks."
+    },
+    {
+      "id": "n69",
+      "type": "question",
+      "order": 69,
+      "exploration_parent_id": "p5",
+      "content": "Which monotone exit predicates admit register-only chunk certification without overlooking intervening aliasing stores or earlier faulting accesses?"
+    },
+    {
+      "id": "n70",
+      "type": "hypothesis",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "Final-lane bounds certify affine induction-variable exits when arithmetic cannot overflow, predicates are store-independent, and preceding accesses cannot fault."
+    },
+    {
+      "id": "n71",
+      "type": "plan",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Implement checked affine final-lane certificates; scalarize store-dependent predicates and unproven faults, then test exits, traces, and speedups."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "Run MonotoneExit-20 with overflowing affine bounds, aliasing predicates, and guard pages; compare certificates, scalar traces, faults, and accesses."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "MonotoneExit-20 found 2/20 exit mismatches: signed induction wrap passed the final-lane certificate despite a checked address offset."
+    },
+    {
+      "id": "n74",
+      "type": "plan",
+      "order": 74,
+      "exploration_parent_id": "n70",
+      "content": "Check induction endpoints in widened signed arithmetic before certification; reject wraparound chunks, then rerun MonotoneExit-20."
+    },
+    {
+      "id": "n75",
+      "type": "activity",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "Add widened signed endpoint checks and rerun MonotoneExit-20, comparing scalar exit lanes, store traces, fault addresses, and beyond-exit accesses."
+    },
+    {
+      "id": "n76",
+      "type": "evidence",
+      "order": 76,
+      "exploration_parent_id": "n75",
+      "content": "Widened endpoint checks matched scalar exits, stores, faults, and access bounds in 20/20 MonotoneExit cases; wraparound chunks scalarized."
+    },
+    {
+      "id": "n77",
+      "type": "question",
+      "order": 77,
+      "exploration_parent_id": "n70",
+      "content": "Do widened affine certificates reach 1.3× on three exit-alias kernels after store-dependent predicates and fault-uncertain chunks scalarize?"
+    },
+    {
+      "id": "n78",
+      "type": "plan",
+      "order": 78,
+      "exploration_parent_id": "n77",
+      "content": "Benchmark widened affine certificates on three exit-alias kernels; track certified-chunk share, scalar-equivalent traces, and optimized-scalar speedups."
+    },
+    {
+      "id": "n79",
+      "type": "activity",
+      "order": 79,
+      "exploration_parent_id": "n78",
+      "content": "Measure widened-certificate eligibility and speedup on three indexed-store exit kernels; audit scalar exits, store traces, faults, and accesses."
+    },
+    {
+      "id": "n80",
+      "type": "evidence",
+      "order": 80,
+      "exploration_parent_id": "n79",
+      "content": "Widened certificates preserved scalar traces; 22%/31%/27% chunk eligibility yielded 1.08×/1.13×/1.10× speedups."
+    },
+    {
+      "id": "n81",
+      "type": "decision",
+      "order": 81,
+      "exploration_parent_id": "n77",
+      "content": "Defer affine certification as primary path: widened checks restore correctness, but 22–31% eligibility limits speedups to 1.08–1.13×."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "n8"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "revise",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "refute",
+      "target": "n53"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "n62"
+    },
+    {
+      "source": "n63",
+      "relation": "revise",
+      "target": "n53"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n62"
+    },
+    {
+      "source": "n64",
+      "relation": "decompose",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n66",
+      "relation": "refute",
+      "target": "n63"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n66"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n70",
+      "relation": "address",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "address",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "decompose",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n71"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n70"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "refute",
+      "target": "n70"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n69"
+    },
+    {
+      "source": "n74",
+      "relation": "decompose",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "depend_on",
+      "target": "n74"
+    },
+    {
+      "source": "n75",
+      "relation": "evaluate",
+      "target": "n70"
+    },
+    {
+      "source": "n75",
+      "relation": "produce",
+      "target": "n76"
+    },
+    {
+      "source": "n76",
+      "relation": "support",
+      "target": "n70"
+    },
+    {
+      "source": "n78",
+      "relation": "address",
+      "target": "n77"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n76"
+    },
+    {
+      "source": "n78",
+      "relation": "decompose",
+      "target": "n79"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n78"
+    },
+    {
+      "source": "n79",
+      "relation": "address",
+      "target": "n77"
+    },
+    {
+      "source": "n79",
+      "relation": "evaluate",
+      "target": "n70"
+    },
+    {
+      "source": "n79",
+      "relation": "produce",
+      "target": "n80"
+    },
+    {
+      "source": "n80",
+      "relation": "support",
+      "target": "n70"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n76"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n80"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build a loop vectorizer preserving scalar semantics across data-dependent exits, potentially aliasing accesses, and faulting loads.",
+    "requirements": [
+      "Preserve observable write ordering and precise faults without accessing memory beyond the scalar exit.",
+      "Achieve 1.3× throughput versus optimized scalar code on three representative loops combining exits and aliasing."
+    ]
+  }
+}

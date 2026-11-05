@@ -1,0 +1,814 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop RLHF that preserves conflicting minority preferences under policy-induced distribution shifts without observing annotator group identities.",
+      "requirements": [
+        "Improve worst-group preference win rate by ≥5 percentage points versus pooled RLHF, matching feedback budgets.",
+        "Establish identifiability conditions separating persistent preference disagreement from annotation noise under distribution shift."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fit common-support latent-mixture rewards from anonymous multi-pair sessions with repeated anchors; optimize worst-component preference win rate under shifts."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How much anchor overlap and within-session repetition suffice to identify persistent latent preferences separately from annotation noise under policy-induced shifts?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Three conditionally independent anchor replicates identify opposing two-component preferences and symmetric flip noise under shared coverage and sub-50% error."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Derive three-view identifiability and label-swap limits, then simulate policy shifts varying anchor coverage (10–50%) and flip noise (5–45%)."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "In ShiftAnchor-Sim, compare component and noise recovery with two versus three independent anchor replicates across 10–50% coverage and 5–45% flips."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ShiftAnchor-Sim (30% coverage, 20% flips): three-view component MAE was 0.04 versus 0.09 for two views; noise MAE was 0.02."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Prioritize three-view anchor sessions over two-view designs; ShiftAnchor-Sim reduced component MAE from 0.09 to 0.04."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n3",
+      "content": "Using prioritized three-view anchors, derive rank and shared-support conditions for identifiability up to label swaps; construct zero-overlap counterexamples."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Three-View Identifiability Note v1 states full-rank anchor views and shared support suffice up to label swaps, with zero-overlap counterexamples."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Using Three-View Identifiability Note v1, run ShiftAnchor-Bench rank/overlap ablations and budget-matched worst-group win-rate comparisons against pooled RLHF."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "ShiftAnchor-Bench (12,000 labels): worst-group win rate was 61% versus pooled RLHF’s 54%; zero-overlap and rank-deficient ablations scored 53% and 52%."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n8",
+      "content": "Using Three-View Identifiability Note v1, run budget-matched adaptive policy rollouts against pooled RLHF; unblind groups only for evaluation."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Adaptive ShiftAnchor-Bench rollouts (12,000 labels; 30% anchor coverage) yielded 50% worst-group win rate versus pooled RLHF’s 54%."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "n8",
+      "content": "Does policy-induced context drift destroy conditional anchor overlap despite 30% aggregate coverage, explaining the 50% worst-group win rate?"
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Compare fixed versus adaptive ShiftAnchor-Bench (12,000 labels), correlating context-conditional anchor overlap and view rank with worst-group win rate."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Adaptive rollouts retained 30% aggregate anchors but had 3% minimum context-conditional overlap versus fixed rollouts’ 22%; worst-group wins fell 61%→50%."
+    },
+    {
+      "id": "n16",
+      "type": "decision",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Revise anchor sampling to enforce context-conditional overlap, since adaptive rollouts’ 3% minimum coincided with a drop to 50% worst-group wins."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "ShiftGuard-RLHF allocates fixed-budget three-view anchors to maintain ≥20% context-conditional overlap and optimizes conservative worst-component win rates."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can ShiftGuard-RLHF sustain ≥20% conditional overlap within 12,000 labels and exceed pooled adaptive worst-group wins by ≥5 points?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "With 12,000 labels, ShiftGuard-RLHF maintains ≥20% minimum context-conditional overlap and reaches ≥59% worst-group win rate versus pooled RLHF’s 54%."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Run five-seed adaptive ShiftAnchor-Bench rollouts, budgeting 12,000 labels per method; compare conditional overlap and worst-group wins against pooled RLHF."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Across five 12,000-label adaptive rollouts, ShiftGuard-RLHF maintained 21% minimum conditional overlap and 60% worst-group wins versus pooled RLHF’s 54%."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Select ShiftGuard-RLHF for adaptive shifts: it achieved 60% versus pooled RLHF’s 54% worst-group wins at 12,000 labels."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "PanelDRO-RLHF uses pseudonymous cross-policy recontact and randomized repeated comparisons to identify stable dissent, then optimizes pessimistic latent-profile win rates."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Can cross-policy recontact distinguish persistent dissent from session noise when annotator attrition depends on policy outputs?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "With ≥15% recontact per history stratum and independent three-view repeats, PanelDRO identifies dissent; unobserved-preference-dependent attrition remains nonidentifiable."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "On PanelAttrition-Sim, test PanelDRO’s three-view dissent recovery with ≥15% history-stratified recontact; construct observationally equivalent preference-dependent-attrition counterexamples."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "PanelAttrition-Sim: despite 18% history-stratified recontact, three independent rank-deficient views left dissent unidentifiable even under history-conditional attrition."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n23",
+      "content": "Run PanelAttrition-Sim with full-rank versus rank-deficient three-view anchors at 18% recontact, crossing history-conditional and preference-dependent attrition; measure dissent-recovery error."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "PanelAttrition-Sim: full-rank views at 18% recontact yielded 0.04 dissent MAE under history-conditional attrition; preference-dependent attrition remained nonidentifiable."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Can PanelDRO-RLHF achieve ≥59% worst-group wins within 12,000 labels while maintaining full-rank views and ≥15% recontact?"
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Compare PanelDRO’s worst-group wins against pooled RLHF on 12,000-label PanelAttrition-Bench with full-rank anchors, 18% recontact, and history-conditional attrition."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "PanelAttrition-Bench v1 report records 59% PanelDRO versus 54% pooled worst-group wins at 12,000 labels, with anchor-rank diagnostics."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 35,
+      "exploration_parent_id": "g1",
+      "content": "ProbeRoute-RLHF routes between two response policies using anonymous in-session choices; randomized repeated probes distinguish stable dissent from noise under shifts."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p4",
+      "content": "Can three randomized in-session probes reliably route between preference policies under adaptive shifts within a 12,000-label budget?"
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "Three independent full-rank probes yield ≥80% routing accuracy and ≥59% worst-group wins under adaptive shifts using 12,000 labels."
+    },
+    {
+      "id": "n33",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "Train latent-profile policies; randomize three independent full-rank session probes; evaluate routing accuracy and worst-group wins across 12,000-label adaptive rollouts."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "Run five-seed ProbeRoute adaptive ShiftAnchor-Bench with 12,000 total labels including probes; audit routing accuracy and worst-group wins."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Five adaptive ShiftAnchor-Bench seeds: ProbeRoute achieved 82% routing accuracy and 60% worst-group wins versus pooled RLHF’s 54%, including probes."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n33",
+      "content": "Stress-test ProbeRoute’s successful three-probe configuration under correlated errors and context-specific rank loss; measure routing accuracy and worst-group wins."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "At 10% correlated probe errors, full-rank ProbeRoute retained 59% worst-group wins versus pooled 54%; context-specific rank loss yielded 52%."
+    },
+    {
+      "id": "n38",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "p4",
+      "content": "When do randomized in-session probes distinguish persistent preference conflict from correlated annotation noise without cross-session recontact?"
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Under full-rank probes, conditional error independence, and context overlap, shift-invariant dissent is identifiable; arbitrary shared-session noise is not."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Prove three-view identifiability under conditional independence and full-rank overlap; construct observationally equivalent shared-noise models and audit ProbeRoute contexts."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Three-view proof identified dissent under independent full-rank probes; observationally equivalent shared-noise models yielded 51% worst-group wins versus pooled 54%."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Can anonymous in-session probe routing preserve preferences when the minority profile represents only 5% of annotators?"
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Sweep 5–20% minority prevalence in five-seed, 12,000-label ProbeRoute rollouts; compare minority routing and worst-group wins against pooled RLHF."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Sweep 5–20% minority prevalence across five 12,000-label seeds; audit ProbeRoute probe rank, noise independence, minority routing, and worst-group wins."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "At 5% minority prevalence, ProbeRoute achieved 68% minority routing and 51% worst-group wins versus pooled RLHF’s 47%."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Defer ProbeRoute for 5% minorities: its 51% worst-group win rate exceeds pooled RLHF by only 4 points, below target."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n43",
+      "content": "After deferral, test full-rank uncertainty-targeted probes at 5% prevalence with 12,000 labels, targeting ≥52% worst-group wins versus pooled’s 47%."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "ProbeRoute-5% v2 report records 53% worst-group wins versus pooled RLHF’s 47% at 12,000 labels, with full-rank probe diagnostics."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop RLHF that preserves conflicting minority preferences under policy-induced distribution shifts without observing annotator group identities.",
+    "requirements": [
+      "Improve worst-group preference win rate by ≥5 percentage points versus pooled RLHF, matching feedback budgets.",
+      "Establish identifiability conditions separating persistent preference disagreement from annotation noise under distribution shift."
+    ]
+  }
+}

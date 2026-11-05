@@ -1,0 +1,118 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "ChronoProof’s backdated-conflict benchmark and decision to broaden trials",
+      "boundary_reason": "The benchmark finding leads to a decision; the next nodes turn to component ablations."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "ChronoProof ablations and whether source precedence can be omitted",
+      "boundary_reason": "The ablation raises an unresolved question; the next proposal introduces a different approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "RevisionGraph comparison, held-out validation, adoption, and v1.1 release",
+      "boundary_reason": "The release completes this implementation stage; the next discussion shifts to retroactive corrections."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n25",
+        "n26",
+        "p3",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Retroactive corrections and DualTimeRAG’s initial as-of test",
+      "boundary_reason": "The initial result falls short of the proposed gain, prompting a revised method."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Cutoff-gated supersession and citation validation for as-of proofs",
+      "boundary_reason": "A validation patch resolves citation leakage and is adopted; the next proposal addresses geographic scope."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "ScopeLedger jurisdiction-overlap matching and certificate audit",
+      "boundary_reason": "Intersection matching is adopted; the next proposal tests competing multi-hop proofs."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Initial ProofGuard multi-hop comparison at matched coverage",
+      "boundary_reason": "The overall comparison motivates a focused examination of nested exceptions."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Nested-exception follow-up and default-method decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

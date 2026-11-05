@@ -1,0 +1,1022 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a typed language supporting multi-shot continuations and deterministic resource cleanup without duplicating ownership or invalidating resumed computations.",
+      "requirements": [
+        "Accept resource-safe repeated resumptions; establish type safety and exactly-once cleanup for owned resources.",
+        "Pass 30 conformance cases covering nested capture, repeated resumption, cancellation, and rejected ownership violations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Grade continuations by ownership: multi-shot replays copyable frames with handler-scoped borrows; linear owners finalize on handler exit or cancellation."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What static rule prevents captured handler-scoped borrows from outliving their owners during nested resumption or cancellation?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "If captured borrows cannot outlive handler regions, resource-safe nested resumptions type-check and cancellation leaves no dangling continuations."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Define region-indexed continuation typing, prove borrow nonescape across nested resumptions, and run 30 ownership, cleanup, and cancellation tests."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Implement a region-indexed type checker and run 30 ContinuationSafe cases tracing borrow lifetimes, nested resumes, cancellation, and destructor counts."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ContinuationSafe passed 30/30 cases: safe nested resumptions accepted, escaping borrows rejected, and owned resources finalized once, including cancellation."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt region-indexed continuations with copyable-frame replay and handler-scoped borrows; ContinuationSafe confirms nonescape and exactly-once cleanup across 30 cases."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "ContinuationSafe v0.1 includes the region-indexed type checker, 30 conformance cases, and destructor traces for nested resumption and cancellation."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Extend ContinuationSafe v0.1 with bounded nested-capture and cancellation schedules (≤3 resumes), checking frame replay and owner finalization."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "A new two-resume nested-capture schedule exposed use-after-finalize: canceling one branch finalized an owner before its sibling resumed a borrow."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "If handler-owned resources finalize only after all continuation leases end, nested cancellation cannot invalidate a sibling's borrow."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Implement per-continuation region leases in ContinuationSafe; rerun the failing two-resume schedule and 30 cases, checking borrow validity and cleanup counts."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Baseline 30/30 passed; a resumed sibling consumed its lease, letting cancellation finalize its owner despite an active borrow."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Pair linear owners with ref-counted borrow guards on suspended handles and active resumptions; finalize after handler closure and guard exhaustion."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Define suspended-to-active guard transfer, prove type preservation and exactly-once cleanup, then rerun 30 cases plus two-resume cancellation."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Implement atomic guard acquisition for active resumptions while retaining suspended-handle guards; rerun ContinuationSafe's 30 cases and two-resume regression."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "ContinuationSafe v0.2 adds active-resumption guards, retains suspended-handle guards, and includes the two-resume cancellation regression."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Run ContinuationSafe v0.2’s 31 tests with guard-count instrumentation, checking borrow validity, rejection of ownership violations, and destructor counts."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "ContinuationSafe v0.2 passed 31/31 tests; active guards preserved sibling borrows, rejected ownership violations, and finalized each owner once."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n13",
+      "content": "Formalize ContinuationSafe v0.2’s guarded small-step semantics and check preservation, progress, and exactly-once finalization under nested cancellation."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Formalization exposed well-typed cyclic suspended handles: guard counts remain positive after handler closure, so an owned resource never finalizes."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "How can cyclic suspended handles release guards without invalidating borrows held by active resumptions?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "If suspended-handle edges require decreasing region ranks, cycles are rejected; active guards protect borrows until exactly-once owner finalization."
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Extend guard-transfer plan with decreasing suspended-handle region ranks; prove acyclicity and cleanup, then test cyclic rejection and active borrows."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Add decreasing-rank suspended-handle checks to ContinuationSafe v0.2; run 31 existing cases plus cyclic-handle and active-borrow cancellation regressions."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "33/33 cases passed: cyclic suspended handles were rejected, active borrows survived cancellation, and each owner finalized exactly once."
+    },
+    {
+      "id": "n25",
+      "type": "artifact",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "ContinuationSafe v0.3 adds decreasing-rank suspended-handle checks to v0.2’s guards and expands its conformance suite to 33 cases."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n22",
+      "content": "Mechanize ContinuationSafe v0.3’s small-step semantics; check preservation, rank acyclicity, and exactly-once finalization with active borrows."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "ContinuationSafe v0.3 proofs establish type preservation, suspended-handle acyclicity, and exactly-once finalization after handler closure and guard release."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n22",
+      "content": "Enumerate ContinuationSafe v0.3 handle graphs (≤4 nodes) and cancellation schedules (≤3 resumes), checking rejected cycles, live borrows, and exactly-once finalization."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "With two handles and one cancellation, a pending finalizer retained its owner's guarded handle, blocking cleanup despite decreasing ranks."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Retain ranked guards but defer v0.3 adoption until finalizers cannot retain guarded owner handles; bounded search exposed cleanup deadlock."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n20",
+      "content": "If finalizers cannot retain handles guarding their owner, ranked handle graphs drain after cancellation while active guards preserve live borrows."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Add owner-handle exclusion to ContinuationSafe v0.3 finalizer typing; rerun 33 conformance cases and bounded cancellation graph search."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "33/33 cases passed; ≤4-node, ≤3-resume search found no cleanup deadlocks, preserved active borrows, and rejected finalizer-held owner handles."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Combine ranked suspended handles, active-resumption guards, and owner-handle-free finalizers to support multi-shot borrows with deferred exactly-once cleanup."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Can finalizers indirectly retain owner-guarding handles through captured closures despite the direct owner-handle exclusion?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "If finalizer capture effects transitively list guarded owners, excluding its own owner rejects indirect handle retention through closures."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Infer transitive guarded-owner effects for finalizer captures; reject self-owner effects, then test closure chains and rerun 33 conformance cases."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Implement transitive guarded-owner effect inference; test three-level closure captures, self-owner rejection, and ContinuationSafe’s 33 conformance cases."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "33/33 cases passed; effect inference rejected self-owner handles hidden three closures deep and accepted unrelated-owner captures."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "ContinuationSafe v0.4 adds transitive guarded-owner capture effects and rejects finalizers that directly or indirectly retain their owner’s handles."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n36",
+      "content": "Mechanize ContinuationSafe v0.4 preservation and cleanup after active resumptions finish, checking ranked handles and transitive finalizer effects."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Mechanization exposed cross-owner cleanup deadlock: A’s pending finalizer guards B, B’s guards A; neither guard count reaches zero."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Introduce a global cleanup rank: finalizers may guard only lower-ranked owners, preventing cross-owner cycles while active guards protect resumptions."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Add global cleanup-rank constraints, prove guard drainage and exactly-once finalization, then rerun 33 cases plus cross-owner deadlock regressions."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Implement cleanup-rank inference in ContinuationSafe v0.4; reject finalizer captures guarding equal-or-higher-ranked owners and rerun 35 regression cases."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "ContinuationSafe v0.5 extends v0.4 with global cleanup-rank inference and 35 regressions, including opposing cross-owner finalizer captures."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Run ContinuationSafe v0.5’s 35 regressions and bounded cross-owner cancellation schedules, checking rank rejection, live borrows, and exactly-once finalization."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "35/35 regressions passed, but bounded cancellation found mutually guarded cancellation handlers outside rank checks; neither owner finalized."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "Should cancellation handlers obey the same cleanup-rank constraints as finalizers to prevent mutual guard retention?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Applying transitive cleanup-rank checks to cancellation handlers rejects mutual guards without restricting active resumption borrows."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Extend cleanup-rank constraints to transitive cancellation-handler captures; rerun 35 regressions and mutual-guard schedules, then prove guard drainage."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Extend ContinuationSafe v0.5 rank inference to cancellation-handler captures; rerun 35 regressions and the mutually guarded cancellation schedule."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "35/35 regressions passed; transitive rank checks rejected mutually guarded cancellation handlers while active-resumption borrows remained valid."
+    },
+    {
+      "id": "n52",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "ContinuationSafe v0.6 extends v0.5’s cleanup-rank inference to transitive cancellation-handler captures, rejecting mutually guarded cancellation."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n49",
+      "content": "Mechanize ContinuationSafe v0.6 preservation and cleanup proofs, checking guard drainage after finite resumptions and exactly-once finalization under cancellation."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "ContinuationSafe v0.6 mechanization proves preservation and, after handler closure and finite resumptions, guard drainage and exactly-once finalization under cancellation."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n49",
+      "content": "Model-check ContinuationSafe v0.6 under reentrant cancellation (≤4 owners, ≤3 resumptions), checking rank compliance, borrow validity, and cleanup."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "Across ≤4 owners and ≤3 resumptions, rank-compliant schedules showed zero deadlocks or dangling borrows; terminal owners finalized once."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "p4",
+      "content": "Adopt v0.6’s cleanup ranks for finalizers and cancellation handlers: 35/35 tests pass, and finite-resumption cleanup is proved."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n25",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n31",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "revise",
+      "target": "n39"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "revise",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n57"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a typed language supporting multi-shot continuations and deterministic resource cleanup without duplicating ownership or invalidating resumed computations.",
+    "requirements": [
+      "Accept resource-safe repeated resumptions; establish type safety and exactly-once cleanup for owned resources.",
+      "Pass 30 conformance cases covering nested capture, repeated resumption, cancellation, and rejected ownership violations."
+    ]
+  }
+}

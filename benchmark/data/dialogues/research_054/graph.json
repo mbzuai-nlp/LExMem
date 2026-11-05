@@ -1,0 +1,905 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn classifiers that reject shifting spurious cues without environment labels while preserving stable predictive features specific to minority groups.",
+      "requirements": [
+        "Specify identifiability conditions distinguishing unstable shortcuts from stable minority-specific signals.",
+        "Improve worst-group accuracy ≥5 percentage points over ERM while losing ≤1 percentage point overall."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Propose OverlapGuard: infer environments from class-conditioned residuals, penalizing feature instability only within subgroups represented across environments."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Without environment labels, when do subgroup overlap and class-conditioned residual shifts identify shortcuts without suppressing stable minority predictors?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "If class-conditioned residual anchors distinguish two regimes containing minority examples, shortcut-label associations shift while minority-predictor associations remain invariant."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "On ShiftMix-v1, vary residual-anchor separation and minority-regime overlap; compare inferred shortcut shifts, minority-feature invariance, and worst-group/overall accuracy against ERM."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "On ShiftMix-v1 (separable anchors, ≥15% minority overlap), OverlapGuard identified 89% shifting shortcuts, retained 94% minority predictors; worst-group +6.2pp, overall −0.4pp."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Advance OverlapGuard to real-data testing where anchors separate and minority overlap reaches 15%; ShiftMix-v1 met both accuracy targets."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Check Waterbirds/CelebA anchor separation and ≥15% minority overlap; conditionally benchmark OverlapGuard versus ERM for ≥5pp worst-group gain, ≤1pp overall loss."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Fit two-component residual mixtures on Waterbirds/CelebA without environment labels; measure anchor silhouette and minority overlap using held-out subgroup audits."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "ResidualAudit-v1 reports Waterbirds/CelebA mixture assignments, anchor silhouettes, and held-out minority-overlap estimates for eligibility screening."
+    },
+    {
+      "id": "n9",
+      "type": "question",
+      "order": 11,
+      "exploration_parent_id": "p1",
+      "content": "How can overlap-gated penalties avoid suppressing stable minority predictors when inferred residual clusters partially encode minority identity?"
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Audit ResidualAudit-v1 cluster assignments for minority identity leakage; sweep overlap gates to measure minority-feature retention and shortcut suppression."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "On Waterbirds, ≥15% overlap gating retained 91% stable minority predictors and suppressed 83% shortcuts despite cluster–minority AUC 0.64."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Propose PairSwap: infer nuisance swaps from label-matched neighbors across latent clusters, enforcing invariance only when rare-cluster class margins persist."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Verify label-matched nuisance swaps, shifting shortcut correlations, and stable minority margins before PairSwap; test ≥5pp worst-group gain, ≤1pp overall loss."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Using ResidualAudit-v1 assignments, audit Waterbirds label-matched swaps for nuisance changes and stable minority margins; benchmark eligible PairSwap against ERM."
+    },
+    {
+      "id": "n14",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "PairSwapAudit-v1 contains Waterbirds swap eligibility, nuisance-change rates, minority-margin stability, and eligible-model worst-group and overall accuracy versus ERM."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Reaudit PairSwapAudit-v1 nuisance swaps and bootstrap Waterbirds PairSwap–ERM worst-group/overall accuracy gaps by minority-margin stability."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Among eligible Waterbirds pairs, 29% of PairSwap swaps altered minority predictors; worst-group +2.1pp, overall −1.6pp versus ERM."
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Despite cluster–minority AUC 0.64, margin-stability filtering before overlap gating should reduce PairSwap’s minority-predictor corruption from 29% below 10%."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "On Waterbirds, filter PairSwap pairs by minority-margin stability before ≥15% overlap gating; measure predictor corruption and ERM-relative accuracies."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On Waterbirds, margin-filtered PairSwap reduced minority-predictor corruption from 29% to 8%; worst-group accuracy rose 5.3pp, overall fell 0.7pp versus ERM."
+    },
+    {
+      "id": "n20",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Revive PairSwap only with margin-stability filtering and ≥15% overlap gating: Waterbirds meets accuracy targets and reduces predictor corruption to 8%."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n12",
+      "content": "Benchmark OverlapGuard and revived margin-filtered PairSwap against ERM on Waterbirds/CelebA; audit anchor separation, ≥15% overlap, minority margins, worst-group/overall accuracy."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Propose DriftProbe: infer pseudo-regimes from time-ordered unlabeled batches, penalizing drifting feature effects while exempting stable minority-slice margins."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Under what overlap conditions does unlabeled temporal drift identify shortcut shifts without mistaking minority-prevalence changes for predictor instability?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "With ≥15% minority presence per batch and class-conditional overlap, prevalence-reweighted effect drift identifies shortcuts while preserving stable minority margins."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Using PairSwapAudit-v1 margin annotations, simulate Waterbirds-Time batches varying minority prevalence and class overlap; evaluate DriftProbe shortcut recall and margin retention."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "On Waterbirds-Time, despite ≥15% minority presence and class-conditional overlap, DriftProbe achieved 81% shortcut recall but 72% minority-margin retention after reweighting."
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "With class-by-minority support overlap and anchors conditionally independent of minority identity, DriftProbe should retain ≥90% minority margins while identifying shortcuts."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "On Waterbirds-Time, vary audit-only class-by-minority support and conditional anchor leakage; measure DriftProbe minority-margin retention and shortcut recall."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "On Waterbirds-Time, ≥10% per class-by-minority cell and conditional anchor–minority AUC ≤0.52 yielded 92% minority-margin retention; shortcut recall 83%."
+    },
+    {
+      "id": "n29",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Prioritize margin-filtered PairSwap; restrict DriftProbe to ≥10% class-by-minority cells and anchor AUC ≤0.52 pending accuracy testing."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 34,
+      "exploration_parent_id": "n24",
+      "content": "Waterbirds-Time-v1 package contains prevalence-controlled batches, class-by-minority support audits, conditional anchor-leakage scores, and DriftProbe retention/shortcut-recall results."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 35,
+      "exploration_parent_id": "g1",
+      "content": "Propose CueSurgery: use diffusion-edited background counterfactuals, enforcing invariance only when rare-cluster class margins survive edits."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "p4",
+      "content": "Using Waterbirds-Time-v1, benchmark CueSurgery and eligible DriftProbe against ERM; audit edit fidelity, minority-margin retention, worst-group and overall accuracy."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "On Waterbirds-Time-v1, CueSurgery retained 93% minority margins; versus ERM, worst-group accuracy rose 5.8pp and overall fell 0.6pp."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "Advance CueSurgery (+5.8pp worst-group, −0.6pp overall); gate DriftProbe by ≥10% cell support and anchor AUC ≤0.52."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "Benchmark CueSurgery and gated DriftProbe on held-out CelebA/Waterbirds shifts; require stable minority margins, ≥5pp worst-group gain, ≤1pp overall loss."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Train CueSurgery and eligibility-gated DriftProbe on CelebA/Waterbirds; audit minority-margin retention and bootstrap ERM-relative worst-group/overall accuracy under held-out shifts."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "HeldoutShiftReport-v1 contains CelebA/Waterbirds eligibility audits, minority-margin retention, and bootstrapped worst-group/overall accuracy gaps versus ERM."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n34",
+      "content": "Independently audit HeldoutShiftReport-v1: verify eligibility thresholds, minority-margin stability, and 95% bootstrap intervals against both accuracy targets."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Audited HeldoutShiftReport-v1 eligible shifts: CueSurgery worst-group +5.6pp (95% CI +5.1–6.2), overall −0.6pp (−0.9–−0.3) versus ERM; minority-margin retention 92%."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "p4",
+      "content": "Can CueSurgery’s margin gate detect diffusion edits that change stable minority features despite preserving the predicted class?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "CueSurgery’s rare-cluster margin gate flags ≥90% of class-preserving edits that alter minority features, with ≤10% false positives."
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Class-preserving edits to minority-specific textures leave rare-cluster margins nearly unchanged, causing ≥20% of feature changes to escape CueSurgery’s gate."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Propose TetherDRO: reweight high-loss latent clusters while preserving rare-subtype predictions through distillation restricted to augmentation-consistent examples."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "p5",
+      "content": "Annotate 500 class-preserving CueSurgery edits for minority-feature changes; validate margin-gate sensitivity and augmentation consistency before TetherDRO distillation."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Using HeldoutShiftReport-v1, annotate 500 class-preserving edits; measure gate sensitivity, false positives, missed changes, and consistency-gated TetherDRO accuracy versus ERM."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "In 500 annotated edits, CueSurgery’s margin gate missed 24% of minority-feature changes; sensitivity 76%, false-positive rate 8%."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n44",
+      "content": "Prioritize margin-filtered PairSwap; retain CueSurgery only with minority-feature edit audits, since accuracy gains coexist with 24% undetected changes."
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Replace margin-gate validation with cross-fitted minority-feature-change detection on 500 annotated edits; gate CueSurgery/TetherDRO and benchmark against prioritized PairSwap."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Five-fold cross-fit a minority-feature-change detector on 500 edits; gate CueSurgery/TetherDRO and benchmark worst-group/overall accuracy against PairSwap and ERM."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "EditGuard-v1 includes cross-fitted minority-feature-change predictions, fold-separated gate thresholds, and CueSurgery/TetherDRO versus PairSwap/ERM accuracy tables."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Audit EditGuard-v1 fold separation and minority-change recall; bootstrap held-out CelebA worst-group and overall accuracy gaps against PairSwap and ERM."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "EditGuard-v1 recalled 93% minority-feature changes; on held-out CelebA, gated CueSurgery/TetherDRO gained 5.9/5.2pp worst-group, lost 0.5/0.8pp overall versus ERM."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n9"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "revive",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "revise",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "p5",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "refute",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n46",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p4"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn classifiers that reject shifting spurious cues without environment labels while preserving stable predictive features specific to minority groups.",
+    "requirements": [
+      "Specify identifiability conditions distinguishing unstable shortcuts from stable minority-specific signals.",
+      "Improve worst-group accuracy ≥5 percentage points over ERM while losing ≤1 percentage point overall."
+    ]
+  }
+}

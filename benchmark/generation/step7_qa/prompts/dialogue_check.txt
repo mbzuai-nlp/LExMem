@@ -1,0 +1,18 @@
+Check whether the supplied dialogue supports correctly answering this question.
+
+{{INPUT_JSON}}
+
+qa contains the question, answer, answer_keywords, and evidence_node_ids. dialogue contains the chronological dialogue blocks mapped from those evidence node IDs, with source_node_id and messages.
+
+- Use only the supplied dialogue as factual evidence. The proposed answer and graph node IDs are not evidence themselves.
+- Check every answer item against the dialogue mapped from its evidence_node_ids. Accept explicit statements or reliable inferences, including combining statements or simple calculations. Reject missing premises, guesses, contradictions, and unsupported conclusions.
+- Preserve the question's scope, time, version, conditions, units, and negation. Do not confuse a proposal or target with an achieved result. Reject if the excerpts do not resolve a reference or establish the requested status.
+- Check that the supplied dialogue supports the complete answer and its aliases without unresolved ambiguity. Question structure and keyword-scoring suitability are checked separately.
+- Do not rewrite the question or answer. Pass only if all checks succeed. Otherwise list brief, specific issues, identifying the affected answer slots when applicable.
+
+Return JSON only:
+{
+  "passed": true,
+  "issues": []
+}
+For rejection, set passed=false and provide nonempty issues. For acceptance, issues must be empty.

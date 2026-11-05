@@ -1,0 +1,877 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Determine when black-box language-model evaluations can distinguish paraphrased benchmark contamination from genuine generalization under unknown training distributions.",
+      "requirements": [
+        "Achieve at least 80% detection power at 5% false positives against uncontaminated, capability-matched models.",
+        "Specify identifiability assumptions and characterize contamination regimes observationally indistinguishable from genuine generalization."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Compare paraphrase-stable benchmark error fingerprints with private isomorphic twins, calibrating against capability-matched clean models and deriving identifiability bounds."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When does excess agreement on rare benchmark errors across paraphrases, relative to private twins, identify contamination rather than shared reasoning?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "At 300 items and 30% paraphrase contamination, exchangeable twins and matched controls enable ≥80% rare-error detection power at 5% FPR."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Construct 300 exchangeable benchmark/twin pairs; inject 0–30% paraphrases, estimate 5%-FPR power against capability-matched controls, and derive indistinguishable regimes."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Simulate TwinTrace on 300 exchangeable pairs with 30% paraphrase injection; estimate 5%-FPR power against 20 capability-matched clean models."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "TwinTrace simulations achieved 84% detection power at 5% false positives with 30% paraphrase injection across 300 exchangeable pairs."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Advance TwinTrace to held-out validation under twin exchangeability; simulated 84% power at 30% contamination clears the 80% target."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Validate TwinTrace on 300 held-out pairs across 0–30% contamination against capability-matched controls; audit twin exchangeability and 5%-FPR power."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "TwinTrace validation dossier contains held-out 5%-FPR power curves, twin-exchangeability checks, and an impossibility proof for behaviorally identical contamination."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Recompute TwinTrace dossier’s held-out 5%-FPR power and exchangeability diagnostics; verify its behavioral-equivalence proof against adaptive black-box queries."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "TwinTrace: 82% held-out power at 5% FPR under 30% injection; 1.2-point twin accuracy gap; behavioral equivalence precludes detection."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "How much benchmark–twin distribution shift or control mismatch can TwinTrace tolerate before its 5%-FPR guarantee fails?"
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "TwinTrace retains ≥80% power and ≤5% FPR at 30% contamination under ≤2-point twin accuracy shifts and ≤1-point control mismatch."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Stress-test TwinTrace’s 300 pairs at 30% injection; vary twin shifts (0–4 points) and control mismatches (0–2 points); measure power/FPR."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "At 30% answer-only contamination, with exchangeable twins and matched controls, TwinTrace’s 56% power trailed accuracy-contrast’s 84% (5% FPR)."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n12",
+      "content": "Test answer-only versus full-solution paraphrases in 1,000 TwinTrace simulations with two-point twin accuracy shift and one-point control mismatch."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Under full-solution contamination, TwinTrace reached 81% power and 4.8% FPR at two-point twin shifts and one-point control mismatch."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Use TwinContrast, a benchmark/private-twin accuracy difference-in-differences test calibrated on capability-matched controls, to detect answer-only contamination."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can TwinContrast identify answer-only contamination when unknown training distributions induce baseline benchmark–twin accuracy gaps among clean models?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "If controls bound benchmark–twin gap drift to one point, TwinContrast achieves ≥80% power at 5% FPR under 30% answer-only contamination."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Simulate TwinContrast on 300 pairs with 30% answer-only injection; constrain clean-model gap drift to one point and estimate 5%-FPR power."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "At one-point clean-model gap drift, TwinContrast achieved 74% power at 5% FPR, below 80% despite 30% answer-only injection."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n18",
+      "content": "Repeat TwinContrast calibration on 500 private-twin pairs with one-point clean-model gap drift and 30% answer-only contamination; estimate 5%-FPR power."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "With 500 pairs and one-point gap drift, TwinContrast reached 85% power at 5% FPR under 30% answer-only contamination."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "n18",
+      "content": "When can contamination-induced benchmark–twin accuracy gaps be replicated by clean models under unknown training distributions, regardless of sample size?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "If clean training reproduces contaminated benchmark–twin gaps and all adaptive response distributions, no black-box test exceeds its false-positive rate."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Contrast 74% versus 85% power at 300 versus 500 pairs, then prove adaptive indistinguishability for response-equivalent clean/contaminated models."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Construct response-equivalent clean and contaminated models; couple adaptive query transcripts to test whether TwinContrast rejection exceeds 5%."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "The coupling gives identical adaptive transcript distributions; against response-equivalent contamination, any black-box test capped at 5% FPR has ≤5% power."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n25",
+      "content": "Chart TwinContrast’s 300/500-pair power against the 80% target, separating detectable one-point-drift regimes from response-equivalent contamination."
+    },
+    {
+      "id": "n29",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "TwinContrast regime map records 74%/85% power at 300/500 pairs, one-point drift assumptions, and the response-equivalence impossibility bound."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Probe benchmark-specific arbitrary distractor recall through forced-choice sampling, using matched novel distractors and capability-matched clean-model calibration."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Can forced-choice preference for arbitrary benchmark distractors reveal paraphrase exposure when clean models share the same answer priors?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "With 30% distractor-retaining paraphrases across 500 items, DistractorRecall achieves ≥80% power at 5% FPR under exchangeable clean-option priors."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Randomize benchmark distractor against matched novel options over 500 items; simulate 30% distractor-retaining paraphrases and calibrate DistractorRecall at 5% FPR."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "DistractorRecall reached 67% power at 5% FPR on 500 items with 30% distractor-retaining paraphrases, despite exchangeable clean-option priors."
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n31",
+      "content": "Increasing DistractorRecall to 800 items should yield ≥80% power at 5% FPR for 30% distractor-retaining paraphrases, assuming exchangeable clean-option priors."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Extend DistractorRecall to 800 randomized items under 30% distractor-retaining paraphrase exposure; bootstrap power at a 5% clean-model FPR."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "At 800 randomized items and 30% distractor-retaining exposure, DistractorRecall achieved 83% bootstrap power at 5% clean-model FPR."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Does DistractorRecall remain calibrated when clean models favor benchmark distractors because those options appeared independently in training?"
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Vary independent distractor exposure among clean models, stratify option-prior mismatch, and measure 800-item DistractorRecall FPR and power."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Stress-test 800-item DistractorRecall with 0–20% independent benchmark-distractor exposure in clean models; measure FPR and 30%-contamination power."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "DistractorRecall exposure-sensitivity chart tabulates 800-item FPR and power across 0–20% independent clean-model distractor exposure."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n38",
+      "content": "Audit the DistractorRecall chart by exposure stratum; identify where 5% FPR or 80% power first fails."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "At ≤2% independent distractor exposure, DistractorRecall retained 81% power and 4.9% FPR; at 10%, FPR rose to 9%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Develop a partial-identification audit combining TwinTrace, TwinContrast, and DistractorRecall with negative controls to bound training-distribution mismatch."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "p4",
+      "content": "Can negative-control prompts bound training-distribution mismatch tightly enough to certify 5% FPR without assuming controls share the target’s training distribution?"
+    },
+    {
+      "id": "n44",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "If negative controls bound clean target–control transcript-TV by 1%, a 4%-calibrated ensemble maintains ≤5% FPR without training-distribution equality."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Define negative-control-to-target transport assumptions, bound transcript-TV at 1%, calibrate the ensemble to 4% FPR, and test 30% contamination."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Using TwinContrast’s map, simulate 1%-TV negative-control transport; calibrate ensemble to 4% and measure clean-target FPR and 30%-contamination power."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Under 1%-TV transcript transport, the 4%-calibrated ensemble yielded 4.8% clean-target FPR and 82% power at 30% contamination."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n45",
+      "content": "Challenge the 1%-TV, 4%-calibrated ensemble with the chart’s 10% clean distractor exposure; estimate transcript-TV and target FPR."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "At 10% clean distractor exposure, transcript-TV reached 3.2% and ensemble FPR 7.1%, triggering the audit’s transport warning."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "p4",
+      "content": "Certify only with justified ≤1% transcript-TV transport and ≤2% independent distractor exposure; flag other regimes for further calibration."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Run conditional audit: 500 TwinContrast pairs, 800 DistractorRecall items; verify ≥80% power and ≤5% FPR within transport bounds, flag response-equivalence."
+    },
+    {
+      "id": "n52",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Conditional audit report documents 500-pair/800-item power and FPR, transport assumptions, distractor-exposure limits, and response-equivalence impossibility."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "revise",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Determine when black-box language-model evaluations can distinguish paraphrased benchmark contamination from genuine generalization under unknown training distributions.",
+    "requirements": [
+      "Achieve at least 80% detection power at 5% false positives against uncontaminated, capability-matched models.",
+      "Specify identifiability assumptions and characterize contamination regimes observationally indistinguishable from genuine generalization."
+    ]
+  }
+}

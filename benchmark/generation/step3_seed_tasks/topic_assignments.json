@@ -1,0 +1,82 @@
+[
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "natural language processing"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "computer vision"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "computational biology"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "machine learning: generalization and robustness"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "speech processing"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "robotics"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "multimodal learning"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "causal inference"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "reinforcement learning"
+  },
+  {
+    "task_type": "research_idea_exploration",
+    "topic": "scientific machine learning"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "distributed systems"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "database query processing"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "compilers"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "programming languages and type systems"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "storage systems"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "networking"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "security engineering"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "developer tools and program analysis"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "machine learning infrastructure"
+  },
+  {
+    "task_type": "software_development",
+    "topic": "real-time and embedded software"
+  }
+]

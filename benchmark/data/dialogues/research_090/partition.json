@@ -1,0 +1,128 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial overlap-gated Γ=1.5 bandit certificates and simulation results",
+      "boundary_reason": "The initial simulation supports advancing the approach; the next nodes begin held-out validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Held-out test and revised overlap and margin thresholds",
+      "boundary_reason": "Independent trials support the revised thresholds; discussion shifts to sparse-action MDP certificates."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Occupancy-capped Bellman certificates for sparse-action MDPs",
+      "boundary_reason": "The initial comparison identifies a coverage shortfall for overlap-gated certificates; the next work sweeps occupancy caps."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Occupancy-cap sweep, held-out audit, and certificate selection",
+      "boundary_reason": "The audit leads to a conditional choice of certificates; discussion shifts to randomized encouragement."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Encouragement-based gain bounds and limits on noncomplier harm",
+      "boundary_reason": "Harm-capped bounds improve coverage, raising a separate question about how to justify the harm cap."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Randomized noncomplier audits and jointly calibrated encouragement bounds",
+      "boundary_reason": "The audit and integration produce an artifact; discussion shifts to matched-set bounds."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Population-weighted matched-set bounds and calibration failure",
+      "boundary_reason": "Matching-induced dependence undermines coverage, prompting a sample-splitting remedy."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Three-way-split matched-set bounds for whole-population gains",
+      "boundary_reason": "Split validation and the matched-gain implementation conclude this approach; discussion shifts to negative-control proxies."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Proxy-assisted Γ-robust bounds, calibration, and benchmark audit",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

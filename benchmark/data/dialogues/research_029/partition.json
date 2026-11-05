@@ -1,0 +1,119 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "topic": "Initial probe-gated transfer proposal and success benchmarks",
+      "boundary_reason": "The initial benchmark is reported; discussion turns to probe detection reliability."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Audit of incompatibility detection at different probe-error cutoffs",
+      "boundary_reason": "The cutoff audit concludes; focus shifts to a compliant-gripper failure."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Compliant-gripper deficit and ablation of flags versus probe costs",
+      "boundary_reason": "The ablation results establish a baseline for a revised gating proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Tactile-conditioned gating gains and tactile-masking counterexample",
+      "boundary_reason": "The masking result prompts a focused test of calibration as the cause."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Calibration test and adoption of tactile-free error-quantile gating",
+      "boundary_reason": "A decision closes the calibration investigation; a different skill-selection approach follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Return-bound gating protects the gripper but misses overlap efficiency",
+      "boundary_reason": "The held-out shortfall raises a new question about conservative return bounds."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Replay of rejected skills and rejection of fixed 95% bounds",
+      "boundary_reason": "The return-bound decision concludes; the next proposal combines approaches."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Hybrid gating proposal and held-out ShiftManip-12 results",
+      "boundary_reason": "Initial held-out results motivate broader validation on unseen shifts."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "HybridManip-24 validation and adoption of hybrid gating",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

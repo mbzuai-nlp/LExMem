@@ -1,0 +1,1072 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a semantic parser that distinguishes genuine utterance ambiguity from model uncertainty under unseen compositional structures.",
+      "requirements": [
+        "Achieve ambiguity-detection F1 ≥0.85 on unseen compositions, using independently annotated sets of valid interpretations.",
+        "Match unambiguous-input execution accuracy of a single-output parser trained on identical data."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Freeze the baseline parser; train an interpretation-set ensemble to flag multiple valid parses supported across independently trained members."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can cross-member support distinguish genuinely valid alternative parses from disagreement caused by unseen compositional structures?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Three-of-five support for distinct executable parses achieves ambiguity F1 ≥0.85 against independently annotated interpretation sets on unseen compositions."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Independently annotate held-out compositions; train five parsers on baseline data; calibrate three-member support; compare ambiguity F1 and unambiguous accuracy."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Build CompSplit-1: three annotators independently label valid executable interpretations for 600 held-out operator-combination utterances; adjudicate disagreements."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "CompSplit-1 contains 600 held-out operator-combination utterances, three independent interpretation-set annotations each, and adjudicated executable gold sets."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Audit CompSplit-1 agreement and composition leakage; score three-of-five ambiguity F1 against gold sets and unambiguous execution against baseline."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "CompSplit-1 audit found no leakage; three-of-five achieved 0.87 ambiguity F1 and 91% unambiguous execution versus baseline's 91%."
+    },
+    {
+      "id": "n10",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Select the three-of-five ensemble: CompSplit-1 ambiguity F1 reaches 0.87, while unambiguous execution matches the baseline at 91%."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Stratify CompSplit-1 by unseen operator pairing; compare ensemble false-positive rates with entropy-only ambiguity flags and baseline execution."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Pairing-balanced CompSplit-1 yielded 0.81 ambiguity F1 and 86% unambiguous execution versus baseline’s 91%, failing both targets."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n3",
+      "content": "Paraphrase-stable parse consensus with baseline fallback will reach pairing-balanced ambiguity F1 ≥0.85 while retaining 91% unambiguous execution."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Do meaning-preserving paraphrases retain the same valid interpretation sets for unseen operator pairings?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Gate ensemble ambiguity alerts by agreement across operator-preserving paraphrases; use the frozen baseline when the gate rejects ambiguity."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Independently validate operator-preserving paraphrases, tune the consensus gate, then evaluate pairing-balanced ambiguity F1 and baseline-relative unambiguous execution."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Using CompSplit-1 gold sets, independently validate paraphrases; compare ungated ensemble and paraphrase-gated fallback on pairing-balanced F1 and execution."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Independently validated paraphrase gating yielded pairing-balanced ambiguity F1 of 0.86 and unambiguous execution of 91%, versus ungated 0.81 and 86%."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Adopt paraphrase-gated fallback: pairing-balanced F1 rises from 0.81 to 0.86, and unambiguous execution recovers from 86% to 91%."
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Freeze the adopted paraphrase gate and baseline fallback; independently annotate CompSplit-2 operator triples, then replicate ambiguity F1 and execution."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Collect 400 unseen operator-triple utterances; have three annotators independently enumerate executable interpretations and validate paraphrase equivalence."
+    },
+    {
+      "id": "n22",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "CompSplit-2 contains 400 unseen operator-triple utterances, three independent interpretation-set annotations, adjudicated executable gold sets, and validated paraphrases."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "Does paraphrase-consensus gating distinguish genuine ambiguity from ensemble disagreement on unseen operator triples without sacrificing unambiguous execution?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "On CompSplit-2, the frozen gated parser achieves ambiguity F1 ≥0.85 and unambiguous execution ≥91%, matching the baseline."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Cluster parses by execution across counterfactual worlds; flag multiple paraphrase-stable clusters as ambiguous, otherwise retain baseline output."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Can counterfactual execution clusters separate genuinely distinct readings from equivalent parse variants on unseen operator triples?"
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Requiring distinct outputs in three counterfactual worlds reduces false ambiguity alerts while preserving CompSplit-2 ambiguity F1 ≥0.85."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "On CompSplit-2, compare the frozen gate with three-world distinct-output clustering; score ambiguity F1, false-alert rate, and baseline-relative unambiguous execution."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "CompSplit-2: gate achieved 0.86 F1 and 91% execution (baseline 91%); clustering cut false alerts 9%→6% but yielded 0.82 F1."
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Requiring one paraphrase-stable, discriminative world instead of three preserves CompSplit-2 ambiguity F1 ≥0.85 and lowers false alerts below 9%."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Compare one-world paraphrase-stable and three-world clustering on CompSplit-2; report ambiguity F1, false-alert rate, and baseline-relative execution."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Paraphrase-stable world sampling raised three-world CompSplit-2 F1 from 0.82 to 0.85 (6% false alerts); one-world F1 was 0.83."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n30",
+      "content": "Audit one-world false negatives by operator triple on CompSplit-2; bootstrap ambiguity F1 and false-alert differences against the frozen gate."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "One-world false alerts were 7% versus gate’s 9%; bootstrap F1 interval [0.79, 0.87] includes the 0.85 target."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 35,
+      "exploration_parent_id": "p3",
+      "content": "Does three-world clustering preserve the baseline’s 91% unambiguous execution on CompSplit-2 despite residual false ambiguity alerts?"
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Compare three-world and one-world CompSplit-2 unambiguous execution against the 91% baseline; inspect overrides behind their 6% and 7% false-alert rates."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "On CompSplit-2, measure three-world and one-world unambiguous execution against the 91% baseline; audit false-alert overrides and ambiguity F1."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Independently prevalidated discriminative-world selection raised one-world F1 from 0.83 to 0.85; false alerts remained 7%, execution matched baseline’s 91%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Cascade paraphrase-consensus gating with prevalidated one-world discrimination; route rejected ambiguity alerts to the frozen baseline."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p4",
+      "content": "Does the cascade reduce CompSplit-2 false alerts below 7% while retaining ambiguity F1 ≥0.85 and unambiguous execution ≥91%?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "The frozen cascade yields CompSplit-2 false alerts ≤6%, ambiguity F1 ≥0.85, and 91% unambiguous execution."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Lock cascade thresholds; evaluate CompSplit-2 against gated-only and one-world controls, then audit false alerts and unambiguous execution."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Run the locked cascade and both controls on CompSplit-2; bootstrap ambiguity F1, false-alert rate, and unambiguous execution."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "CompSplit-2 cascade audit records locked predictions, gold interpretation sets, control outputs, and bootstrap intervals for F1, false alerts, and execution."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n42",
+      "content": "Verify cascade audit completeness; compare CompSplit-2 F1 and false alerts with controls, and unambiguous execution with the 91% baseline."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "CompSplit-2 cascade achieved 0.85 ambiguity F1, 5% false alerts (gate 9%; one-world 7%), and 91% unambiguous execution (baseline 91%)."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Distill the cascade into SingleSet using paraphrase-consistency and counterfactual-separation losses, preserving baseline outputs on unambiguous inputs."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "p5",
+      "content": "Distill SingleSet from training-only cascade labels, freeze thresholds, then compare CompSplit-2 ambiguity F1 and unambiguous execution against cascade and baseline."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Using CompSplit-2 gold and locked cascade predictions, compare training-only-distilled SingleSet with cascade and baseline on ambiguity F1 and execution."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "CompSplit-2 SingleSet achieved 0.86 ambiguity F1 and 91% unambiguous execution; cascade scored 0.85 and 91%."
+    },
+    {
+      "id": "n51",
+      "type": "question",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Do paraphrase-consistency and counterfactual-separation losses each improve SingleSet’s ambiguity F1 beyond ordinary cascade-label distillation?"
+    },
+    {
+      "id": "n52",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Removing either auxiliary loss reduces CompSplit-2 ambiguity F1 by ≥0.02 from SingleSet’s 0.86 without improving execution."
+    },
+    {
+      "id": "n53",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Ablate each SingleSet auxiliary loss on identical training data; bootstrap CompSplit-2 ambiguity F1 differences and compare unambiguous execution."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Ablate each SingleSet auxiliary loss using training-only labels; bootstrap CompSplit-2 F1 and execution against full model and cascade audit."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Ablations scored 0.83/0.84 F1 (execution 91%); full SingleSet disagreed with baseline on 8% of unambiguous inputs despite matching accuracy."
+    },
+    {
+      "id": "n56",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Defer SingleSet deployment despite 0.86 F1: it changes 8% of unambiguous baseline outputs; retain the cascade pending preservation fixes."
+    },
+    {
+      "id": "n57",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Add baseline-output anchoring to SingleSet and baseline fallback; tune on training folds, then retest CompSplit-2 F1 and unambiguous disagreement."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Train baseline-anchored SingleSet using training folds; apply fallback, then compare CompSplit-2 predictions against the locked cascade audit."
+    },
+    {
+      "id": "n59",
+      "type": "artifact",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Anchored SingleSet v2 checkpoint includes training-fold baseline-output anchoring, frozen fallback thresholds, and CompSplit-2 prediction logs."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n57",
+      "content": "Audit v2’s CompSplit-2 ambiguity F1, unambiguous execution, and baseline-output disagreement against gold sets and cascade’s 0.85/91%."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "On CompSplit-2, anchored SingleSet v2 scored 0.84 F1, 91% execution, and 2% baseline-output disagreement; cascade retained 0.85/91%."
+    },
+    {
+      "id": "n62",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Retain the cascade: SingleSet v1 changes 8% of baseline outputs; anchored v2 reduces disagreement but misses 0.85 F1."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "revise",
+      "target": "n16"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "revise",
+      "target": "n48"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n50"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a semantic parser that distinguishes genuine utterance ambiguity from model uncertainty under unseen compositional structures.",
+    "requirements": [
+      "Achieve ambiguity-detection F1 ≥0.85 on unseen compositions, using independently annotated sets of valid interpretations.",
+      "Match unambiguous-input execution accuracy of a single-output parser trained on identical data."
+    ]
+  }
+}

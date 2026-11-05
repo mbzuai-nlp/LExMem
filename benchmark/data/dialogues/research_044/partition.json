@@ -1,0 +1,120 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Three-view anchor identifiability and fixed-shift evaluation of latent-mixture RLHF",
+      "boundary_reason": "The identifiability work and fixed-benchmark comparison conclude before adaptive rollouts test the approach under a different shift."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Diagnosing adaptive-rollout failure through context-conditional anchor overlap",
+      "boundary_reason": "The diagnosis ends with a decision to revise anchor sampling."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "ShiftGuard-RLHF conditional-overlap allocation and adaptive evaluation",
+      "boundary_reason": "ShiftGuard-RLHF is selected after its budget-matched evaluation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "PanelDRO identifiability under recontact, anchor-rank, and attrition conditions",
+      "boundary_reason": "The discussion moves from dissent recovery and its limits to a worst-group win-rate test."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Budget-matched PanelDRO worst-group win-rate evaluation",
+      "boundary_reason": "The benchmark report closes the PanelDRO evaluation before a new routing proposal begins."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "ProbeRoute adaptive routing performance and robustness tests",
+      "boundary_reason": "The performance tests end before a separate examination of probe identifiability."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Identifiability of dissent versus correlated in-session probe noise",
+      "boundary_reason": "The proof and shared-noise counterexample close the identifiability question before minority-prevalence testing."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "ProbeRoute performance at 5% minority prevalence",
+      "boundary_reason": "The initial prevalence sweep ends with a decision to defer the configuration."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n47",
+        "n48"
+      ],
+      "topic": "Uncertainty-targeted probes for the 5% minority setting",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

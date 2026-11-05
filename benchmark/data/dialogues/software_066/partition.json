@@ -1,0 +1,138 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Evaluate and adopt missingness-aware multi-fault factor graphs",
+      "boundary_reason": "The simulation supports an adoption decision; implementation begins next."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Implement PathGraph v1 and assess held-out performance",
+      "boundary_reason": "Held-out results reveal precision and unsupported-singleton problems, prompting a calibration question."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "q2",
+        "h2",
+        "a5",
+        "e4"
+      ],
+      "topic": "Test conformal equivalence-class calibration",
+      "boundary_reason": "Calibration removes unsupported singletons but falls short of the coverage target."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "l2",
+        "a6",
+        "r2",
+        "q3",
+        "h3",
+        "a7",
+        "e5",
+        "a8",
+        "e6"
+      ],
+      "topic": "Build StrataCal v1 and evaluate observability-stratified coverage",
+      "boundary_reason": "An initial coverage miss and multi-seed results lead to a focused investigation of the low-coverage run."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "q4",
+        "h4",
+        "a9",
+        "e7",
+        "a10",
+        "e8"
+      ],
+      "topic": "Audit low-visibility strata and test targeted recalibration",
+      "boundary_reason": "New-seed results fail the worst-seed coverage target, motivating a different explanation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "q5",
+        "h5",
+        "a11",
+        "e9",
+        "a12",
+        "e10",
+        "a13",
+        "e11",
+        "d2",
+        "l3",
+        "a14",
+        "r3"
+      ],
+      "topic": "Investigate correlated dropouts and integrate shared-failure factors",
+      "boundary_reason": "The shared-dropout approach is adopted and integrated into StrataCal v2; directional probes are a separate next approach."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "l4",
+        "a15",
+        "r4",
+        "q6",
+        "h6",
+        "a16",
+        "e12",
+        "a17",
+        "e13",
+        "a18",
+        "e14"
+      ],
+      "topic": "Build and evaluate budgeted directional probes",
+      "boundary_reason": "Probe timeouts lower precision below the target, prompting a timeout-specific question."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "q7",
+        "h7",
+        "a19",
+        "e15",
+        "a20",
+        "e16",
+        "d3"
+      ],
+      "topic": "Test timeout-aware probe likelihoods and decide on gating",
+      "boundary_reason": "Fresh-seed precision misses the target, leading to a decision to gate timeout-affected probe evidence."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "l5",
+        "a21",
+        "r5",
+        "a22",
+        "e17",
+        "d4"
+      ],
+      "topic": "Implement and adopt timeout-gated ProbeSelect v1.1",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

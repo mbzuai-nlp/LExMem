@@ -1,0 +1,133 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Establish and implement provenance-indexed affected-SCC recomputation",
+      "boundary_reason": "The baseline implementation and its regression gates are in place; the discussion shifts to a subscription optimization."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Test heap-object and receiver-type subscriptions",
+      "boundary_reason": "The test finds missed sinks, prompting a correctness repair."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Repair receiver-widening handling and validate the patched engine",
+      "boundary_reason": "The patched engine passes the stated correctness and speedup checks; a different maintenance approach follows."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Compare differential Datalog with affected-SCC maintenance on cyclic aliases",
+      "boundary_reason": "The comparison exposes missed findings in affected-SCC maintenance and motivates differential integration."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Integrate and repair differential delete/rederive across dispatch and shared heap taint",
+      "boundary_reason": "The corrected approach is adopted and hardened; attention turns to propagation indexes."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Index receiver-type calls and heap dependencies for differential maintenance",
+      "boundary_reason": "Indexed maintenance is retained after parity and speedup validation; the next discussion explores sink slicing."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Discover newly reachable sinks with allocation-site-subscribed slices",
+      "boundary_reason": "Subscribed slicing is adopted after the initial frontier design misses sinks; the next proposal combines it with global delta propagation."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Measure the cost of hybrid global propagation and subscribed slices",
+      "boundary_reason": "Finding parity holds, but speedup falls below the target, shifting focus to slice-activation fanout."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Reduce slice activation with type-and-field-keyed frontier subscriptions",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

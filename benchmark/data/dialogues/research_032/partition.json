@@ -1,0 +1,112 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "a2",
+        "e2"
+      ],
+      "topic": "Provenance-scoped temporal closure: initial results and fork-join ablation",
+      "boundary_reason": "The fork-join ablation exposes a shortfall that motivates revising the method."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "h2",
+        "a3",
+        "e3"
+      ],
+      "topic": "Fork-join incomparability certificates and held-out evaluation",
+      "boundary_reason": "The certificate results complete the fork-join evaluation before testing sequential corrections."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "a4",
+        "e4",
+        "h3",
+        "l1",
+        "a5",
+        "e5",
+        "t1",
+        "d1"
+      ],
+      "topic": "Sequential-correction failure and adoption of versioned invalidation",
+      "boundary_reason": "The chain results, follow-up test, evaluation bundle, and decision conclude the closure approach; the next nodes begin a different proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h4",
+        "a6",
+        "e6",
+        "d2"
+      ],
+      "topic": "Contrastive fine-tuning as an alternative for corrected temporal claims",
+      "boundary_reason": "The graph-disjoint evaluation and decision conclude this alternative before the retrieval proposal begins."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "l2",
+        "a7",
+        "t2",
+        "e7",
+        "a8",
+        "e8",
+        "d3"
+      ],
+      "topic": "Version-filtered retrieval, temporal NLI, and long-range limitations",
+      "boundary_reason": "The ablation and deployment decision close the retrieval-only discussion before hybrid inference begins."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "q3",
+        "h5",
+        "a9",
+        "e9"
+      ],
+      "topic": "Initial hybrid closure–LLM inference on long-range chains",
+      "boundary_reason": "The initial hybrid misses its targets, prompting a revised gating hypothesis."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "h6",
+        "a10",
+        "e10",
+        "l3",
+        "a11",
+        "t3",
+        "e11",
+        "d4"
+      ],
+      "topic": "Dependency-gated hybrid inference and unseen-topology validation",
+      "boundary_reason": "The validation and adoption decision conclude the hybrid discussion before the SAT proposal begins."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "l4",
+        "a12",
+        "e12",
+        "t4",
+        "d5"
+      ],
+      "topic": "Versioned temporal SAT evaluation and final method comparison",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

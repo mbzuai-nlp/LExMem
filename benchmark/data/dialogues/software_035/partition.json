@@ -1,0 +1,127 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Sequenced logging, watermark closure, and the first controller monitor",
+      "boundary_reason": "The adopted logger has been implemented; the next discussion replays its traces and revisits the closure bound."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Correcting the watermark closure bound for relative clock skew",
+      "boundary_reason": "The revised 3.4 ms bound and unknown-on-gap behavior have been tested; focus shifts to job overhead and deadlines."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Certifying ControllerMonitor-v1 WCET overhead and deadlines",
+      "boundary_reason": "The WCET and deadline analysis is complete; a DMA-based alternative begins next."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Comparing, adopting, and implementing DMA-based monitoring",
+      "boundary_reason": "DMAMonitor-v2 has been produced; the next discussion tests its behavior under DMA overflow bursts."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Investigating apparent false violations during DMA overflow",
+      "boundary_reason": "Replays identify suppressed overflow interrupts in the earlier harness; focus shifts to cross-core mailbox correlation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Testing inline cross-core mailboxes and padded per-core slots",
+      "boundary_reason": "Initial padded-slot replay meets the measured limits; the next discussion undertakes further certification."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Certifying padded slots, finding invisible overwrites, and adding counters",
+      "boundary_reason": "DMAMonitor-v2.1 and its validation bundle have been produced; the next discussion stress-tests the counters."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Validating DMAMonitor-v2.1 under concurrent overwrites and telemetry loss",
+      "boundary_reason": "Verdict, overhead, and deadline results are available; a hardware event-tap alternative begins next."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Evaluating, preferring, and integrating hardware shadow-automaton taps",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

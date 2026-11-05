@@ -1,0 +1,809 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Recover relightable geometry and materials from three images under unknown illumination while quantifying ambiguity between shape, reflectance, and lighting.",
+      "requirements": [
+        "Reduce held-out relighting LPIPS by 15% versus a matched point-estimate inverse renderer.",
+        "Achieve 85–95% coverage for nominal 90% predictive intervals on held-out relighting intensities."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fit a gauge-normalized mesh–BRDF–lighting posterior with diffusion priors; select LPIPS-medoid relightings and conformally calibrate intensity intervals."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Does gauge normalization preserve shape–lighting ambiguity sufficiently for calibrated intensity intervals under unseen directional lights?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Energy normalization with free exposure preserves shape–lighting modes, yielding 85–95% coverage for 90% intervals under unseen directional lights."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "On TriLight-Objects, compare free versus fixed exposure using three-image posteriors; measure directional-relighting coverage and shape–light correlations."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run a TriLight-Objects ablation on 120 objects, fitting free- and fixed-exposure posteriors; measure 90% interval coverage and shape–light correlations."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On TriLight-Objects, free versus fixed exposure yielded 91% versus 78% 90%-interval coverage; median absolute shape–light correlations were 0.58 versus 0.21."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Retain free exposure with energy normalization because it achieved 91% coverage and preserved stronger shape–light correlations than fixed exposure."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Benchmark free-exposure posterior medoids against a matched point-estimate renderer on TriLight-Objects unseen lights; measure LPIPS reduction and 90%-interval coverage."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "TriLight-Objects benchmark package containing held-out relightings, posterior-versus-point-estimate LPIPS comparisons, 90% intensity intervals, coverage tables, and evaluation scripts."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Ablate diffusion priors and conformal calibration across free- and fixed-exposure TriLight-Objects fits; measure directional-light LPIPS, coverage, shape–light correlations."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "TriLight-Objects: medoid LPIPS was 0.198 versus 0.220 without priors and 0.240 point-estimate; calibration raised free-exposure coverage 82%→91%."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Free-exposure joint shape–light samples retain ≥85% interval coverage beyond 60° from training lights; independently shuffled samples do not."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Stratify TriLight-Objects relightings beyond 60°; compare 90% interval coverage from joint versus shape–light-shuffled posterior samples with calibration fixed."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Beyond 60°, joint posterior coverage fell to 81% versus 74% shuffled, refuting the predicted ≥85% despite preserved dependence."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n11",
+      "content": "On TriLight-Objects, compare joint and shuffled 90% interval coverage separately for cast-shadow and lit pixels beyond 60°."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "With shadow-stratified calibration, joint coverage beyond 60° reached 87% in shadows and 90% lit; shuffled reached 77% and 82%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Fit a shadow-aware neural SDF mixture with coupled BRDF–lighting modes, perceptual-risk relighting, and shadow-stratified intensity calibration."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Can a shadow-aware SDF mixture distinguish cast-shadow uncertainty from dark albedo while improving unseen-light relighting LPIPS?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Shadow-aware SDF modes achieve shadow-versus-albedo AUROC ≥0.85 and unseen-light LPIPS ≤0.185, versus 0.198 for p1."
+    },
+    {
+      "id": "n18",
+      "type": "plan",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Train shadow-aware SDF mixtures from three TriLight-Objects views; evaluate shadow–albedo AUROC on labeled pixels and held-out LPIPS against p1."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Train p2 on 120 TriLight-Objects using three views; score labeled shadow–albedo AUROC and unseen-light LPIPS against p1."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On TriLight-Objects, p2 achieved shadow–albedo AUROC 0.88 and unseen-light LPIPS 0.181, versus p1’s 0.198."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Advance p2 to interval-calibration testing: AUROC reached 0.88 and unseen-light LPIPS fell to 0.181 versus p1’s 0.198."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Evaluate p2’s shadow-stratified 90% intervals on held-out TriLight-Objects lights; check 85–95% coverage and LPIPS against the 0.240 baseline."
+    },
+    {
+      "id": "n23",
+      "type": "artifact",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "TriLight-Objects p2 evaluation report with shadow-stratified coverage, held-out LPIPS versus the 0.240 baseline, calibration splits, and reproducible scripts."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Use parallel-tempered path-tracing MCMC to sample geometry–BRDF–lighting modes from three views, then select perceptual-risk relightings and calibrate intensity intervals."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "Parallel-tempered path tracing reduces held-out TriLight-Objects LPIPS from 0.240 to ≤0.200 while maintaining 85–95% coverage for 90% intervals."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Run eight-chain tempered path-tracing MCMC on TriLight-Objects; measure held-out LPIPS against 0.240 and calibrated 90% interval coverage."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Tempered MCMC achieved LPIPS 0.215 versus 0.240 baseline, missing ≤0.200, despite 89% coverage for 90% intervals."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n24",
+      "content": "Stratify tempered-MCMC relightings by specularity and shadow area; measure LPIPS, interval coverage, and geometry–lighting mode-mixing diagnostics."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "On low-specularity, low-shadow objects, tempered MCMC achieved LPIPS 0.192 and 91% interval coverage, supporting n24 only in this subset."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "n24",
+      "content": "Does poor mixing between specular BRDF and lighting modes explain p3’s LPIPS 0.215 outside the low-specularity subset?"
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Compare BRDF–lighting swap moves against standard MCMC on specular TriLight-Objects; measure cross-mode ESS and LPIPS versus low-specularity objects."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Implement joint BRDF–lighting swap moves on TriLight-Objects; compare cross-mode ESS and LPIPS against original chains across specular and low-specularity objects."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Tempered-MCMC swap-move implementation with reproducible TriLight-Objects chain traces, specularity labels, cross-mode ESS calculations, and held-out LPIPS scripts."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Train a 16-particle inverse renderer with coupled mesh–BRDF–lighting hypotheses, relighting-space diversity, perceptual-risk selection, and shadow-stratified conformal intervals."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p4",
+      "content": "Do relighting-space diversity penalties prevent particle collapse across specular BRDF–lighting modes without degrading 90% interval coverage?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "Relighting-space repulsion doubles distinct specular modes among 16 particles while maintaining 85–95% coverage for calibrated 90% intervals."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Ablate relighting-space repulsion in 16-particle TriLight-Objects fits; count distinct specular modes and measure calibrated 90% interval coverage."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "On TriLight-Objects, repulsion raised median distinct specular modes from 3 to 7; calibrated 90% intervals retained 90% coverage."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Keep relighting-space repulsion in p4: it increased distinct specular modes from 3 to 7 with 90% interval coverage."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Stratify p4’s repulsive-particle results by specularity and unseen-light angle; compare mode counts, LPIPS, and interval coverage against no repulsion."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "TriLight-Objects p4 stratification report with specularity- and angle-binned mode counts, LPIPS, 90% coverage, and repulsion-ablation plots."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Train a triplet-conditioned shape–BRDF–lighting flow; importance-reweight samples by path-traced likelihoods and calibrate shadow-stratified relighting intervals."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "p5",
+      "content": "Train the triplet-conditioned flow on TriLight-Objects; importance-reweight 256 samples per object, then benchmark LPIPS against 0.240 and shadow-stratified 90% coverage."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n40",
+      "content": "Benchmark 256 reweighted p5 samples with shadow calibration; audit n39 by independently reproducing its stratified LPIPS and coverage."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "On TriLight-Objects, reweighted p5 achieved LPIPS 0.196 versus 0.240 baseline and 91% interval coverage; n39’s stratified trends reproduced."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n40",
+      "content": "On specular TriLight-Objects, compare p5’s reweighted samples against n32 swap-move chains for mode recall, weight ESS, LPIPS, and 90%-interval coverage."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "On specular TriLight-Objects, p5 recovered 6/8 modes versus swap chains’ 4/8; LPIPS was 0.203 versus 0.218, with 89% coverage."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Advance p5: LPIPS reached 0.196 versus 0.240 with 91% coverage; specular mode recall was 6/8 versus swap chains’ 4/8."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Validate p5 on disjoint objects under unseen HDR lights; require ≥15% LPIPS improvement versus matched baseline and 85–95% 90%-interval coverage."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "TriLight-Objects HDR validation bundle with disjoint-object splits, unseen-light renders, matched-baseline LPIPS, 90%-interval coverage, importance weights, and evaluation scripts."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Recover relightable geometry and materials from three images under unknown illumination while quantifying ambiguity between shape, reflectance, and lighting.",
+    "requirements": [
+      "Reduce held-out relighting LPIPS by 15% versus a matched point-estimate inverse renderer.",
+      "Achieve 85–95% coverage for nominal 90% predictive intervals on held-out relighting intensities."
+    ]
+  }
+}

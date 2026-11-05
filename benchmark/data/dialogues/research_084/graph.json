@@ -1,0 +1,1020 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable identifiable species-removal predictions from compositional microbial time series despite environmental confounding and sparse absolute-abundance measurements.",
+      "requirements": [
+        "Specify sufficient identifiability assumptions and characterize observationally indistinguishable communities with different removal responses.",
+        "Reduce held-out post-removal log-abundance RMSE by 20% versus generalized Lotka–Volterra models using identical observations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Develop an environment-adjusted, biomass-anchored state-space model with intervention-invariant dynamics, observability tests, and indistinguishable-community counterexamples for species-removal forecasts."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which environmental-forcing symmetries survive weekly biomass anchors and yield identical observational trajectories but divergent species-removal responses?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "When unmeasured forcing tracks species abundance, trading environmental coefficients for interaction coefficients preserves anchored trajectories but changes removal forecasts."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Construct forcing–interaction swaps under weekly biomass anchors, derive observability rank conditions, and compare paired species-removal forecasts."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Simulate 100 six-taxon compositional series with abundance-correlated forcing and weekly biomass anchors; test swapped models’ observational equivalence and removal divergence."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across 100 simulations, swapped models matched compositions and biomass within 0.01 log units; median removal divergence was 0.8 log units."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Require measured forcing and full-rank abundance–environment excitation for point forecasts; report removal-response bounds when these fail."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "Package the six-taxon swap benchmark with 100 paired trajectories, weekly biomass anchors, matched observational fits, and divergent removal forecasts."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Augment six-taxon swap benchmark with independently varying measured forcing; compare observability-gated forecasts against identical-input gLV using held-out removal log-abundance RMSE."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On held-out six-taxon removals, observability-gated RMSE was 0.64 versus identical-input gLV’s 0.69 log units, only 7% lower."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "Zero-integral shared environmental pulses between weekly anchors preserve observed compositions and biomass yet alter density-dependent removal responses."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Inject zero-integral common-forcing pulses between weekly biomass anchors in six-taxon simulations; quantify compositional mismatch and removal-response divergence."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Across 100 simulations, pulse pairs matched CLR and biomass within 0.01 log units; median removal divergence reached 0.42 log units."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Combine randomized environmental-pulse controls with targeted biomass anchors and equivalence-class-aware removal forecasts, using identical observations for gLV."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Derive rank conditions and equivalence bounds under randomized forcing and timed anchors; target 20% held-out RMSE reduction versus matched-input gLV."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Extend the six-taxon swap benchmark with randomized pulse schedules and midweek biomass anchors; compute observability ranks and removal-equivalence bounds."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Release PulseAnchor-6 with randomized forcing schedules, midweek biomass anchors, observability-rank labels, and paired removal-response bounds."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Benchmark both proposals against identical-input gLV on PulseAnchor-6 held-out removals, stratifying log-abundance RMSE and bound coverage by rank."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "PulseAnchor-6 full-rank removal RMSEs: p2 0.52, p1 0.66, gLV 0.69 log units; rank-deficient bounds covered 94%."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Does p2 retain a 20% overall removal-RMSE advantage when pulse timing is uncertain or midweek biomass anchors are missing?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "With ≤12-hour pulse-timing jitter and 10% missing midweek anchors, p2 retains ≥20% overall removal-RMSE reduction versus identical-input gLV."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Perturb PulseAnchor-6 with ±12-hour pulse-timing jitter and 10% missing midweek anchors; compare overall held-out removal RMSE against identical-input gLV."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "With ±12-hour jitter and 10% missing anchors, overall removal RMSE was 0.57 versus gLV’s 0.73 log units (22% lower)."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n19",
+      "content": "Run 500 independently parameterized PulseAnchor-6 replicates with ±12-hour jitter and 10% missing anchors; bootstrap p2’s removal-RMSE improvement over identical-input gLV."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Across 500 replicates, p2 averaged 0.62 versus gLV’s 0.73 log-unit RMSE (15% lower); 95% bootstrap improvement interval: 12–18%."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n18",
+      "content": "Marginalizing pulse timing and missing-anchor biomass states, rather than using plug-in estimates, restores ≥20% average removal-RMSE improvement across independent replicates."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Refit 500 PulseAnchor-6 jitter/dropout replicates, marginalizing pulse times and missing biomass; bootstrap removal-RMSE gains versus identical-input gLV."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Across 500 replicates, marginalized p2 achieved 0.56 versus gLV’s 0.73 log-unit removal RMSE (23% lower; 95% bootstrap gain: 21–26%)."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Predict removals using randomized taxon-specific knockdowns, biomass spike-ins, and latent-environment controls; certify identifiability or bound ambiguous responses."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "What knockdown specificity and biomass spike-in frequency break interaction–environment symmetries when environmental feedback remains unmeasured?"
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Under linear, invariant shared environmental feedback, ≥95%-specific randomized knockdowns and twice-weekly biomass spike-ins identify six-taxon removal responses."
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Derive knockdown observability conditions; simulate six-taxon feedback across 90–100% specificity and weekly versus twice-weekly spike-ins; validate removal forecasts."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Extend PulseAnchor-6 with 90–100%-specific knockdowns and linear feedback; test weekly/twice-weekly spike-in observability and marginalized-p2 removal RMSE versus identical-input gLV."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Across 500 runs, ≥95%-specific knockdowns and twice-weekly spike-ins yielded full-rank observability; marginalized p2 RMSE was 0.55 versus gLV’s 0.73."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "Release KnockdownAnchor-6 with specificity sweeps, weekly/twice-weekly spike-ins, feedback parameters, observability ranks, and matched-input gLV benchmarks."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n29",
+      "content": "Extend KnockdownAnchor-6 with nonlinear feedback and intervention-induced environmental shifts; test p3 identifiability certificates and removal RMSE against matched-input gLV."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Across 500 nonlinear-feedback runs, p3 flagged 92% of shift-induced ambiguities; certified removals achieved 0.54 versus gLV’s 0.72 log-unit RMSE."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n29",
+      "content": "Stress-test KnockdownAnchor-6 with 85–95% knockdown specificity and latent feedback shifts; measure false identifiability certificates and held-out removal RMSE."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Across 500 low-specificity runs, p3 falsely certified 31% of ambiguous removals; RMSE was 0.69 versus gLV’s 0.72 log units."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Can measured off-target effects and sham knockdowns restore valid identifiability certificates and ≥20% RMSE gains at 85–95% specificity?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "At 85–95% specificity, off-target calibration and sham controls yield <5% false certificates and ≥20% removal-RMSE reduction versus matched-input gLV."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Calibrate off-target effects with sham knockdowns in 500 low-specificity KnockdownAnchor-6 runs; compare false-certificate rates and matched-input gLV removal RMSE."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Across 500 calibrated runs, false certificates fell to 4%; removal RMSE was 0.56 versus matched-input gLV’s 0.72 log units."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "n37",
+      "content": "Adopt calibrated p3 only with measured off-target effects and sham controls; otherwise report response bounds, not point-identified removal forecasts."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Fit sentinel-adjusted hierarchical state-space dynamics using noninteracting strains and taxon-specific qPCR anchors across replicate communities for removal forecasts."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Derive sentinel/qPCR observability conditions, construct indistinguishable removal pairs, and target ≥20% held-out RMSE reduction versus identical-input gLV."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Adapt PulseAnchor-6 using n40-calibrated off-target controls, two noninteracting sentinel strains, and weekly taxon-specific qPCR; test observability rank and removal RMSE."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Release SentinelAnchor-6 with sentinel trajectories, weekly taxon-specific qPCR, calibrated off-target controls, observability labels, and matched-input gLV splits."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n42",
+      "content": "Audit SentinelAnchor-6 observability labels against indistinguishable pairs; benchmark sentinel-adjusted forecasts versus identical-input gLV on held-out removal RMSE."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "On 300 full-rank SentinelAnchor-6 removals, p4 RMSE was 0.49 versus gLV’s 0.65 log units; ambiguity labels matched constructed pairs."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n42",
+      "content": "Stress-test SentinelAnchor-6 with weak sentinel cross-feeding and 30% missing qPCR; measure false identifiability certificates and matched-input gLV removal RMSE."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Under cross-feeding and 30% missing qPCR, false certificates reached 23%; removal RMSE was 0.64 versus matched-input gLV’s 0.68."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 54,
+      "exploration_parent_id": "p4",
+      "content": "Can sentinel cross-feeding calibration and adaptively timed qPCR restore valid certificates and ≥20% removal-RMSE gains under 30% missing measurements?"
+    },
+    {
+      "id": "n50",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Calibrating sentinel cross-feeding and scheduling qPCR at predicted rank bottlenecks lowers false certificates below 5% and removal RMSE by ≥20%."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Calibrate sentinel cross-feeding and schedule qPCR at rank bottlenecks in 30%-missing SentinelAnchor-6; compare false certificates and matched-input gLV RMSE."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Across 300 calibrated SentinelAnchor-6 removals, false certificates were 8%; RMSE was 0.56 versus matched-input gLV’s 0.68 log units (18% lower)."
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "n49",
+      "content": "Uncertainty-aware cross-feeding models and worst-case qPCR scheduling yield <5% false certificates and ≥20% RMSE reduction versus matched-input gLV."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "On 300 30%-missing SentinelAnchor-6 runs, fit uncertainty-aware cross-feeding and worst-case qPCR scheduling; benchmark false certificates and matched-input gLV RMSE."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Across 300 runs, uncertainty-aware calibration produced 3% false certificates; RMSE was 0.53 versus matched-input gLV’s 0.68 (22% lower)."
+    },
+    {
+      "id": "n56",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "n49",
+      "content": "Adopt uncertainty-aware cross-feeding calibration and worst-case qPCR scheduling for p4: 3% false certificates, 22% RMSE gain; otherwise bound removals."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n53",
+      "relation": "revise",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n56"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable identifiable species-removal predictions from compositional microbial time series despite environmental confounding and sparse absolute-abundance measurements.",
+    "requirements": [
+      "Specify sufficient identifiability assumptions and characterize observationally indistinguishable communities with different removal responses.",
+      "Reduce held-out post-removal log-abundance RMSE by 20% versus generalized Lotka–Volterra models using identical observations."
+    ]
+  }
+}

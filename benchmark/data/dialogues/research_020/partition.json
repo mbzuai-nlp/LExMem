@@ -1,0 +1,103 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Initial Γ-robust certificate proposal and audit of the observed-gap threshold",
+      "boundary_reason": "The boundary audit finds nonpositive bounds, prompting a revised threshold."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Testing a higher observed-gap threshold in boundary and adversarial bandits",
+      "boundary_reason": "Adversarial results undermine the revised observed-gap criterion."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Testing and adopting a Γ-adjusted gap criterion",
+      "boundary_reason": "The adjusted-gap investigation ends with an adoption decision; the next proposal uses proxy bridges."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Negative-control proxy bridges for supported switches",
+      "boundary_reason": "The proxy-bridge approach reaches a conditional adoption decision; the next proposal introduces randomized audits."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Randomized-audit interval intersections and the eight-switch coverage failure",
+      "boundary_reason": "Uncorrected stratumwise intersections are rejected; the next proposal tests aggregate bounds."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Aggregate gain bounds and their eight-switch coverage failure",
+      "boundary_reason": "Uncorrected aggregate bounds are rejected; the next proposal adds simultaneous correction."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Simultaneous eight-switch bounds and final certificate strategy",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

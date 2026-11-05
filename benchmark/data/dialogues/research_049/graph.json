@@ -1,0 +1,943 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn audio–video temporal alignment that separates clock drift from genuine event delays despite missing and repeated events.",
+      "requirements": [
+        "Reduce median clock-offset estimation error by 25% versus global-offset alignment under matched missing-event conditions.",
+        "State identifiability assumptions and flag timing ambiguities that cannot be resolved from observed modalities."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fit an anchor-constrained clock spline with skip-aware repeated-event matching and sparse delays; flag nonidentifiable clock–delay decompositions."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Under what anchor spacing and delay sparsity can clock spline drift be identified despite missing or repeated events?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Two uniquely matched zero-delay anchors per spline interval and ≤20% delayed matches suffice to identify drift despite missing/repeated events."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "On AVDriftBench, sweep 0–3 unique anchors/interval, 0–40% delays, and missing/repeated events; compare median clock-offset error against global-offset and flag ambiguity."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "On AVDriftBench with missing/repeated events, two anchors/interval and ≤20% delays achieved 31-ms median error versus 46-ms global; underanchored intervals flagged."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Adopt spline alignment with ≥2 unique zero-delay anchors/interval and ≤20% delays; flag underanchored intervals, given 31-ms versus 46-ms error."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Implement adopted spline matcher; benchmark median clock-offset error against global-offset at matched missing-event rates; document assumptions and flag ambiguous intervals."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "l1",
+      "content": "Implement spline matcher; benchmark median clock-offset error against global-offset on matched-missingness AVDriftBench trials, logging anchors, delays, and ambiguity flags."
+    },
+    {
+      "id": "r1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "AVDriftBench v1 matcher and report with matched-missingness clock-offset errors, identifiability assumptions, and unresolved-interval flags."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "r1",
+      "content": "Run AVDriftBench v1’s matcher on anchor-free and constant-delay counterexamples; audit report assumptions and ambiguity flags against known ambiguities."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "All 120 anchor-free or constant-delay counterexamples had equivalent clock–delay fits; AVDriftBench v1 flagged them as nonidentifiable."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "e2",
+      "content": "Stress-test the spline matcher on AVDriftBench v1 with 30% repeated and 30% missing events; measure offset error and false-unique flags."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "a4",
+      "content": "At 30% missing/repeated events, two anchors/interval, 20% delays: median clock-offset error 52 versus 46 ms global; 12% ambiguities unflagged."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 15,
+      "exploration_parent_id": "e3",
+      "content": "Retain counterexample-tested flags (120/120 detected), but defer 30%-missing/repeated deployment: 52-ms versus 46-ms error and 12% ambiguities unflagged."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Use forward–backward probabilistic matching with repeat-aware uncertainty, then fit anchor-gated clock splines and sparse delays; abstain on unresolved matches."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Can repeat-aware match posteriors reduce false-unique flags and clock-offset error at 30% missing/repeated events without excessive abstention?"
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "q2",
+      "content": "With ≥2 zero-delay anchors/interval, repeat-aware matching yields ≤34-ms median offset error, ≤2% false-unique flags, ≥80% coverage at 30% missing/repeated."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "h2",
+      "content": "Benchmark repeat-aware matching against v1/global-offset on AVDriftBench: 30% missing/repeated, ≤20% delays, two anchors/interval; measure error, false-unique flags, coverage."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "a5",
+      "content": "At 30% missing/repeated events, repeat-aware matching achieved 30-ms median error versus 46-ms global and 52-ms v1; 1.5% false-unique, 84% coverage."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "e4",
+      "content": "Test repeat-aware matching on held-out AVDriftBench clips with 30% missing/repeated, ≤20% delays, two anchors/interval; measure error, coverage, false-unique flags."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "a6",
+      "content": "Held-out AVDriftBench at 30% missing/repeated, ≤20% delays, two anchors/interval: 39-ms median offset error versus 46-ms global; 4% false-unique; 76% coverage."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "e5",
+      "content": "Refine, don’t deploy repeat-aware matching: 30-ms initial error worsened to 39-ms held-out, with 4% false-unique flags and 76% coverage."
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "d3",
+      "content": "Density-stratified posterior calibration and anchor-consistency gating achieve ≤34-ms held-out error, ≤2% false-unique flags, and ≥80% coverage."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "h3",
+      "content": "Calibrate repeat-aware posteriors by event density on development clips; evaluate gated matching on held-out AVDriftBench for error, flags, coverage."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "a7",
+      "content": "On held-out AVDriftBench, calibrated matching achieved 32-ms median clock-offset error versus 46-ms global, 1.8% false-unique flags, and 82% coverage."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "e6",
+      "content": "Adopt calibrated matching for anchored intervals; abstain otherwise: 32-ms versus 46-ms held-out error, 1.8% false-unique flags, 82% coverage."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Fuse continuous motion–sound coherence with delayed-event mixtures in a state-space clock model; report observationally equivalent drift–delay solutions."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Without unique zero-delay anchors, when does continuous motion–sound coherence distinguish clock drift from smooth physical delays?"
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "q3",
+      "content": "With two classes and delays stable within 5 ms, coherence identifies drift changes; offset and shared smooth delays remain ambiguous."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "h4",
+      "content": "Simulate anchor-free AVDriftBench: two classes, ≤5-ms delay variation, shared smooth delays; evaluate coherence model’s drift-slope error and ambiguity flags."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a8",
+      "content": "Anchor-free, two-class constant-delay AVDriftBench: periodic aliases obscured injected 10-ppm drift, causing 9-ppm slope error and 14% unflagged ambiguities."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "e7",
+      "content": "Reject anchor-free coherence-only drift estimates: 9-ppm slope error and 14% unflagged periodic aliases; retain explicit ambiguity reporting."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 34,
+      "exploration_parent_id": "g1",
+      "content": "Fit monotone clock warps to nonperiodic audio–video motifs, jointly learning class-specific delays and reporting equivalence classes where anchoring fails."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 35,
+      "exploration_parent_id": "p4",
+      "content": "How many nonperiodic motifs per warp segment distinguish clock curvature from class-specific delays when motifs are missing or repeated?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "q4",
+      "content": "Four uniquely matched nonperiodic motifs per segment, two per class with stable delays, identify quadratic clock curvature modulo shared offset."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "h5",
+      "content": "Sweep 2–6 nonperiodic motifs/segment across two stable-delay classes on AVDriftBench with 30% missing/repeated events; measure curvature error and offset ambiguity."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "a9",
+      "content": "AVDriftBench (30% missing/repeated): four staggered nonperiodic two-class motifs yielded 1.8 versus 7.1 ppm/hour curvature error with three; shared offset unidentifiable."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "h5",
+      "content": "Test four-motif identifiability on held-out clips with clustered motif times; compare recovered curvature across observationally equivalent warp–delay fits."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "a10",
+      "content": "Held-out motifs at 0/11 minutes (class A) and 3/8 (B) admitted exact-fit warps differing by 26 ppm/hour curvature."
+    },
+    {
+      "id": "d6",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "e9",
+      "content": "Require staggered class-pair midpoints, rank-check curvature, and flag shared offset; clustered four-motif fits differ by 26 ppm/hour."
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "d6",
+      "content": "Four uniquely matched nonperiodic motifs, paired by class with distinct pair midpoints, identify quadratic curvature; shared offset remains ambiguous."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "h6",
+      "content": "Reanalyze four-motif AVDriftBench fits by class-pair midpoint separation; test design-matrix rank and curvature uniqueness under 30% missing/repeated events."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "a11",
+      "content": "Four-motif cases with distinct class-pair midpoints had rank-4 designs and unique quadratic curvature; shared clock offset remained unidentifiable."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "h6",
+      "content": "On held-out AVDriftBench, vary class-pair midpoint separation for four uniquely matched motifs; verify curvature uniqueness and shared-offset flags."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a12",
+      "content": "Held-out clips had distinct class-pair midpoints but simultaneous within-class motifs; exact-fit warps differed by 26 ppm/hour in curvature."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "h6",
+      "content": "Audit held-out four-motif fits for zero within-class time spans; compute design rank and curvature equivalence despite distinct pair midpoints."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "a13",
+      "content": "Rank audit confirmed 90 distinct-midpoint four-motif fits with nonzero within-class spans uniquely determined curvature; shared offset remained ambiguous."
+    },
+    {
+      "id": "d7",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "e12",
+      "content": "Adopt motif-based curvature only for rank-4 fits with nonzero within-class spans and distinct class-pair midpoints; flag shared-offset ambiguity."
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "d7",
+      "content": "Integrate rank-gated motif curvature with calibrated anchored matching; test ≥25% matched-missingness error reduction, documenting rank assumptions and shared-offset ambiguity."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "l2",
+      "content": "Implement calibrated, rank-gated motif hybrid; compare median clock-offset error against global-offset on AVDriftBench v2 with matched 30% missing/repeated events."
+    },
+    {
+      "id": "r2",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "a14",
+      "content": "AVDriftBench v2 hybrid package: calibrated anchored matcher, rank-gated motif curvature, matched-missingness error tables, and shared-offset ambiguity flags."
+    },
+    {
+      "id": "a15",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "l2",
+      "content": "Audit AVDriftBench v2 on held-out 30%-missing/repeated clips: compare hybrid/global offset error, rank-gated curvature, and shared-offset flags."
+    },
+    {
+      "id": "e13",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "a15",
+      "content": "AVDriftBench v2: anchored motif hybrid achieved 30-ms median offset error versus 46-ms global at 30% missing/repeated; unanchored offsets flagged."
+    },
+    {
+      "id": "d8",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "e13",
+      "content": "Adopt calibrated anchored, rank-gated motif hybrid; flag unanchored offsets and exclude v1/coherence-only: 30-ms versus 46-ms error at matched missingness."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "l1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h2"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "h3",
+      "relation": "revise",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "refute",
+      "target": "h4"
+    },
+    {
+      "source": "e7",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "h5"
+    },
+    {
+      "source": "d6",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "d6",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "h6",
+      "relation": "revise",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "e11",
+      "relation": "refute",
+      "target": "h6"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "d6"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e12"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "l2",
+      "relation": "depend_on",
+      "target": "d7"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a14"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a15"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a15",
+      "relation": "produce",
+      "target": "e13"
+    },
+    {
+      "source": "e13",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e13",
+      "relation": "support",
+      "target": "d8"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "e13"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d7"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d4"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d5"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn audio–video temporal alignment that separates clock drift from genuine event delays despite missing and repeated events.",
+    "requirements": [
+      "Reduce median clock-offset estimation error by 25% versus global-offset alignment under matched missing-event conditions.",
+      "State identifiability assumptions and flag timing ambiguities that cannot be resolved from observed modalities."
+    ]
+  }
+}

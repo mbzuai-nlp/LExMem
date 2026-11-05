@@ -1,0 +1,25 @@
+Decide which earlier memory units connect to a newly closed unit, and pick its parent.
+
+{{INPUT_JSON}}
+
+new_unit gives the closed unit's Key (title, summary, key_facts). candidates lists earlier units, each with unit_id, title, summary, and on_right_frontier; right-frontier candidates are listed first, in order from earliest to most recent, representing the path the conversation has been building on. The remaining candidates were retrieved by similarity and are not on the right frontier — units the conversation has since moved past but that may still be directly relevant, e.g. the new unit returns to, revises, confirms, or builds on them.
+
+For every candidate directly related to new_unit, report:
+- unit_id, exactly as given in candidates.
+- direction: whether the relation reads from the new unit to the candidate, or the reverse. This follows the semantic relationship, not chronological order — a later unit can point back at an earlier one (e.g., overturns, revises) and an earlier unit can point forward at a later one (e.g., leads to, is split into).
+- relation: one sentence phrased in the chosen direction, as "<source> ... <target>" (e.g., "overturns the earlier assumption that ...").
+
+Requirements:
+- Include at least the parent among the connected candidates.
+- Only use unit_id values from candidates; never invent one or connect the new unit to itself.
+- parent_id: exactly one candidate with on_right_frontier=true, the item this new unit continues from, and it must also appear among the connected candidates with an edge to the new unit. This is a hard requirement even when a similarity-retrieved candidate (on_right_frontier=false) looks more topically related: if that is the case, still pick the right-frontier item this new unit most directly continues from as parent_id, and separately add an edge to the more topically-related non-frontier candidate to capture that relationship.
+
+Return JSON only:
+{
+  "edges": [{
+    "unit_id": "candidate unit ID",
+    "direction": "new_to_candidate or candidate_to_new",
+    "relation": "one sentence phrased in the chosen direction"
+  }],
+  "parent_id": "unit ID of the chosen parent"
+}

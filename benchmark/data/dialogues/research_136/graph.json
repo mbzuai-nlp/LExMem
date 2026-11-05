@@ -1,0 +1,1266 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop RLHF that preserves conflicting minority preferences under policy-induced distribution shifts without observing annotator group identities.",
+      "requirements": [
+        "Improve worst-group preference win rate by ≥5 percentage points versus pooled RLHF, matching feedback budgets.",
+        "Establish identifiability conditions separating persistent preference disagreement from annotation noise under distribution shift."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Cluster pseudonymous annotators using repeated anchor comparisons, then train importance-weighted minimax RLHF targeting worst-cluster preference win rate under policy shifts."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Under what shared-anchor repetition and policy-support overlap are latent preference clusters identifiable separately from annotator-specific noise?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Three repeated shared anchors, independent symmetric noise below 50%, distinct cluster signatures, and positive policy overlap identify persistent disagreement."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Derive three-view anchor-mixture identifiability conditions, then test noise and policy-overlap boundaries in shifted-policy simulations."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run ShiftMix-3 with 10,000 annotators and three anchor repeats; sweep noise 0.1–0.6 and policy overlap 0–0.2; measure cluster recovery."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ShiftMix-3: two minority-preference models matched observations; distinct anchors, three repeats, independent 10% noise, 20% marginal overlap, zero minority shifted-pair coverage."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Persistent disagreement is identifiable only with cluster-conditional shifted-pair coverage, full-rank three-view anchors, and independent noise below 50%."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Run ShiftMix-3 factorial tests varying minority shifted-pair coverage (0/10%), anchor rank, and noise (10/55%); assess identifiability."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "ShiftMix-3: minority shifted-pair accuracy reached 91% with 10% coverage, full-rank anchors, 10% noise; zero coverage yielded indistinguishable models."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Reject marginal-overlap screening: 20% overlap masked minority nonidentifiability; require 10% minority shifted-pair coverage in ShiftMix-3 before minimax RLHF."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Test coverage-gated minimax RLHF across ShiftMix-3 noise/overlap sweeps, requiring 10% shifted-pair coverage per inferred cluster at matched budgets."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "ShiftMix-3 v1 evaluation bundle containing matched-budget sweep results, pooled-RLHF comparisons, cluster-coverage checks, and worst-cluster win-rate scripts."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can coverage-gated minimax RLHF gain ≥5 percentage points in worst-group win rate versus pooled RLHF with matched feedback?"
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Audit ShiftMix-3 v1 bundle: rerun coverage-gated minimax and pooled RLHF at matched budgets; verify coverage and five-seed worst-group gaps."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "ShiftMix-3: at 10% cluster coverage, minimax RLHF averaged 62% worst-group win rate versus pooled RLHF’s 55% across five matched-budget seeds."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Using ShiftMix-3 v1 scripts, compare minimax and pooled RLHF worst-group win rates on three held-out shifts with 12,000 labels each."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Three held-out ShiftMix-3 shifts: at 10% cluster coverage and matched budgets, minimax worst-group wins were 57% versus pooled’s 55%."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Defer adoption: ShiftMix-3 gains 7 points in-distribution but only 2 on held-out shifts; prioritize shift-aware anchor acquisition."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "ShiftAnchor-RLHF actively queries repeated comparisons in undercovered policy regions, then trains against the worst latent preference component."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "How can ShiftAnchor-RLHF target minority-specific shifted-pair coverage without observing groups or exhausting its matched feedback budget?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Routing disputed shifted pairs to pseudonymous annotators in undercovered inferred clusters achieves 10% cluster-conditional coverage within 2,400 of 12,000 labels."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "On three held-out ShiftMix-3 shifts, allocate 2,400/12,000 labels to disputed-pair routing; measure cluster coverage and matched-budget worst-group wins."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Across three ShiftMix-3 shifts, routing 2,400 labels achieved 11% minority coverage; ShiftAnchor-RLHF worst-group wins reached 61% versus pooled’s 55%."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "Does 30% pseudonymous annotator turnover between anchor and shifted-pair rounds erase ShiftAnchor-RLHF’s six-point worst-group gain?"
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Simulate 30% annotator turnover across three held-out ShiftMix-3 shifts; measure cluster coverage and worst-group wins at 12,000 labels."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "With 30% annotator turnover, minority coverage fell to 6%; ShiftAnchor-RLHF worst-group wins were 56% versus pooled’s 55%."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Conditionally adopt ShiftAnchor-RLHF for stable panels; defer turnover settings pending re-anchoring, since 30% turnover drops coverage below 10%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "BridgeAnchor-RLHF uses rotating shared comparisons to embed newcomers and replenish inferred-cluster coverage before minimax updates within 12,000-label budgets."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "Can three rotating bridge comparisons per newcomer restore 10% minority shifted-pair coverage under 30% turnover within 12,000 labels?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Three rotating bridge comparisons align newcomer clusters across rounds, restoring ≥10% minority shifted-pair coverage despite 30% turnover within 12,000 labels."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Run BridgeAnchor-RLHF on three held-out ShiftMix-3 shifts with 30% turnover; count bridge labels within 12,000 and measure minority coverage."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Across three ShiftMix-3 shifts with 30% turnover, three bridges per newcomer yielded 8% minority coverage within 12,000 labels."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n31",
+      "content": "Replicate the three-bridge protocol across 20 new ShiftMix-3 turnover seeds; estimate minority-coverage intervals and audit missed cluster assignments."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "In 20 new 12,000-label ShiftMix-3 turnover seeds, three bridges achieved ≥10% minority coverage in 17 (mean 11%)."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Retain three bridges as a baseline, but require coverage checks and adaptive re-anchoring; 8% failure precludes guaranteed 10% coverage."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Can posterior cluster-coverage bounds predict 10% coverage failures early enough to re-anchor within 12,000 labels?"
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Calibrate posterior inferred-cluster coverage bounds; trigger newcomer bridges before 8,000 labels when projected coverage misses 10%, within 12,000 labels."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Fit 90% lower bounds for minority shifted-pair coverage on 20 turnover seeds; trigger bridges at 8,000 labels below 10%."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "BridgeAnchor v0.2 coverage monitor includes 90% lower-bound estimates, an 8,000-label re-anchoring trigger, and a 12,000-label budget ledger."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n38",
+      "content": "Evaluate BridgeAnchor v0.2 on 30 held-out turnover seeds: measure 8,000-label failure detection, final minority coverage, and matched-budget worst-group wins."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "BridgeAnchor detected 8/9 projected failures by 8,000 labels; 27/30 reached 10% coverage; worst-group wins averaged 61% versus pooled’s 55%."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Using BridgeAnchor v0.2, prospectively test alarm calibration on 50 unseen high-turnover shifts; measure missed coverage failures and matched-budget worst-group wins."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Across 50 unseen 45%-turnover shifts, BridgeAnchor missed 12/20 coverage failures; worst-group wins averaged 57% versus pooled’s 55% at 12,000 labels."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Restrict BridgeAnchor-RLHF to validated 30%-turnover settings; defer 45%-turnover deployment because missed coverage failures erase the five-point gain."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "ProbeMix-RLHF reserves 20% of 12,000 labels for randomized shifted-pair probes, refreshing three-view clusters under 45% turnover."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Can randomized shifted-pair probes distinguish persistent minority disagreement from cluster-label drift under 45% annotator turnover?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Three repeated probes per newcomer align clusters if 10% minority shifted-pair coverage and full-rank anchors hold despite 45% turnover."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Randomize 2,400 probe labels across shifted pairs, estimate three-view cluster alignment, then test noise-versus-drift separation on held-out shifts."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Run ShiftMix-3 at 45% turnover, crossing noise and cluster drift; test three-view alignment and minority coverage using 2,400 triplicate-probe labels."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "ShiftMix-3: at 45% turnover, 12% minority coverage, and full-rank anchors, correlated probe noise yielded observationally indistinguishable, conflicting newcomer clusters."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n49",
+      "content": "Randomize 2,400 split-session probes under 45% turnover; compare correlated-noise and preference-drift controls via residual dependence and cluster alignment."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Split-session probes flagged correlated noise; independent-noise, full-rank runs with 12% minority coverage aligned 90% of newcomers at 45% turnover."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Gate ProbeMix-RLHF on split-session noise-independence checks; correlated noise defeats alignment despite sufficient coverage and full-rank anchors."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Evaluate noise-gated ProbeMix-RLHF versus pooled RLHF on 50 held-out 45%-turnover shifts, counting 2,400 split-session probes within 12,000 labels."
+    },
+    {
+      "id": "n56",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "ProbeMix v0.1 evaluation bundle records noise-gate outcomes, probe-inclusive 12,000-label ledgers, cluster alignment, and worst-group comparisons against pooled RLHF."
+    },
+    {
+      "id": "n57",
+      "type": "question",
+      "order": 57,
+      "exploration_parent_id": "p4",
+      "content": "Does noise-gated ProbeMix-RLHF retain a ≥5-point worst-group win-rate gain at 45% turnover when probes count toward 12,000 labels?"
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Audit ProbeMix v0.1 across 50 held-out shifts: verify probe-inclusive budgets, noise-gate pass rates, and five-seed worst-group win gaps."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Across 38/50 noise-gate-passing 45%-turnover shifts, ProbeMix reached 61% versus pooled’s 55% worst-group wins, including probes within 12,000 labels."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Adopt ProbeMix only when split-session noise checks pass; its six-point gain applies to 38 passing shifts, not 12 rejected shifts."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 61,
+      "exploration_parent_id": "g1",
+      "content": "DecorrAnchor-RLHF randomizes anchor paraphrases across independent annotator panels, testing for shared prompt artifacts before coverage-gated minimax training."
+    },
+    {
+      "id": "n62",
+      "type": "question",
+      "order": 62,
+      "exploration_parent_id": "p5",
+      "content": "Can independent-panel anchor paraphrases identify shared prompt artifacts without mistaking persistent minority preferences for correlated noise?"
+    },
+    {
+      "id": "n63",
+      "type": "hypothesis",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Cross-panel paraphrase invariance flags prompt artifacts when residual agreement shifts ≥15 points while stable cluster preferences remain within 5 points."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Randomize anchor paraphrases across independent ShiftMix-3 panels; compare residual-agreement changes and minority preference stability with versus without prompt artifacts."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "ShiftMix-3: shared prompt artifacts shifted residual agreement only 8 points, below the 15-point flag; minority preferences stayed within 3 points."
+    },
+    {
+      "id": "n66",
+      "type": "hypothesis",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Across independent panels, semantically matched paraphrases flag artifacts at ≥6-point residual shifts with ≤5-point cluster-preference variation."
+    },
+    {
+      "id": "n67",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Test the six-point artifact flag on 100 held-out semantically matched ShiftMix-3 paraphrases; measure false positives and cluster-preference variation."
+    },
+    {
+      "id": "n68",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "On 100 held-out ShiftMix-3 paraphrases, the six-point flag detected 42/50 artifacts; false positives were 3/50; minority variation stayed ≤4 points."
+    },
+    {
+      "id": "n69",
+      "type": "decision",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Use six-point paraphrase flags for screening, not identification: 8/50 artifacts escaped detection despite low minority-preference variation."
+    },
+    {
+      "id": "n70",
+      "type": "question",
+      "order": 70,
+      "exploration_parent_id": "p5",
+      "content": "Can independent-panel paraphrase screening recover ≥5-point worst-group gains on ProbeMix’s 12 noise-gate-rejected shifts within 12,000 labels?"
+    },
+    {
+      "id": "n71",
+      "type": "plan",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Reserve 1,200 labels for independent-panel paraphrases, exclude flagged anchors, reallocate probes, and compare matched-budget worst-group wins on 12 rejected shifts."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "On 12 ProbeMix-rejected shifts, screen anchors using six-point flags, then retrain DecorrAnchor-RLHF with 1,200 paraphrase labels budgeted."
+    },
+    {
+      "id": "n73",
+      "type": "artifact",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "DecorrAnchor v0.1 bundle logs six-point anchor flags, 1,200 paraphrase labels within each 12,000-label budget, and retrained policies."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 74,
+      "exploration_parent_id": "n71",
+      "content": "Audit DecorrAnchor v0.1 on 12 rejected shifts: verify 12,000-label ledgers, cluster coverage, and worst-group wins against pooled RLHF."
+    },
+    {
+      "id": "n75",
+      "type": "evidence",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "On 12 rejected shifts, DecorrAnchor achieved 60% worst-group wins versus pooled’s 54% at 12,000 labels; 10 shifts met coverage."
+    },
+    {
+      "id": "n76",
+      "type": "activity",
+      "order": 76,
+      "exploration_parent_id": "n71",
+      "content": "Independently rerun DecorrAnchor v0.1 policies on 24 new noise-gate-rejected shifts; audit cluster coverage and matched-budget worst-group wins."
+    },
+    {
+      "id": "n77",
+      "type": "evidence",
+      "order": 77,
+      "exploration_parent_id": "n76",
+      "content": "On 24 new rejected shifts, DecorrAnchor reached 57% worst-group wins versus pooled’s 54%; only 14 shifts met 10% minority coverage."
+    },
+    {
+      "id": "n78",
+      "type": "decision",
+      "order": 78,
+      "exploration_parent_id": "n77",
+      "content": "Defer DecorrAnchor for rejected shifts: six-point screening misses artifacts, and new shifts gain only three points with unreliable coverage."
+    },
+    {
+      "id": "n79",
+      "type": "decision",
+      "order": 79,
+      "exploration_parent_id": "g1",
+      "content": "Adopt noise-gated ProbeMix for passing 45%-turnover shifts and coverage-monitored ShiftAnchor/BridgeAnchor for validated panels; defer ungated minimax and rejected shifts."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "refute",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "n62"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n63"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "refute",
+      "target": "n63"
+    },
+    {
+      "source": "n66",
+      "relation": "revise",
+      "target": "n63"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n62"
+    },
+    {
+      "source": "n67",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "produce",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "support",
+      "target": "n66"
+    },
+    {
+      "source": "n65",
+      "relation": "support",
+      "target": "n69"
+    },
+    {
+      "source": "n68",
+      "relation": "support",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "address",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "decompose",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n71",
+      "relation": "decompose",
+      "target": "n74"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n70"
+    },
+    {
+      "source": "n74",
+      "relation": "evaluate",
+      "target": "n73"
+    },
+    {
+      "source": "n74",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n71",
+      "relation": "decompose",
+      "target": "n76"
+    },
+    {
+      "source": "n76",
+      "relation": "address",
+      "target": "n70"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "n73"
+    },
+    {
+      "source": "n76",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n76",
+      "relation": "produce",
+      "target": "n77"
+    },
+    {
+      "source": "n77",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "n78"
+    },
+    {
+      "source": "n77",
+      "relation": "support",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n75"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n78"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop RLHF that preserves conflicting minority preferences under policy-induced distribution shifts without observing annotator group identities.",
+    "requirements": [
+      "Improve worst-group preference win rate by ≥5 percentage points versus pooled RLHF, matching feedback budgets.",
+      "Establish identifiability conditions separating persistent preference disagreement from annotation noise under distribution shift."
+    ]
+  }
+}

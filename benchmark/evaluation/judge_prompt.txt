@@ -1,0 +1,12 @@
+I will give you a question, the correct answer, and a response from a model. Grade the response as yes (fully correct), partial (partly correct) or no (wrong).
+
+The correct answer is split into required parts, each with acceptable aliases. A part counts as stated if the response gives it with the same meaning and its specific details (names, quantities, conditions); paraphrases, synonyms and the listed aliases are acceptable, details already given in the question may be omitted, and numbers must match exactly. If the question already states the unit (for example, it asks how many percentage points), a bare number counts as stating it.
+
+- yes: the response states every required part, and contains nothing wrong or irrelevant.
+- partial: the response states some of the required parts (or only part of them) but misses the rest, and contains nothing wrong or irrelevant.
+- no: anything else, including a response that states none of the parts, contradicts a part, hedges between alternative answers, or contains any wrong or irrelevant content (information the question does not ask for, such as extra items, other findings or unrelated details), even if it also states the correct answer.
+
+Check before you grade. First, for each required part (using the given part ids), say whether the response states it: yes, partly or no. Then list every piece of the response that is wrong or irrelevant (an empty list if there is none). Finally, give the grade that follows from these checks.
+
+Return only JSON:
+{"checks": [{"id": "part id", "stated": "yes, partly or no"}], "wrong_or_irrelevant": ["..."], "correct": "yes, partial or no"}

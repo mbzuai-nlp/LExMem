@@ -1,0 +1,125 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "ConvergeTree design and initial held-out benchmark",
+      "boundary_reason": "Initial benchmark supports advancing ConvergeTree; the next discussion examines calibration in undersampled convergent pairs."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "ConvergeTree calibration failure in undersampled convergent pairs",
+      "boundary_reason": "A subgroup calibration gap motivates lineage-stratified pooling; the next proposal introduces a different model."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "CaptureClock benchmark comparison with ConvergeTree",
+      "boundary_reason": "The benchmark comparison ends; the next discussion tests sensitivity to capture-rate errors."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "CaptureClock calibration under capture-rate misspecification",
+      "boundary_reason": "Aggregate perturbation results are reported; the next discussion checks the worst held-out lineage."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Worst-lineage calibration failure and CaptureClock correction",
+      "boundary_reason": "Capture-error-aware calibration meets the worst-lineage target and is advanced to validation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "ContrastRoot negative-mining design and ablations",
+      "boundary_reason": "Verified negatives improve the benchmark; the next discussion tests contamination by false negatives."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "ContrastRoot robustness to false negatives",
+      "boundary_reason": "The contamination test supports advancing verified-negative ContrastRoot."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "AnchorForest imputation audit and ancestry benchmark",
+      "boundary_reason": "Filtered AnchorForest is advanced; the next proposal evaluates triplet constraints and revisits its performance."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "TripletGuard comparison and triplet-veto rescue of AnchorForest",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

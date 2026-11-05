@@ -1,0 +1,945 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable safe sim-to-real transfer for robotic peg insertion when friction and clearance changes are indistinguishable before contact.",
+      "requirements": [
+        "Achieve ≥90% insertion success across held-out friction–clearance combinations using at most 20 real adaptation trials.",
+        "Keep peak contact force below 20 N during adaptation and deployment without privileged state observations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use wrench-guided microdithers to infer friction–clearance beliefs, then adapt impedance within 20 real trials using an 18 N predictive shield."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can sub-18 N microdithers distinguish friction from clearance using wrist-wrench transients before the peg wedges?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Under 18 N, two-axis microdithers reveal clearance-dependent deadbands and friction-dependent wrench hysteresis, enabling ≥85% held-out regime identification before wedging."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Test shielded two-axis microdithers on 36 held-out simulated friction–clearance pairs; score pre-wedging identification accuracy from wrist-wrench traces and peak force."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "Across 36 held-out simulated pairs, wrist-wrench microdithers identified 32/36 regimes before wedging; highest contact force was 17.2 N."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Advance shielded microdithers to a 20-trial real pilot; simulated identification reached 89% with 17.2 N peak force."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Pilot shielded wrench-conditioned impedance for 20 real adaptation trials; evaluate held-out insertions for ≥90% success and <20 N peaks."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "l1",
+      "content": "Run 20 shielded real adaptation trials; test 60 held-out insertions across 12 friction–clearance pairs, logging success and peak force."
+    },
+    {
+      "id": "r1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "RealPilot-v1 dataset: 20 adaptation and 60 held-out insertion trials across 12 friction–clearance pairs, with wrist-wrench traces, outcomes, and peak forces."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "r1",
+      "content": "Audit RealPilot-v1: compute held-out insertion success and adaptation/deployment peak forces; compare with 90% success and 20 N limits."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "RealPilot-v1: 55/60 held-out insertions succeeded after 20 adaptation trials; peak force across all 80 trials was 19.1 N."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "q1",
+      "content": "Release-phase wrench relaxation distinguishes high-friction, wide-clearance contacts from low-friction, tight-clearance contacts with ≥90% accuracy under 18 N."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "Cross-validate release-decay classification on matched, sub-18 N RealPilot-v1 contacts; score high-friction/wide-clearance versus low-friction/tight-clearance accuracy."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "a4",
+      "content": "On 24 sub-18 N RealPilot-v1 contacts, leave-pair-out release-decay classification reached 17/24 (71%), below the hypothesized 90%."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Which sub-18 N probe best resolves friction–clearance ambiguity when release-decay cues fail?"
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "q2",
+      "content": "Compare lateral-frequency sweeps and torsional pulses in simulation using wrist-wrench-only regime identification under an 18 N shield."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "l2",
+      "content": "Benchmark lateral-frequency sweeps against torsional pulses on 36 held-out simulated pairs; compare pre-wedging wrench-only identification and peak force."
+    },
+    {
+      "id": "r2",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "a5",
+      "content": "ProbeBench-v1: 72 simulated probe traces across 36 held-out friction–clearance pairs, with regime labels, pre-wedging predictions, and peak forces."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Train distributionally robust compliant spiral search, calibrating wrench-triggered mode switches in 20 trials under an 18 N predictive shield."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can wrist-wrench phase distinguish recoverable rim contact from incipient jamming across held-out friction–clearance pairs?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "q3",
+      "content": "Wrist-wrench phase during compliant spirals predicts incipient jamming versus recoverable rim contact with ≥90% leave-pair-out accuracy below 18 N."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "h3",
+      "content": "Using ProbeBench-v1 strata, calibrate shielded spiral switches in 20 real trials; measure phase-based rim/jam accuracy, held-out success, peak force."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "a6",
+      "content": "After 20 calibration trials, leave-pair-out wrist-wrench phase classified 46/50 held-out rim/jam contacts correctly (92%); peak force was 17.6 N."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "e4",
+      "content": "Retain microdither impedance as the primary policy; test phase-gated spiral recovery as a fallback before deployment."
+    },
+    {
+      "id": "l3",
+      "type": "plan",
+      "order": 26,
+      "exploration_parent_id": "d2",
+      "content": "Evaluate frozen phase-gated spiral fallback on held-out friction–clearance pairs, scoring rim/jam discrimination, insertion success, and peak force."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "l3",
+      "content": "Run 60 held-out insertions per arm: frozen phase-gated fallback versus microdither-only; score rim/jam accuracy, success, and peak force."
+    },
+    {
+      "id": "r3",
+      "type": "artifact",
+      "order": 28,
+      "exploration_parent_id": "a7",
+      "content": "FallbackBench-v1: 120 held-out insertion logs across frozen fallback and microdither-only arms, with rim/jam labels, outcomes, wrist-wrench traces, and peak forces."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "l3",
+      "content": "Compare FallbackBench-v1 arm success and peak forces with RealPilot-v1; audit fallback rim/jam accuracy by held-out pair."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "a8",
+      "content": "On FallbackBench-v1’s matched held-out pairs, fallback achieved 57/60 insertions (95%) versus microdither-only 52/60 (87%); peaks stayed ≤19.1 N."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "l3",
+      "content": "Quantify phase-gated spiral switch latency, missed jams, and shield interventions from FallbackBench-v1 across held-out friction–clearance pairs."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a9",
+      "content": "FallbackBench-v1: phase switches lagged 140 ms, missing 3/5 jams on one high-friction/tight-clearance pair; only 2/5 insertions succeeded."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "e6",
+      "content": "Defer phase-gated fallback deployment despite 95% aggregate success; first address 140 ms switch latency and high-friction/tight-clearance jams."
+    },
+    {
+      "id": "l4",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "d3",
+      "content": "Freeze calibration; target <50 ms wrench-phase switches and retest held-out jam detection and insertion success under the 18 N shield."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "l4",
+      "content": "Profile FallbackBench-v1 delays, implement 25 ms causal wrench-phase windows, and retest 60 new held-out insertions under an 18 N shield."
+    },
+    {
+      "id": "r4",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "a10",
+      "content": "FallbackBench-v2 revises v1 with 25 ms causal phase-switch timestamps and 60 held-out retests, logging outcomes, jam labels, and forces."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "l4",
+      "content": "Audit FallbackBench-v2 for phase-switch latency, jam recall, insertion success, and peak force; compare with v1 and deployment thresholds."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "a11",
+      "content": "FallbackBench-v2 achieved 38 ms median switching but missed 4 jams; insertion success was 52/60 (87%), with 19.4 N peak force."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "e7",
+      "content": "Reject phase-gated fallback for deployment: v1’s 95% masked pair-specific jams, while faster v2 achieved only 87% success."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Use wrench-conditioned jam-risk gating with 5-mm retract-realign recovery, calibrated within 20 trials under an 18 N predictive shield."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Can a 5-mm retract-realign maneuver avert high-friction/tight-clearance jams without adding force spikes or exhausting the trial budget?"
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "q4",
+      "content": "Wrench-triggered 5-mm retract-realign recovers ≥4/5 high-friction/tight-clearance jams after ≤20 adaptation trials, with peak force <20 N."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "h4",
+      "content": "Calibrate jam gating from ProbeBench-v1 strata in 20 real trials; test five held-out high-friction/tight-clearance jams for recovery and peak force."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "a12",
+      "content": "After 20 real calibration trials, wrench-gated retract-realign recovered 4/5 held-out high-friction/tight-clearance jams; peak force was 18.7 N."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "e8",
+      "content": "Advance retract-realign to broader held-out validation; 4/5 challenging jams recovered after 20 calibration trials without exceeding 20 N."
+    },
+    {
+      "id": "l5",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "d5",
+      "content": "Freeze wrench-gated recovery after 20 calibration trials; validate held-out jam recovery, insertion success, and peak force across 12 friction–clearance pairs."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "l5",
+      "content": "Using ProbeBench-v1 strata, test frozen retract-realign on 60 insertions across 12 held-out pairs; log successes, recoveries, and peak forces."
+    },
+    {
+      "id": "r5",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "a13",
+      "content": "RetractBench-v1: 60 held-out insertion logs across 12 friction–clearance pairs, recording retract triggers, recovery outcomes, success, and peak force."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "l5",
+      "content": "Audit RetractBench-v1 for success by friction–clearance pair, jam recovery, peak force, and ≤20-trial calibration compliance."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "a14",
+      "content": "RetractBench-v1: 51/60 insertions succeeded (85%); seven false retracts caused five failures, while peak force stayed at 19.2 N."
+    },
+    {
+      "id": "d6",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "e9",
+      "content": "Defer retract-realign deployment: it recovered 4/5 targeted jams, but false retracts cut held-out success to 85%."
+    },
+    {
+      "id": "q5",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p3",
+      "content": "Can sustained wrench evidence reduce false retracts without missing high-friction/tight-clearance jams under the 18 N shield?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "q5",
+      "content": "Requiring 40 ms sustained wrench-risk evidence reduces false retracts to ≤2/60 while retaining ≥80% jam recall below 20 N."
+    },
+    {
+      "id": "a15",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "h5",
+      "content": "Revise 40 ms sustained-risk gating using ProbeBench-v1 and RetractBench-v1; test 60 held-out insertions for false retracts, jam recall, success, force."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "a15",
+      "content": "With 40 ms gating, false retracts fell to 2/60 and jam recall reached 8/10; success was 53/60, peak 19.3 N."
+    },
+    {
+      "id": "d7",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "e10",
+      "content": "Defer deployment: microdithers scored 55/60 then 52/60; spirals missed jams despite 57/60; retracts rescued 4/5 but achieved only 53/60."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a5"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "r2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a6",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "l3",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "l3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a7"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a8"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "r3"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a9"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "l4",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "l4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a10"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a11"
+    },
+    {
+      "source": "a10",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "r4"
+    },
+    {
+      "source": "r4",
+      "relation": "revise",
+      "target": "r3"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "r4"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "r4"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "l5",
+      "relation": "depend_on",
+      "target": "d5"
+    },
+    {
+      "source": "l5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "l5",
+      "relation": "decompose",
+      "target": "a13"
+    },
+    {
+      "source": "l5",
+      "relation": "decompose",
+      "target": "a14"
+    },
+    {
+      "source": "a13",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "r5"
+    },
+    {
+      "source": "a14",
+      "relation": "depend_on",
+      "target": "r5"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "r5"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "d6"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r5"
+    },
+    {
+      "source": "a15",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a15",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e10",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d7"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable safe sim-to-real transfer for robotic peg insertion when friction and clearance changes are indistinguishable before contact.",
+    "requirements": [
+      "Achieve ≥90% insertion success across held-out friction–clearance combinations using at most 20 real adaptation trials.",
+      "Keep peak contact force below 20 N during adaptation and deployment without privileged state observations."
+    ]
+  }
+}

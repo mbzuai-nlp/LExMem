@@ -1,0 +1,969 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design live firmware updates for an embedded controller that preserve real-time deadlines and actuator consistency across state-schema changes.",
+      "requirements": [
+        "Maintain 1 ms control deadlines throughout uninterrupted updates, without duplicated or skipped actuator commands.",
+        "Reject incompatible state migrations atomically; recover a compatible firmware-state pair after any update-time reset."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Keep the 1-ms scheduler and actuator driver resident; validate shadow migrations, atomically switch A/B firmware-state pairs, and sequence-fence commands."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can the resident scheduler switch firmware-state pairs on a tick boundary without replaying or skipping an actuator sequence?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "A tick-boundary pointer swap and resident monotonic command counter keep dispatch below 1 ms with zero duplicates or gaps."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Profile 10,000 tick-boundary swaps under peak load; verify sub-1-ms dispatch and contiguous resident-issued actuator sequence IDs."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run SwapStress-10k under peak load, recording dispatch latency and resident actuator sequence IDs across 10,000 tick-boundary swaps."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "SwapStress-10k recorded 0.82-ms worst-case dispatch latency and zero duplicate or missing actuator sequence IDs across 10,000 swaps."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Select tick-boundary swaps and resident command sequencing for cutover, based on SwapStress-10k's 0.82-ms maximum and gap-free actuator trace."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "SwapStress-10k report contains per-tick latency histograms and actuator sequence traces for 10,000 peak-load firmware swaps."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Audit SwapStress-10k report traces for boundary-specific deadline overruns and noncontiguous command IDs, including ticks immediately after each swap."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Audit found seven post-swap actuator latch overruns (maximum 1.08 ms), causing repeated outputs despite contiguous issued command IDs."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "Prewarm candidate code and state, prioritize the latch interrupt over cutover, and swap after acknowledgment; each 1-ms tick latches once."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Replay SwapStress-10k report workloads with prewarming and acknowledgment-gated cutover; measure physical latch intervals and deadline misses across 10,000 swaps."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Revised SwapStress-10k measured 0.94-ms maximum latch interval, zero missed deadlines, and 10,000 consecutive acknowledged actuator commands."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Validate shadow migrations before atomically committing a versioned firmware-state pair; after reset, boot the last committed compatible pair."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Test shadow-migration rejection, inject resets at dual-slot commit boundaries, then verify compatible recovery and gap-free 1-ms actuator ticks."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Using SwapStress-10k report's peak-load traces, inject 40 incompatible migrations; verify the active firmware-state pair remains unchanged while actuator latches continue."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "MigrationReject-40 log records schema-validation verdicts, active pair identifiers, and physical actuator latch timestamps for 40 incompatible migrations."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Audit MigrationReject-40 for rejection before commit, unchanged firmware-state IDs, and exactly one physical latch per 1-ms tick."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "MigrationReject-40 audit found 40/40 rejected before commit, unchanged active pair IDs, and zero missing or duplicate latches."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Adopt prewarmed, acknowledgment-gated cutover with precommit schema rejection: revised swaps met 1-ms deadlines, and MigrationReject-40 preserved active pairs."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "How does boot identify a compatible firmware-state pair when reset interrupts the versioned commit record?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Dual CRC-protected records and immutable A/B manifests let boot select the newest fully committed, schema-compatible pair after reset."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Run BootCut-512 with byte-boundary resets across both commit records; check boot selects the newest CRC-valid, schema-compatible firmware-state pair."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "BootCut-512 selected the newest fully committed, CRC-valid, schema-compatible pair in all 512 resets; zero mixed pairs booted."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 26,
+      "exploration_parent_id": "g1",
+      "content": "Use tick-stamped copy-on-write snapshots and 50-µs background migration slices, replaying intervening state deltas before cutover."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 27,
+      "exploration_parent_id": "p3",
+      "content": "How can delta replay reach a consistent tick boundary while control ticks keep modifying the snapshot?"
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Replay SwapStress-10k writes with tick-sealed delta logs and 50-µs slices; verify backlog clearance and cutover-state equality."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "SwapStress-10k replay produced 72 µs/tick of delta work; 50-µs slices accrued 220 ms backlog across 10,000 ticks."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Reject fixed 50-µs delta replay: peak-load writes generate 72 µs/tick, preventing convergence before cutover."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n23",
+      "content": "Coalescing repeated field writes reduces replay work below 50 µs/tick, allowing sealed-tick backlog to drain before cutover."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Implement tick-sealed, field-keyed coalescing; replay peak-load traces, compare candidate state at cutover, and profile latch intervals."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Run CoalesceReplay-10k on peak-load traces, measuring per-tick replay cost, sealed-log backlog, candidate-state equality, and actuator latch timing."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "CoalesceReplay-10k cut replay from 72 to 31 µs/tick; backlog drained, state matched, and latches stayed below 1 ms."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n28",
+      "content": "Use CoalesceReplay-10k’s measured 31-µs/tick cost to set a 40-µs replay budget; test burst-write backlog, state equality, and latch timing."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "BurstReplay-40 report records 40-µs replay-budget backlog, candidate-state comparisons, and physical latch intervals under burst-write traces."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Add typed migration contracts for actuator-calibration bounds and pending-command ownership, checked against shadow state before atomic cutover."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "p4",
+      "content": "Typed migration contracts will reject invalid calibration and ambiguous command ownership before commit without missing 1-ms latch deadlines."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "Run ContractFault-200 with out-of-range calibration and duplicate command owners; inspect commit records and physical latch intervals under peak load."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "ContractFault-200 rejected all 200 invalid states, but synchronous checks pushed three physical latch intervals to 1.06 ms."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "How can contract checks run off the control path while guaranteeing validation covers the exact shadow state committed?"
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Validate immutable shadow generations asynchronously; commit only if the validated generation still matches the shadow at cutover."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Replay BurstReplay-40 traces while mutating shadow generations during asynchronous validation; inspect generation-matched commits, invalid-state rejections, and latch intervals."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "BurstReplay-40: 40 stale generations rejected; coalesced replay drained backlog, commits matched validated state, and latch intervals peaked at 0.96 ms."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Integrate generation-locked validation with A/B commits; test peak-load latch continuity and byte-boundary reset recovery to compatible pairs."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Integrate generation-locked validation with A/B commit records; run IntegratedCut-512 with byte-boundary resets and peak-load latch logging."
+    },
+    {
+      "id": "n42",
+      "type": "artifact",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "IntegratedCut-512 dossier extends BurstReplay-40 with generation-locked commit logs, 512 reset recovery traces, compatibility verdicts, and physical latch timestamps."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 48,
+      "exploration_parent_id": "g1",
+      "content": "Core 0 dispatches tick-indexed actuator commands; core 1 migrates firmware, enabling cutover only with validated pairs and ready commands."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p5",
+      "content": "How can core 0 consume core 1’s prepared command without stale-cache reads or delaying the 1-ms latch?"
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "Implement uncached tick-tagged mailboxes with release/acquire publication; retain old firmware until ready, then benchmark core-0 latch latency."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n44",
+      "content": "Replay IntegratedCut-512 traces on dual cores with uncached tick-tagged mailboxes; measure backlog, state equality, stale reads, latch intervals, recovery."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Dual-core replay: 31 µs/tick coalesced deltas drained backlog; candidate state matched, zero stale reads, 0.96-ms peak latch, 512/512 compatible recoveries."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Adopt dual-core coalesced replay with generation-locked validation, replacing uncoalesced fixed-slice replay; backlog drained and latches peaked at 0.96 ms."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Implement dual-core coalesced replay with generation-locked A/B cutover; regress against IntegratedCut-512 reset, latch, and compatibility traces."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Controller Update v1.0 implements dual-core coalesced migration, generation-locked A/B commits, tick-tagged actuator mailboxes, and IntegratedCut-512 regression tests."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n44",
+      "content": "Run MailboxDMA-100k on Controller Update v1.0 under saturated DMA; measure physical latch intervals, mailbox freshness, and command continuity."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "MailboxDMA-100k found 11 stale mailbox tags under saturated DMA; physical latch intervals peaked at 1.04 ms despite contiguous IDs."
+    },
+    {
+      "id": "n52",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Block v1.0 deployment after DMA deadline misses; retain precommit migration rejection and CRC-validated A/B boot recovery."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n32"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n46",
+      "relation": "revive",
+      "target": "p3"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "revise",
+      "target": "n26"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n22"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design live firmware updates for an embedded controller that preserve real-time deadlines and actuator consistency across state-schema changes.",
+    "requirements": [
+      "Maintain 1 ms control deadlines throughout uninterrupted updates, without duplicated or skipped actuator commands.",
+      "Reject incompatible state migrations atomically; recover a compatible firmware-state pair after any update-time reset."
+    ]
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Resolver fingerprints for safe cache reuse and a cross-module edit benchmark report",
+      "boundary_reason": "The resolver decision and benchmark report are complete; discussion shifts to dependency granularity."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Function-level versus module-level dependency manifests",
+      "boundary_reason": "Clean-build mismatches expose a limitation of function-level manifests, prompting a revised approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Consulted-summary epochs and clean-build equivalence",
+      "boundary_reason": "EpochManifest-v2 meets the tested correctness and performance budgets; discussion shifts to larger, denser links."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "DenseLink-500K rebuild costs and eviction-driven recompilation",
+      "boundary_reason": "Profiling identifies eviction as the cause of the slowdown and leads to a pinned-cache decision."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "A 16-GiB pinning cache and initial partition-priority comparisons",
+      "boundary_reason": "The initial policy underperforms, while high-fanout pinning establishes a better baseline for further ranking tests."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Edit-weighted pinning on recurring and unseen edits",
+      "boundary_reason": "Unseen-function results limit edit-weighted pinning to recurring edit patterns."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Hybrid high-fanout and edit-weighted pinning",
+      "boundary_reason": "Fanout reshuffling breaks the hybrid policy’s rebuild target, limiting it to stable-fanout workloads."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Refreshing hybrid pin priorities after fanout changes",
+      "boundary_reason": "Results across five reshuffles leave several rebuilds over budget, closing this pinning investigation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Answer-delta invalidation with conservative fallback",
+      "boundary_reason": "AnswerTrace-v1 meets the tested correctness and performance budgets and is adopted."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Snapshot certificates for concurrent object-file updates",
+      "boundary_reason": "Race tests support adopting snapshot-versioned certificates and atomic commit validation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "SnapshotLTO-v1 integration, validation, and ship decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

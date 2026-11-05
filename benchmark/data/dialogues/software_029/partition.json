@@ -1,0 +1,126 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Make AdamW moment offloads checksum-safe without restarting training",
+      "boundary_reason": "Fenced immutable snapshots are adopted; the discussion shifts to inference replay and admission."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Measure inference latency and account for offload DMA in admission",
+      "boundary_reason": "The replay and DMA analysis provide a basis for a new admission controller."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Build burst-aware admission and correct AdamW prefetch reserve breaches",
+      "boundary_reason": "BurstGate-v2 incorporates the prefetch reservation fix; the next discussion tests a specific burst-forecast policy."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Test queue-growth and DMA forecasts for burst admission",
+      "boundary_reason": "The policy meets the latency bound but admits only 84% of training microbatches, motivating a different scheduling approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Improve training admission with deficit credits and short slices",
+      "boundary_reason": "The deficit-credit scheduler is adopted after validation across burst profiles; attention turns to blocking within those slices."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Test whether two-millisecond kernels bound inference head-of-line blocking",
+      "boundary_reason": "Measured blocking exceeds the proposed cap, prompting a dispatch-level change."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Initial test of priority streams and single-kernel training dispatch",
+      "boundary_reason": "Blocking improves, but unrestricted 4×-burst p99 exceeds the latency target; the next discussion examines queues and DMA."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Constrain and validate priority dispatch under a PCIe admission limit",
+      "boundary_reason": "The constrained dispatch configuration is selected for shipping; the remaining work is integrated-runtime validation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Integrate the GPU-sharing runtime and its validation logs",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

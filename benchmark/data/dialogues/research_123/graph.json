@@ -1,0 +1,1172 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a learned plasma fluid closure that recovers collisionless plasma echoes while preserving energy under unseen forcing histories.",
+      "requirements": [
+        "Predict echo amplitudes within 10% of Vlasov–Poisson reference values on held-out forcing histories.",
+        "Keep unforced total energy drift below 0.1% over 100 plasma periods."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a skew-symmetric Hamiltonian fluid closure with Fourier–Hermite memory modes for echo recovery and exact unforced energy conservation."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How many Hermite memory modes preserve echo amplitudes within 10% across unseen two-pulse delays of 10–40 plasma periods?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "At kλ_D=0.1, 256 Hermite modes achieve ≤10% echo-amplitude error for held-out 10–40-plasma-period delays; 32 modes do not."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Train 32/64/128/256-mode closures at kλ_D=0.1; compare echo errors across held-out 10–40-period delays and unforced 100-period energy drift."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run VP-Echo40: train four Hermite-mode closures at kλ_D=0.1; measure held-out echo errors and 100-period unforced energy drift."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "VP-Echo40 report with four trained closure checkpoints, held-out echo-amplitude errors, and 100-period unforced energy-drift traces."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Audit VP-Echo40 report using its checkpoints and traces; recompute per-delay echo errors and energy drift to test 256-versus-32-mode hypothesis."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "VP-Echo40 audit found 14% echo-amplitude error for 256 modes at 40 periods, exceeding 10%; 32-mode error was 31%."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "At kλ_D=0.1, 512 Hermite modes achieve ≤10% echo-amplitude error across held-out 10–40-period delays; 256 modes fail at 40 periods."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Initialize and train a 512-mode closure from VP-Echo40's 256-mode checkpoint; test held-out 10–40-period echoes and 100-period energy drift."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "VP-Echo40’s 512-mode closure achieved 8.2% maximum held-out echo-amplitude error across 10–40-period delays; unforced 100-period energy drift was 0.03%."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Re-run VP-Echo40’s 256-mode checkpoint against the 512-mode closure on new 10–40-period forcing histories, measuring maximum echo error."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "New forcing histories yielded 12.6% echo error for 512 modes versus 16.4% for 256 modes at 35 periods."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Is the 512-mode error on new 35-period forcing histories due to limited training-history coverage rather than Hermite truncation?"
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Across 10–40-period histories, phase/amplitude-augmented 512-mode training yields ≤10% echo error; unaugmented 1024 modes exceed 10% at 35 periods."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Extend VP-Echo40’s 256-mode checkpoint into phase/amplitude-augmented 512 and unaugmented 1024 modes; compare against unaugmented 512 on unseen 10–40-period echoes."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "On matched-distribution histories, unaugmented 512 modes achieved 9.1% maximum error across 10–40-period delays; 256 modes reached 14% at 40."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n17",
+      "content": "On shifted-phase 35-period histories, augmented 512 modes had 11.2% echo error; unaugmented 1024 modes had 8.4%."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Using VP-Echo40 checkpoints, train matched augmented and unaugmented 512- and 1024-mode closures; compare shifted-phase 10–40-period echo errors and energy drift."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "On new phase/amplitude-shifted histories, augmented 512 modes had 9.3% maximum echo error; unaugmented 1024 reached 11.0% at 35 periods."
+    },
+    {
+      "id": "n22",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Defer architecture selection: 512 modes pass matched histories, but shifted-phase tests reverse the augmented-512 versus unaugmented-1024 ranking."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 23,
+      "exploration_parent_id": "g1",
+      "content": "Train a Hamiltonian recurrent closure with adaptive phase-mixing memory and worst-case echo loss across forcing-phase shifts."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Does adaptive memory reduce worst-case shifted-phase echo error below 10% while keeping 100-period unforced energy drift below 0.1%?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "A 128-state symplectic recurrent memory yields ≤9% worst-case shifted-phase echo error and ≤0.05% unforced energy drift over 100 periods."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Train a 128-state symplectic recurrent closure on VP-Echo40; measure worst-case shifted-phase echo error and 100-period unforced energy drift."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "The 128-state closure achieved 7.8% worst-case shifted-phase echo error, but unforced energy drift reached 0.13% over 100 periods."
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Discrete-gradient stepping of the 128-state closure retains ≤9% worst-case shifted-phase echo error and lowers 100-period energy drift below 0.05%."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Replace symplectic stepping with discrete-gradient updates in the trained 128-state closure; rerun shifted-phase echoes and 100-period unforced energy tests."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Discrete-gradient stepping lowered 100-period unforced energy drift to 0.012%, but worst-case shifted-phase echo error rose to 11.4%."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n28",
+      "content": "Retrain the 128-state closure end-to-end with discrete-gradient stepping and worst-case shifted-phase echo loss; retest echo error and energy drift."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "End-to-end discrete-gradient retraining yielded 8.6% worst-case shifted-phase echo error and 0.018% unforced energy drift over 100 periods."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Does the discrete-gradient closure retain sub-10% echo error on held-out three-pulse histories without exceeding 0.1% unforced energy drift?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Mixed-pulse training gives the 128-state discrete-gradient closure ≤10% worst-case held-out three-pulse echo error and ≤0.05% unforced 100-period energy drift."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Train mixed-pulse 128-state discrete-gradient closure; compare against two-pulse-trained baseline on shifted-phase two-/three-pulse echo errors and 100-period energy drift."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "The two-pulse-trained discrete-gradient baseline retained 8.6% worst-case shifted-phase two-pulse echo error and 0.018% 100-period energy drift."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n35",
+      "content": "Mixed-pulse training yielded 13.1% worst-case held-out three-pulse echo error; 100-period unforced energy drift was 0.021%."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n34",
+      "content": "Fine-tune the 13.1%-error mixed-pulse closure with additional uniformly sampled three-pulse histories; retest held-out echo error and 100-period energy drift."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "After three-pulse fine-tuning, the mixed-pulse closure achieved 9.4% worst-case held-out echo error and 0.023% unforced 100-period energy drift."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Select the fine-tuned discrete-gradient closure: 9.4% three-pulse error and 0.023% 100-period drift resolve regressions beyond the two-pulse baseline."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Learn a Mori–Zwanzig memory kernel using conservative auxiliary oscillators to retain echo phase information without energy leakage."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "p3",
+      "content": "How many conservative auxiliary oscillators keep unseen 10–40-period echo error below 10% and unforced 100-period energy drift below 0.1%?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "At kλ_D=0.1, 64 oscillators achieve ≤10% held-out echo error across 10–40-period delays and ≤0.05% 100-period unforced energy drift."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Fit 16/32/64/128-oscillator kernels at kλ_D=0.1; compare unseen two-pulse echo errors and unforced 100-period energy drift against Vlasov–Poisson."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Run MZ-Echo40: train four oscillator-count kernels at kλ_D=0.1 and evaluate held-out echo amplitudes and 100-period unforced energy."
+    },
+    {
+      "id": "n46",
+      "type": "artifact",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "MZ-Echo40 benchmark bundle containing four oscillator-kernel checkpoints, held-out echo amplitudes, and 100-period unforced energy traces."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n44",
+      "content": "Audit MZ-Echo40 checkpoints against Vlasov–Poisson, recomputing 64-oscillator held-out echo errors and 100-period unforced energy drift."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "MZ-Echo40’s 64-oscillator kernel achieved 8.7% maximum held-out two-pulse echo error and 0.016% unforced energy drift over 100 periods."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Advance the 64-oscillator kernel to broader forcing tests: its 8.7% two-pulse echo error and 0.016% energy drift meet thresholds."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Train a Hamiltonian multi-stream fluid closure with learned velocity nodes and discrete-gradient integration to preserve echo phases and energy."
+    },
+    {
+      "id": "n51",
+      "type": "question",
+      "order": 51,
+      "exploration_parent_id": "p4",
+      "content": "How many learned velocity streams recover held-out 10–40-period echo amplitudes within 10% while maintaining sub-0.1% unforced energy drift?"
+    },
+    {
+      "id": "n52",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "At kλ_D=0.1, 48 learned streams achieve ≤10% worst-case held-out echo error and ≤0.05% unforced 100-period energy drift."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Train 24/48/96-stream discrete-gradient closures on VP-Echo40; benchmark held-out 10–40-period echo errors and 100-period unforced energy drift."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "The 48-stream closure reached 12.2% worst-case held-out echo error; unforced 100-period energy drift was 0.009%."
+    },
+    {
+      "id": "n55",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n51",
+      "content": "At kλ_D=0.1, 96 learned streams reduce worst-case held-out echo error below 10%, with unforced 100-period energy drift below 0.05%."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Rebenchmark 48- and 96-stream checkpoints on new held-out 10–40-period forcing histories; measure worst-case echo error and 100-period energy drift."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "On new matched-distribution histories, 48 streams achieved 9.6% worst-case echo error and 0.010% unforced 100-period energy drift."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n56",
+      "content": "On shifted-phase 40-period histories, 96 streams incurred 11.1% worst-case echo error despite 0.012% unforced energy drift."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n55",
+      "content": "Reconcile 48-stream 12.2% versus 9.6% echo errors by stratifying forcing phases; retest worst-case error and 100-period energy drift."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Phase-stratified audit traced 12.2% to misaligned reference peaks; corrected 48-stream worst-case error was 9.8%, with 0.010% energy drift."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "Advance 48 streams for matched-distribution tests after peak-alignment correction; defer broad deployment because 96 streams fail shifted-phase echoes."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 62,
+      "exploration_parent_id": "g1",
+      "content": "Fit a phase-equivariant nonlinear Volterra closure with antisymmetric energy-transfer channels and adaptive delay kernels for multi-pulse forcing."
+    },
+    {
+      "id": "n63",
+      "type": "question",
+      "order": 63,
+      "exploration_parent_id": "p5",
+      "content": "Does phase equivariance keep three-pulse echo error below 10% across unseen phases and delays while limiting 100-period energy drift?"
+    },
+    {
+      "id": "n64",
+      "type": "hypothesis",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "A 32-lag phase-equivariant Volterra closure achieves ≤9% worst-case held-out three-pulse echo error and ≤0.05% unforced 100-period energy drift."
+    },
+    {
+      "id": "n65",
+      "type": "plan",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Train 16/32/64-lag Volterra closures on VP-Echo40 two-/three-pulse histories; test shifted-phase echo error and 100-period unforced energy drift."
+    },
+    {
+      "id": "n66",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Run Volterra-Echo40: fit 16/32/64-lag phase-equivariant kernels and score held-out three-pulse echo amplitudes and unforced energy traces."
+    },
+    {
+      "id": "n67",
+      "type": "artifact",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Volterra-Echo40 bundle with 16/32/64-lag checkpoints, shifted-phase three-pulse echo scores, and 100-period unforced energy traces."
+    },
+    {
+      "id": "n68",
+      "type": "activity",
+      "order": 68,
+      "exploration_parent_id": "n65",
+      "content": "Audit Volterra-Echo40’s 32-lag checkpoint and the 48-stream closure against Vlasov–Poisson on shifted-phase echoes and 100-period unforced energy drift."
+    },
+    {
+      "id": "n69",
+      "type": "evidence",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Volterra-Echo40’s 32-lag closure achieved 8.8% worst-case shifted-phase three-pulse echo error and 0.031% unforced 100-period energy drift."
+    },
+    {
+      "id": "n70",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n68",
+      "content": "The 48-stream comparator yielded 9.7% worst-case held-out two-pulse echo error and 0.010% unforced 100-period energy drift."
+    },
+    {
+      "id": "n71",
+      "type": "decision",
+      "order": 71,
+      "exploration_parent_id": "n64",
+      "content": "Prioritize the 32-lag Volterra closure for three-pulse tests; retain 48 streams as the lower-drift two-pulse comparator."
+    },
+    {
+      "id": "n72",
+      "type": "decision",
+      "order": 72,
+      "exploration_parent_id": "g1",
+      "content": "Prioritize 32-lag Volterra for broader validation (8.8% three-pulse error, 0.031% drift); retain recurrent, oscillator, stream, and Hermite comparators."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n16",
+      "relation": "revise",
+      "target": "n10"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "revise",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n34",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "revise",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n58",
+      "relation": "refute",
+      "target": "n55"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "decompose",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "produce",
+      "target": "n67"
+    },
+    {
+      "source": "n65",
+      "relation": "decompose",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "evaluate",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n68",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n68",
+      "relation": "produce",
+      "target": "n69"
+    },
+    {
+      "source": "n68",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n69",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n70",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n71"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a learned plasma fluid closure that recovers collisionless plasma echoes while preserving energy under unseen forcing histories.",
+    "requirements": [
+      "Predict echo amplitudes within 10% of Vlasov–Poisson reference values on held-out forcing histories.",
+      "Keep unforced total energy drift below 0.1% over 100 plasma periods."
+    ]
+  }
+}

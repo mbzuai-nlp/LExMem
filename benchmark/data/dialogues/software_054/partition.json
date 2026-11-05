@@ -1,0 +1,126 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Client-seeded reachability with reflection and missing-code uncertainty",
+      "boundary_reason": "The stress test exposes computed-name callbacks that the initial resolver misses, prompting a new boundary-summary approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Wrapper-boundary summaries for computed-name and stored callbacks",
+      "boundary_reason": "Field-sensitive summaries reduce false-safe errors but leave one callback path to investigate."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Alias-aware callback paths and UNKNOWN fallback",
+      "boundary_reason": "The decision resolves how to retain both concrete alias paths and conservative UNKNOWN fallback; the next proposal shifts to client-test witnesses."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Version-pinned client witnesses and unstable replay results",
+      "boundary_reason": "The evaluation leads to a decision to defer unstable verdicts and improve clock control."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Virtual-clock injection and masked timing regressions",
+      "boundary_reason": "The stress test shows that synchronized ticks can conceal regressions, raising a distinct scheduling question."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Shared wall-clock reads with independent callback scheduling",
+      "boundary_reason": "The revised scheduling approach is evaluated and adopted; the next proposal shifts to combining evidence into verdicts."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "VerdictGate criteria and benchmark evaluation",
+      "boundary_reason": "The held-out evaluation establishes cause-labeled UNKNOWN cases, prompting a separate question about resolving them with observed callbacks."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Observed callback edges and cross-seed witness stability",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

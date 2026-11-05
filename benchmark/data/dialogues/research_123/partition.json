@@ -1,0 +1,139 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Initial Hermite-mode benchmark and audit",
+      "boundary_reason": "The audit finds that 256 modes miss the echo-error target, prompting a revised mode-count hypothesis."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Testing 512 Hermite modes on held-out and new forcing histories",
+      "boundary_reason": "The new histories exceed the echo-error target, shifting attention from mode count to training-history coverage."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Hermite training augmentation and shifted-phase comparisons",
+      "boundary_reason": "Architecture selection is deferred after the shifted-phase comparisons give conflicting rankings."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Initial adaptive recurrent-memory closure",
+      "boundary_reason": "The closure meets the echo target but exceeds the energy-drift limit, motivating a change in stepping."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Discrete-gradient stepping and end-to-end recurrent retraining",
+      "boundary_reason": "Retraining meets the two-pulse echo and energy targets; the next question concerns three-pulse histories."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Three-pulse training and selection of the recurrent closure",
+      "boundary_reason": "Fine-tuning resolves the three-pulse regression and leads to a selection decision before a new closure proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Conservative auxiliary-oscillator kernel benchmark",
+      "boundary_reason": "The 64-oscillator kernel is advanced to broader tests, and discussion moves to a multi-stream closure."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Multi-stream closure benchmarks and phase-stratified audit",
+      "boundary_reason": "The corrected 48-stream result supports limited advancement, while shifted-phase performance leaves broader deployment unresolved."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72"
+      ],
+      "topic": "Volterra closure benchmark and overall validation priority",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

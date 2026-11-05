@@ -1,0 +1,127 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Replace fixed IOPS reservation with p99-feedback compaction throttling",
+      "boundary_reason": "The TenantMix-8 rerun reports latency and throughput results; the next discussion tests bursty workloads."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Validate and adopt CompactionController v1 for bursty tenants",
+      "boundary_reason": "The burst test supports adoption, and the discussion shifts to crash-consistent ownership."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Build OwnershipManifest v1 and investigate stale reads during reassignment crashes",
+      "boundary_reason": "The crash finding leads to rejection of v1 reassignment and a per-read epoch-check requirement."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Audit manifest latency and quota refunds after adding epoch checks",
+      "boundary_reason": "The findings establish the need for durable-tombstone refunds and reduced routine fsync costs."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Move ownership commits to a dedicated metadata SSD",
+      "boundary_reason": "The targeted burst and crash tests support the revised ownership design; the next stage is an integrated soak test."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Soak-test the integrated controller and ownership manifest",
+      "boundary_reason": "Metadata-SSD saturation in the soak test prompts a reassignment-throttling approach."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Test a metadata-utilization gate for reassignment",
+      "boundary_reason": "The gate preserves crash-test results but does not prevent latency spikes from commit bursts."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Limit reassignment commit bursts with a token bucket",
+      "boundary_reason": "The targeted tests meet the latency and crash-audit goals; the next stage packages and soaks the integrated design."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Validate and adopt OwnershipManifest v4 with CompactionController v1",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

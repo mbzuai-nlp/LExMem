@@ -1,0 +1,750 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Infer spatial conductivity and unknown boundary flux from sparse temperature observations while preserving uncertainty under nonidentifiability.",
+      "requirements": [
+        "Achieve 90% interval coverage within five percentage points for conductivity and flux across identifiability regimes.",
+        "Match known-flux conductivity reconstruction error within 20% when joint recovery is identifiable."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fit a PDE-constrained hierarchical Bayesian model with Matérn conductivity and flux priors, using parallel-tempered MCMC to preserve nonidentifiable posterior ridges."
+    },
+    {
+      "id": "n01",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can posterior ridge geometry distinguish conductivity–flux tradeoffs from identifiable features using only eight interior temperature sensors?"
+    },
+    {
+      "id": "n02",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n01",
+      "content": "With eight sensors, posterior conductivity–flux ridge correlations exceed 0.8 in magnitude, while orthogonal uncertainty shrinks 50% versus prior."
+    },
+    {
+      "id": "n03",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n02",
+      "content": "Simulate Heat8 identifiable and confounded cases; sample tempered posteriors, then compare ridge correlations and orthogonal variance against priors."
+    },
+    {
+      "id": "n04",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n03",
+      "content": "Run four tempered chains on 200 Heat8 replicates per regime; estimate posterior ridge correlations and prior-normalized orthogonal variance."
+    },
+    {
+      "id": "n05",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n04",
+      "content": "Across 200 confounded Heat8 replicates, median ridge correlation was −0.86; orthogonal posterior variance fell 57% versus prior."
+    },
+    {
+      "id": "n06",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n05",
+      "content": "Retain joint posterior sampling rather than plug-in flux estimates, because Heat8’s −0.86 ridge correlation reveals strong confounding."
+    },
+    {
+      "id": "n07",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n04",
+      "content": "Heat8 posterior archive v1 contains four-chain conductivity–flux draws for 200 replicates per regime, plus ridge-correlation and variance diagnostics."
+    },
+    {
+      "id": "n08",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "n01",
+      "content": "In identifiable Heat8 cases, median absolute conductivity–flux ridge correlation should fall below 0.4, versus 0.86 in confounded cases."
+    },
+    {
+      "id": "n09",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n08",
+      "content": "From Heat8 archive v1, compare median absolute ridge correlations across identifiable and confounded replicates using bootstrap 95% intervals."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n09",
+      "content": "Identifiable Heat8 replicates had median absolute ridge correlation 0.61 (bootstrap 95% CI 0.56–0.66), exceeding the predicted 0.4."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Calibrate 90% conductivity and flux intervals from joint posterior draws across Heat8 regimes; benchmark identifiable conductivity RMSE against known-flux inversion."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Score pointwise 90% interval coverage for conductivity and flux across Heat8 regimes; compare identifiable conductivity RMSE with known-flux baseline."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Heat8 benchmark v1 records regime-stratified 90% conductivity and flux coverage plus identifiable conductivity RMSE versus the known-flux baseline."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Use likelihood-informed subspace sampling to reconstruct identifiable conductivity modes while retaining prior uncertainty along conductivity–flux null modes."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Extract likelihood-informed modes; sample them by MCMC and null modes from conditional priors; test Heat8 coverage and known-flux-relative RMSE."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Using Heat8 benchmark v1, compare tempered joint MCMC and likelihood-informed sampling on regime-stratified coverage and identifiable conductivity RMSE."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Likelihood-informed sampling achieved 88–93% conductivity and flux coverage across Heat8 regimes; identifiable conductivity RMSE was 12% above known-flux baseline."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Does conditional-prior sampling of conductivity–flux null modes preserve 90% flux coverage when Heat8 sensors cluster near the flux boundary?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "With six of eight sensors within 0.1 domain lengths of the flux boundary, conditional-prior null draws maintain 85–95% flux coverage."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On Heat8 benchmark v1, cluster six sensors near the flux boundary; score 90% flux coverage across 200 conditional-prior null-mode fits."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Clustered Heat8 flux coverage was 89%, supporting the null-draw hypothesis, but conductivity coverage fell to 79%, refuting p2’s uncertainty claim."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Adopt likelihood-informed sampling for standard Heat8 layouts; defer clustered layouts because conductivity coverage fell to 79%."
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "For deferred clustered layouts, reclassify boundary-sensitive modes, likelihood-correct remaining null draws, and reassess conductivity and flux coverage."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Recompute clustered Heat8 likelihood-informed modes, importance-reweight residual null draws, and measure 90% coverage against benchmark v1."
+    },
+    {
+      "id": "n24",
+      "type": "artifact",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Heat8 clustered-layout patch v2 contains recomputed boundary-sensitive modes, likelihood-weighted null draws, and benchmark v1-compatible coverage summaries."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Use controlled interior heat pulses and time-resolved sparse thermometry to separate conductivity from unknown flux through joint posterior inference."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Optimize two Heat8 interior pulse locations by Fisher information; simulate transients and benchmark 90% coverage and known-flux-relative conductivity RMSE."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Extend Heat8 clustered-layout patch v2 with two Fisher-optimal pulses; fit 200 transients, scoring coverage and known-flux-relative conductivity RMSE."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Across 200 pulsed clustered Heat8 transients, conductivity and flux coverage reached 89% and 91%; conductivity RMSE exceeded known-flux by 14%."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n26",
+      "content": "Heat8-Pulse v1 contains two optimized pulse locations, 200 transient observation sets, joint posterior draws, coverage tables, and known-flux RMSE comparisons."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Fit shared conductivity and trial-specific Gaussian-process fluxes across repeated thermal trials, retaining uncertainty in unresolved conductivity–flux scaling."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p4",
+      "content": "Do varied unknown fluxes across repeated trials identify shared conductivity, or does a global conductivity–flux scaling ambiguity persist?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "Across four distinct-flux trials, conductivity shape RMSE falls 25% versus one trial, while global-scale posterior variance barely shrinks."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "Fit hierarchical posteriors to 200 four-trial Heat8 groups; compare shape RMSE and scale variance against single-trial fits."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "Four-trial Heat8 reduced conductivity shape RMSE 17% versus single-trial, not 25%; global-scale posterior variance changed 3%, preserving ambiguity."
+    },
+    {
+      "id": "n33",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n31",
+      "content": "Heat8-MultiTrial v1 stores 200 four-trial groups, hierarchical posterior draws, shape RMSE comparisons, and global-scale variance diagnostics."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Add a 5%-noise total-heat calorimetry constraint to the PDE likelihood, anchoring conductivity–flux scale without prescribing flux shape."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "p5",
+      "content": "Simulate calorimetry-augmented Heat8 regimes; fit joint posteriors and compare scale variance, 90% conductivity/flux coverage, and known-flux-relative conductivity RMSE."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Using Heat8-Pulse v1 and Heat8-MultiTrial v1, compare pulses, repeated trials, and 5%-noise calorimetry on coverage, conductivity RMSE, and scale variance."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Calorimetry cut scale variance 62% versus four trials; Heat8 conductivity/flux coverage reached 90%/92%, with identifiable RMSE 11% above known-flux."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n36",
+      "content": "Prioritize calorimetry for scale anchoring; use pulses when unavailable, since four trials improve shape but barely reduce scale uncertainty."
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "p5",
+      "content": "Validate the calorimetry-first workflow across sensor layouts and noise levels; retain pulsed inference as fallback and audit 90% interval coverage."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n38",
+      "content": "Using Heat8 clustered-layout patch v2, Heat8-Pulse v1, and Heat8-MultiTrial v1, test calorimetry-first coverage and RMSE across layouts and 2–10% noise."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Heat8 validation matrix v1 tabulates calorimetry-first and pulsed-fallback coverage, conductivity RMSE, sensor layout, and 2–10% observation noise."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n01"
+    },
+    {
+      "source": "n02",
+      "relation": "address",
+      "target": "n01"
+    },
+    {
+      "source": "n03",
+      "relation": "address",
+      "target": "n01"
+    },
+    {
+      "source": "n03",
+      "relation": "decompose",
+      "target": "n04"
+    },
+    {
+      "source": "n04",
+      "relation": "evaluate",
+      "target": "n02"
+    },
+    {
+      "source": "n04",
+      "relation": "produce",
+      "target": "n05"
+    },
+    {
+      "source": "n04",
+      "relation": "produce",
+      "target": "n07"
+    },
+    {
+      "source": "n05",
+      "relation": "support",
+      "target": "n02"
+    },
+    {
+      "source": "n05",
+      "relation": "support",
+      "target": "n06"
+    },
+    {
+      "source": "n08",
+      "relation": "address",
+      "target": "n01"
+    },
+    {
+      "source": "n09",
+      "relation": "evaluate",
+      "target": "n08"
+    },
+    {
+      "source": "n09",
+      "relation": "depend_on",
+      "target": "n07"
+    },
+    {
+      "source": "n09",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "n08"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n06"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n14"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Infer spatial conductivity and unknown boundary flux from sparse temperature observations while preserving uncertainty under nonidentifiability.",
+    "requirements": [
+      "Achieve 90% interval coverage within five percentage points for conductivity and flux across identifiability regimes.",
+      "Match known-flux conductivity reconstruction error within 20% when joint recovery is identifiable."
+    ]
+  }
+}

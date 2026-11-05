@@ -1,0 +1,162 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Graph-predicted face mobilities meet the initial branching-case thresholds",
+      "boundary_reason": "The initial evaluation ends with a decision and report; the next discussion audits that report."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "Audit reveals mass imbalance caused by saturation clipping",
+      "boundary_reason": "The audit identifies a defect; the next discussion tests a replacement for clipping."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Shared-face flux limiting restores post-update conservation",
+      "boundary_reason": "The limiter test concludes before a shift to a multiscale pressure-basis approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Multiscale pressure bases conserve mass but miss the breakthrough target",
+      "boundary_reason": "The initial multiscale evaluation ends; the next discussion investigates its breakthrough error."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "One-cell-neck bases improve initial multiscale breakthrough accuracy",
+      "boundary_reason": "The initial neck-base test concludes before an ablation on new cases."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "New branching cases lead to deferral of neck-base multiscale surrogate",
+      "boundary_reason": "The deferral closes this approach before a projected-flux proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Projected fluxes are compared with neck bases on junction and branching cases",
+      "boundary_reason": "The comparison finds projected-flux errors above target; the next test examines a different junction class."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n31",
+        "n32"
+      ],
+      "topic": "Projected fluxes meet thresholds on unseen X-junctions",
+      "boundary_reason": "The X-junction result prompts a separate investigation of connectivity-dependent errors."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Connectivity-error atlas examines necks, junctions, and flux splits",
+      "boundary_reason": "The atlas is produced before a proposal to use its measures in training."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Split-weighted flux supervision meets thresholds on mixed connectivity cases",
+      "boundary_reason": "The mixed-case audit concludes before a high-contrast neck stress test."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "High-contrast neck failures lead to deferral of split-weighted fluxes",
+      "boundary_reason": "The deferral closes this approach before an adaptive pressure-patch proposal."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "p5",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Adaptive neck-pressure patches improve high-contrast breakthrough accuracy",
+      "boundary_reason": "The first patch test concludes before evaluation on fresh multi-neck networks."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Fresh multi-neck results support selecting adaptive pressure patches",
+      "boundary_reason": "The selection decision precedes broader validation on other unseen networks."
+    },
+    {
+      "session_id": "S14",
+      "node_ids": [
+        "n53",
+        "n54"
+      ],
+      "topic": "Broader validation produces the Braided-300 evaluation bundle",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

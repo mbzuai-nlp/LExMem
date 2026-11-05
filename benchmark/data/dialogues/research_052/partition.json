@@ -1,0 +1,130 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Identify unstable shortcuts using audited Waterbirds edits and subgroup support",
+      "boundary_reason": "The identifiability audit and its table are complete; discussion shifts to training penalties."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Test subgroup-weighted scene-swap penalties against ERM",
+      "boundary_reason": "The penalties improve worst-group accuracy but exceed the allowed overall-accuracy loss, prompting a different approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Train and adopt sensitivity-gated residual heads on Waterbirds",
+      "boundary_reason": "The held-out benchmark supports an adoption decision; the next discussion compares approaches."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n21",
+        "n22"
+      ],
+      "topic": "Compare scene-swap penalties and residual heads by paired bootstrap",
+      "boundary_reason": "The comparative result is reported; focus shifts to gate reliability on unseen backgrounds."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Test residual-head gate recall on unseen minority backgrounds",
+      "boundary_reason": "The gate-recall hypothesis is tested; a blending proposal follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Calibrate and adopt overlap-weighted model blending",
+      "boundary_reason": "Held-out results support adopting the blend; the next question concerns lower counterfactual overlap."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Stress-test blending on unseen backgrounds with low minority overlap",
+      "boundary_reason": "The low-overlap benchmark is complete; discussion returns to residual-head gate limits."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Measure residual-head gains across minority gate-recall levels",
+      "boundary_reason": "The recall sweep establishes a low-recall limitation, motivating a new routing proposal."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Evaluate morphology-gated invariant fallback at low gate recall",
+      "boundary_reason": "The Waterbirds comparison leads to an adoption decision; the next stage audits CelebA."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Audit CelebA edits and validate the low-recall fallback",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

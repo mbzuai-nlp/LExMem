@@ -1,0 +1,637 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1"
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1"
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1"
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1"
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1"
+    },
+    {
+      "id": "pl1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1"
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "pl1"
+    },
+    {
+      "id": "ar1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2"
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "pl1"
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3"
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "q1"
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "h2"
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "a4"
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1"
+    },
+    {
+      "id": "pl2",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "q2"
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "pl2"
+    },
+    {
+      "id": "ar2",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "a5"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1"
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "q3"
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "h3"
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "a6"
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "e4"
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "h4"
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "a7"
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "h4"
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "a8"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "e6"
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "h5"
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a9"
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "e7"
+    },
+    {
+      "id": "pl3",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "d2"
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "pl3"
+    },
+    {
+      "id": "ar3",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "a10"
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1"
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3"
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "q4"
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "h6"
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "a11"
+    },
+    {
+      "id": "pl4",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "e8"
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "pl4"
+    },
+    {
+      "id": "ar4",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "a12"
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "pl4"
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a13"
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "pl1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "pl1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "pl2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "pl2",
+      "relation": "decompose",
+      "target": "a5"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "ar2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a6",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "revise",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "revise",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "h5",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "h5",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "pl3",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "pl3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "pl3",
+      "relation": "decompose",
+      "target": "a10"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "ar3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "ar3"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "pl4",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "pl4",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "pl4",
+      "relation": "decompose",
+      "target": "a12"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "ar4"
+    },
+    {
+      "source": "pl4",
+      "relation": "decompose",
+      "target": "a13"
+    },
+    {
+      "source": "a13",
+      "relation": "depend_on",
+      "target": "ar4"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "ar4"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "p3"
+    }
+  ]
+}

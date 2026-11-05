@@ -1,0 +1,133 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Invalidating indirect callers when cast-reachable heap function pointers introduce new targets",
+      "boundary_reason": "The failed location-only watches have been replaced and the corrected watches validated."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Implementing versioned SCC summaries and identifying the recursive-edge invalidation question",
+      "boundary_reason": "The implementation artifact and its remaining recursive-edge question lead into a different propagation proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Prototyping and benchmarking provenance-tracked differential retractions",
+      "boundary_reason": "The prototype's alias equivalence and latency results support an adoption decision."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Rebuilding changed SCCs and preserving facts when recursive cycles split",
+      "boundary_reason": "Two competing approaches to cycle-split retraction have been stated; the next node introduces demand-driven queries."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Validating watched query slices and retractions against newly reachable opaque calls",
+      "boundary_reason": "The opaque-call and cycle-split tests conclude before the discussion turns to query-coverage costs."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Choosing between dirty query slices and SCC propagation by queried-pointer coverage",
+      "boundary_reason": "The coverage measurements produce a switching decision."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Validating epoch-stamped effects on mixed edits",
+      "boundary_reason": "Harness agreement and mixed-edit alias equivalence are established before the separate latency benchmark."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Benchmarking and adopting epoch-stamped coverage switching",
+      "boundary_reason": "The benchmark and adoption decision conclude; the next question concerns concurrent queries."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Preventing mixed-epoch answers during concurrent edits and queries",
+      "boundary_reason": "Pinned-query answers have been checked against committed snapshots."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Specifying executable IR semantics and validating them with generated differential tests",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

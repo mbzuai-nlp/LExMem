@@ -1,0 +1,901 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable cross-lingual morphological inflection transfer to low-resource languages with grammatical feature combinations absent from source languages.",
+      "requirements": [
+        "Use at most 200 labeled inflections per target language; evaluate on unseen lemmas.",
+        "Exceed matched-budget multilingual fine-tuning exact-match accuracy by five percentage points on source-absent feature combinations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a factorized character transducer on source paradigms; compose absent feature bundles and fit target morphotactic adapters on 200 forms."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can 200-form target adapters resolve nonconcatenative allomorphy for source-absent feature bundles on unseen lemmas?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Morphotactic adapters learn nonconcatenative allomorphy from 200 forms, improving unseen-lemma exact-match ≥5 points over matched-budget fine-tuning on source-absent bundles."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Build UniMorph 4.0 source-absent bundle splits; train 200-form adapters and matched-budget baselines; compare unseen-lemma exact-match and nonconcatenative errors."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run five-seed UniMorph 4.0 Arabic and Maltese target splits using 200 labels; compare unseen-lemma source-absent-bundle exact-match against matched-budget multilingual fine-tuning."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "With 200 labels, Arabic/Maltese nonconcatenative source-absent bundles reached 52.4% unseen-lemma exact-match versus 45.8% matched-budget fine-tuning, averaged over five seeds."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Advance factorized adapters to broader-language testing: Arabic/Maltese source-absent exact-match exceeded matched-budget fine-tuning by 6.6 points."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Test 200-form adapters against matched-budget fine-tuning on Turkish, Finnish, and Georgian unseen lemmas, stratified by source-absent bundles."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Run five-seed UniMorph 4.0 Turkish, Finnish, and Georgian splits; score unseen-lemma source-absent-bundle exact-match against matched-budget multilingual fine-tuning."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "UniMorph 4.0 benchmark: Turkish, Finnish, and Georgian source-absent-bundle splits, five-seed unseen-lemma exact-match tables, and matched-budget 200-label training scripts."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Audit benchmark splits for lemma leakage and source-bundle overlap; reproduce five-seed exact-match tables with its 200-label scripts."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Audit found zero lemma leakage or source-bundle overlap; adapters gained 6.1 unseen-lemma exact-match points over matched-budget fine-tuning."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n1",
+      "content": "Disabling feature-conditioned stem-edit templates reduces Arabic/Maltese unseen-lemma exact-match by ≥4 points on source-absent nonconcatenative bundles."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Ablate feature-conditioned stem-edit templates on five-seed Arabic/Maltese 200-label splits, retaining parameter-matched adapters; measure source-absent-bundle unseen-lemma exact-match."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "On five-seed Arabic/Maltese splits, removing stem-edit templates reduced source-absent-bundle unseen-lemma exact-match from 52.4% to 50.9%, only 1.5 points."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n12",
+      "content": "Replicate the 200-label Arabic/Maltese stem-template ablation on root-and-pattern verbs, reporting source-absent-bundle unseen-lemma exact-match by vowel-change class."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "On root-and-pattern verbs, templates raised source-absent-bundle unseen-lemma exact-match from 43.2% to 48.1%, a 4.9-point gain."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Does template utility depend on root-and-pattern prevalence, explaining the 4.9-point verb gain versus 1.5-point aggregate gain?"
+    },
+    {
+      "id": "n18",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "Estimate five-seed template-ablation gains across Arabic/Maltese root-and-pattern prevalence bins, comparing the 1.5-point aggregate and 4.9-point verb effects."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 21,
+      "exploration_parent_id": "g1",
+      "content": "Induce paradigm classes from unlabeled target text; anchor slots with 200 labeled forms and infer unseen-lemma source-absent bundles analogically."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "Mine target-corpus edit-pattern neighborhoods, anchor 200 labeled forms, and benchmark source-absent-bundle unseen-lemma exact-match against matched-budget multilingual fine-tuning."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Cluster target-corpus wordforms by shared edit patterns and align clusters to paradigm slots using 200 UniMorph 4.0 labels."
+    },
+    {
+      "id": "n21",
+      "type": "artifact",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "ParadigmAtlas v1: target-corpus edit-pattern clusters, 200-label slot alignments, and analogy candidates for unseen lemmas with source-absent bundles."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Run five-seed Turkish/Finnish/Georgian unseen-lemma tests using ParadigmAtlas v1; report source-absent-bundle candidate coverage and exact-match versus matched-budget multilingual fine-tuning."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "ParadigmAtlas v1 achieved 84% gold-candidate coverage and 57.0% unseen-lemma exact-match versus 50.8% matched-budget fine-tuning on source-absent bundles across Turkish/Finnish/Georgian."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Pretrain a multilingual lemma–form cycle model; adapt with unlabeled target wordforms and 200 anchors to compose source-absent feature bundles."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "Can cycle consistency and 200 anchors assign feature slots to unlabeled target forms without collapsing source-absent bundles?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "With 200 anchors, cycle consistency achieves ≥80% target slot accuracy and ≤10% erroneous source-absent bundle collapse on unseen lemmas."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Audit five-seed Turkish/Finnish/Georgian 200-anchor cycle models for unseen-lemma slot accuracy and erroneous source-absent-bundle collapse."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Five-seed Turkish/Finnish/Georgian audit found 74% unseen-lemma slot accuracy and 17% erroneous source-absent-bundle collapse, missing both thresholds."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n25",
+      "content": "Run five-seed Arabic/Maltese 200-anchor cycle-model audits, measuring unseen-lemma slot accuracy and source-absent-bundle collapse against 80%/10% thresholds."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Arabic/Maltese five-seed cycle models reached 83% unseen-lemma slot accuracy and 8% source-absent-bundle collapse with 200 anchors."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Does target-corpus paradigm ambiguity explain why cycle models meet slot-alignment thresholds in Arabic/Maltese but fail in Turkish/Finnish/Georgian?"
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Estimate target-corpus paradigm ambiguity per language, then regress five-seed slot accuracy and bundle collapse on ambiguity and corpus size."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Compute candidate-slot entropy in five target corpora; regress audited slot accuracy and bundle-collapse rates on entropy, controlling corpus size."
+    },
+    {
+      "id": "n33",
+      "type": "artifact",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "AmbiguityAudit v1: five-language candidate-slot entropy tables, corpus-size-adjusted regressions for slot accuracy and bundle collapse, and reproducible scripts."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Pretrain a feature-compositional transducer on counterfactual bundle swaps, then calibrate target phonotactic constraints with 200 labeled inflections."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p4",
+      "content": "Do counterfactual bundle swaps teach valid feature composition, or bias target calibration toward unattested phonotactics?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Counterfactual swaps improve source-absent-bundle unseen-lemma exact-match ≥5 points over matched-budget fine-tuning, with ≤5% phonotactic violations after 200-label calibration."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "Ablate counterfactual swaps across five targets; compare 200-label source-absent-bundle unseen-lemma exact-match and phonotactic violations against matched-budget fine-tuning."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Run five-seed swap ablations across five 200-label targets; compare source-absent-bundle unseen-lemma exact-match and phonotactic violations against matched-budget fine-tuning."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Across five targets, swaps reached 59.1% source-absent-bundle unseen-lemma exact-match (no-swaps: 54.5%; fine-tuning: 52.8%) with 3.6% phonotactic violations."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n35",
+      "content": "Audit per-language five-seed gains and phonotactic violation rates at 200 labels, stratifying source-absent bundles by counterfactual edit distance."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Expanded phonotactic audit uncovered omitted vowel-harmony constraints; five-target violation rate rose from 3.6% to 6.4%, exceeding 5%."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Can vowel-harmony-aware filtering reduce audited violations below 5% without erasing the 6.3-point exact-match advantage?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Adding 200-label vowel-harmony filters to swap decoding yields <5% audited violations and ≥5-point source-absent-bundle unseen-lemma exact-match gains over fine-tuning."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Fit vowel-harmony filters using existing 200-label splits, rerun five-target swap decoding, and compare audited violations and exact-match with prior results."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Run five-seed filtered/unfiltered swap decoding on five 200-label targets; measure audited violations and source-absent-bundle unseen-lemma exact-match versus fine-tuning."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Penalty-calibrated swaps gained 5.3 exact-match points with 4.8% audited violations; vowel-harmony filters gained only 4.1 despite 3.2% violations."
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n42",
+      "content": "Cross-validate soft harmony penalties within existing 200-label splits; test per-language ≥5-point exact-match gains and <5% audited violations."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Sweep soft harmony penalties across five targets, selecting by cross-validation within 200 labels; score held-out unseen-lemma exact-match and audited violations."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Cross-validated soft harmony filtering gained 5.2 points in source-absent-bundle unseen-lemma exact-match, with 4.6% audited violations across five targets."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Adopt cross-validated soft harmony filtering: it retains a 5.2-point exact-match gain with fewer violations than penalty-calibrated swaps (4.6% versus 4.8%)."
+    },
+    {
+      "id": "n50",
+      "type": "plan",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Test soft-filtered swaps on Hungarian and Estonian source-absent bundles using 200 labels; require ≥5-point unseen-lemma exact-match gains over matched-budget fine-tuning."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Run five-seed Hungarian/Estonian UniMorph 4.0 unseen-lemma splits with 200-label soft-filtered swaps; score source-absent-bundle exact-match versus matched-budget fine-tuning."
+    },
+    {
+      "id": "n52",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "HarmonyTransfer v1: Hungarian/Estonian 200-label splits, soft-filtered swap checkpoints, five-seed source-absent-bundle exact-match tables, and matched-budget baseline scripts."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Audit HarmonyTransfer v1 for lemma leakage; reproduce five-seed Hungarian/Estonian source-absent-bundle exact-match gains and phonotactic violations using 200 labels."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Audit confirmed zero lemma leakage; Hungarian/Estonian source-absent-bundle unseen-lemma exact-match gains were 5.7/5.3 points, with 4.2% phonotactic violations."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n50",
+      "relation": "decompose",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "p4"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable cross-lingual morphological inflection transfer to low-resource languages with grammatical feature combinations absent from source languages.",
+    "requirements": [
+      "Use at most 200 labeled inflections per target language; evaluate on unseen lemmas.",
+      "Exceed matched-budget multilingual fine-tuning exact-match accuracy by five percentage points on source-absent feature combinations."
+    ]
+  }
+}

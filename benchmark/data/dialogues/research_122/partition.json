@@ -1,0 +1,152 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Bidirected-graph baseline and CausalEdit-ID v1",
+      "boundary_reason": "The baseline exceeds both targets and its dataset and scripts are released; the next nodes test a harder composition."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "Baseline performance on unseen two-latent-edge edits",
+      "boundary_reason": "Paired accuracy falls below target, motivating a revised training approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "District-decomposition supervision and loss-weight tuning",
+      "boundary_reason": "A tuned weight reaches the paired-accuracy target on the fixed holdout; the next stage tests fresh compositions."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Independent validation of the frozen district-supervised encoder",
+      "boundary_reason": "A further fresh test falls below target, closing this validation stage."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Canonical ADMG parsing followed by exact ID execution",
+      "boundary_reason": "The pipeline meets both targets on v2 and is released; the next proposal changes the reasoning approach."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Motif retrieval and latent-edit cache errors",
+      "boundary_reason": "Fresh testing exposes below-target paired accuracy and increased flip-cache errors, prompting a cache-gating revision."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Canonical ADMG gating for motif-cache reuse",
+      "boundary_reason": "Gating reduces flip-cache errors, meets both targets, and is adopted; the next proposal adds certificate-guided verification."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Certificate-guided latent-edge verification and fresh-test reversal",
+      "boundary_reason": "Fresh three-latent-edge results lead to deferring CertGate adoption."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "ID-disagreement counterexample training and ablation",
+      "boundary_reason": "The ablation outperforms counterexample training on fresh compositions, so that training is deferred."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Verified ID-flip counterexamples and independent comparison",
+      "boundary_reason": "The independent comparison does not surpass the ablation; subsequent nodes examine stratified compositions."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Stratified tests and deployment decision for verified-flip training",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

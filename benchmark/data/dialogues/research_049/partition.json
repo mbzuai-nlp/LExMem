@@ -1,0 +1,115 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Identifying clock drift with anchored spline alignment",
+      "boundary_reason": "The initial anchor and delay-sparsity test reaches an adoption decision; implementation follows."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2",
+        "a4",
+        "e3",
+        "d2"
+      ],
+      "topic": "Implementing and stress-testing the spline matcher",
+      "boundary_reason": "Counterexamples validate its ambiguity flags, but the 30%-missing/repeated stress test leads to a deployment decision."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h2",
+        "a5",
+        "e4",
+        "a6",
+        "e5",
+        "d3"
+      ],
+      "topic": "Testing repeat-aware probabilistic matching",
+      "boundary_reason": "Held-out results prompt a decision to refine rather than deploy the matcher."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "h3",
+        "a7",
+        "e6",
+        "d4"
+      ],
+      "topic": "Calibrating and gating repeat-aware matching",
+      "boundary_reason": "Held-out evaluation supports an adoption decision for anchored intervals."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h4",
+        "a8",
+        "e7",
+        "d5"
+      ],
+      "topic": "Testing anchor-free motion–sound coherence",
+      "boundary_reason": "Periodic aliases lead to rejection of anchor-free coherence-only drift estimates."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "a9",
+        "e8",
+        "a10",
+        "e9",
+        "d6"
+      ],
+      "topic": "Testing whether four nonperiodic motifs identify clock curvature",
+      "boundary_reason": "A held-out counterexample leads to stricter motif-spacing and rank requirements."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "h6",
+        "a11",
+        "e10",
+        "a12",
+        "e11",
+        "a13",
+        "e12",
+        "d7"
+      ],
+      "topic": "Refining and auditing motif-curvature identifiability",
+      "boundary_reason": "The rank audit leads to a qualified decision on when motif-based curvature can be used."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "l2",
+        "a14",
+        "r2",
+        "a15",
+        "e13",
+        "d8"
+      ],
+      "topic": "Integrating and evaluating the calibrated motif hybrid",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

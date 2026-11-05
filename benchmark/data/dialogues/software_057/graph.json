@@ -1,0 +1,1240 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an embedded runtime that contains peripheral-driver faults while preserving hard real-time deadlines and safe shared-device recovery.",
+      "requirements": [
+        "Under driver crashes, hangs, and invalid DMA requests, protected control tasks retain 1 ms deadlines.",
+        "Recover shared-device service within 50 ms without stale DMA writes or cross-partition state corruption."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Reserve controls a dedicated core; sandbox drivers with IOMMU DMA domains and recover shared devices via revoke–drain–reset–epoch fencing."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can IOMMU revocation and drain–reset–epoch fencing block stale DMA after driver crashes within the 50 ms recovery budget?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Device reset, DMA drain, IOTLB invalidation, and epoch-fenced remapping prevent stale writes and restore service within 50 ms."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Run DMA-FenceBench: inject crashes with outstanding DMA across 10,000 resets; measure stale writes and shared-device recovery latency."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "DMA-FenceBench observed zero stale writes across 10,000 resets; worst-case shared-device recovery was 43 ms."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Adopt drain–reset–epoch fencing for shared-device recovery: DMA-FenceBench found zero stale writes and 43 ms worst-case restoration."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "p1",
+      "content": "After adopting drain–reset–epoch fencing, implement dedicated-core scheduling and IOMMU isolation; inject driver faults against 1-ms deadlines and 50-ms recovery."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Run RT-FaultBench across 100,000 control releases, injecting crashes, hangs, and invalid DMA; measure misses, recovery latency, and isolation breaches."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "RT-FaultBench report with timestamped control-release traces, injected-fault logs, DMA-isolation checks, and shared-device recovery-latency histograms."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Audit RT-FaultBench report traces for 1-ms deadline misses, stale DMA writes, partition corruption, and recovery exceeding 50 ms."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "RT-FaultBench measured 68 ms recovery after a driver hang, exceeding the 50 ms limit despite crash-only recovery reaching 43 ms."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 13,
+      "exploration_parent_id": "g1",
+      "content": "Use 5-ms hang detection, bounded DMA fencing with device-reset escalation, then IOTLB invalidation and epoch-gated remapping."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "p2",
+      "content": "The shared device stops all DMA within 10 ms of an independent hardware reset, even when its driver hangs."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n11",
+      "content": "Replay RT-FaultBench’s logged hang 10,000 times; assert independent reset and measure last DMA transaction latency against 10 ms."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Across 10,000 hang replays, 37 independent resets allowed DMA past 10 ms; worst last-DMA latency was 18 ms."
+    },
+    {
+      "id": "n14",
+      "type": "hypothesis",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Allowing 20 ms for hardware-confirmed DMA quiescence after reset prevents stale writes while keeping hang recovery below 50 ms."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Replay RT-FaultBench hangs across 10,000 resets; require hardware-confirmed DMA quiescence within 20 ms, then measure stale writes and recovery."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Across 10,000 hang replays, DMA quiesced within 19 ms with zero stale writes, but recovery reached 54 ms."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n14",
+      "content": "Using RT-FaultBench fault logs, profile detection, reset, quiescence, and remapping during hang replays against the 50-ms recovery limit."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Hang profiles found 11 ms serialized shadow-map preparation; overlapping it with quiescence projects 43 ms recovery from 54 ms."
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Overlapping shadow-map preparation with confirmed DMA quiescence, then IOTLB invalidation and epoch-gated remapping, achieves ≤50-ms recovery without stale writes."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Replay RT-FaultBench logs with overlapped shadow-map preparation, IOTLB invalidation, and epoch-gated remapping; measure 10,000 hang recoveries and stale writes."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Across 10,000 hang replays, overlapped shadow-map preparation cut worst recovery to 44 ms, with zero stale DMA writes."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Reserve a control core; IOMMU-sandbox drivers, overlap post-reset DMA quiescence with shadow-map preparation, then invalidate IOTLB and epoch-gate remapping."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Do reserved-core scheduling and per-driver IOMMU domains prevent 1-ms deadline misses and cross-partition corruption during invalid DMA requests?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "Dedicated control-core scheduling and per-driver IOMMU domains yield zero 1-ms deadline misses and zero cross-partition writes under injected driver faults."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Run RT-IsolationBench across 1,000,000 control releases with driver crashes, hangs, and illegal DMA; record deadline misses and cross-partition writes."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Across 1,000,000 releases, RT-IsolationBench recorded six 1-ms deadline misses during IOTLB invalidation; zero cross-partition writes."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Prioritize control traffic with fabric QoS and bound IOTLB invalidation bursts to 20 µs; retain overlapped, epoch-gated recovery."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "p4",
+      "content": "Implement fabric QoS and bounded invalidations; rerun fault injection to check 1-ms deadlines, partition isolation, and ≤50-ms recovery."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n26",
+      "content": "Configure control-core fabric priority and 20-µs IOTLB invalidation bursts; rerun RT-IsolationBench and 10,000 hang recoveries."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 33,
+      "exploration_parent_id": "n27",
+      "content": "QoS-FenceBench report containing deadline traces, fabric-priority settings, IOTLB burst durations, isolation checks, and 10,000 recovery latencies."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n26",
+      "content": "Audit QoS-FenceBench traces for deadline misses, cross-partition writes, invalidation bursts over 20 µs, and recovery beyond 50 ms."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "QoS-FenceBench found zero deadline misses in 1,000,000 releases, zero cross-partition writes, and 47 ms worst-case recovery."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n26",
+      "content": "Replay QoS-FenceBench’s worst recovery trace under concurrent DMA faults and bus saturation; check deadlines, stale writes, and restoration latency."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "Under concurrent DMA faults and bus saturation, worst-case recovery rose to 56 ms; deadlines and DMA isolation held."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "Retain fabric QoS and bounded IOTLB invalidations for deadlines; defer recovery-policy adoption because saturated-bus recovery reaches 56 ms."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Guarantee 15% fabric bandwidth for recovery below protected-control priority; retain IOMMU isolation, 20-µs invalidation bursts, and overlapped epoch-gated remapping."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p5",
+      "content": "Does a 15% recovery-bandwidth reservation restore saturated-bus service within 50 ms without missing 1-ms deadlines or allowing stale DMA?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "With overlapped epoch-gated remapping, 15% recovery bandwidth yields ≤50-ms saturated-bus recovery, zero stale writes, and zero 1-ms deadline misses."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Replay RT-FaultBench logs across 10,000 saturated-bus runs with 15% reserved bandwidth and overlapped epoch fencing; measure deadlines, stale writes, recovery."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n36",
+      "content": "Across 10,000 saturated-bus runs, worst recovery was 49 ms, with zero stale writes and zero 1-ms deadline misses."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n35",
+      "content": "Replay RT-FaultBench’s simultaneous hang and invalid-DMA traces under saturated-bus bursts; measure recovery tails, control deadlines, and cross-partition writes."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n38",
+      "content": "Simultaneous hangs and invalid DMA under saturated bursts produced 53 ms worst-case recovery; no deadline misses or cross-partition writes occurred."
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "With 15% bandwidth, prioritize reset over invalid-DMA logging while overlapping epoch-gated remapping; predict ≤50-ms recovery without stale writes or misses."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n40",
+      "content": "Replay RT-FaultBench concurrent hang/invalid-DMA traces under saturation, prioritizing reset over logging; measure recovery, stale writes, and deadline misses."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "Reset-first replay reduced worst concurrent-fault recovery from 53 to 48 ms; zero stale writes and 1-ms deadline misses."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Adopt reset-first recovery with 15% bandwidth: concurrent-fault recovery fell from 53 to 48 ms without stale writes or misses."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "p5",
+      "content": "Implement adopted reset-first recovery with 15% reserved bandwidth, then certify 1-ms deadlines, DMA isolation, and ≤50-ms service restoration."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n44",
+      "content": "Implement reset-first handler with 5-ms watchdog, 15% recovery bandwidth, hardware-confirmed DMA quiescence, 20-µs IOTLB bursts, and epoch-gated remapping."
+    },
+    {
+      "id": "n46",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Recovery Runtime v0.9: reset-first watchdog handler, 15% fabric reservation, bounded IOTLB invalidation, and epoch-fenced DMA remapping."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n44",
+      "content": "Stress-test Recovery Runtime v0.9 with crashes, hangs, invalid DMA, and saturated buses; record deadlines, stale writes, and recovery."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Recovery Runtime v0.9 stress tests recorded zero deadline misses or stale writes; worst saturated-bus restoration was 49 ms."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n44",
+      "content": "Run a 24-hour hardware-in-loop reset/DMA boundary-timing campaign on Recovery Runtime v0.9; log recovery tails, deadline misses, and cross-partition writes."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "The 24-hour hardware-in-loop campaign found one lost reset-completion interrupt causing 52 ms recovery; no deadline misses or cross-partition writes."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 57,
+      "exploration_parent_id": "p5",
+      "content": "Recovery-core 250-µs reset-status polling should bypass lost interrupts, preserving confirmed DMA quiescence, ≤50-ms recovery, and 1-ms deadlines."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Replay RT-FaultBench traces with suppressed reset interrupts and 250-µs recovery-core polling; measure quiescence, stale writes, deadlines, and restoration latency."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "Across 10,000 suppressed-interrupt replays, polling confirmed DMA quiescence; worst recovery was 49 ms, with zero stale writes or deadline misses."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "Adopt reset-first recovery with 250-µs polling and 15% bandwidth; lost-interrupt recovery fell from 52 to 49 ms without stale writes."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 61,
+      "exploration_parent_id": "p5",
+      "content": "Add 250-µs recovery-core reset polling to Runtime v0.9, then recertify deadline isolation, DMA fencing, and ≤50-ms restoration."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n55",
+      "content": "Patch Recovery Runtime v0.9 with 250-µs reset-status polling on the recovery core; retain interrupt handling and hardware-confirmed DMA quiescence."
+    },
+    {
+      "id": "n57",
+      "type": "artifact",
+      "order": 63,
+      "exploration_parent_id": "n56",
+      "content": "Recovery Runtime v1.0 adds 250-µs recovery-core reset-status polling to v0.9, preserving reset-first DMA fencing and epoch-gated remapping."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n55",
+      "content": "Run 48-hour hardware-in-loop fault campaign on Runtime v1.0, suppressing reset interrupts; measure deadlines, stale DMA, partition writes, and recovery."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n58",
+      "content": "Runtime v1.0’s 48-hour campaign recorded zero deadline misses, stale DMA, or partition writes; worst suppressed-interrupt recovery was 49 ms."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 66,
+      "exploration_parent_id": "n59",
+      "content": "Approve Recovery Runtime v1.0: 48-hour testing found zero deadline misses, stale writes, or partition corruption; worst recovery was 49 ms."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "revise",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "revise",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "p3",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "p5",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "n40"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n40"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "revise",
+      "target": "n44"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "revise",
+      "target": "n46"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an embedded runtime that contains peripheral-driver faults while preserving hard real-time deadlines and safe shared-device recovery.",
+    "requirements": [
+      "Under driver crashes, hangs, and invalid DMA requests, protected control tasks retain 1 ms deadlines.",
+      "Recover shared-device service within 50 ms without stale DMA writes or cross-partition state corruption."
+    ]
+  }
+}

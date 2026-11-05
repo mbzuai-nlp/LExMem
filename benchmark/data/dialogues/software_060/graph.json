@@ -1,0 +1,1122 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build a dependency-upgrade analyzer that distinguishes client-reachable behavioral incompatibilities from harmless upstream changes despite dynamic dispatch and incomplete code.",
+      "requirements": [
+        "Achieve at least 90% recall and 90% precision on 100 labeled upgrade scenarios.",
+        "Provide reproducible client-level witnesses for incompatibilities; explicitly identify uncertainty caused by unavailable code or reflection."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Combine dispatch-aware client call graphs with version-differential tests, emitting replayable witnesses and uncertainty tags for reflection or missing code."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can receiver-type constraints prune virtual-call targets while preserving uncertainty from reflection and missing bytecode?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Allocation-site typing and unknown-target edges for reflection or missing bytecode preserve ≥90% recall while pruning ≥40% dispatch targets."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Build allocation-site call graphs with unknown-target edges; compare dispatch pruning against CHA and recall on 100 labeled upgrades."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run allocation-site and CHA call graphs on 100 labeled upgrades, measuring dispatch pruning and incompatibility recall with unknown-target edges."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Across 100 labeled upgrades, allocation-site analysis retained 93% incompatibility recall and pruned 47% of CHA dispatch targets."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Adopt allocation-site dispatch with unknown-target edges: 93% recall exceeds the threshold while pruning 47% of CHA targets."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Generate replayable client tests from adopted call graphs, compare dependency versions, and flag missing-code or reflection paths as uncertain."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "UpgradeWitness bundle contains replayable client tests, old/new dependency lockfiles, behavioral diffs, and explicit reflection/missing-code uncertainty labels."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Configuration-aware receiver typing with unknown edges for opaque calls will prune ≥50% of CHA targets while retaining ≥90% recall."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Parse service-provider manifests and dependency-injection bindings, then measure configuration-aware dispatch pruning and recall against CHA on 100 labeled upgrades."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Configuration-aware typing pruned 56% of CHA targets but recall fell to 87%; runtime injection overrides escaped parsed bindings."
+    },
+    {
+      "id": "n14",
+      "type": "decision",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Reject configuration-only pruning; retain allocation-site analysis with unknown edges because its 93% recall exceeds configuration-aware typing's 87%."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p1",
+      "content": "How can replayable client tests separate dependency-caused incompatibilities from nondeterminism and unreachable upstream changes?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Add hermetic differential replay with client-input synthesis, output normalization, and conservative triage of nondeterministic or opaque executions."
+    },
+    {
+      "id": "n17",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Synthesize client-entrypoint inputs, replay each version five times in pinned containers, normalize outputs, and classify only stable reachable divergences."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Execute UpgradeWitness tests under both lockfiles in pinned containers five times each, recording normalized client outputs and flaky-run flags."
+    },
+    {
+      "id": "n19",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "ReplayMatrix records five normalized client-output traces per dependency version, container digests, divergence signatures, and flaky-run flags."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Cross-check UpgradeWitness tests against ReplayMatrix traces for 100 labeled upgrades, measuring precision, recall, witness reproducibility, and uncertainty coverage."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Five UpgradeWitness incompatibility witnesses failed pinned replay; on 100 upgrades, hermetic gating raised precision from 84% to 92%."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Does hermetic replay gating miss genuine environment-sensitive incompatibilities and reduce recall below 90%?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Pinned JDK, locale, and timezone variants will recover environment-sensitive witnesses, sustaining ≥90% recall and ≥90% precision."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Rerun 100 labeled upgrades, including five failed witnesses, across pinned JDK, locale, and timezone variants; measure recall and precision."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Across 100 labeled upgrades, environment variants recovered two witnesses; recall reached 91% and precision remained 92%."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n23",
+      "content": "Independently rebuild pinned environments, replay all 100 upgrades five times, and recompute precision and recall, including recovered witnesses."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Independent rebuilds changed tzdata despite fixed timezones, invalidating both recovered witnesses; recall fell from 91% to 88%."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Keep environment variants, pin tzdata digests, and withhold both recovered witnesses until independent replay restores ≥90% recall."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n22",
+      "content": "Pinning tzdata digests alongside JDK, locale, and timezone will restore independently reproducible witnesses and ≥90% recall and precision."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Rebuild tzdata-pinned containers independently, replay all UpgradeWitness cases five times, and recompute precision, recall, and witness stability."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "With tzdata-pinned rebuilds, both recovered witnesses replayed 5/5 times; across 100 upgrades, recall reached 91% and precision 92%."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n29",
+      "content": "Have a second runner rebuild tzdata-pinned images from lockfiles, replay recovered witnesses, and audit all uncertain cases against labels."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Second runner resolved a different JDK vendor build; two recovered witnesses failed, reducing recall from 91% to 88%."
+    },
+    {
+      "id": "n34",
+      "type": "decision",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Retain tzdata pinning, additionally pin JDK vendor builds, and withhold both witnesses until cross-runner replay succeeds."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 35,
+      "exploration_parent_id": "g1",
+      "content": "Use content-addressed runtime images pinning JDK vendor, tzdata, and OS to replay environment-sensitive witnesses across independent runners."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p3",
+      "content": "Will digest-pinned runtime images reproduce the two environment-sensitive witnesses across independent runners without sacrificing 92% precision?"
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Digest-pinned JDK-vendor, tzdata, and OS images will replay both witnesses across runners, yielding 91% recall and 92% precision."
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Pin JDK-vendor, tzdata, and OS image digests; independently replay withheld witnesses five times and reassess 100-case precision and recall."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Rebuild digest-pinned JDK-vendor, tzdata, and OS images; replay both disputed witnesses across runners and recompute 100-case precision/recall."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Both disputed witnesses replayed 5/5 times on two digest-pinned runners; 100-case recall reached 91%, precision 92%."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n38",
+      "content": "On a third runner, verify image digests, replay every positive witness five times, and recompute labeled precision and recall."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Third-runner digest checks passed; all positive witnesses replayed 5/5 times, preserving 91% recall and 92% precision."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Adopt digest-pinned cross-runner replay for positive reports: witnesses reproduced 5/5, with 91% recall and 92% precision."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Implement verdict exporter using ReplayMatrix and digest-pinned cross-runner replay, attaching client reproduction commands and reflection/missing-code uncertainty tags."
+    },
+    {
+      "id": "n45",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "ReplayMatrix v2 adds client-level verdicts, cross-runner image digests, replay commands, and explicit reflection/missing-code uncertainty labels."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Use client-constrained effect summaries to discard unreachable upstream changes, while marking paths through unavailable code or reflection uncertain."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Compute client-reachable effect summaries for changed methods, discard unreachable deltas, and require stable paired replays before attributing divergences."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Build effect summaries for changed methods across 100 upgrades, tracing client reachability and flagging reflection or missing-code paths."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "EffectReach index maps changed methods to client entrypoints, observable effects, and explicit reflection or missing-code uncertainty edges."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n47",
+      "content": "Compare EffectReach-filtered ReplayMatrix v2 against unfiltered verdicts on 100 labeled upgrades, measuring precision, recall, witness replay, and uncertainty coverage."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "EffectReach filtering cut recall from 91% to 86% by pruning client-reachable callbacks registered in unavailable code."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Restore unknown callback edges for unavailable registrars in EffectReach; rerun 100 upgrades to measure recovered recall and precision."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Unknown callback edges restored recall to 91%; EffectReach retained 92% precision and marked four opaque-registration cases uncertain."
+    },
+    {
+      "id": "n54",
+      "type": "question",
+      "order": 54,
+      "exploration_parent_id": "p4",
+      "content": "Can unknown callback edges preserve recall without flooding analysts with uncertain reports for harmless upstream changes?"
+    },
+    {
+      "id": "n55",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Requiring an observable-effect match for unknown callback edges will halve uncertain reports while maintaining ≥90% incompatibility recall."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "On 100 labeled upgrades, require effect matches for unknown callback edges; compare opaque-registration uncertainty against four cases and 91% recall."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Effect matching reduced opaque-registration uncertainties from four to two; recall stayed 91% and precision 92% across 100 upgrades."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Adopt effect-matched unknown callback edges; unconditional pruning lost recall, while this retains 91% recall, 92% precision, and two uncertainties."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 59,
+      "exploration_parent_id": "g1",
+      "content": "Instrument callback registration during client replay to resolve opaque targets, retaining unknown edges for unexercised paths."
+    },
+    {
+      "id": "n60",
+      "type": "plan",
+      "order": 60,
+      "exploration_parent_id": "p5",
+      "content": "Instrument effect-matched opaque registrations during pinned replays, resolve exercised callback targets, and retain uncertainty for unobserved registration paths."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Instrument opaque callback registrations in ReplayMatrix v2, map observed targets to EffectReach, and replay both uncertain cases five times."
+    },
+    {
+      "id": "n62",
+      "type": "artifact",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "ReplayMatrix v3 adds observed callback-target traces and retains unknown-target labels wherever registration paths remain unexercised."
+    },
+    {
+      "id": "n63",
+      "type": "activity",
+      "order": 63,
+      "exploration_parent_id": "n60",
+      "content": "Evaluate ReplayMatrix v3 on 100 upgrades, comparing callback uncertainty, recall, and precision against the four-case baseline and effect-matched filter."
+    },
+    {
+      "id": "n64",
+      "type": "evidence",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "ReplayMatrix v3 resolved one of two opaque-registration uncertainties; recall remained 91% and precision 92% across 100 upgrades."
+    },
+    {
+      "id": "n65",
+      "type": "decision",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Adopt callback tracing atop effect-matched unknown edges; it resolves one uncertainty without changing 91% recall or 92% precision."
+    },
+    {
+      "id": "n66",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Integrate ReplayMatrix v3 callback traces into the verdict exporter; run 100-case regression for recall, precision, witness replay, and uncertainty."
+    },
+    {
+      "id": "n67",
+      "type": "artifact",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "UpgradeAudit report bundles verdicts, client replay commands, pinned image digests, callback traces, and explicit unresolved reflection/missing-code uncertainty."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "revise",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n60",
+      "relation": "decompose",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "decompose",
+      "target": "n63"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "revise",
+      "target": "n45"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "n62"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n63",
+      "relation": "produce",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n66",
+      "relation": "produce",
+      "target": "n67"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build a dependency-upgrade analyzer that distinguishes client-reachable behavioral incompatibilities from harmless upstream changes despite dynamic dispatch and incomplete code.",
+    "requirements": [
+      "Achieve at least 90% recall and 90% precision on 100 labeled upgrade scenarios.",
+      "Provide reproducible client-level witnesses for incompatibilities; explicitly identify uncertainty caused by unavailable code or reflection."
+    ]
+  }
+}

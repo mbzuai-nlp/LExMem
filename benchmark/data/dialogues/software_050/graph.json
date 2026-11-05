@@ -1,0 +1,1028 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an ownership type checker for cancellable asynchronous tasks that safely transfer borrowed resources across task boundaries.",
+      "requirements": [
+        "Guarantee memory safety under cancellation and task migration without whole-program analysis or runtime borrow checks.",
+        "Accept 12 safe and reject 12 unsafe programs covering nested borrows, ownership transfer, and cancellation."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use region-indexed nurseries, affine move/borrow captures, transitive lifetime constraints, Send migration bounds, and uncancellable child draining on scope exit."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When cancellation starts during a nested reborrow, which nursery must retain the original lender until the borrowing grandchild finishes?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "The lender's owning nursery drains transitive borrowing descendants before releasing it, even when cancellation reaches an intermediate task."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Specify descendant-drain ordering, implement region-constraint propagation, and test nested reborrows under cancellation in a 24-program suite."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Model-check DrainTree-3 cancellation and migration schedules for three-level reborrows, asserting lender destruction follows every borrowing descendant’s completion."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "DrainTree-3 found cancellation after sibling-nursery handle transfer destroyed the lender before its migrated borrowing grandchild finished."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Require lender nurseries to adopt migrated borrowers’ join obligations before transfer and drain them before releasing the lender."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Rerun DrainTree-3 with statically adopted join obligations across sibling transfers, checking lender-drop order under every cancellation schedule."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "DrainTree-3 explored 1,284 cancellation schedules; adopted join obligations prevented premature lender drops in every schedule."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Adopt static join-obligation transfer for cross-nursery handles: it fixes the sibling-transfer counterexample and passed all 1,284 DrainTree-3 schedules."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Implement region-constraint checking with adopted join obligations, then compile Borrow24’s 12 safe and 12 unsafe cancellation/migration programs."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Borrow24 v0.1 contains a region-constraint checker with adopted join obligations and 24 annotated programs covering reborrows, transfers, and cancellation."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Which Send constraints permit borrower migration when the lender stays pinned and its destructor requires the original thread?"
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Test 16 Borrow24 migration variants for shared/unique Send bounds, pinned lenders, and origin-thread destruction across workers."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Borrow24 v0.1 accepted 3/16 unsafe migrations: two shared Cell borrows raced, and one pinned lender dropped off-thread."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Require `T: Sync` for migrating `&T`, `T: Send` for `&mut T`, and origin-affine nursery drops for pinned lenders."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Implement migration bounds and origin-affine drops, prove modular cancellation safety, verify Borrow24’s 12 safe, 12 unsafe, and 16 migration variants."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Patch Borrow24 v0.1 with Sync/Send migration checks and origin-affine drop scheduling; rerun its 24 annotated programs."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Borrow24 v0.2 implements migration bounds and origin-affine drops; its regression report records 12 safe accepts and 12 unsafe rejects."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Compare Borrow24 v0.1 and v0.2 across 24 annotated programs and 16 migration variants, checking acceptance labels and destructor-thread traces."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Borrow24 v0.2 accepted 12/12 safe programs, rejected 12/12 unsafe programs, and eliminated v0.1’s three unsafe migration acceptances."
+    },
+    {
+      "id": "n20",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Keep v0.2 migration bounds and origin-affine drops: they remove all three v0.1 violations without regressing Borrow24’s 24 labeled programs."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n15",
+      "content": "Mechanize small-step preservation for region-indexed nurseries with adopted joins, Send/Sync migration bounds, and origin-affine drops under arbitrary cancellation."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Mechanized preservation proves adopted joins with Send/Sync bounds and origin-affine drops prevent dangling borrows under cancellation and migration."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "How must executor shutdown coordinate origin-affine drops when migrated borrowers outlive the origin worker?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Executor shutdown must keep origin workers alive until all adopted borrower joins finish and origin-affine destructor queues drain."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Model-check Borrow24 v0.2 shutdown in ShutdownTrace-48, asserting origin-worker retirement follows adopted joins and destructor-queue drainage."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "ShutdownTrace-48 found 3 late-drop schedules: after joins and queue drainage, deferred cancellation cleanup enqueued origin-affine destructors onto retired workers."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Add a shutdown barrier that quiesces cancellation cleanup before draining destructor queues, while origin workers remain active."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "What shutdown state transition prevents deferred cleanup from enqueueing origin-affine drops after the barrier declares quiescence?"
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Extend Borrow24’s join obligations with atomic cleanup-registration closure; model-check active cleanup completion before origin-affine destructor drainage."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "ShutdownTrace-48 found zero late drops after atomic registration closure; all 48 schedules retired workers only after cleanup and drop drainage."
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Atomically closing cleanup registration, then awaiting registered cleanup before destructor drainage, prevents post-quiescence origin-affine enqueueing."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Model-check ShutdownTrace-256 racing cleanup registration against shutdown, asserting no origin-affine enqueue occurs after cleanup completion and queue drainage."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "ShutdownTrace-256 exposed 2 late drops: registered cleanup spawned untracked deferred finalizers that enqueued origin-affine drops after queue drainage."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Atomically seal root cleanup registration; track deferred finalizers through inherited counted tokens, draining drops only after every token retires."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Rerun ShutdownTrace-256 with inherited finalizer tokens, checking token-count zero precedes destructor drainage and origin-worker retirement."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "ShutdownTrace-256 verified 256/256 schedules: inherited tokens covered deferred finalizers, with zero late drops or premature worker retirements."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Adopt inherited finalizer tokens: registration closure passed 48 schedules but failed 2/256; tokenized shutdown passed 256/256."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Implement Borrow24 v0.3: atomically seal root registration, await inherited finalizer tokens, drain origin drops, then retire workers."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Borrow24 v0.3 adds tokenized shutdown and origin-worker retirement ordering; its regression suite includes ShutdownTrace-256 and 24 annotated programs."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 43,
+      "exploration_parent_id": "g1",
+      "content": "Introduce compositional task-effect signatures recording borrowed regions, transferable joins, Send/Sync bounds, and shutdown-token obligations for separate compilation."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "p4",
+      "content": "How can task-effect signatures track deferred finalizers spawned by higher-order cleanup callbacks across separately compiled modules?"
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Compile 18 higher-order cleanup fixtures separately against Borrow24 v0.3, checking signature obligations against deferred-finalizer shutdown traces."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Callback signatures with finalizer-token effects classified 18/18 separate-module fixtures; signatures omitting those effects admitted two late-drop cases."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Extend exported task signatures with polymorphic callback finalizer-token effects, check substitutions locally, then rerun 18 separate-module fixtures."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Implement polymorphic finalizer-token effects in exported callback signatures and locally check substitutions across the 18 separate-module fixtures."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Borrow24 v0.4 exports polymorphic callback effects and verifies finalizer-token obligations at module boundaries without runtime borrow checks."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Constrain detached tasks to owned static captures; make borrowed task handles affine and reject escapes beyond their lender’s nursery."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Add detach typing and affine-handle escape checks, then test borrowed versus owned static captures across cancellation and migration."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Implement static-owned detach and affine-handle escape checks atop Borrow24 v0.4; test 20 migration/shutdown cases with exported callback effects."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Borrow24 v0.5 adds static-owned detach rules and affine borrowed handles; its fixture pack contains 20 annotated migration/shutdown cases."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n45",
+      "content": "Run 20 detach/escape fixtures through Borrow24 v0.5, checking diagnostic classifications and migrated-task shutdown traces."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Borrow24 v0.5 accepted 10/10 owned-static detaches and rejected 10/10 borrowed detach or handle-escape cases."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 56,
+      "exploration_parent_id": "p5",
+      "content": "Can an owned-static detached task retain an origin-affine resource after shutdown retires its original worker?"
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Probe 12 Borrow24 v0.5 owned-static detach fixtures with origin-affine destructors, task migration, and worker shutdown before task completion."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Three of 12 owned-static detaches retained origin-affine values past worker retirement, leaving no valid thread for their destructors."
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "Detached tasks may retain origin-affine values safely if counted worker leases prevent retirement until their destructors finish."
+    },
+    {
+      "id": "n54",
+      "type": "plan",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "Preserve v0.5’s 20 detach/escape classifications, add counted origin-worker leases, and rerun the 12 origin-affine detach fixtures."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "n54",
+      "content": "Instrument Borrow24 v0.5 detached tasks with counted origin-worker leases; rerun 12 affine-drop fixtures and 20 detach/escape regressions."
+    },
+    {
+      "id": "n56",
+      "type": "artifact",
+      "order": 62,
+      "exploration_parent_id": "n55",
+      "content": "Borrow24 v0.6 revises v0.5 detachment with counted origin-worker leases and regression fixtures for affine drops and handle escapes."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 63,
+      "exploration_parent_id": "n54",
+      "content": "Model-check v0.6 worker retirement against lease counts across 12 origin-affine detaches, then verify 20 detach/escape classifications."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 64,
+      "exploration_parent_id": "n57",
+      "content": "Borrow24 v0.6 prevented premature retirement in 12/12 affine-drop fixtures and preserved all 20 detach/escape classifications."
+    },
+    {
+      "id": "n59",
+      "type": "decision",
+      "order": 65,
+      "exploration_parent_id": "n58",
+      "content": "Adopt leased detachment: v0.5 classified 20 cases but stranded three affine drops; v0.6 passed all 12 and retained classifications."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "revise",
+      "target": "n47"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an ownership type checker for cancellable asynchronous tasks that safely transfer borrowed resources across task boundaries.",
+    "requirements": [
+      "Guarantee memory safety under cancellation and task migration without whole-program analysis or runtime borrow checks.",
+      "Accept 12 safe and reject 12 unsafe programs covering nested borrows, ownership transfer, and cancellation."
+    ]
+  }
+}

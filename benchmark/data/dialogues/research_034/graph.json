@@ -1,0 +1,882 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn reduced models of partially observed Kuramoto–Sivashinsky dynamics preserving stationary energy distributions and responses to unseen forcing.",
+      "requirements": [
+        "Stationary energy-distribution Wasserstein-1 error stays below 5% of the full-system distribution’s standard deviation.",
+        "Predict nonzero mean-energy responses to unseen weak forcing within 10% relative error against full-system simulations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a control-affine latent SDE with fixed Fourier forcing injection, matching sparse KS observations, energy Wasserstein-1, and probe responses."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can sparse-sensor training with mode-1 probes identify mean-energy responses to unseen weak mode-2 forcing?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Unforced trajectory fitting plus mode-1 probe matching identifies cross-mode coupling, yielding <10% mean-energy response error under unseen weak mode-2 forcing."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Train the latent SDE on unforced eight-sensor trajectories and mode-1 probes; benchmark mode-2 ±0.01 mean-energy responses against full KS."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "On eight-sensor KS, stationary-energy W1 was 3.7% of full-system SD; mode-2 ±0.01 mean-energy response errors peaked at 7.6%."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 7,
+      "exploration_parent_id": "h1",
+      "content": "Ablate mode-1 probe matching across five training seeds, comparing unseen mode-2 ±0.01 mean-energy response errors against full KS."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 8,
+      "exploration_parent_id": "a2",
+      "content": "Across five seeds, mode-1 probe matching produced >10% mode-2 response error in three seeds, peaking at 24%."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 9,
+      "exploration_parent_id": "h1",
+      "content": "Constraining unforced mode-1/mode-2 lagged covariances alongside mode-1 probes stabilizes cross-mode coupling, keeping unseen mode-2 response error <10% across five seeds."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "h2",
+      "content": "Retrain five seeds with 0.5-time-unit mode-1/mode-2 lag-covariance loss; compare stationary-energy W1 and unseen mode-2 ±0.01 response errors against probe-only models."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "a3",
+      "content": "Across five seeds, lag-covariance models achieved stationary-energy W1 of 3.2–4.6% of full-system SD and maximum mode-2 response error of 8.4%."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "h2",
+      "content": "Validate five lag-covariance seeds under unseen phase-shifted mode-2 forcing at ±0.005, comparing mean-energy responses against 50 full-KS trajectories."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "a4",
+      "content": "Against full KS, phase-shifted mode-2 ±0.005 responses exceeded 10% relative error in three of five seeds, peaking at 18%."
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "Phase-shift failures suggest missing mode-2 quadrature coupling; translation-equivariant dynamics with sine–cosine lag matching yield <10% ±0.005 response errors across seeds."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "h3",
+      "content": "Implement equivariant drift and sine–cosine lag matching; benchmark five seeds on unseen mode-2 phases and energy W1 against KS."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "l1",
+      "content": "Retrain five equivariant-drift seeds with quadrature matching; require W1≤4.6%-SD and <10% response error on previously failing ±0.005 phase-shifts."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "a5",
+      "content": "Across five equivariant seeds, stationary-energy W1 was 3.1–4.3% of full-KS SD; phase-shifted mode-2 ±0.005 response errors peaked at 8.1%."
+    },
+    {
+      "id": "t1",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "a5",
+      "content": "KS-Equivariance-v1 contains five trained latent-SDE checkpoints, quadrature-matching code, and reproducible energy-W1 and phase-shifted forcing benchmarks."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "h3",
+      "content": "Adopt equivariant quadrature matching: it retains sub-5%-SD energy W1 and resolves phase-shift failures persisting after lag-covariance matching."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Fit a delay-coordinate NARMAX surrogate with state-dependent noise, energy-quantile calibration, and explicit Fourier-force projection onto eight sensors."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Does state-dependent NARMAX noise preserve stationary energy tails while delay-memory terms transfer weak forcing responses from eight sensors?"
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "q2",
+      "content": "Four-lag NARMAX with energy-conditioned noise achieves energy Q95 error <8%, W1 <5%-SD, and unseen mode-2 mean-energy response error <10%."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "h4",
+      "content": "Train five four-lag NARMAX seeds; benchmark energy Q95, W1, and mode-2 ±0.005 phase-shift responses against full KS and KS-Equivariance-v1."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "a6",
+      "content": "Five NARMAX seeds achieved energy-Q95 errors ≤7.2%, W1 ≤4.7% of full-KS SD, and phase-shifted mode-2 ±0.005 response errors ≤9.3%."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "h4",
+      "content": "Retain four-lag NARMAX as a viable alternative: all five seeds meet energy-W1 and unseen forcing-response targets."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 26,
+      "exploration_parent_id": "g1",
+      "content": "Estimate a stochastic Koopman generator on eight-sensor delays, constraining its invariant energy law and Fourier-mode linear-response resolvent."
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 27,
+      "exploration_parent_id": "p3",
+      "content": "Fit eight-sensor delay-Koopman generators; calibrate invariant energy and mode-1 resolvents; test stationary W1 and unseen mode-2 responses."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "l2",
+      "content": "Using KS-Equivariance-v1 benchmarks, fit five energy-calibrated delay-Koopman generators with mode-1 resolvents; compare energy W1 and unseen mode-2 responses."
+    },
+    {
+      "id": "t2",
+      "type": "artifact",
+      "order": 29,
+      "exploration_parent_id": "a7",
+      "content": "KS-Koopman-v1 packages five calibrated generator fits, eight-sensor delay features, and evaluation scripts using KS-Equivariance-v1 forcing benchmarks."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "a7",
+      "content": "Five Koopman fits achieved energy W1 of 3.5–4.8% of full-KS SD and unseen phase-shifted mode-2 response errors of 6.9–9.7%."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "l2",
+      "content": "Stress-test KS-Koopman-v1 across five fits on unseen phase-shifted mode-3 ±0.005 forcing, comparing mean-energy responses with full KS."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a8",
+      "content": "For unseen phase-shifted mode-3 ±0.005 forcing, four of five Koopman fits exceeded 10% mean-energy response error; maximum reached 21%."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "Defer Koopman as a general surrogate: mode-2 benchmarks pass, but four of five fits fail unseen mode-3 responses."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 34,
+      "exploration_parent_id": "g1",
+      "content": "Learn a Mori–Zwanzig closure for three Fourier-mode pairs reconstructed from eight sensors, with causal memory and explicit forcing projection."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 35,
+      "exploration_parent_id": "p4",
+      "content": "Can causal memory recover unseen phase-shifted mode-3 mean-energy responses from eight sensors without distorting stationary energy?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "q3",
+      "content": "A causal six-time-unit memory kernel yields <10% unseen phase-shifted mode-3 response error and energy W1 <5%-SD across five seeds."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "h5",
+      "content": "Using Koopman mode-2 and failed mode-3 benchmarks, test five six-unit-memory closures on phase-shifted mode-3 responses and stationary-energy W1."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "a9",
+      "content": "Six-unit-memory closures achieved W1≤4.8% of full-KS SD; three of five exceeded 10% phase-shifted mode-3 response error (maximum 17%)."
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "h5",
+      "content": "A translation-equivariant cross-mode memory kernel yields <10% phase-shifted mode-3 response error across five seeds while preserving energy W1 <5%-SD."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "h6",
+      "content": "Train five translation-equivariant cross-mode memory closures; benchmark stationary-energy W1 and unseen phase-shifted mode-3 ±0.005 responses against full KS."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "a10",
+      "content": "Five equivariant-memory seeds achieved energy W1 of 3.0–4.4% of full-KS SD and phase-shifted mode-3 response errors of 5.8–8.9%."
+    },
+    {
+      "id": "l3",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "h6",
+      "content": "Test equivariant-memory closures at held-out mode-3 phases and ±0.0025 forcing, measuring mean-energy response error and stationary-energy W1."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "l3",
+      "content": "Extend and validate KS-Koopman-v1 benchmarks with e10’s five closures, measuring stationary-energy W1 and held-out mode-3 ±0.0025 response errors."
+    },
+    {
+      "id": "t3",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "a11",
+      "content": "KS-Koopman-v2 replaces Koopman-only scripts with matched energy-W1 and held-out mode-3 ±0.0025 benchmarks plus five equivariant-memory checkpoints."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "a11",
+      "content": "At held-out mode-3 phases and ±0.0025 forcing, all five equivariant-memory closures kept energy W1≤4.4%-SD and mean-energy response errors≤9.2%."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Adopt equivariant-memory closure over plain memory: five seeds pass energy and mode-3 response targets, including held-out weaker forcing."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Train a diffusion transition model on eight-sensor histories with energy-quantile calibration and explicit Fourier-force conditioning."
+    },
+    {
+      "id": "l4",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "p5",
+      "content": "Train five diffusion seeds on unforced and mode-1 data; evaluate stationary-energy W1 and held-out mode-2/3 responses against full KS."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "l4",
+      "content": "Train five diffusion seeds; compare energy W1 and unseen mode-2/3 responses with KS-Koopman-v2, emphasizing Koopman’s failed mode-3 cases."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "a12",
+      "content": "Five diffusion seeds achieved energy W1 of 3.6–4.9% of full-KS SD and unseen mode-2/3 response errors of 6.5–9.8%."
+    },
+    {
+      "id": "t4",
+      "type": "artifact",
+      "order": 51,
+      "exploration_parent_id": "a12",
+      "content": "KS-Diffusion-v1 contains five force-conditioned transition checkpoints, energy-quantile calibration code, and matched KS-Koopman-v2 mode-2/3 benchmarks."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "p5",
+      "content": "Retain diffusion as a viable comparator, not preferred: its margins trail latent-SDE, NARMAX, and memory closures; Koopman fails mode-3."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "a2",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "refute",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "revise",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "relation": "revise",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a5"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a5",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "a5",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "t1"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "t1"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a7"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "t1"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "t2"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a8"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "t2"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "t2"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "revise",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "l3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a11"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "t2"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "t3"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "t3",
+      "relation": "revise",
+      "target": "t2"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "l4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a12"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "t3"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "t3"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "t4"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e12"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "d4"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn reduced models of partially observed Kuramoto–Sivashinsky dynamics preserving stationary energy distributions and responses to unseen forcing.",
+    "requirements": [
+      "Stationary energy-distribution Wasserstein-1 error stays below 5% of the full-system distribution’s standard deviation.",
+      "Predict nonzero mean-energy responses to unseen weak forcing within 10% relative error against full-system simulations."
+    ]
+  }
+}

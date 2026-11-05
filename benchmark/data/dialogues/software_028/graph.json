@@ -1,0 +1,1021 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an incremental cross-module optimizer that preserves optimization benefits while maintaining sound cache reuse under symbol interposition.",
+      "requirements": [
+        "Match clean-build semantics under dependency changes, dynamic symbol interposition, and mixed optimized/unoptimized modules.",
+        "For single-module edits, halve full-LTO rebuild time while keeping runtime within 5% of full LTO."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Cache ThinLTO imports keyed by transitive fingerprints; optimize only non-preemptible definitions, rebuild affected partitions, and conservatively link unoptimized modules."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which dependency and symbol-binding changes must invalidate cached imports to preserve clean-build behavior under ELF interposition?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Hashing transitive imports and ELF bindings (weak resolution, versions, unoptimized exports), while excluding preemptible symbols, matches clean-build semantics."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Implement binding-aware keys; differential-test interposition, weak/versioned symbols, dependency edits, and mixed modules against clean builds; measure rebuild time and runtime."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run ELF-Interpose-80 cached-versus-clean builds across weak/versioned exports, LD_PRELOAD, dependency edits, and native objects; compare runtime traces and symbol bindings."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ELF-Interpose-80: 3/80 cached links failed after native objects referenced previously pruned exports; import and definition-binding hashes remained unchanged."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Hash native undefined-symbol sets into binding-aware keys and retain referenced exports; cached links should match clean builds on ELF-Interpose-80."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Rerun ELF-Interpose-80 with native undefined-symbol keys and export retention; compare cached and clean link outcomes, bindings, and traces."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "ELF-Interpose-80: 80/80 cached builds matched clean link outcomes, symbol bindings, and runtime traces; three missing exports restored."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Adopt native undefined-symbol keys and export retention: they address the three missing-export failures and passed all 80 clean-build comparisons."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Run LTO-Rebuild-30 single-module edits with adopted native-symbol keys; compare rebuild time and SPEC CPU2017 runtime against full LTO."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "LTO-Rebuild-30 report containing per-edit rebuild times, cache-hit logs, and SPEC CPU2017 runtime ratios versus full LTO."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can selective partition rebuilds halve LTO-Rebuild-30 edit latency while keeping SPEC CPU2017 runtime within 5% of full LTO?"
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Selective partition rebuilds will halve median LTO-Rebuild-30 latency while keeping SPEC CPU2017 slowdown within 5% of full LTO."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Cache per-module specialization recipes, then replay only those whose dependency hashes and final ELF symbol resolutions still match."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Implement resolution-guarded specialization recipes; compare cached and clean builds on ELF-Interpose-80, then benchmark LTO-Rebuild-30 against latency and runtime targets."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Using n11's LTO-Rebuild-30 baseline, benchmark guarded recipe replay's single-module rebuild latency and SPEC CPU2017 runtime against full LTO."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Recipe-Replay-30 report comparing guarded replay with n11’s baseline: median rebuild time, SPEC CPU2017 slowdown, and cache-rejection counts."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Audit Recipe-Replay-30 against 50% latency and 5% slowdown targets; rerun ELF-Interpose-80 with weak bindings and native exports."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Recipe-Replay-30: median rebuild time was 0.64× full LTO, missing the 0.50× target; SPEC CPU2017 slowdown was 3.1%."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Which recipe-replay stage accounts for the 0.14× full-LTO latency gap to the 0.50× target?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Repeated ELF resolution checks account for at least 0.14× full-LTO time; input-keyed resolution-map caching should reach 0.50× rebuild latency."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Profile ELF-resolution overhead on Recipe-Replay-30; cache maps by linker-input fingerprints and rerun rebuild timing plus ELF-Interpose-80 equivalence."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Repeated ELF resolution consumed 0.16× full-LTO time; cached maps achieved 0.48× median rebuild latency and 80/80 ELF-Interpose-80 equivalence."
+    },
+    {
+      "id": "n23",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Adopt resolution-map-cached replay: n22’s 0.48× latency and 80/80 equivalence restore p2’s viability after n18’s latency failure."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n14",
+      "content": "Benchmark selective partitions versus resolution-map-cached replay using n11’s LTO-Rebuild-30 baseline; measure SPEC CPU2017 runtime and ELF-Interpose-80 equivalence."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "LTO-Rebuild-30: selective partitions took 0.58× full-LTO time; cached replay took 0.48×, with 3.1% SPEC CPU2017 slowdown and 80/80 interposition equivalence."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Reoptimize affected hot call-graph components incrementally, preserving indirect calls to preemptible symbols and exports referenced by native objects."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "How should edited hot call-graph components expand to retain cross-module inlining benefits without reoptimizing unaffected components?"
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Using n11’s baseline, benchmark 0–2-hop hot-component expansion against p1’s import caching on rebuild time, SPEC slowdown, and interposition equivalence."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "LTO-Rebuild-30: import-cached partitions took 0.58× full-LTO time; one-hop components took 0.46×, with 2.8% SPEC slowdown and 80/80 interposition equivalence."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Does one-hop expansion sustain 0.46× rebuild latency and ≤5% SPEC slowdown on high-fanout dependency edits?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "For edits affecting ≥20 hot callers, one-hop expansion retains ≤0.50× full-LTO rebuild time and ≤5% SPEC CPU2017 slowdown."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Construct Fanout-24 edits affecting ≥20 hot callers; measure one-hop rebuild latency, SPEC CPU2017 slowdown, and clean-build equivalence."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Run Fanout-24 one-hop and import-cache builds against n11’s baseline; measure rebuild latency, SPEC CPU2017 slowdown, and clean-build equivalence."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Fanout-24: one-hop reached 0.49× full-LTO time and 4.2% SPEC slowdown; import caching reached 0.57×; both matched 24/24 clean builds."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n31",
+      "content": "Expand Fanout-24’s passing cases to ≥40 hot callers with LD_PRELOAD and native objects; remeasure one-hop latency, SPEC slowdown, and equivalence."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Fanout-24 ≥40-caller cases: one-hop rebuilds took 0.50× full-LTO time, incurred 4.7% SPEC slowdown, and matched 24/24 interposed clean builds."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Adopt one-hop hot-component rebuilds over import caching: 0.46–0.50× latency, ≤4.7% slowdown, and clean-build equivalence across both benchmarks."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "When must a cached hot component be invalidated after weak-symbol resolution, symbol-version, or native-object dependency changes?"
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Extend n16’s replay cases with weak-resolution, version, and native-reference changes; compare recipe and component invalidation against clean builds."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Binding-Delta-48: guarded recipes matched 48/48 clean builds; hot-component caching reused stale inlining in two default-version switches."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Guard one-hop hot-component caches with input-keyed ELF binding maps and native-reference fingerprints, invalidating affected components before reuse."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Which ELF binding and native-reference changes require one-hop cache invalidation without losing the 0.50× rebuild target?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Input-keyed checks of weak bindings, default versions, and native references should achieve 48/48 clean-build equivalence at ≤0.50× full-LTO latency."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Implement binding-map invalidation for version, weak, and native-reference deltas; rerun Binding-Delta-48 and Fanout-24 with cold and warm caches."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Implement one-hop binding-map invalidation; compare Binding-Delta-48 cache rejections with n16’s report and Fanout-24 timings with n11’s baseline."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Guarded-Components report with Binding-Delta-48 invalidation logs, Fanout-24 rebuild-time ratios, and clean-build binding and trace comparisons."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Audit Guarded-Components for 48/48 clean-build equivalence, ≤0.50× Fanout-24 rebuild latency, and ≤5% SPEC CPU2017 slowdown."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Guarded-Components matched 48/48 clean builds, but Fanout-24 median rebuild time rose to 0.56× full LTO."
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Invalidate only components recording changed symbol bindings; shared resolution-map caching should restore ≤0.50× latency while preserving 48/48 equivalence."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Use Guarded-Components logs to implement binding-use invalidation and shared resolution maps; retest 48/48 equivalence and ≤0.50× Fanout-24 latency."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Binding-use invalidation achieved 48/48 clean-build equivalence and reduced Fanout-24 median rebuild time from 0.56× to 0.49× full LTO."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n42",
+      "content": "Compare n49’s guarded components with n33’s import caching on Fanout-24 and Binding-Delta-48 for latency, slowdown, and equivalence."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Fanout-24: guarded components took 0.49× versus import caching’s 0.57× full-LTO time, with 4.7% slowdown and 48/48 Binding-Delta equivalence."
+    },
+    {
+      "id": "n52",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Adopt binding-use-guarded one-hop components: fix version-switch staleness and 0.56× regression; achieve 0.49× latency, 4.7% slowdown, 48/48 equivalence."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Integrate n52’s guarded components using n44 logs; verify clean-build equivalence under dependency edits, interposition, and mixed modules, then benchmark targets."
+    },
+    {
+      "id": "n54",
+      "type": "artifact",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Incremental-LTO v1 patchset with binding-use-guarded one-hop caches, native-export retention, resolution-map fingerprints, and clean-build and performance regression tests."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "revive",
+      "target": "p2"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "revise",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an incremental cross-module optimizer that preserves optimization benefits while maintaining sound cache reuse under symbol interposition.",
+    "requirements": [
+      "Match clean-build semantics under dependency changes, dynamic symbol interposition, and mixed optimized/unoptimized modules.",
+      "For single-module edits, halve full-LTO rebuild time while keeping runtime within 5% of full LTO."
+    ]
+  }
+}

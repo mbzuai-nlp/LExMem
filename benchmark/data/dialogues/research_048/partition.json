@@ -1,0 +1,135 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Initial evaluation of a conservative, entropy-limited face-flux surrogate on unseen meshes",
+      "boundary_reason": "The initial test supports retaining the surrogate; the discussion shifts to a more detailed audit."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Facewise entropy, shock-location, and conservation audit of the retained surrogate",
+      "boundary_reason": "The audit concludes; the next discussion probes a specific mesh-geometry limit."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Aspect-ratio sweep reveals shock-location error at ratio 12",
+      "boundary_reason": "The identified accuracy gap motivates a new dissipation proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Calibrate aspect-aware dissipation and determine its shock-error limit",
+      "boundary_reason": "A usable aspect-ratio range is selected; validation and oblique shocks are considered next."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Validate aspect-aware flux and test oblique shocks on skewed meshes",
+      "boundary_reason": "The oblique-shock accuracy failure prompts a different flux design."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Compare skewness-aware tensor dissipation for aspect-12 oblique shocks",
+      "boundary_reason": "The tensor flux is selected for broader held-out skewed-mesh testing."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Held-out skewed-mesh validation of tensor dissipation",
+      "boundary_reason": "Skewed-mesh results meet the stated targets; attention turns to mixed topology."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Plan and produce a mixed-topology tensor-flux shock report",
+      "boundary_reason": "The report is produced; a separate reconstruction approach begins next."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Test entropy-bounded subcell reconstruction on mixed-topology meshes",
+      "boundary_reason": "The reconstruction misses the shock-accuracy target, leading to a revised coupling."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Add interface-aware tensor coupling and adopt a mixed-mesh hybrid",
+      "boundary_reason": "The improved hybrid is adopted; the next discussion validates that choice against tensor-only flux."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Cross-check mixed-topology validation and retain the hybrid",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

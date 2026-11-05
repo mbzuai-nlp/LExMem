@@ -1,0 +1,107 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "pl1",
+        "a1",
+        "e1",
+        "a2",
+        "e2"
+      ],
+      "topic": "Initial CAPE–humidity Pareto closure tests and wet-year energy-budget vulnerability",
+      "boundary_reason": "The ablation finding motivates a revised projection."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "h2",
+        "pl2",
+        "a3",
+        "e3",
+        "d1"
+      ],
+      "topic": "Globally coupled projection resolves the Pareto closure’s wet-year budget breach",
+      "boundary_reason": "A decision concludes this closure discussion before a different approach begins."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h3",
+        "pl3",
+        "a4",
+        "e4",
+        "ar1"
+      ],
+      "topic": "Held-out evaluation of a normalized flux-form conditional flow",
+      "boundary_reason": "The flow evaluation and its reproducible bundle are complete before the focus shifts to plumes."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "q3",
+        "a5",
+        "e5"
+      ],
+      "topic": "Initial switching-plume test misses precipitation and energy targets",
+      "boundary_reason": "The failed test leads to a revised switching-plume hypothesis."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "h4",
+        "pl4",
+        "a6",
+        "e6",
+        "d2"
+      ],
+      "topic": "Revised switching plumes meet targets and are retained as a benchmark",
+      "boundary_reason": "The benchmark decision closes the plume discussion before the copula proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "pl5",
+        "a7",
+        "e7",
+        "ar2"
+      ],
+      "topic": "Seed-matched evaluation of Student-t-copula rain subcolumns",
+      "boundary_reason": "The initial report is complete; a subsequent audit begins."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "a8",
+        "e8",
+        "d3"
+      ],
+      "topic": "Wet-year copula audit and benchmark decision",
+      "boundary_reason": "The audit supports a decision before the focus shifts to gamma microphysics."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "q5",
+        "h6",
+        "pl6",
+        "a9",
+        "e9",
+        "d4"
+      ],
+      "topic": "Held-out gamma-microphysics evaluation and candidate decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

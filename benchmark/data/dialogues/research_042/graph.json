@@ -1,0 +1,839 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop long-tail image recognition that preserves rare-class accuracy when predictive background correlations reverse without target-domain labels.",
+      "requirements": [
+        "Improve bottom-quintile class macro-accuracy by 5 percentage points over empirical risk minimization under background reversals.",
+        "Keep top-quintile class macro-accuracy within 1 percentage point of that baseline using identical training data."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a class-balanced tail adapter with self-supervised masks and within-training-set background swaps, distilling head logits from an ERM teacher."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Do self-supervised masks preserve rare-class object cues when swapping backgrounds, or do they erase features needed for recognition?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Masks retaining ≥90% foreground should enable swaps to lift tail macro-accuracy ≥5 points over ERM with ≤1-point head loss."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Audit mask retention against source-validation segmentation; compare filtered versus unfiltered swaps on LT-BackgroundFlip tail/head macro-accuracy without target labels."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Audit source-validation segmentation masks for ≥90% foreground retention; train filtered/unfiltered adapters and identical-data ERM, scoring LT-BackgroundFlip tail/head macro-accuracy."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "With 92% foreground retention, LT-BackgroundFlip filtered swaps scored 35.1% tail macro-accuracy versus ERM's 32.0%; head fell 0.6 points."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n3",
+      "content": "Stratify filtered/unfiltered LT-BackgroundFlip errors by source-validation mask retention and discriminative-part occlusion; recompute tail/head macro-accuracy versus ERM."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "With ≥97% foreground retention and intact diagnostic parts, tail macro-accuracy reached 38.2% versus ERM’s 32.0%; head dropped 0.7 points."
+    },
+    {
+      "id": "n8",
+      "type": "question",
+      "order": 10,
+      "exploration_parent_id": "p1",
+      "content": "Does head-class logit distillation suppress tail gains from background swaps, despite protecting frequent-class accuracy?"
+    },
+    {
+      "id": "n9",
+      "type": "plan",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Following the 92%-retention shortfall and ≥97%-retention success, sweep head-distillation weights {0,0.25,0.5,1}; compare tail/head macro-accuracy."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Retrain adapters on the 92%- and ≥97%-retention mask cohorts at head-distillation weights 0, 0.25, 0.5, and 1; measure tail/head macro-accuracy."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "DistillationSweep-v1.csv lists eight adapter runs by mask-retention cohort and distillation weight, with LT-BackgroundFlip tail/head macro-accuracy and ERM deltas."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Train tail prototypes on source-only background-randomized crops; gate prototype corrections by calibrated tail probability, freezing ERM head logits."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Can source-calibrated tail gating prevent prototype corrections from misclassifying head-class images when backgrounds reverse?"
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "A source-calibrated 0.8 tail-posterior gate will route fewer than 2% of LT-BackgroundFlip head images to tail prototypes."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Calibrate ERM tail posteriors on source validation; measure head-class prototype-routing rate at 0.8 on held-out LT-BackgroundFlip."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "At the source-calibrated 0.8 gate, 1.4% of LT-BackgroundFlip head-class images routed to prototypes, below the hypothesized 2%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Cluster source-only backgrounds; minimize tail worst-cluster loss while limiting head validation accuracy loss versus ERM to one point."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "p3",
+      "content": "Cluster source backgrounds; compare worst-cluster tail models with and without head distillation under a one-point source-head accuracy constraint."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n16",
+      "content": "Use DistillationSweep-v1.csv to select distilled/undistilled settings; train worst-background-cluster adapters under one-point source-head constraint and measure LT-BackgroundFlip tail/head macro-accuracy."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n17",
+      "content": "WorstCluster-v1.csv records distilled and undistilled cluster-adapter settings, source-head constraint checks, and LT-BackgroundFlip tail/head macro-accuracy."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n16",
+      "content": "Audit WorstCluster-v1.csv; rerun compliant distilled/undistilled models across three seeds, testing ≥5-point tail gain and ≤1-point head loss versus ERM."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n19",
+      "content": "Across three seeds, source-head-compliant distilled worst-cluster models scored 38.0% LT-BackgroundFlip tail versus ERM's 32.0%; head fell 0.8 points."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n16",
+      "content": "Stress-test worst-cluster adapters on unseen backgrounds at 25%, 50%, and 100% reversal; compare tail/head macro-accuracy against identical-data ERM."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "On held-out unseen-scene 100% reversals, worst-cluster tail macro-accuracy was 31.5% versus ERM's 29.4%; head fell 0.7 points."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 27,
+      "exploration_parent_id": "p3",
+      "content": "Are source background clusters too coarse to cover unseen scenes, causing the 100%-reversal tail gain to shrink to 2.1 points?"
+    },
+    {
+      "id": "n24",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Sweep source-background cluster counts {4,16,64}; compare unseen-scene embedding coverage and 100%-reversal tail/head macro-accuracy against ERM."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Against 38.0% LT-BackgroundFlip and 31.5% unseen-scene tail baselines, retrain 4/16/64-cluster adapters; measure centroid coverage and 100%-reversal tail/head macro-accuracy."
+    },
+    {
+      "id": "n26",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "ClusterCoverage-v1.csv records 4/16/64-cluster unseen-scene embedding coverage and 100%-reversal tail/head macro-accuracy versus ERM."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Train source-only background-style diffusion to diversify tail prototypes beyond observed clusters, using calibrated tail gating to preserve ERM head predictions."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "p4",
+      "content": "Compare source-only diffusion-diversified tail prototypes with 4/16/64-cluster adapters, measuring unseen-scene background coverage and 100%-reversal tail/head macro-accuracy."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n27",
+      "content": "Train source-only diffusion-diversified tail prototypes; benchmark 0.8-gated predictions against ClusterCoverage-v1.csv on unseen-scene coverage and 100%-reversal tail/head macro-accuracy."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n28",
+      "content": "Diffusion yielded 86% unseen-scene coverage versus clusters’ 68%; 100%-reversal tail macro-accuracy reached 35.1% versus ERM’s 29.4%, head −0.8 points."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n27",
+      "content": "Audit diffusion composites for altered diagnostic parts; rerun gated prototypes after rejecting damaged crops, comparing 100%-reversal tail/head macro-accuracy."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "Rejecting 18% diagnostic-part-damaged diffusion crops reduced unseen-scene tail macro-accuracy to 33.7% versus ERM’s 29.4%; head fell 0.6 points."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Train source-only tail prototypes using ≥97%-retention crops and randomized background Fourier styles; source-calibrate correction gates, freezing ERM head logits."
+    },
+    {
+      "id": "n32",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p5",
+      "content": "Do Fourier background styles improve unseen-scene tail accuracy without the diagnostic-part damage observed in diffusion composites?"
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n32",
+      "content": "Fourier-styled, ≥97%-retention prototypes will achieve ≥34.4% unseen-scene tail macro-accuracy with ≤1% diagnostic-part damage and ≤1-point head loss."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n33",
+      "content": "Generate background-only Fourier styles on ≥97%-retention crops; audit diagnostic-part damage and benchmark 0.8-gated prototypes on unseen-scene tail/head macro-accuracy."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Train Fourier-styled tail prototypes from ≥97%-retention crops; audit diagnostic-part damage and score 0.8-gated unseen-scene tail/head macro-accuracy."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Fourier-styled prototypes achieved 34.8% unseen-scene tail macro-accuracy versus ERM’s 29.4%; diagnostic-part damage was 0.6%, head declined 0.7 points."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n34",
+      "content": "Freeze the validated Fourier settings and 0.8 gate; evaluate three-seed unseen-scene reversal intensities for tail/head macro-accuracy versus ERM."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n37",
+      "content": "Across three seeds, tail gains were 5.0/5.2/5.4 points at 25/50/100% unseen-scene reversals; head losses stayed ≤0.8 points."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n34",
+      "content": "Ablate Fourier styling and ≥97%-retention filtering using identical source images; compare unseen-scene tail/head macro-accuracy and diagnostic-part damage."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "On held-out SceneShift-B 100% reversals, Fourier gained 3.8 tail macro-accuracy points versus ERM; no-Fourier gained 5.2, both head losses <1."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p5",
+      "content": "Does Fourier styling introduce source-specific frequency cues that explain its weaker tail accuracy on SceneShift-B?"
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "Compare Fourier and no-Fourier prototype predictions across source-to-SceneShift-B frequency-distance bins, controlling object identity and mask retention."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Using three-seed Fourier results and SceneShift-B ablation predictions, match objects and ≥97%-retention masks; compare tail errors by source-frequency-distance quartile."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "FrequencyAudit-v1.csv records matched-object SceneShift-B tail errors for Fourier/no-Fourier prototypes by source-frequency-distance quartile and mask retention."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n42",
+      "content": "Check FrequencyAudit-v1.csv matched-object completeness; estimate Fourier-minus-no-Fourier tail error gaps across frequency-distance quartiles with paired bootstrap intervals."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "FrequencyAudit-v1: Fourier added 3.6 tail-error points in the highest frequency-distance quartile (95% CI 1.8–5.4), versus 0.1 in the lowest."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "p5",
+      "content": "Drop Fourier styling despite reversal gains; retain ≥97%-retention prototypes and gating: SceneShift-B loses 1.4 tail points, high-frequency errors +3.6 points."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n40"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop long-tail image recognition that preserves rare-class accuracy when predictive background correlations reverse without target-domain labels.",
+    "requirements": [
+      "Improve bottom-quintile class macro-accuracy by 5 percentage points over empirical risk minimization under background reversals.",
+      "Keep top-quintile class macro-accuracy within 1 percentage point of that baseline using identical training data."
+    ]
+  }
+}

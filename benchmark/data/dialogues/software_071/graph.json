@@ -1,0 +1,1342 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design online shard migration for a replicated key-value store with linearizable operations and crash-safe ownership transfer.",
+      "requirements": [
+        "Preserve linearizability and acknowledged writes across retries, network partitions, and one replica crash.",
+        "Without failures, sustain ≥80% of migration-free throughput while migrating a shard under continuous writes."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Rate-limit snapshot and committed-log streaming to destination quorum; cut over with consensus epochs after catch-up, fencing source and deduplicating retries."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How does consensus-epoch cutover prevent a partitioned source leader from acknowledging writes after destination promotion?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Fencing an old-config majority before promotion prevents any stale leader from quorum-acknowledging writes afterward, even across partitions."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Durably fence the old quorum, reconcile committed writes, replay them to the destination quorum, and model-check partitioned-leader acknowledgments."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Model-check CutoverFence in TLC with 3+3 replicas, one crash, partitions, and invariants for stale acknowledgments and committed-write survival."
+    },
+    {
+      "id": "n5",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "CutoverFence.tla and TLC configuration encode six replicas, crash and partition transitions, and stale-acknowledgment and write-survival invariants."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Run TLC on CutoverFence.tla under single-crash and asymmetric-partition schedules, checking post-promotion stale acknowledgments and committed-write survival."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "TLC explored 1.8M states: zero post-promotion old-epoch quorum acknowledgments or lost committed writes under partitions and one crash."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Require durable old-quorum fencing and committed-log reconciliation before promotion; TLC found no safety violations within modeled failures."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Run 3+3-replica partition/crash fault injection across fencing, reconciliation, and promotion; check stale acknowledgments and committed-write survival."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "In 1/10,000 injected schedules, delayed pre-fence replication replies let the old leader acknowledge after promotion; destination missed the write."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Replaying all writes found in the fenced old quorum’s logs before promotion preserves delayed pre-fence acknowledgments, even if initially unacknowledged."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How can cutover preserve writes acknowledged through delayed pre-fence replication replies after the source quorum is fenced?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Transfer ownership through joint consensus with quorum-intersecting log barriers; rate-limit snapshot streaming and persist request-ID deduplication."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Implement joint-consensus log barriers and durable deduplication; fault-inject partitions/crashes and benchmark throttled streaming against 80% migration-free throughput."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Extend CutoverFence.tla with joint-consensus barriers, delayed replies, and retry deduplication; model-check both cutovers under partitions and one crash."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Extended TLC explored 2.4M states: joint consensus preserved linearizability and acknowledged writes; old-quorum fencing lost one delayed-acknowledged write."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Can joint-consensus migration sustain ≥80% of migration-free throughput under continuous writes while streaming the snapshot and log?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Capping snapshot and log transfer at 20% of replica egress maintains ≥80% baseline throughput during continuous writes."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Benchmark joint-consensus throughput under continuous writes at 20% egress cap; fault-inject delayed acknowledgments to test fenced-quorum replay for acknowledged-write survival."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "At 20% egress, migration sustained 84% baseline throughput; 10,000 delayed-ack trials with full fenced-log replay lost zero acknowledged writes."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n17",
+      "content": "Sweep 10%, 20%, and 30% egress caps during 60-minute WriteHot-1 runs; measure sustained throughput ratio and log-catch-up time."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "The 60-minute WriteHot-1 run sustained 76% baseline throughput at 20% egress, below the 80% target despite the earlier 84% result."
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Start at 20% egress (initially 84% throughput); throttle to 10% below 82% throughput, sustaining ≥80% over 60 minutes."
+    },
+    {
+      "id": "n23",
+      "type": "plan",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Implement throughput-triggered egress throttling; run 60-minute WriteHot-1 migrations, measuring sustained throughput, catch-up completion, and cutover latency."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Run 60-minute WriteHot-1 migrations comparing fixed 20% egress against adaptive 20%→10% throttling; record throughput and catch-up completion."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "With foreground-write priority, fixed 20% egress sustained 81% baseline for 60 minutes, versus adaptive 83%; both completed catch-up."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n23",
+      "content": "Run 60-minute bursty WriteHot-1 trials, checking whether the 82% trigger maintains ≥80% throughput and completes catch-up."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Bursty WriteHot-1 fell to 79% baseline at the 82% trigger; switching at 86% sustained 82% and completed catch-up."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n23",
+      "content": "Run 60-minute Zipf-0.9 WriteHot-1 migrations at 82% and 86% triggers; measure baseline-relative throughput, catch-up time, and cutover latency."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Zipf-0.9 runs sustained 81% baseline at the 82% trigger and 84% at 86%; both completed catch-up within 48 minutes."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "n23",
+      "content": "Adopt foreground-write priority and 20%→10% egress at 86% throughput; bursty and Zipf runs exceeded 80% and completed catch-up."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 34,
+      "exploration_parent_id": "g1",
+      "content": "Stage destination replicas as Raft learners using copy-on-write snapshots, then jointly reconfigure after barrier-index catch-up and deduplication-state replication."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 35,
+      "exploration_parent_id": "p3",
+      "content": "How can destination replicas catch up with continuous writes without disrupting source-quorum acknowledgments before cutover?"
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "A copy-on-write snapshot plus throttled Raft learner replay reaches a barrier index while source quorum continues acknowledging writes."
+    },
+    {
+      "id": "n33",
+      "type": "plan",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Implement copy-on-write snapshots and 86%-triggered learner throttling; measure barrier catch-up and source write acknowledgments under continuous writes."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Run 60-minute WriteHot-1 with copy-on-write learner snapshots, 86%-triggered throttling, and dedup replay; measure barrier catch-up and acknowledgment continuity."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "WriteHot-1 learners reached barrier catch-up in 42 minutes; source quorum continued acknowledging writes at 83% baseline throughput."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n33",
+      "content": "Inject one replica crash and asymmetric partitions during snapshot/replay; verify quorum-gated acknowledgments and learner barrier recovery after healing."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "In 2/10,000 partition/crash trials, barrier-index promotion restored key data but omitted the dedup checkpoint, applying an acknowledged retry twice."
+    },
+    {
+      "id": "n38",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "How can promotion guarantee learners durably install deduplication state through the barrier index before serving retried writes?"
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Given 42-minute catch-up at 83% throughput, atomic key-and-dedup barrier persistence should prevent duplicate retries while retaining ≥80% throughput."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Atomically persist learner keys and dedup state through the barrier; require destination-quorum durability before promotion; test crash/retry safety and throughput."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Repeat 10,000 partition/crash/retry trials with atomic key-and-dedup barrier checkpoints; reject promotion until destination quorum fsyncs the checkpoint."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "Across 10,000 crash/partition/retry trials, quorum-fsynced atomic barrier checkpoints yielded zero duplicate retries or lost acknowledged writes."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n40",
+      "content": "Provisionally retain learner streaming after its pre-gate 83% result; adopt quorum-fsynced atomic checkpoints against duplicate retries, then rebenchmark throughput."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 48,
+      "exploration_parent_id": "g1",
+      "content": "Offload snapshots to object storage for Raft learners; jointly reconfigure only after quorum-fsynced key-and-dedup barriers."
+    },
+    {
+      "id": "n44",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p4",
+      "content": "Can object-storage snapshots reduce source egress while preserving learner catch-up and quorum-fsynced barrier consistency?"
+    },
+    {
+      "id": "n45",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Object-storage snapshots halve source egress versus direct streaming while learners catch up within 60 minutes and barrier durability remains intact."
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Upload a versioned, checksummed copy-on-write snapshot; compare source egress and catch-up against direct streaming, then fault-inject barrier promotion."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Compare direct and object-store snapshots in 60-minute WriteHot-1 runs; measure source egress, barrier catch-up, and checkpoint integrity."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "SnapshotCompare-v1 records WriteHot-1 source-egress bytes, learner barrier-catch-up times, and key/dedup checkpoint checksums for both transfer paths."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n46",
+      "content": "Analyze SnapshotCompare-v1 for ≥50% source-egress savings and ≤60-minute catch-up; verify object-store checksums match quorum-fsynced key/dedup barriers."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "SnapshotCompare-v1 shows 54% less source egress, 47-minute catch-up, and matching key/dedup barrier checksums with quorum-fsynced learners."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n46",
+      "content": "Using SnapshotCompare-v1 baselines, fault-inject stale manifests, truncated objects, and one crash; check egress savings, catch-up, and promotion safety."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "In 2/10,000 stale-manifest/crash trials, fsynced barriers promoted stale key state, losing acknowledged writes; retries cut egress savings to 35%."
+    },
+    {
+      "id": "n53",
+      "type": "question",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "How can learners bind object-store manifests to Raft snapshot indices and verify complete key/dedup state before barrier promotion?"
+    },
+    {
+      "id": "n54",
+      "type": "hypothesis",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Raft-index-bound, hash-verified key/dedup manifests should prevent stale promotion; reusing verified blocks may restore ≥50% egress savings from 35%."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Bind immutable snapshot manifests to Raft index, term, and key/dedup hash; reuse verified blocks, then rerun stale-manifest crash tests."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "Extend SnapshotCompare-v1 with index/term-bound manifests and block-hash reuse; rerun 10,000 stale-manifest/crash trials and egress measurements."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Index/term-bound manifests yielded zero stale promotions in 10,000 trials; block reuse restored 52% source-egress savings."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 63,
+      "exploration_parent_id": "n55",
+      "content": "Adopt indexed, hash-verified manifests with block reuse; they eliminated observed stale promotions and recovered 52% egress savings."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 64,
+      "exploration_parent_id": "g1",
+      "content": "Combine indexed object snapshots, quorum-fsynced key/dedup barriers, joint-consensus transfer, and foreground-priority streaming throttled at 86% throughput."
+    },
+    {
+      "id": "n59",
+      "type": "question",
+      "order": 65,
+      "exploration_parent_id": "p5",
+      "content": "Does the integrated migration protocol preserve acknowledgments and ≥80% throughput when crashes, retries, and sustained writes overlap?"
+    },
+    {
+      "id": "n60",
+      "type": "hypothesis",
+      "order": 66,
+      "exploration_parent_id": "n59",
+      "content": "Integrated migration yields zero lost acknowledgments or duplicate retries under one crash and ≥80% baseline throughput without failures."
+    },
+    {
+      "id": "n61",
+      "type": "plan",
+      "order": 67,
+      "exploration_parent_id": "n60",
+      "content": "Implement integrated cutover, model-check ownership safety, inject crash/partition/retry faults, and benchmark 60-minute continuous-write throughput."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 68,
+      "exploration_parent_id": "n61",
+      "content": "Run IntegratedCutover-1 with 10,000 crash/partition/retry trials and 60-minute fault-free WriteHot-1 migrations; check acknowledgments, deduplication, and throughput."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 69,
+      "exploration_parent_id": "n62",
+      "content": "IntegratedCutover-1: 10,000 fault trials lost zero acknowledged writes or duplicated retries; 60-minute WriteHot-1 sustained 82% baseline throughput."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 70,
+      "exploration_parent_id": "n61",
+      "content": "Inject partitions and one crash during joint-consensus commit, then replay ambiguous retries; verify single ownership and committed-write survival."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 71,
+      "exploration_parent_id": "n64",
+      "content": "In 2/10,000 partition/crash trials, destination acknowledged retries before joint-config commit; rollback lost those writes and briefly split ownership."
+    },
+    {
+      "id": "n66",
+      "type": "question",
+      "order": 72,
+      "exploration_parent_id": "n65",
+      "content": "Which durable ownership gate prevents destination acknowledgments before joint-config commit and source reactivation after promotion?"
+    },
+    {
+      "id": "n67",
+      "type": "hypothesis",
+      "order": 73,
+      "exploration_parent_id": "n66",
+      "content": "Gating destination acknowledgments on joint-config commit and durably epoch-fencing the source should prevent rollback losses while sustaining ≥80% baseline throughput."
+    },
+    {
+      "id": "n68",
+      "type": "plan",
+      "order": 74,
+      "exploration_parent_id": "n67",
+      "content": "Add a durable ownership gate keyed to committed joint-config index and epoch; rerun fault injection and 60-minute throughput benchmarks."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 75,
+      "exploration_parent_id": "n68",
+      "content": "Repeat 10,000 partition/crash/retry schedules with committed-index ownership gates; measure rollback losses, split ownership, and 60-minute WriteHot-1 throughput."
+    },
+    {
+      "id": "n70",
+      "type": "evidence",
+      "order": 76,
+      "exploration_parent_id": "n69",
+      "content": "Committed-index gates yielded zero rollback losses or split ownership in 10,000 trials; WriteHot-1 sustained 81% baseline for 60 minutes."
+    },
+    {
+      "id": "n71",
+      "type": "decision",
+      "order": 77,
+      "exploration_parent_id": "n68",
+      "content": "Adopt committed-index ownership gates; they removed observed rollback losses and split ownership while preserving 81% sustained throughput."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "revise",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "n45"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "revise",
+      "target": "n45"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "n59"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n59"
+    },
+    {
+      "source": "n61",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n61",
+      "relation": "decompose",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n59"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n60"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n65",
+      "relation": "refute",
+      "target": "n60"
+    },
+    {
+      "source": "n67",
+      "relation": "address",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "revise",
+      "target": "n60"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "n66"
+    },
+    {
+      "source": "n68",
+      "relation": "decompose",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "address",
+      "target": "n66"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n70"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design online shard migration for a replicated key-value store with linearizable operations and crash-safe ownership transfer.",
+    "requirements": [
+      "Preserve linearizability and acknowledged writes across retries, network partitions, and one replica crash.",
+      "Without failures, sustain ≥80% of migration-free throughput while migrating a shard under continuous writes."
+    ]
+  }
+}

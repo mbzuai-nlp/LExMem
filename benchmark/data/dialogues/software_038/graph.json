@@ -1,0 +1,1050 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a restartable device-driver isolation boundary that contains DMA faults without invalidating hard-real-time guarantees for unaffected devices.",
+      "requirements": [
+        "Contain arbitrary driver memory writes, DMA, and interrupt storms across driver crashes and restarts.",
+        "Unaffected devices retain verified 1 ms service deadlines during driver faults and concurrent recovery."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use per-driver MMU/IOMMU domains, remapped maskable interrupts, DMA-quiesce/reset restarts, and budgeted recovery separate from reserved real-time cores."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can driver DMA and interrupts be revoked during restart without consuming unaffected devices’ reserved 1 ms service budgets?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Recovery-core isolation, interrupt quotas, and IOMMU drain-before-reuse yield zero unaffected 1 ms misses during DMA floods and interrupt storms."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Run 10,000 FaultBench-1 restart trials with rogue writes, stale DMA, and 100-kHz interrupts; measure IOMMU drains and unaffected-device deadline misses."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "FaultBench-1: 10,000 storm-driven restarts showed zero cross-domain writes, post-reuse DMA writes, or unaffected-device 1 ms deadline misses."
+    },
+    {
+      "id": "n7",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Adopt per-driver domains, interrupt quotas, recovery-core isolation, and IOMMU drain-before-reuse; FaultBench-1 supports implementation, pending WCET certification."
+    },
+    {
+      "id": "n8",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Implement adopted domains and recovery isolation; bound shared interrupt/IOMMU interference, then certify unaffected-device 1 ms response times during restarts."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Implement DomainGuard v1 with per-driver MMU/IOMMU domains, interrupt-remapping quotas, isolated recovery core, and drain-confirmed DMA buffer reuse."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "DomainGuard v1 patchset adds per-driver MMU/IOMMU mappings, interrupt quotas, recovery-core pinning, and drain-gated DMA buffer reuse."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Measure DomainGuard v1’s worst-case interrupt/IOMMU blocking under 100-kHz storms; include bounds in unaffected-device 1 ms response-time analysis."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "DomainGuard v1: IOMMU invalidations caused 180 µs maximum shared-fabric blocking and 27 unaffected-device deadline misses during 100-kHz storms."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n4",
+      "content": "Revoke driver MMIO, disable bus mastering, quarantine DMA buffers, and schedule IOMMU invalidations in certified slack to eliminate deadline misses."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Implement DomainGuard v2 MMIO revocation, bus-master shutdown, buffer quarantine, and slack-scheduled invalidations; rerun FaultBench-1 and 1 ms response-time analysis."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "DomainGuard v2: 10,000 FaultBench-1 restarts yielded zero escaped CPU/DMA writes or deadline misses; certified worst-case response was 0.91 ms."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Run ConcurRecover-2 with simultaneous driver crashes, 100-kHz storms, and delayed DMA; measure quarantine release, invalidation slack, deadline misses."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "ConcurRecover-2: four concurrent restarts exceeded certified invalidation slack by 65 µs, causing eight unaffected-device deadline misses; quarantine blocked stale DMA."
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Serialize IOMMU invalidations one-per-slack-window; immediate interrupt masking, bus-master shutdown, and DMA quarantine yield zero four-restart deadline misses."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Implement DomainGuard v3’s slack-gated invalidation queue; rerun four-crash ConcurRecover-2, checking stale DMA containment and certified 1 ms bounds."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "ConcurRecover-2: four concurrent restarts under 100-kHz storms yielded zero deadline misses or stale-DMA escapes; certified response bound: 0.96 ms."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "Stress DomainGuard v3 with four simultaneous crashes and delayed PCIe writes; check DMA quarantine exhaustion and 1 ms deadlines."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Delayed-PCIe stress: four restarts exhausted the 256-page quarantine; shared allocator contention caused three unaffected-device 1 ms deadline misses."
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Per-driver quarantine pools and fail-closed restart admission prevent shared-allocator contention while serialized invalidations yield zero four-crash deadline misses."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Audit DomainGuard v3’s serialized invalidations under four crashes and exhausted quarantine; measure interrupt-mask latency and unaffected-device deadline misses."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "With preallocated recovery buffers, four simultaneous restarts exhausted quarantine but incurred zero deadline misses; invalidations stayed within slack."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n23",
+      "content": "Implement DomainGuard v4’s per-driver quarantine pools and fail-closed admission; rerun delayed-PCIe four-crash stress, checking allocator isolation and deadlines."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Four-crash DomainGuard v4: isolated pools contained delayed DMA, but PCIe drains stalled shared fabric 120 µs; two deadlines missed."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Retain serialized invalidations and preallocated quarantine; withhold v4 certification until PCIe drain interference meets 1 ms bounds."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Partition devices across PCIe roots, reserved memory bandwidth, and cores; isolate driver memory/DMA and mask/reset faults root-locally."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Can root-local resets and memory-bandwidth reservations bound PCIe drain interference within unaffected devices’ 1 ms response-time budgets?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Dedicated PCIe roots and bandwidth reservations bound cross-root drain blocking below 30 µs, preserving 1 ms deadlines during four restarts."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Run RootSplit-4 with four concurrent driver restarts, dedicated PCIe roots and bandwidth reservations; measure cross-root blocking and deadline misses."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "RootSplit-4 measured 24 µs maximum cross-root drain blocking and zero unaffected-device deadline misses across 10,000 four-restart trials."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "p2",
+      "content": "Integrate RootSplit-4 reservations with DomainGuard isolation; certify worst-case shared-resource blocking and 1 ms response times across four restarts."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Integrate DomainGuard v4 with RootSplit-4 PCIe-root and bandwidth partitions; rerun delayed-DMA four-crash tests and response-time analysis."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "DomainGuard-RootSplit integration patch assigns driver domains to dedicated PCIe roots and bandwidth partitions, preserving per-driver quarantine and slack-gated invalidations."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n34",
+      "content": "Run IntegratedFault-4 on DomainGuard-RootSplit with four concurrent crashes, delayed DMA, and 100-kHz storms; certify unaffected-device 1 ms response bounds."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "IntegratedFault-4: 10,000 four-crash trials showed zero escaped CPU/DMA writes or deadline misses; certified unaffected-device response bound was 0.98 ms."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Stress DomainGuard-RootSplit with simultaneous root-local resets and memory-controller saturation; measure cross-root blocking and unaffected-device deadline misses."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Concurrent root-local resets and memory-controller saturation imposed 90 µs cross-root blocking despite reservations, causing four unaffected-device deadline misses."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p2",
+      "content": "Can memory-controller bandwidth reservations bound simultaneous root-reset interference without weakening unaffected devices’ 1 ms response-time guarantee?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Dedicated memory-controller service slots and serialized root resets limit additional blocking to 15 µs, preserving 1 ms deadlines."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Implement fixed memory-controller service slots and queued root-local resets; rerun saturation stress measuring added blocking and deadline misses."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Saturation stress: queued resets and controller slots limited added blocking to 12 µs; zero misses, certified response bound 0.992 ms."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n42",
+      "content": "Run RefreshCollision-4 with four queued resets, delayed PCIe writes, and worst-phase DRAM refresh; measure slot overruns and deadline misses."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "RefreshCollision-4: worst-phase DRAM refresh extended controller-slot blocking to 26 µs, causing three unaffected-device 1 ms deadline misses."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Retain root-local isolation and serialized resets, but defer 1 ms certification until DRAM-refresh blocking is bounded in controller slots."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 48,
+      "exploration_parent_id": "g1",
+      "content": "Physically separate critical-device PCIe roots, DRAM controllers, and cores; isolate restartable drivers with MMU/IOMMU domains and interrupt remapping."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p3",
+      "content": "Does physical DRAM-controller separation eliminate refresh-induced deadline misses during four concurrent driver restarts and interrupt storms?"
+    },
+    {
+      "id": "n50",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Separate DRAM controllers prevent recovery refresh collisions from increasing critical-device blocking, yielding zero 1 ms misses during four restarts."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Run SplitDRAM-4 with four concurrent restarts, 100-kHz interrupt storms, and worst-phase refresh; measure cross-controller blocking and deadline misses."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "SplitDRAM-4: separate controllers avoided refresh collisions, but shared coherence-fabric snoops added 48 µs blocking and caused two 1 ms misses."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n50",
+      "content": "Repeat SplitDRAM-4 using noncoherent DMA, uncached recovery buffers, and isolated snoop domains; check four-restart 1 ms response bounds."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "SplitDRAM-4 with isolated snoops: 10,000 four-restart trials had zero deadline misses; worst-case unaffected-device response bound was 0.94 ms."
+    },
+    {
+      "id": "n55",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n50",
+      "content": "Adopt split controllers, isolated snoops, noncoherent DMA, and uncached buffers; shared snoops missed deadlines, isolated response bound was 0.94 ms."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p3",
+      "content": "Integrate adopted controller/snoop isolation with DomainGuard restarts; verify DMA containment and certified 1 ms deadlines during four-crash refresh stress."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Integrate DomainGuard v4 with isolated DRAM controllers, snoop domains, and noncoherent DMA; add uncached per-driver quarantine buffers."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "SplitGuard patchset partitions PCIe roots, DRAM controllers, and snoop domains; adds noncoherent DMA, uncached quarantine, and DomainGuard v4 restarts."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n56",
+      "content": "Run SplitGuard-Fault4: four crashes, delayed DMA, 100-kHz storms, and worst-phase refresh; verify containment and 1 ms response bound."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "SplitGuard-Fault4: 10,000 four-crash trials yielded zero escaped CPU/DMA writes or deadline misses; certified unaffected-device response bound was 0.97 ms."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "p3",
+      "content": "Adopt SplitGuard with isolated snoops and noncoherent DMA; shared snoops missed deadlines, while integrated four-crash tests certified 0.97 ms."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a restartable device-driver isolation boundary that contains DMA faults without invalidating hard-real-time guarantees for unaffected devices.",
+    "requirements": [
+      "Contain arbitrary driver memory writes, DMA, and interrupt storms across driver crashes and restarts.",
+      "Unaffected devices retain verified 1 ms service deadlines during driver faults and concurrent recovery."
+    ]
+  }
+}

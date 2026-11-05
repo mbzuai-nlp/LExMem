@@ -1,0 +1,140 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Factorized adapters for source-absent bundles: Arabic and Maltese evaluation",
+      "boundary_reason": "The initial evaluation leads to a decision to advance to broader-language testing."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Broader-language adapter benchmark and leakage audit",
+      "boundary_reason": "The Turkish, Finnish, and Georgian benchmark is audited and its results reproduced."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Aggregate ablation of feature-conditioned stem-edit templates",
+      "boundary_reason": "The aggregate ablation falls short of the hypothesized effect; the next work narrows to root-and-pattern verbs."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Root-and-pattern template gains and prevalence question",
+      "boundary_reason": "The verb-specific result leads to a plan to investigate variation by root-and-pattern prevalence."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "ParadigmAtlas analogy approach and unseen-lemma benchmark",
+      "boundary_reason": "The alternative paradigm-class approach reaches its benchmark result; the next proposal uses a different method."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Cycle-model slot alignment across five target languages",
+      "boundary_reason": "Contrasting audit results lead to a new question about target-corpus ambiguity."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Paradigm ambiguity analysis for cycle-model outcomes",
+      "boundary_reason": "The ambiguity analysis produces its reproducible artifact; the next proposal changes approach."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Counterfactual bundle swaps and revised phonotactic audit",
+      "boundary_reason": "The expanded audit overturns the initial violation-rate finding and motivates a filtering question."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Vowel-harmony filtering versus penalty-calibrated swaps",
+      "boundary_reason": "The filtering comparison falls short of the proposed accuracy threshold, prompting a soft-penalty test."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Cross-validated soft harmony penalties and adoption",
+      "boundary_reason": "The soft-filtered method meets the aggregate targets and is adopted for further testing."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Hungarian and Estonian soft-filtered transfer and artifact audit",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

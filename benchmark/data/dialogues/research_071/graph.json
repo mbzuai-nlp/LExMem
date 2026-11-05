@@ -1,0 +1,906 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop streaming speech recognition that handles temporarily ambiguous speech accurately while committing words irreversibly with low latency.",
+      "requirements": [
+        "Achieve word error rate within 5% relative of an equally trained revisable streaming baseline.",
+        "Keep 95th-percentile word-end-to-commit latency below 800 milliseconds, with zero revisions after commitment."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Buffer competing transducer hypotheses; commit consensus prefixes irreversibly, forcing minimum-risk choices 700 ms after estimated word ends."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What beam posterior-mass threshold prevents premature homophone commits without exceeding the 700-ms forced-decision window?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "A 0.95 consensus-mass threshold limits homophone-rich WER increase to 5% relative to revisable decoding, with p95 latency <800 ms."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Sweep 0.90, 0.95, and 0.99 consensus thresholds on homophone-enriched LibriSpeech; compare WER and p95 latency with revisable decoding."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Decode homophone-enriched LibriSpeech at 0.90, 0.95, 0.99 and revisable baseline; record WER, p95 word-end-to-commit latency, and postcommit revisions."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "At 0.95, WER was 11.0% versus revisable 10.2% (+7.8% relative); p95 latency was 742 ms, with zero revisions."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "With 700-ms forced commits, adaptive consensus-mass thresholds (0.99 for homophones, 0.90 otherwise) yield WER ≤10.7% and p95 latency <800 ms."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Using 0.95-run errors, implement online homophone flagging; test 0.99/0.90 thresholds on held-out LibriSpeech for WER, p95 latency, and revisions."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Held-out LibriSpeech: adaptive WER 10.6% versus revisable 10.2% (+3.9% relative); p95 latency 761 ms; zero postcommit revisions."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "After adaptive decoding meets aggregate targets, stratify the 0.90/0.95/0.99 LibriSpeech sweep by ambiguity duration; compare subgroup WER and p95 latency."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Ambiguity-duration audit with per-bin WER and p95 commit latency for fixed thresholds, adaptive decoding, and the revisable baseline."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "For ambiguities exceeding 500 ms, does adaptive decoding retain ≤5% relative WER increase and sub-800-ms p95 commit latency?"
+    },
+    {
+      "id": "n12",
+      "type": "decision",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Use the duration audit to gate adaptive-decoder release on >500-ms subgroup compliance; aggregate WER and latency already meet targets."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Distill a 400-ms future-context teacher into a causal transducer; commit at 2% estimated error risk or a 700-ms deadline."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Distill the 400-ms teacher into a causal transducer; calibrate commit risk and compare held-out WER, p95 latency, and revisions."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Use audit-defined >500-ms ambiguity bins to oversample 400-ms-teacher distillation examples; calibrate causal-student 2%-risk commits before 700 ms."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Causal transducer checkpoint with audit-bin-weighted teacher distillation, calibrated 2%-risk commit scores, and a hard 700-ms commit deadline."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Benchmark distilled checkpoint against equally trained revisable decoding on held-out LibriSpeech; measure WER, p95 commit latency, revisions, and long-ambiguity WER."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Held-out LibriSpeech: distilled WER 11.1% versus revisable 10.2% (+8.8% relative); p95 latency 704 ms; zero revisions."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Are the distilled model’s excess errors concentrated in >500-ms ambiguity bins or in miscalibrated 2%-risk early commits?"
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Stratify distilled-checkpoint errors by ambiguity duration and commit timing; compare predicted versus observed error for early 2%-risk commits."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Replay checkpoint outputs; tabulate excess substitutions by >500-ms ambiguity and observed errors among early commits scored below 2% risk."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Early commits scored below 2% risk had 1.7% observed error; 73% of excess substitutions arose at 700-ms deadlines."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Can ambiguity-aware rescoring at 700-ms deadlines lower WER to ≤10.7% while keeping p95 commit latency below 800 ms?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Homophone-aware rescoring of deadline beam candidates reduces WER to ≤10.7% while preserving p95 latency <800 ms and zero revisions."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Using the 11.1%-WER checkpoint and deadline-error audit, rescore homophone beam candidates; measure WER, p95 latency, and revisions."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Homophone-aware rescoring cut WER from 11.1% to 10.6%; p95 commit latency was 746 ms, with zero revisions."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "n22",
+      "content": "Adopt deadline-only homophone rescoring: WER fell from 11.1% to 10.6%, with 746-ms p95 latency and zero revisions."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Fine-tune a causal transducer with contrastive homophone minimal-pair loss; trigger irreversible commits using calibrated word-level error estimates."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "Mine homophone minimal pairs, contrastively fine-tune the causal transducer, calibrate 700-ms commits, then benchmark WER and p95 latency."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Use audit-defined ambiguity bins to mine homophone minimal pairs and contrastively fine-tune the causal transducer on long-ambiguity examples."
+    },
+    {
+      "id": "n29",
+      "type": "artifact",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Minimal-pair fine-tuned transducer checkpoint and labeled homophone-pair corpus, tagged by >500-ms ambiguity duration."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n27",
+      "content": "Calibrate checkpoint commit-risk scores, then benchmark irreversible decoding against equally trained revisable decoding on held-out LibriSpeech WER and p95 latency."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Minimal-pair checkpoint achieved 10.5% WER versus revisable 10.2% (+2.9% relative), 774-ms p95 commit latency, and zero revisions."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 36,
+      "exploration_parent_id": "g1",
+      "content": "Train an alignment-supervised ambiguity-resolution predictor; commit stable prefixes immediately and defer uncertain words until resolution or 700 ms."
+    },
+    {
+      "id": "n32",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "p4",
+      "content": "Can alignment-supervised resolution predictions identify words safely committable before 700 ms without increasing WER beyond 10.7%?"
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "Alignment-supervised resolution gating commits at least 30% of words within 400 ms of word end while maintaining WER ≤10.7%."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "Train alignment-supervised resolution gate with 700-ms deadline; measure held-out LibriSpeech ≤400-ms commit share, WER, p95 latency, and revisions."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Resolution gate committed 38% within 400 ms, but WER was 11.0% versus revisable 10.2%; p95 latency 753 ms, zero revisions."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "Tune resolution-gate confidence on validation data; test ≥30% ≤400-ms commits, WER ≤10.7%, and p95 latency <800 ms."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Using the 11.0%-WER gate, sweep confidence cutoffs; retest held-out ≤400-ms commit share, WER, p95 latency, and revisions."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Tighter gate confidence yielded 32% commits within 400 ms, 10.6% WER versus 10.2% revisable, 779-ms p95 latency, zero revisions."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "n32",
+      "content": "Does tightened resolution gating preserve ≤5% relative WER increase and sub-800-ms p95 latency under 10-dB babble noise?"
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Add 10-dB babble to held-out LibriSpeech; compare tightened gating with an equally trained revisable baseline on WER and p95 latency."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Under 10-dB LibriSpeech babble, benchmark original and tightened gates against revisable decoding for WER, p95 latency, and revisions."
+    },
+    {
+      "id": "n42",
+      "type": "artifact",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "10-dB babble robustness report comparing original gate, tightened gate, and revisable baseline on WER, p95 latency, and revisions."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n39",
+      "content": "Adopt tightened gating for clean speech (10.6% versus 11.0% WER); condition babble rollout on the robustness report meeting both targets."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Use a calibrated conformal prediction set over next-word candidates; commit only singleton sets, with minimum-risk fallback at 700 ms."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "p5",
+      "content": "Calibrate 98% conformal word sets on validation speech; benchmark singleton commits against revisable decoding for WER and p95 latency."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n44",
+      "content": "Using the minimal-pair checkpoint and babble report, stratify 98%-coverage conformal calibration; compare singleton-commit WER and p95 latency against revisable decoding."
+    },
+    {
+      "id": "n46",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Stratified conformal calibrator with clean/babble word-set thresholds, singleton-commit decoder, and held-out WER and p95-latency tables."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n44",
+      "content": "Replay the singleton-commit decoder on independent clean/babble LibriSpeech; measure conformal coverage, WER versus revisable decoding, p95 latency, and revisions."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Independent clean/babble: WER 10.6/18.7% versus revisable 10.2/18.0%; coverage 98.1%, worst-case p95 latency 787 ms, zero revisions."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 55,
+      "exploration_parent_id": "p5",
+      "content": "Will 98% conformal coverage persist for rare homophones while keeping their p95 commit latency below 800 ms?"
+    },
+    {
+      "id": "n50",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "Rare homophones retain ≥98% conformal coverage and <800-ms p95 commit latency under the stratified singleton-commit decoder."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Audit rare homophones in independent clean/babble outputs using the stratified calibrator; measure conformal coverage and p95 commit latency."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Rare-homophone audit found 98.2% conformal coverage and 792-ms p95 commit latency across clean/babble speech."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "n49",
+      "content": "Adopt stratified conformal commits for clean/babble rollout over clean-only gating: WER and latency targets hold, with ≥98% rare-homophone coverage."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n53"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop streaming speech recognition that handles temporarily ambiguous speech accurately while committing words irreversibly with low latency.",
+    "requirements": [
+      "Achieve word error rate within 5% relative of an equally trained revisable streaming baseline.",
+      "Keep 95th-percentile word-end-to-commit latency below 800 milliseconds, with zero revisions after commitment."
+    ]
+  }
+}

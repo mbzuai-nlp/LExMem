@@ -1,0 +1,974 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable zero-shot voice conversion across unseen tonal languages while transferring speaker identity without altering lexical tone or prosody.",
+      "requirements": [
+        "Keep lexical-tone error within 2 percentage points of unconverted speech, preserving source intonation and rhythm.",
+        "Achieve 90% target-speaker verification acceptance at 1% false acceptance using evaluators independent of training."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use language-agnostic acoustic units, locked source F0 and timing, and reference-conditioned spectral diffusion to transfer target timbre."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can source-F0 locking prevent lexical-tone drift during reference-conditioned timbre diffusion in unseen tonal languages?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "On held-out Yoruba and Thai, F0 locking limits tone error rate increase to ≤2 percentage points versus unconverted speech."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Convert held-out Yoruba and Thai speech with locked versus unlocked F0; independently score lexical-tone error against unconverted speech."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "Independent annotators measured Yoruba/Thai tone errors of 7.4%/9.1% unconverted, 8.6%/10.5% F0-locked, and 13.2%/15.0% unlocked."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Retain source-F0 locking: Yoruba/Thai tone-error increases were 1.2/1.4 percentage points, versus 5.8/5.9 without locking."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "With F0 locking retained, benchmark target-speaker acceptance against 90% at 1% FAR using independent verifiers; audit Yoruba/Thai rhythm."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "l1",
+      "content": "Run frozen ECAPA-TDNN and ResNet speaker verifiers on converted Yoruba/Thai utterances; calibrate each at 1% FAR on disjoint speakers."
+    },
+    {
+      "id": "r1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "Yoruba–Thai verification report containing per-language ECAPA-TDNN and ResNet acceptance rates, 1% FAR calibration, and disjoint-speaker trial lists."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "r1",
+      "content": "Independently replay the report’s trial lists to verify 1% FAR calibration, per-language acceptance, and disjoint-speaker evaluation."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "Independent replay confirmed Yoruba/Thai target acceptance of 92.1%/90.7% (ECAPA) and 91.4%/90.2% (ResNet), each at 1% FAR."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "q1",
+      "content": "On held-out Vietnamese creaky tones, F0 locking with source-voicing masks keeps tone-error increases within 2 percentage points."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "Blinded annotators compare tone errors in held-out Vietnamese creaky-tone, F0-locked conversions with versus without source-voicing masks against unconverted speech."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "a4",
+      "content": "Blinded annotators found Vietnamese creaky-tone errors of 8.3% unconverted, 12.0% F0-locked with masks, versus 14.6% without masks."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Augment F0-locked diffusion with source-derived glottal-pulse and aperiodicity tracks to preserve Vietnamese creaky tones while transferring reference timbre."
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Train pulse-conditioned diffusion; benchmark Vietnamese/Yoruba/Thai tone drift ≤2 points, rhythm preservation, and independent-verifier acceptance ≥90% at 1% FAR."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "l2",
+      "content": "Reuse the report’s Yoruba/Thai trials, add Vietnamese trials, and measure pulse-conditioned tone errors, syllable-duration MAE, and 1%-FAR acceptance."
+    },
+    {
+      "id": "r2",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "a5",
+      "content": "Pulse-conditioned benchmark report with Vietnamese/Yoruba/Thai tone-error deltas, syllable-duration MAE, independent-verifier acceptance at 1% FAR, and trial manifests."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "r2",
+      "content": "Audit benchmark report manifests; compare F0-only and pulse-conditioned conversions on tone drift, duration MAE, and 1%-FAR independent-verifier acceptance."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "a6",
+      "content": "Vietnamese tone error: F0-only 12.0%, pulse-conditioned 9.8%, baseline 8.3%; pulse-conditioned duration MAE 12 ms, independent-verifier acceptance 91.2% at 1% FAR."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "e4",
+      "content": "Adopt pulse conditioning for Vietnamese and retain verified F0-locked Yoruba/Thai conversions; Vietnamese tone drift falls to 1.5 points."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "Can source-pulse conditioning preserve Vietnamese creaky-tone cues without leaking source-speaker identity into converted speech?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "q2",
+      "content": "With pulse conditioning, Vietnamese tone-error drift stays ≤2 points while source-speaker acceptance remains ≤5% at 1% FAR."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "h3",
+      "content": "On held-out Vietnamese pairs, independently score pulse-conditioned tone-error drift and source-speaker acceptance at 1% FAR."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "a7",
+      "content": "Vietnamese tone-error drift was 1.5 points, but independent source-speaker verification accepted 11.6% of conversions at 1% FAR."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "e5",
+      "content": "Speaker-adversarial pulse normalization reduces Vietnamese source-speaker acceptance from 11.6% to ≤5% at 1% FAR while maintaining ≤2-point tone drift."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "h4",
+      "content": "Train speaker-adversarial pulse normalizer; compare held-out Vietnamese tone drift and independent source-speaker acceptance against unnormalized conversions at 1% FAR."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "a8",
+      "content": "Normalized pulses reduced Vietnamese source-speaker acceptance from 11.6% to 3.8% at 1% FAR; tone-error drift remained 1.7 points."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Condition a language-agnostic timbre decoder on speaker-adversarial normalized pulses and source-aligned duration tokens, with target-only reference embeddings."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "Will source-aligned duration tokens preserve unseen-language rhythm when target references speak substantially faster than source utterances?"
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "q3",
+      "content": "Pair Vietnamese sources with ≥30%-faster references; compare normalized-pulse duration-token decoding against F0-plus-voicing-mask decoding on duration MAE and tone-error drift."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "a9",
+      "content": "With ≥30%-faster references, masked-F0 drift was 1.8 versus 3.7 points previously; duration MAE was 18 versus pulse-token 12 ms."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 34,
+      "exploration_parent_id": "e7",
+      "content": "Retain pulse tokens for rhythm; reconsider masked-F0 only with ≥30%-faster references, given 1.8-point versus prior 3.7-point tone drift."
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "q3",
+      "content": "Across held-out Yoruba, Thai, and Vietnamese with ≥30%-faster references, duration tokens keep syllable-duration MAE ≤15 ms."
+    },
+    {
+      "id": "l3",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "h5",
+      "content": "Using retained pulse-duration tokens, test ≥30%-faster references across Yoruba, Thai, and Vietnamese for ≤15-ms syllable-duration MAE."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "l3",
+      "content": "Using r1’s disjoint-speaker Yoruba/Thai trials, add Vietnamese and ≥30%-faster references; measure pulse-token syllable-duration MAE per language."
+    },
+    {
+      "id": "r3",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "a10",
+      "content": "Fast-reference rhythm audit with disjoint-speaker trial manifests and per-language pulse-token syllable-duration MAE for Yoruba, Thai, and Vietnamese."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "l3",
+      "content": "Audit r3’s disjoint-speaker manifests and ≥30%-faster pairings; independently reannotate syllables and recompute each language’s MAE against 15 ms."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "a11",
+      "content": "Independent reannotation found pulse-token syllable-duration MAE of 13/14/12 ms for Yoruba/Thai/Vietnamese with ≥30%-faster references."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "l3",
+      "content": "Audit r3 duration measurements and replay fast-reference trials for source-F0 deviation, tone drift, and independent-verifier acceptance at 1% FAR."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "a12",
+      "content": "With ≥30%-faster Thai references, independent-verifier target acceptance fell to 86.7% at 1% FAR despite 14-ms duration MAE."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "e9",
+      "content": "Retain duration tokens for 14-ms Thai rhythm, but defer fast-reference deployment: target acceptance is 86.7% at 1% FAR."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Train tempo-invariant target-speaker embeddings with time-stretched references, retaining source duration tokens and normalized pulses during timbre decoding."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Can tempo-invariant speaker embeddings restore Thai target acceptance with ≥30%-faster references without disturbing source duration or tone?"
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "q4",
+      "content": "With ≥30%-faster references, tempo-invariant embeddings raise Thai acceptance to ≥90% at 1% FAR, preserving ≤15-ms MAE and ≤2-point tone drift."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "h6",
+      "content": "On ≥30%-faster Thai trials, compare tempo-invariant versus original embeddings; measure independent-verifier acceptance at 1% FAR, duration MAE, and tone-error drift."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "a13",
+      "content": "Thai fast-reference acceptance rose from 86.7% to 89.1% at 1% FAR; duration MAE was 14 ms, tone drift 1.6 points."
+    },
+    {
+      "id": "h7",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "q4",
+      "content": "Contrastive target-speaker fine-tuning yields ≥90% Thai fast-reference acceptance at 1% FAR, ≤15-ms duration MAE, and ≤2-point tone drift."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "h7",
+      "content": "Fine-tune tempo-invariant embeddings contrastively; on fast-reference Thai trials, independently assess target acceptance, duration MAE, and tone drift."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "a14",
+      "content": "Contrastive fine-tuning achieved 91.0% Thai fast-reference target acceptance at 1% FAR, 14-ms duration MAE, and 1.7-point tone drift."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "e11",
+      "content": "Advance contrastively tuned embeddings for Thai fast-reference conversion: acceptance recovered to 91.0%, with 14-ms rhythm MAE and 1.7-point tone drift."
+    },
+    {
+      "id": "l4",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "d5",
+      "content": "Benchmark contrastively tuned embeddings across held-out tonal languages: ≤2-point tone drift, ≤15-ms duration MAE, ≥90% independent-verifier acceptance at 1% FAR."
+    },
+    {
+      "id": "a15",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "l4",
+      "content": "Reprocess r2 trials and r3 fast-reference manifests with contrastively tuned embeddings; independently score tone drift, duration MAE, and 1%-FAR acceptance."
+    },
+    {
+      "id": "r4",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "a15",
+      "content": "Cross-language validation report listing Yoruba/Thai/Vietnamese trial manifests, tone-error baselines and deltas, duration MAE, and independent 1%-FAR acceptance."
+    },
+    {
+      "id": "a16",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "l4",
+      "content": "Audit r4 manifests for unseen-language separation; independently recompute per-language tone drift, duration MAE, and calibrated 1%-FAR target acceptance."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "a16",
+      "content": "Independent r4 audit, Yoruba/Thai/Vietnamese: tone drift 1.2/1.7/1.7 points; duration MAE 13/14/12 ms; target acceptance 92.0/91.0/90.5% at 1% FAR."
+    },
+    {
+      "id": "d6",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "e12",
+      "content": "Adopt contrastively tuned pulse-duration conversion for the evaluated languages; independent audits meet tone, rhythm, and target-verification thresholds."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a5"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a6"
+    },
+    {
+      "source": "a5",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "r2"
+    },
+    {
+      "source": "a6",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "r2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "revise",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a9",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "revive",
+      "target": "h2"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "l3",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "l3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a10"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a11"
+    },
+    {
+      "source": "a10",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "r3"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a12"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "refute",
+      "target": "h6"
+    },
+    {
+      "source": "h7",
+      "relation": "revise",
+      "target": "h6"
+    },
+    {
+      "source": "h7",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "h7"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "h7"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "l4",
+      "relation": "depend_on",
+      "target": "d5"
+    },
+    {
+      "source": "l4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a15"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a16"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a15",
+      "relation": "produce",
+      "target": "r4"
+    },
+    {
+      "source": "a16",
+      "relation": "depend_on",
+      "target": "r4"
+    },
+    {
+      "source": "a16",
+      "relation": "evaluate",
+      "target": "r4"
+    },
+    {
+      "source": "a16",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a16",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "d6",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "d6",
+      "relation": "depend_on",
+      "target": "e12"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable zero-shot voice conversion across unseen tonal languages while transferring speaker identity without altering lexical tone or prosody.",
+    "requirements": [
+      "Keep lexical-tone error within 2 percentage points of unconverted speech, preserving source intonation and rhythm.",
+      "Achieve 90% target-speaker verification acceptance at 1% false acceptance using evaluators independent of training."
+    ]
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Gauge normalization, exposure, and shape–lighting ambiguity",
+      "boundary_reason": "The exposure ablation reaches a decision; the next nodes turn to benchmarking and other ablations."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Benchmarking and ablating the posterior relighting approach",
+      "boundary_reason": "The discussion shifts from overall LPIPS and calibration results to coverage under distant directional lights."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Joint-sample coverage beyond 60° and shadow-stratified calibration",
+      "boundary_reason": "The distant-light tests conclude, followed by a new shadow-aware SDF proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Shadow-aware SDF mixture and its relighting evaluation",
+      "boundary_reason": "The SDF approach reaches an interval-evaluation artifact; the next proposal uses tempered MCMC."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Tempered-MCMC relighting results and their low-specularity exception",
+      "boundary_reason": "The results motivate a distinct investigation of specular mode mixing."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "BRDF–lighting swap moves for specular mode mixing",
+      "boundary_reason": "The swap-move work reaches an implementation artifact; the next nodes introduce a particle-renderer approach."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Relighting-space repulsion in a 16-particle inverse renderer",
+      "boundary_reason": "The particle ablation and stratification reach a report; the next proposal changes to a conditioned flow."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Importance-reweighted flow benchmark and replication audit",
+      "boundary_reason": "The initial benchmark reports its results; the next nodes focus on specular-mode comparison and validation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Specular-mode comparison and disjoint-object HDR validation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

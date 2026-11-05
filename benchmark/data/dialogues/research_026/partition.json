@@ -1,0 +1,118 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Force-conditioned slip forecasting and held-out WearSlip-120 validation",
+      "boundary_reason": "The model meets the forecasting thresholds and is adopted for deployment testing; the next discussion turns to closed-loop interventions."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Closed-loop GripLoop-120 trials and audited intervention outcomes",
+      "boundary_reason": "The audited drop and false-intervention results conclude the closed-loop test; the next discussion examines individual model cues."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Strain-recovery cue ablation against a shear-drift-only model",
+      "boundary_reason": "The ablation refutes the proposed halving of deformation false alarms; the next discussion shifts to taxel normalization."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Per-contact taxel normalization under sensor wear",
+      "boundary_reason": "The normalization ablation report is produced; the next discussion introduces a distinct microslip-front approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Calibrated microslip fronts, recovery gating, and comparison decision",
+      "boundary_reason": "Recovery gating meets the WearSlip thresholds, and a decision advances it to comparison while retaining the force-conditioned baseline."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Paired-model benchmarking and worst-wear silicone replication",
+      "boundary_reason": "The audited and replicated worst-wear results complete the model comparison; the next discussion tests calibration through progressive abrasion."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Abrasion-induced front-timing drift and deployment deferral",
+      "boundary_reason": "Abrasion reduces recall below target, prompting a decision to defer deployment and pursue online recalibration."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Stable-contact online recalibration and 4,000-cycle evaluation",
+      "boundary_reason": "WearCal-v1 meets the abrasion-test thresholds; the next discussion challenges its stable-contact screen with slow creep."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Creep-hold challenge and decision to resume closed-loop testing",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

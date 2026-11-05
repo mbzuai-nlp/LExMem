@@ -1,0 +1,1268 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop reinforcement learning transfer for robotic manipulation that reuses skills under hidden dynamics shifts while limiting negative transfer.",
+      "requirements": [
+        "Match from-scratch success rates using 50% fewer target interactions when manipulation dynamics partially overlap.",
+        "On incompatible targets, stay within 5 percentage points of from-scratch success under equal interaction budgets."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Gate pretrained manipulation options by per-option probe-transition error, defaulting to a concurrently trained scratch policy above 0.15 normalized error."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What option-level compatibility signal and fallback should control reuse after observing target probe transitions?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "A 0.15-error gate matches scratch success at half-budget on overlapping dynamics, with ≤5-point deficits at equal budgets on incompatible targets."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Fit option-conditioned predictors, collect 200 probes, and benchmark 0.15-gated reuse with scratch fallback versus scratch across overlapping and incompatible shifts."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Calibrate the 0.15-error gate on 200 probes per target, then compare gated and scratch success at 5,000/10,000 interactions."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ShiftGate-v1 benchmark logs probe errors, option choices, and success curves for gated versus scratch policies at 5,000/10,000 interactions."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Audit ShiftGate-v1 logs for gate calibration and success gaps: overlapping gated 5,000 versus scratch 10,000; incompatible equal-budget ≤5 points."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "ShiftGate-v1 success: overlapping gated 5,000 interactions 64% versus scratch 10,000 78%; incompatible gated 10,000 61% versus scratch 70%."
+    },
+    {
+      "id": "n10",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Reject the fixed 0.15 gate and pursue uncertainty-calibrated reuse: overlap trails by 14 points; incompatible targets by 9."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Ablate option gating and concurrent scratch fallback on friction and gripper-lag shifts; measure false-accept rate and 10,000-interaction success."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "On gripper-lag shifts, gating cut false accepts from 34% to 12%; scratch fallback raised 10,000-interaction success from 52% to 61%."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Can option-level gating retain reusable grasp skills while rejecting incompatible placement skills under a mixed dynamics shift?"
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Run 200-probe mixed-shift trials with unchanged grasp and altered placement compliance; compare uncertainty-calibrated option gating against all-or-none transfer."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Mixed shifts: calibrated gating reused 87% of grasp options, rejected 81% of incompatible placements; success was 73% versus 62% all-or-none."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n14",
+      "content": "MixedShift-200 packages probe traces, grasp/placement compatibility labels, and calibrated-gating versus all-or-none success curves."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Use uncertainty-calibrated grasp and placement gates with scratch fallback to reuse compatible options under mixed dynamics shifts."
+    },
+    {
+      "id": "n18",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Train uncertainty-calibrated option gates with scratch fallback; test held-out shifts against scratch at half and equal target-interaction budgets."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Using MixedShift-200, compare calibrated and fixed-0.15 gates with scratch fallback against scratch on held-out shifts at 5,000/10,000 interactions."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Held-out shifts: calibrated overlap success was 70%/5,000 interactions versus scratch 78%/10,000; incompatible success was 63% versus scratch 70% at 10,000."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Which failure mode explains the held-out 8-point overlap and 7-point incompatible deficits: miscalibrated gating or undertrained scratch fallback?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Gate miscalibration, not fallback starvation, drives both deficits; oracle compatibility labels will improve success by ≥5 points on each shift."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "On held-out shifts, compare oracle compatibility gates with doubled scratch-policy updates at fixed 5,000/10,000-interaction budgets; measure success gains."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Oracle gates raised overlap success 70→77% and incompatible success 63→69%; doubled scratch updates added ≤1 point."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Prioritize gate calibration over scratch updates: oracle gates nearly closed both scratch gaps, while extra updates added ≤1 point."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n18",
+      "content": "Fit per-option conformal gates on MixedShift-200 compatibility labels, targeting ≤5% false accepts; audit held-out success with fallback unchanged."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "p2",
+      "content": "Conformal probe-error gates targeting ≤5% false accepts replace fixed 0.15, achieving half-budget parity and ≤5-point incompatible deficits with scratch fallback."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Benchmark conformal gates against ShiftGate-v1 baselines on held-out shifts, checking ≤5% false accepts, half-budget parity, and ≤5-point incompatible deficits."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Conformal gates: 4% false accepts; overlapping success 78%/5,000 versus scratch 78%/10,000; incompatible 68% versus scratch 70% at 10,000."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Infer target dynamics from contact probes; reuse pretrained skills only when pessimistic value estimates exceed scratch-policy estimates."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "Can 200 contact probes yield skill-value bounds reliable enough to reject harmful transfer without suppressing useful skills?"
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "With 200 contact probes, pessimistic value gating yields ≤5% harmful transfers while retaining ≥80% of skills outperforming scratch."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Collect 200 contact probes per shift; compare pessimistic value gates with oracle skill returns for harmful-transfer rate and useful-skill retention."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "With 200 probes, pessimistic value gating limited harmful transfers to 4% but retained only 61% of oracle-beneficial skills."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n32",
+      "content": "Using MixedShift-200 labels, measure 200-probe value-gate harmful-transfer rates and useful-skill retention separately for grasp and placement options."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "On MixedShift-200, grasp/placement gates showed 3%/4% harmful transfers and retained 86%/82% of oracle-beneficial skills, respectively."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Which contact regimes cause useful-skill retention to fall from 82–86% on MixedShift-200 to 61% across all tested shifts?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Underrepresented intermittent-slip contacts (<10% of 200 probes) inflate pessimistic value uncertainty, lowering useful-skill retention below 65%."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Stratify probes by intermittent-slip frequency, then oversample slip contacts within 200 probes and reassess value-bound coverage and skill retention."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Reprobe the 61%-retention shifts and MixedShift-200 with slip-enriched 200-probe sets; compare retention and harmful-transfer rates against uniform probes."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "SlipProbe-200 pairs uniform and slip-enriched contact traces with oracle skill returns and regime-stratified value-bound errors."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n39",
+      "content": "Stratify SlipProbe-200 by <10% versus ≥10% slip probes; compare value-bound widths and beneficial-skill retention before and after enrichment."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "In SlipProbe-200, <10% slip probes yielded 0.24-wide value bounds and 59% retention; enrichment halved width and raised retention to 81%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Adaptively allocate 200 contact probes to suspected slip regimes, then gate skill reuse using regime-calibrated pessimistic value bounds."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Implement adaptive 200-probe slip sampling and regime-calibrated value gating; test half-budget overlap parity and ≤5-point incompatible scratch gap."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Using SlipProbe-200 to calibrate value bounds, benchmark adaptive 200-probe gating against uniform probing and scratch at 5,000/10,000 interactions."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Adaptive gating reached 79% versus uniform probing’s 71% at 5,000 overlap interactions (scratch 78%/10,000); incompatible 69%/10,000 versus scratch 70%/10,000."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n45",
+      "content": "After confirming benchmark parity, test adaptive gating on 10-seed held-out peg-insertion and drawer-opening shifts against scratch at 5,000/10,000 interactions."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "HoldoutManip-10 logs ten-seed peg-insertion and drawer-opening probe allocations, value gates, scratch baselines, and 5,000/10,000-interaction success rates."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p4",
+      "content": "Can adaptive probing identify rare slip regimes within 200 contacts without wasting probes on compatible targets?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Adaptive value-bound gates replace conformal gates, identifying ≥90% rare-slip regimes within 200 probes and limiting compatible-target slip probes to ≤30."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Audit HoldoutManip-10 probe traces for rare-slip detection by probe 200 and slip-probe counts on targets with compatible dynamics."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Replay conformal gates on ShiftGate-v1 and audit HoldoutManip-10 adaptive gates for scratch gaps, false accepts, slip detection, probe counts."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "ShiftGate-v1: conformal overlap success 78%/5,000 matched scratch 78%/10,000; incompatible deficit 2 points. HoldoutManip-10: adaptive rare-slip detection 76%."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n52",
+      "content": "Calibrate adaptive probe-stopping on MixedShift-200, then audit HoldoutManip-10 for rare-slip detection and compatible-target slip-probe counts."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "After MixedShift-200 stopping calibration, HoldoutManip-10 detected 76% of rare-slip shifts and spent 42 slip probes per compatible target."
+    },
+    {
+      "id": "n57",
+      "type": "question",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Can conformal-gate uncertainty trigger targeted probes to raise rare-slip detection above 90% without exceeding 30 slip probes on compatible targets?"
+    },
+    {
+      "id": "n58",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Conformal uncertainty-triggered probes detect ≥90% of rare-slip shifts within 200 probes while averaging ≤30 slip probes on compatible targets."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "On HoldoutManip-10 shifts, test conformal-triggered probing against 76% rare-slip detection and 42 compatible-target slip probes, capped at 200 contacts."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "On HoldoutManip-10, conformal-triggered probes detected 92% of rare-slip shifts within 200 contacts; compatible targets averaged 27 slip probes."
+    },
+    {
+      "id": "n61",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n59",
+      "content": "ConformalProbe-v1 records per-option uncertainty triggers, targeted contact traces, rare-slip labels, and compatible-target probe counts for HoldoutManip-10."
+    },
+    {
+      "id": "n62",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n57",
+      "content": "Adopt conformal-triggered probing over adaptive-only sampling: rare-slip detection rose 76→92%, compatible-target slip probes fell 42→27."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 63,
+      "exploration_parent_id": "g1",
+      "content": "Gate grasp/placement options using conformal compatibility scores, trigger slip probes on uncertainty, and switch to scratch on rejection."
+    },
+    {
+      "id": "n64",
+      "type": "question",
+      "order": 64,
+      "exploration_parent_id": "p5",
+      "content": "Does uncertainty-triggered probing preserve half-budget success and ≤5-point incompatible-target safety when probe contacts count toward target interactions?"
+    },
+    {
+      "id": "n65",
+      "type": "hypothesis",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Counting all probes, combined gating matches scratch's 10,000-interaction overlap success by 5,000 and stays within 5 points on incompatible targets."
+    },
+    {
+      "id": "n66",
+      "type": "plan",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Compare combined gating against scratch across overlapping and incompatible HoldoutManip-10 shifts, counting probes within 5,000/10,000-interaction budgets."
+    },
+    {
+      "id": "n67",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Integrate SlipProbe-200 calibration with ConformalProbe-v1 triggers; benchmark probe-inclusive overlapping/incompatible success against scratch on HoldoutManip-10 at 5,000/10,000 interactions."
+    },
+    {
+      "id": "n68",
+      "type": "artifact",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "ProbeInclusiveManip-v1 logs combined-gate and scratch success on HoldoutManip-10, counting probes within 5,000/10,000-interaction budgets."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n66",
+      "content": "Audit ProbeInclusiveManip-v1 for probe-inclusive overlap parity at 5,000 versus scratch 10,000 interactions and incompatible success gaps at 10,000."
+    },
+    {
+      "id": "n70",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "ProbeInclusiveManip-v1: including probes, overlapping success reached 79%/5,000 versus scratch 78%/10,000; incompatible success reached 68% versus scratch 70%/10,000."
+    },
+    {
+      "id": "n71",
+      "type": "activity",
+      "order": 71,
+      "exploration_parent_id": "p5",
+      "content": "Using ProbeInclusiveManip-v1, rerun adaptive-only value gating on matched HoldoutManip-10 seeds; compare probe-inclusive success and rare-slip detection."
+    },
+    {
+      "id": "n72",
+      "type": "evidence",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "HoldoutManip-10: combined versus adaptive-only success was 79% versus 74% overlapping, 68% versus 65% incompatible; rare-slip detection 92% versus 76%."
+    },
+    {
+      "id": "n73",
+      "type": "decision",
+      "order": 73,
+      "exploration_parent_id": "p5",
+      "content": "Select combined gating over adaptive-only gating: probe-inclusive overlap parity, a 2-point incompatible deficit, and 92% rare-slip detection."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 74,
+      "exploration_parent_id": "p5",
+      "content": "Using ProbeInclusiveManip-v1, validate selected combined gating on 10-seed payload and gripper-delay shifts against scratch at probe-inclusive 5,000/10,000 interactions."
+    },
+    {
+      "id": "n75",
+      "type": "artifact",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "PayloadDelay-10 contains ten-seed probe-inclusive success curves, compatibility decisions, and scratch baselines for held-out payload and gripper-delay shifts."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n18",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n18",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n27",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n64"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n64"
+    },
+    {
+      "source": "n66",
+      "relation": "decompose",
+      "target": "n67"
+    },
+    {
+      "source": "n66",
+      "relation": "decompose",
+      "target": "n69"
+    },
+    {
+      "source": "n67",
+      "relation": "address",
+      "target": "n64"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n67",
+      "relation": "produce",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n65"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "support",
+      "target": "n65"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n71",
+      "relation": "produce",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n72"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop reinforcement learning transfer for robotic manipulation that reuses skills under hidden dynamics shifts while limiting negative transfer.",
+    "requirements": [
+      "Match from-scratch success rates using 50% fewer target interactions when manipulation dynamics partially overlap.",
+      "On incompatible targets, stay within 5 percentage points of from-scratch success under equal interaction budgets."
+    ]
+  }
+}

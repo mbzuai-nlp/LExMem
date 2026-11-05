@@ -1,0 +1,1307 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop tactile slip prediction that distinguishes impending grasp slip from elastic deformation across unseen materials and sensor wear.",
+      "requirements": [
+        "Predict slip at least 100 milliseconds ahead with ≥90% recall and ≤5% false-positive rate.",
+        "Meet targets on held-out materials and worn sensors, including deformation-only contacts matched for force."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a wear-augmented, material-adversarial shear-field encoder to forecast slip 100 ms ahead from microslip against force-matched elastic negatives."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Do wear-attenuated shear precursors remain separable from force-matched elastic relaxation 100 ms before slip on unseen materials?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Shear residuals distinguish 100-ms-ahead slip from force-matched elastic relaxation on unseen materials and worn sensors at ≥90% recall, ≤5% FPR."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Collect WearSlip-12 force-matched deformation/slip trials; train the wear-augmented encoder, then measure 100-ms recall and FPR on held-out materials/sensors."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Evaluate the wear-augmented encoder on WearSlip-12's held-out materials and worn sensors, measuring 100-ms recall and force-matched deformation FPR."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On WearSlip-12 held-out materials and worn sensors, 100-ms recall reached 92%, but force-matched deformation FPR was 13%."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Wear-calibrated directional shear propagation will distinguish slip from elastic relaxation, reducing deformation FPR to ≤5% at ≥90% 100-ms recall."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Ablate wear-calibrated shear propagation against residual-only encoding on WearSlip-12 held-out materials and worn sensors; measure 100-ms recall and deformation FPR."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "On WearSlip-12 held-out materials and worn sensors, calibrated propagation achieved 91% 100-ms recall and 4% deformation FPR, versus 92%/13% residual-only."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Retire residual-only after its initial held-out 13% deformation FPR; adopt calibrated propagation after ablation reaches 91% recall and 4% FPR."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Freeze the adopted calibrated-propagation model; run streaming WearSlip-12 trials across abrasion grades, logging 100-ms recall and force-matched deformation FPR."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "WearSlip-12 Streaming Audit v1 contains frozen-model predictions, sensor-wear grades, held-out material IDs, and 100-ms recall and deformation FPR."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can one fixed alert threshold maintain ≤5% deformation FPR across abrasion grades without per-sensor slip-label recalibration?"
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Select one threshold on unworn WearSlip-12 trials; audit abrasion-grade 100-ms recall and deformation FPR without recalibration."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Fixed unworn-selected threshold yielded ≥90% 100-ms recall and ≤5% force-matched deformation FPR at every abrasion grade on held-out materials."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Stress-test the fixed threshold on independent worn-sensor batches and unseen materials with force-matched relaxation; measure worst-grade 100-ms recall and FPR."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "On unseen materials and independently worn sensors, fixed-threshold propagation yielded 87% 100-ms recall and 9% force-matched deformation FPR."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n14",
+      "content": "Audit WearSlip-12 Streaming Audit v1 for grade-wise threshold robustness and missing sensor-batch IDs needed to verify independent-wear performance."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "WearSlip-12 Streaming Audit v1 records grade-wise ≥90% 100-ms recall and ≤5% FPR but omits batch IDs, obscuring independent-wear failures."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Retain calibrated propagation but defer deployment: grade-wise tests passed, yet batch IDs are missing and independent-wear performance fails both targets."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 22,
+      "exploration_parent_id": "g1",
+      "content": "Train a batch-normalized 100-ms motion-ratio forecaster with conformal alert thresholds calibrated on force-matched deformation probes from each worn-sensor batch."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "How many per-batch deformation probes preserve ≥90% 100-ms recall and ≤5% FPR on unseen materials and independently worn sensors?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Forty batch-specific force-matched deformation probes enable ≥90% 100-ms recall and ≤5% FPR on unseen materials and independently worn sensors."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Sweep 20/40/80 force-matched probes per batch; evaluate conformal 100-ms recall and FPR on unseen materials and independently worn sensors."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "With 40 probes/batch, conformal motion ratios reached 91% 100-ms recall and 4% force-matched deformation FPR on independent-wear/unseen-material trials."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Advance 40-probe batch-calibrated motion ratios for validation: independent-wear trials achieved 91% 100-ms recall and 4% deformation FPR."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Fuse wear-normalized shear-wave coherence and contact-area strain hysteresis in a physics-constrained state-space model for 100-ms slip alerts."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Does strain hysteresis suppress deformation false alarms without masking early shear-wave coherence on worn sensors and unseen materials?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Adding strain hysteresis to shear-wave coherence reduces force-matched deformation FPR to ≤5% while retaining ≥90% recall at 100 ms."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Compare fused versus coherence-only state-space models on independent-wear, unseen-material, force-matched trials; measure 100-ms recall and deformation FPR."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "On independent-wear/unseen-material trials, fusion achieved 4% force-matched deformation FPR versus 11% baseline, but 84% 100-ms recall versus 92%."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Condition hysteresis veto on spatially diffuse strain, preserving localized shear precursors at ≥90% 100-ms recall and ≤5% FPR."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Ablate diffuse-strain hysteresis veto against unconditional fusion on independent-wear/unseen-material contacts; measure 100-ms recall and force-matched deformation FPR."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Diffuse-strain veto restored 91% 100-ms recall with 5% force-matched deformation FPR, versus unconditional fusion’s 84% and 4%."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n33",
+      "content": "Stratify independent-wear trials by abrasion grade; test diffuse-strain veto for 100-ms recall and force-matched deformation FPR."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Severely abraded sensors yielded 86% 100-ms recall and 8% force-matched deformation FPR, despite pooled 91% recall and 5% FPR."
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Abrasion-adaptive diffuse-strain veto thresholds restore ≥90% 100-ms recall and ≤5% force-matched deformation FPR on severely worn sensors."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Calibrate abrasion-adaptive veto thresholds on separate wear-characterization trials; evaluate independent severe-wear 100-ms recall and force-matched deformation FPR on unseen materials."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "On independent severe-wear, unseen-material trials, abrasion-adaptive veto reached 91% 100-ms recall and 4% force-matched deformation FPR."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n38",
+      "content": "Freeze n40-validated adaptive veto thresholds; test new severe-wear batches on unseen materials with force-matched deformation, measuring 100-ms recall/FPR."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "On new severe-wear batches and unseen materials, frozen adaptive veto yielded 88% 100-ms recall and 7% force-matched deformation FPR."
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Per-batch quiet-contact normalization will stabilize diffuse-strain vetoes across severe-wear/unseen-material batches at ≥90% 100-ms recall and ≤5% deformation FPR."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Compare quiet-contact-normalized and abrasion-adaptive vetoes on new severe-wear batches and unseen materials; measure 100-ms recall and force-matched deformation FPR."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "On new severe-wear batches and unseen materials, recalibrated abrasion-adaptive veto achieved 91% recall/4% FPR; quiet-contact normalization achieved 88%/7%."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n43",
+      "content": "Stratify quiet-contact-normalized alerts by strain localization and abrasion grade; quantify missed 100-ms shear precursors and force-matched deformation false alarms."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "On unseen-material severe-wear trials, normalization achieved 93% 100-ms recall for localized precursors and 4% diffuse-deformation FPR."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Select recalibrated abrasion-adaptive veto (91% recall, 4% FPR); localized normalization gains cannot offset its overall 88%/7%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Use subthreshold 30-Hz microdither and wear-normalized tangential impedance phase to predict slip 100 ms ahead versus elastic relaxation."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p4",
+      "content": "Does 30-Hz dither phase separate impending slip from force-matched viscoelastic relaxation without perturbing grasps across unseen materials and wear?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "A 0.05-N, 30-Hz microdither yields ≥90% 100-ms slip recall and ≤5% deformation FPR with <1% induced grasp slips."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Run randomized dither/sham grasps across held-out materials and abrasion batches; assess 100-ms recall, force-matched deformation FPR, and induced-slip rate."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Randomize 0.05-N, 30-Hz dither versus sham across unseen-material, independent-wear grasps; measure 100-ms recall, deformation FPR, and induced-slip rate."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Across unseen materials and independently worn sensors, microdither achieved 92% 100-ms recall, 4% deformation FPR, and 0.4% induced slips."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n52",
+      "content": "Freeze the validated microdither configuration; stream new-batch grasps, logging 100-ms recall, force-matched deformation FPR, and induced-slip rate."
+    },
+    {
+      "id": "n56",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Microdither Streaming Audit v1 logs batch IDs, held-out materials, 100-ms slip alerts, force-matched deformation labels, and dither-induced slips."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "Audit Microdither Streaming Audit v1 for batch completeness, unseen-material 100-ms recall, force-matched deformation FPR, and induced-slip rate."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Audit v1: complete batch IDs; new-batch unseen-material trials yielded 91% 100-ms recall, 4% force-matched deformation FPR, 0.6% induced slips."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 59,
+      "exploration_parent_id": "g1",
+      "content": "Fuse contact-microphone stick-slip chirps with tactile shear via wear-robust cross-modal timing, training on force-matched elastic negatives for 100-ms forecasts."
+    },
+    {
+      "id": "n60",
+      "type": "question",
+      "order": 60,
+      "exploration_parent_id": "p5",
+      "content": "Do microphone chirps synchronize with shear precursors 100 ms before slip, unlike force-matched elastic recoil across material and wear shifts?"
+    },
+    {
+      "id": "n61",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Chirp–shear alignment within 12 ms yields ≥90% 100-ms slip recall and ≤5% deformation FPR on unseen materials and worn sensors."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Compare 12-ms chirp–shear alignment against shuffled timing on unseen-material, independent-wear trials; measure 100-ms recall and force-matched deformation FPR."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "On unseen-material, independent-wear trials, 12-ms alignment yielded 93% 100-ms recall but 8% deformation FPR; shuffled timing yielded 12% FPR."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n61",
+      "content": "Compare 12-ms chirp–shear alignment in 100-ms pre-slip windows versus force-matched elastic recoil, stratified by damping and wear."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "On low-damping unseen materials with worn sensors, 12-ms alignment achieved 92% 100-ms recall and 4% elastic-recoil FPR."
+    },
+    {
+      "id": "n66",
+      "type": "hypothesis",
+      "order": 66,
+      "exploration_parent_id": "n61",
+      "content": "Damping-conditioned chirp–shear alignment suppresses viscoelastic recoil, achieving ≥90% 100-ms recall and ≤5% deformation FPR across material/wear shifts."
+    },
+    {
+      "id": "n67",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Train damping-conditioned chirp–shear alignment on separate materials; test 100-ms recall and force-matched deformation FPR across independent-wear batches."
+    },
+    {
+      "id": "n68",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "Across unseen materials and independent-wear batches, damping-conditioned alignment achieved 91% 100-ms recall and 5% force-matched deformation FPR."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n66",
+      "content": "Freeze the n68 damping-conditioned model; evaluate new high-damping materials and worn-sensor batches for 100-ms recall and force-matched deformation FPR."
+    },
+    {
+      "id": "n70",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "On new high-damping materials and worn-sensor batches, frozen alignment achieved 86% 100-ms recall and 9% force-matched deformation FPR."
+    },
+    {
+      "id": "n71",
+      "type": "hypothesis",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Per-batch force-matched recoil-null calibration of chirp–shear likelihood ratios restores ≥90% 100-ms recall and ≤5% FPR on high-damping materials/worn sensors."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "After frozen-model failure, calibrate chirp–shear ratios using batch-specific recoil-null probes; measure 100-ms recall/FPR on new high-damping materials and worn sensors."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "With per-batch recoil-null calibration, high-damping trials reached 89% 100-ms recall and 6% force-matched deformation FPR."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 74,
+      "exploration_parent_id": "n71",
+      "content": "Sweep 20/40/80 recoil-null probes per worn-sensor batch on high-damping materials; measure chirp–shear lag, 100-ms recall, and deformation FPR."
+    },
+    {
+      "id": "n75",
+      "type": "evidence",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "On high-damping unseen materials and worn sensors, 80 recoil-null probes/batch yielded 91% 100-ms recall and 4% deformation FPR."
+    },
+    {
+      "id": "n76",
+      "type": "hypothesis",
+      "order": 76,
+      "exploration_parent_id": "n75",
+      "content": "Eighty recoil-null probes per worn-sensor batch calibrate chirp–shear ratios for ≥90% 100-ms recall and ≤5% FPR on unseen high-damping materials."
+    },
+    {
+      "id": "n77",
+      "type": "activity",
+      "order": 77,
+      "exploration_parent_id": "n76",
+      "content": "After 89%/6% initial calibration and 91%/4% with 80 probes, freeze the 80-probe protocol; test new high-damping materials and worn-sensor batches."
+    },
+    {
+      "id": "n78",
+      "type": "evidence",
+      "order": 78,
+      "exploration_parent_id": "n77",
+      "content": "On new high-damping materials and independently worn batches, frozen 80-probe calibration achieved 90% 100-ms recall and 5% deformation FPR."
+    },
+    {
+      "id": "n79",
+      "type": "decision",
+      "order": 79,
+      "exploration_parent_id": "n78",
+      "content": "Advance 80-probe recoil-null calibration cautiously: 100-ms recall/FPR improved from 89%/6% to 91%/4%, then validated at 90%/5% independently."
+    },
+    {
+      "id": "n80",
+      "type": "plan",
+      "order": 80,
+      "exploration_parent_id": "n79",
+      "content": "Prospectively log 80-probe-calibrated chirp–shear lags in independent high-damping batches; compare pre-slip and force-matched recoil timing and 100-ms recall/FPR."
+    },
+    {
+      "id": "n81",
+      "type": "activity",
+      "order": 81,
+      "exploration_parent_id": "n80",
+      "content": "Prospectively compare 80-probe-calibrated chirp–shear lag before slip versus force-matched recoil across unseen high-damping materials and independent-wear batches; measure 100-ms recall/FPR."
+    },
+    {
+      "id": "n82",
+      "type": "artifact",
+      "order": 82,
+      "exploration_parent_id": "n81",
+      "content": "Chirp–Shear Prospective Audit v1 contains 80-probe calibration logs, material and wear-batch IDs, pre-slip/recoil lags, and 100-ms recall/FPR."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "revise",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "refute",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "revise",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n67",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "produce",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "support",
+      "target": "n66"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "refute",
+      "target": "n66"
+    },
+    {
+      "source": "n71",
+      "relation": "revise",
+      "target": "n66"
+    },
+    {
+      "source": "n71",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n71"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "refute",
+      "target": "n71"
+    },
+    {
+      "source": "n74",
+      "relation": "evaluate",
+      "target": "n71"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "n71"
+    },
+    {
+      "source": "n76",
+      "relation": "revise",
+      "target": "n71"
+    },
+    {
+      "source": "n76",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n77",
+      "relation": "evaluate",
+      "target": "n76"
+    },
+    {
+      "source": "n77",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n77",
+      "relation": "depend_on",
+      "target": "n75"
+    },
+    {
+      "source": "n77",
+      "relation": "produce",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "support",
+      "target": "n76"
+    },
+    {
+      "source": "n73",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n78",
+      "relation": "support",
+      "target": "n79"
+    },
+    {
+      "source": "n80",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n80",
+      "relation": "decompose",
+      "target": "n81"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n81",
+      "relation": "produce",
+      "target": "n82"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop tactile slip prediction that distinguishes impending grasp slip from elastic deformation across unseen materials and sensor wear.",
+    "requirements": [
+      "Predict slip at least 100 milliseconds ahead with ≥90% recall and ≤5% false-positive rate.",
+      "Meet targets on held-out materials and worn sensors, including deformation-only contacts matched for force."
+    ]
+  }
+}

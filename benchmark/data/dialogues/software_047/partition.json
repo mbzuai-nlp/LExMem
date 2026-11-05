@@ -1,0 +1,152 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Crash-safe manifest publication for roots and free-map generations",
+      "boundary_reason": "The boundary-crash result leads to a publication decision; implementation follows."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Implementing and fault-testing the dual-manifest index prototype",
+      "boundary_reason": "The prototype fault run concludes; discussion shifts to an alternative selector."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Testing and revising durable-selector recovery",
+      "boundary_reason": "The revised selector is tested; discussion shifts to range-scan phantoms."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Fence-version validation of range scans during leaf splits",
+      "boundary_reason": "The phantom test reports its result; a different index proposal begins."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Checkpointed quarantine-ring reclamation under sustained churn",
+      "boundary_reason": "A reclamation approach is chosen for implementation and longer testing."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Billion-transaction quarantine-ring churn and recovery audit",
+      "boundary_reason": "The churn audit concludes; the next test adds concurrent split schedules."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Comparing split phantoms in the two index designs",
+      "boundary_reason": "The comparison produces a design decision; a separate bitmap approach follows."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Bitmap checkpoint ordering and reclaimed-slot resurrection",
+      "boundary_reason": "The failing bitmap schedules are resolved; a combined proposal follows."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p3",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Billion-transaction crash and serializability testing of p3",
+      "boundary_reason": "The test results lead to adoption of p3; release hardening begins."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Release-gate testing of acknowledgement barriers and directory rollover",
+      "boundary_reason": "The release-gate artifact is prepared; scale testing exposes a separate recovery question."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Fixing recovery growth at 1 TiB with prepublication rollover checkpoints",
+      "boundary_reason": "The checkpoint change is tested and p3 reinstated; directory selection remains to be addressed."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64"
+      ],
+      "topic": "Selecting the latest complete directory after interrupted rollover",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "a2",
+        "e2"
+      ],
+      "topic": "Test whether a latent SDE trained with mode-1 probes transfers to unseen mode-2 forcing",
+      "boundary_reason": "The five-seed ablation challenges the initial result, prompting a revised hypothesis."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "h2",
+        "a3",
+        "e3",
+        "a4",
+        "e4"
+      ],
+      "topic": "Test lag-covariance matching and its response to phase-shifted mode-2 forcing",
+      "boundary_reason": "Phase-shifted forcing reveals failures despite improved five-seed results, prompting another revision."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h3",
+        "l1",
+        "a5",
+        "e5",
+        "t1",
+        "d1"
+      ],
+      "topic": "Validate and adopt equivariant quadrature matching for the latent SDE",
+      "boundary_reason": "The revised model is benchmarked, packaged, and adopted before the discussion shifts to another model family."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h4",
+        "a6",
+        "e6",
+        "d2"
+      ],
+      "topic": "Evaluate four-lag NARMAX as an alternative surrogate",
+      "boundary_reason": "The NARMAX evaluation concludes with a decision to retain it as a viable alternative."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "l2",
+        "a7",
+        "t2",
+        "e7",
+        "a8",
+        "e8",
+        "d3"
+      ],
+      "topic": "Evaluate a delay-Koopman generator on unseen mode-2 and mode-3 forcing",
+      "boundary_reason": "The mode-3 stress test leads to a decision to defer Koopman as a general surrogate."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "q3",
+        "h5",
+        "a9",
+        "e9"
+      ],
+      "topic": "Test whether a causal-memory closure recovers mode-3 responses",
+      "boundary_reason": "The six-unit-memory test fails the response target in three seeds, motivating a revised closure."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "h6",
+        "a10",
+        "e10",
+        "l3",
+        "a11",
+        "t3",
+        "e11",
+        "d4"
+      ],
+      "topic": "Validate and adopt an equivariant cross-mode memory closure",
+      "boundary_reason": "Held-out weaker-forcing results support the decision to adopt the revised closure."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "l4",
+        "a12",
+        "e12",
+        "t4",
+        "d5"
+      ],
+      "topic": "Evaluate a force-conditioned diffusion model as a comparator",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

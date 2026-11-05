@@ -1,0 +1,134 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "TriAnnot-DRO identifiability assumptions, counterexample, and revised proof",
+      "boundary_reason": "The identifiability decision closes this discussion; the next nodes turn to benchmarking."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Waterbirds-25 benchmark package and the five-point accuracy question",
+      "boundary_reason": "The benchmark question is posed; the next node introduces a different approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "EnvShift-DRO benchmarking and TriAnnot-DRO’s shortfall against the accuracy target",
+      "boundary_reason": "The performance comparisons are established; the discussion shifts to EnvShift-DRO identifiability."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "EnvShift-DRO identifiability counterexample and proxy-augmented conditions",
+      "boundary_reason": "The revised identifiability conditions support a decision; the next node proposes a new classifier."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "ProxyAlign-DRO implementation and Waterbirds-25 accuracy audit",
+      "boundary_reason": "The initial accuracy and retention audit is complete; the next discussion tests sensitivity."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "ProxyAlign-DRO robustness under proxy dependence and sparse overlap",
+      "boundary_reason": "Conflicting results leave robustness unresolved; the next node proposes dependence-aware certification."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "BoundGuard-DRO gain certificates and held-out audit",
+      "boundary_reason": "The audit supports advancing BoundGuard-DRO; the next node proposes targeted noisy votes."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "AuditVote-DRO vote collection and matched accuracy comparison",
+      "boundary_reason": "The performance comparison is complete; the next discussion examines whether sparse-stratum risk is identifiable."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "AuditVote-DRO identifiability counterexample and deferral",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,1205 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a tiered MVCC storage engine preserving snapshot isolation and safe reclamation during concurrent migration, writes, and crashes.",
+      "requirements": [
+        "Acknowledged writes and snapshot-required versions survive crashes at every migration and reclamation transition.",
+        "Migration increases p99 read latency by at most 20% versus identical workloads without migration."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use WAL-first MVCC writes, fsynced copy-on-write migration manifests, durable snapshot pins, epoch-gated reclamation, and read-priority copying."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can tier relocation survive crashes without losing concurrent WAL-committed writes or versions pinned by active snapshots?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "After destination fsync, durable WAL replay fences, and pin persistence, manifest swaps yield zero lost acknowledged or snapshot-visible versions."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Run CrashMatrix-1 with concurrent writes and pinned snapshots; crash at copy/fsync/swap/reclaim barriers and verify recovered versions against an oracle."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "CrashMatrix-1: 40,000 crashes across four barriers yielded zero missing acknowledged writes or snapshot-visible versions versus the recovery oracle."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Adopt WAL-fenced, fsynced manifest swaps and durable snapshot pins with epoch reclamation; gate rollout on p99 latency."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "After adopting crash-safe swaps, benchmark identical migrating and control workloads in TierBench-1; tune copy throttling for p99 ratio ≤1.20."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Run TierBench-1 with 32 clients and 100-GiB data, measuring migrating/control read-p99 ratios across 16–128 MiB/s copy-rate caps."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "TierBench-1 report containing read-p99 migrating/control ratios by copy-rate cap, throughput, and workload configuration."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Analyze TierBench-1 report to find the highest copy-rate cap meeting read-p99 ratio ≤1.20 across tested configurations."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "TierBench-1: read-priority copying at 64 MiB/s held worst-case migrating/control read-p99 ratio at 1.17; 128 MiB/s reached 1.26."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "When can source extents and superseded versions be reclaimed while readers hold old manifest epochs or snapshots remain pinned?"
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Implement ReclaimGuard: after durable manifest detachment, drain reader epochs, check persisted snapshot pins, then journal and delete eligible extents."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "ReclaimGuard fault tests: 10,000 reader/pin interleavings with 5,000 crash injections showed zero premature source deletes or missing pinned versions."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n11",
+      "content": "Run HoldDrain-1 with hour-long pre-swap readers and snapshots; confirm reclamation blocks until both release, then frees extents after restart."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "HoldDrain-1: a persisted pin expired after 60 minutes; post-restart ReclaimGuard deleted 12 source extents before snapshot release."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "p1",
+      "content": "How can durable snapshot pins protect long-lived snapshots across restarts without lease expiry triggering premature reclamation?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Nonexpiring, fsynced snapshot pins retained until explicit durable release prevent premature deletion across crashes and hour-long snapshots."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "Use n13’s zero-loss baseline to assess regression; replay n15’s expiry failure with fsynced nonexpiring pins at n10’s 64 MiB/s cap."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "HoldDrain-2: 10,000 crash/restart interleavings with two-hour snapshots showed zero premature deletions; all 12 extents reclaimed after durable release."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n17",
+      "content": "Run PinBarrier-1: crash around pin-create and release fsync during migration; verify surviving snapshots and eventual post-release reclamation."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n20",
+      "content": "PinBarrier-1: 4/20,000 post-fsync crashes restored stale pin checkpoints, dropping unreleased pins and prematurely reclaiming snapshot versions."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p1",
+      "content": "Can read-priority copying keep the migrating/control read-p99 ratio ≤1.20 during bursty read traffic?"
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n22",
+      "content": "Repair stale-checkpoint pin replay, repeat two-hour snapshot checks, then measure burst-read p99 ratio at 64 MiB/s against controls."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n23",
+      "content": "After pin-replay repair, two-hour snapshots survived 20,000 crashes; BurstRead-1 at 64 MiB/s yielded a read-p99 ratio of 1.24."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n24",
+      "content": "Reject fixed 64 MiB/s copying for bursty reads; throttle migration adaptively when read-p99 ratio approaches 1.20."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n25",
+      "content": "Implement queue-depth-triggered copy throttling from 64 to 16 MiB/s, then rerun BurstRead-1 against identical unmigrated controls."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n26",
+      "content": "Implement 8-request queue-depth throttling to 16 MiB/s; rerun BurstRead-1 and compare read-p99 against unmigrated controls."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n27",
+      "content": "BurstRead-2 report with 8-request throttling configuration, migrating/control read-p99 ratios, and copy-throughput traces."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Use a unified replay-sequenced journal for MVCC writes, snapshot pins, and extent retirement, with generation-fenced dual reads and adaptive copying."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p2",
+      "content": "How should checkpoint recovery order pin creation, MVCC commits, and extent retirement to prevent stale replay from dropping snapshot versions?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Atomically checkpoint journal high-watermarks; replay later records in sequence and revalidate retirements against recovered pins before deleting extents."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "Run ReplayOrder-1 with 50,000 crashes at checkpoint, pin, commit, and retirement barriers; compare recovered versions to an MVCC oracle."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "ReplayOrder-1: 50,000 injected crashes produced zero missing acknowledged commits or pinned versions; deferred retirements replayed safely."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "After ReplayOrder-1, stress generation-fenced dual reads and adaptive copying with concurrent snapshots, writes, crashes; measure version loss and read-p99."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "GenBurst-1: adaptive copying and generation-fenced dual reads preserved all versions but raised worst-case migrating/control read-p99 ratio to 1.23."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Retain replay-sequenced commit/pin/retirement journaling; replace dual reads with epoch-protected single-hop pointers and preempt copies when reads queue."
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "Implement epoch-protected single-hop reads and preemptible copying; rerun ReplayOrder-1 and GenBurst-1, requiring zero lost versions and read-p99 ratio ≤1.20."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Implement epoch-pinned single-hop pointers with atomic publication and queue-triggered copy preemption; rerun ReplayOrder-1 and GenBurst-1."
+    },
+    {
+      "id": "n37",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "TierMVCC-v3 patchset with epoch-pinned single-hop pointers, atomic publication, preemptible copying, and ReplayOrder-1/GenBurst-1 regression logs."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Audit TierMVCC-v3 logs; independently rerun 50,000 crash injections and GenBurst-1, checking lost versions and read-p99 ratio ≤1.20."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "TierMVCC-v3: 50,000 crashes lost zero acknowledged writes or pinned versions; GenBurst-1 worst-case migrating/control read-p99 ratio was 1.16."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "p3",
+      "content": "Can queue-triggered copy preemption finish migration under sustained read pressure while keeping the read-p99 ratio ≤1.20?"
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Run SustainRead-1 on TierMVCC-v3 with 32 sustained readers; measure 100-GiB migration completion and read-p99 versus identical unmigrated controls."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "SustainRead-1: despite copy preemption, migrating/control read-p99 reached 1.27, and the 100-GiB migration copied only 7 GiB in 24 hours."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p3",
+      "content": "How do epoch-pinned single-hop reads remain safe when migration publishes a new pointer while old source extents await reclamation?"
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Extend TierMVCC-v3 crash tests with SustainRead-1 readers; pause at pointer publication, crash, and verify reads and source retention."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "PointerPause-1: 30,000 publication/crash schedules showed zero dangling reads; source extents remained until old reader epochs drained."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "Retain epoch-pinned single-hop publication for safety; revise copy scheduling separately because sustained reads violate latency and progress targets."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Preserve epoch-before-pointer-load and durable publication; verify source retirement waits for old reader epochs after scheduling changes using PointerPause-1."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Add 16-KiB copy quanta with per-shard minimum bandwidth; rerun PointerPause-1 and verify retired extents remain until reader epochs drain."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "TierMVCC-v3.1 patchset adding 16-KiB copy quanta and per-shard bandwidth floors, with PointerPause-1 retirement-safety logs."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 54,
+      "exploration_parent_id": "g1",
+      "content": "Isolate TierMVCC-v3.1’s 16-KiB copy quanta and per-shard floors on dedicated migration queues, retaining journaled pins and epoch-safe reclamation."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 55,
+      "exploration_parent_id": "p4",
+      "content": "Can dedicated migration queues maintain sustained migration progress without exceeding a 1.20 migrating/control read-p99 ratio?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Dedicated migration queues with 16-KiB copy quanta sustain ≥8 GiB/h under 32 readers while keeping read-p99 ratio ≤1.20."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Run SustainRead-2 with 32 readers and a 100-GiB migration, measuring hourly copy throughput and migrating/control read-p99 ratio."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "SustainRead-2: migration sustained 9.1 GiB/h, but shared-device contention raised the migrating/control read-p99 ratio to 1.22."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n51",
+      "content": "Run SustainRead-3, sweeping dedicated migration queue depth 1–4; check hourly throughput ≥8 GiB/h and read-p99 ratio ≤1.20."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "SustainRead-3: queue depth 1 sustained 8.3 GiB/h with a migrating/control read-p99 ratio of 1.18."
+    },
+    {
+      "id": "n56",
+      "type": "question",
+      "order": 61,
+      "exploration_parent_id": "p4",
+      "content": "Does queue-depth-one migration preserve acknowledged writes and snapshot-pinned versions when crashes interrupt source retirement?"
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "After SustainRead-2’s latency failure and SustainRead-3’s queue-depth-one pass, inject 50,000 retirement crashes; verify committed writes and pinned versions."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "RetireCrash-1: 50,000 queue-depth-one retirement crashes lost zero acknowledged writes or pinned versions; all eligible extents reclaimed after restart."
+    },
+    {
+      "id": "n59",
+      "type": "decision",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Adopt queue-depth-one migration with journaled retirement: RetireCrash-1 found zero losses, and SustainRead-3 met latency and progress targets."
+    },
+    {
+      "id": "n60",
+      "type": "plan",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "Integrate queue-depth-one copying into release candidate; rerun RetireCrash-1 and long-lived snapshot recovery before enabling source deletion."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "Build TierMVCC-rc1 with queue-depth-one copying; rerun 50,000 RetireCrash-1 injections and two-hour snapshot recovery before deletion."
+    },
+    {
+      "id": "n62",
+      "type": "artifact",
+      "order": 67,
+      "exploration_parent_id": "n61",
+      "content": "TierMVCC-rc1 package with queue-depth-one migration, replay-sequenced journal, epoch-safe pointers, and RetireCrash-1/snapshot-recovery logs."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 68,
+      "exploration_parent_id": "g1",
+      "content": "Use immutable MVCC runs, replay-sequenced pin journaling, fsynced manifest generations, and device-level read-reserved migration credits."
+    },
+    {
+      "id": "n63",
+      "type": "plan",
+      "order": 69,
+      "exploration_parent_id": "p5",
+      "content": "Prototype immutable-run migration with fsynced manifest generations and read-reserved device credits; compare against TierMVCC-rc1 in crash and p99 benchmarks."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 70,
+      "exploration_parent_id": "n63",
+      "content": "Using BurstRead-2 traces and TierMVCC-v3.1 copy quanta, prototype fsynced immutable-run migration with read-reserved credits; benchmark against TierMVCC-rc1."
+    },
+    {
+      "id": "n65",
+      "type": "artifact",
+      "order": 71,
+      "exploration_parent_id": "n64",
+      "content": "ImmutableRun-v1 prototype with fsynced manifest generations, read-reserved migration credits, and comparison logs against TierMVCC-rc1."
+    },
+    {
+      "id": "n66",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n65",
+      "content": "Evaluate ImmutableRun-v1 against TierMVCC-rc1 under SustainRead-3 and 50,000 crash injections, measuring read-p99 ratios and recovered versions."
+    },
+    {
+      "id": "n67",
+      "type": "evidence",
+      "order": 73,
+      "exploration_parent_id": "n66",
+      "content": "ImmutableRun-v1: 50,000 crashes lost zero versions; SustainRead-3 read-p99 ratio was 1.14 versus TierMVCC-rc1’s 1.18."
+    },
+    {
+      "id": "n68",
+      "type": "question",
+      "order": 74,
+      "exploration_parent_id": "p5",
+      "content": "Can read-reserved credits maintain a ≤1.20 read-p99 ratio during sustained device saturation without stalling immutable-run migration?"
+    },
+    {
+      "id": "n69",
+      "type": "hypothesis",
+      "order": 75,
+      "exploration_parent_id": "n68",
+      "content": "Reserving 80% of device IOPS for reads keeps read-p99 ratio ≤1.20 while immutable-run copying sustains ≥8 GiB/h."
+    },
+    {
+      "id": "n70",
+      "type": "activity",
+      "order": 76,
+      "exploration_parent_id": "n69",
+      "content": "Using ImmutableRun-v1’s 1.14 baseline and GenBurst-1’s 1.23 failure, saturate the device with 80% read reservation; measure p99 and GiB/h."
+    },
+    {
+      "id": "n71",
+      "type": "evidence",
+      "order": 77,
+      "exploration_parent_id": "n70",
+      "content": "SaturateRead-1: 80% read reservation held read-p99 ratio at 1.15, but immutable-run migration achieved only 5.6 GiB/h."
+    },
+    {
+      "id": "n72",
+      "type": "decision",
+      "order": 78,
+      "exploration_parent_id": "n71",
+      "content": "Retain ImmutableRun-v1’s latency advantage; reject fixed 80% read reservation because saturation cuts migration below 8 GiB/h."
+    },
+    {
+      "id": "n73",
+      "type": "plan",
+      "order": 79,
+      "exploration_parent_id": "n72",
+      "content": "Replace fixed 80% read reservation with p99-guided 50–80% credits; retest saturation for ≤1.20 p99 ratio, ≥8 GiB/h, and crash safety."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 80,
+      "exploration_parent_id": "n73",
+      "content": "Modify ImmutableRun-v1 to adjust read credits between 50–80% using 10-second p99 feedback; rerun SaturateRead-1 and retirement crashes."
+    },
+    {
+      "id": "n75",
+      "type": "artifact",
+      "order": 81,
+      "exploration_parent_id": "n74",
+      "content": "ImmutableRun-v2 replaces v1’s fixed read credits with 10-second p99-guided 50–80% reservations and includes saturation/crash logs."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "n17"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n60",
+      "relation": "decompose",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n63",
+      "relation": "decompose",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n66",
+      "relation": "evaluate",
+      "target": "n65"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n66",
+      "relation": "produce",
+      "target": "n67"
+    },
+    {
+      "source": "n67",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n69"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n70",
+      "relation": "produce",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "refute",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "support",
+      "target": "n72"
+    },
+    {
+      "source": "n67",
+      "relation": "support",
+      "target": "n72"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n72"
+    },
+    {
+      "source": "n73",
+      "relation": "revise",
+      "target": "n63"
+    },
+    {
+      "source": "n73",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n73",
+      "relation": "decompose",
+      "target": "n74"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "revise",
+      "target": "n65"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a tiered MVCC storage engine preserving snapshot isolation and safe reclamation during concurrent migration, writes, and crashes.",
+    "requirements": [
+      "Acknowledged writes and snapshot-required versions survive crashes at every migration and reclamation transition.",
+      "Migration increases p99 read latency by at most 20% versus identical workloads without migration."
+    ]
+  }
+}

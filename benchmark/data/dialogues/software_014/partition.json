@@ -1,0 +1,133 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Scoped resolution-query guards and initial ResolverCache v1 validation",
+      "boundary_reason": "The initial harness reports parity and reuse; the next test targets different edit cases."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11"
+      ],
+      "topic": "ResolverCache v1 misses same-head bound relaxations",
+      "boundary_reason": "The finding motivates a new question about missing dependencies."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Constraint and visibility fingerprints in ResolverCache v2",
+      "boundary_reason": "The targeted and baseline tests conclude; the next test examines multi-hop re-exports."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n17",
+        "n18"
+      ],
+      "topic": "Multi-hop re-export failures in ResolverCache v2",
+      "boundary_reason": "The failures prompt a revised reachability approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "SCC-aware reachability in ResolverCache v3",
+      "boundary_reason": "Validation concludes before the discussion shifts to differential Datalog."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p2",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Differential Datalog for candidate and trait-proof dependencies",
+      "boundary_reason": "Prototype results conclude before a separate certificate-based proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "CertCache v1 implementation and contrasting edit-test results",
+      "boundary_reason": "The tests identify a bound-relaxation gap, which the next discussion addresses directly."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Constraint fingerprints and CertCache v2 validation",
+      "boundary_reason": "The certificate fix is validated before a new global-index approach."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Fresh-index lookup replay and its reuse shortfall",
+      "boundary_reason": "Evaluation concludes before a separate template-cache proposal."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Constraint-template caching and clean-build comparison",
+      "boundary_reason": "TemplateCache validation concludes before the final design decision."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n52"
+      ],
+      "topic": "Decision to extend CertCache v2 with visibility and inferred-context guards",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

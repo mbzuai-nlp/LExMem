@@ -1,0 +1,1042 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop image classifiers whose adversarial robustness generalizes to unseen corruption distributions while preserving clean accuracy.",
+      "requirements": [
+        "At ℓ∞ ε=8/255, exceed matched adversarial training’s worst-corruption CIFAR-10-C robust accuracy by ≥5 percentage points.",
+        "Keep clean CIFAR-10 accuracy within 1 percentage point of baseline, without corruption-specific training or adaptation."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Augment ε=8/255 adversarial training with wavelet-band Jacobian penalties and clean-teacher distillation, using only uncorrupted CIFAR-10 training images."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can wavelet-band Jacobian penalties improve worst-corruption CIFAR-10-C adversarial accuracy while clean-teacher distillation prevents clean-accuracy loss?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Wavelet penalties plus distillation raise worst-corruption CIFAR-10-C PGD-20 accuracy ≥5 points versus matched adversarial training, with ≤1-point clean-accuracy loss."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Train matched PGD-AT and wavelet-penalty/distillation models on clean CIFAR-10; compare ε=8/255 PGD-20 worst-corruption CIFAR-10-C and clean accuracy."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Train three-seed WideResNet-28-10 PGD-AT controls and wavelet-penalty/distillation variants on clean CIFAR-10 with identical ε=8/255 schedules."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Six WideResNet-28-10 checkpoints and training logs: three matched PGD-AT controls and three wavelet-penalty/distillation models."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Score six checkpoints across 75 CIFAR-10-C corruption-severities using ε=8/255 PGD-20; compare worst-corruption robustness and clean CIFAR-10 accuracy."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Three-seed worst-corruption PGD-20 accuracy rose from 7.8% to 10.9%, missing the five-point target; clean accuracy fell 0.4 points."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Clean-data sensitivity-weighted wavelet penalties should deliver ≥5-point worst-corruption PGD-20 gains versus PGD-AT, with distillation keeping ≤1-point clean loss."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Fine-tune n7’s three wavelet checkpoints with clean-image sensitivity-weighted penalties; benchmark against n7 controls on PGD-20 CIFAR-10-C and clean accuracy."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Three-seed worst-corruption CIFAR-10-C PGD-20 accuracy reached 13.4% versus 7.8% controls (+5.6 points); clean accuracy fell 0.7 points."
+    },
+    {
+      "id": "n13",
+      "type": "decision",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Advance sensitivity-weighted penalties to AutoAttack validation: PGD-20 clears both targets, but single-attack results cannot establish robust accuracy."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n5",
+      "content": "Train three-seed wavelet-only and distillation-only ablations; compare with n7 checkpoints on CIFAR-10-C PGD-20 robustness and clean accuracy."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Worst-corruption PGD-20 accuracy and clean-accuracy change: wavelet-only 10.0%, −1.3 points; distillation-only 8.1%, −0.1; combined 10.9%, −0.4."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Distill complementary decision boundaries from n7’s PGD-AT and wavelet checkpoints into one student via clean-image adversarial disagreement mining."
+    },
+    {
+      "id": "n17",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Mine n7 teacher disagreements on clean CIFAR-10, distill three students, compare worst-corruption CIFAR-10-C ε=8/255 AutoAttack and clean accuracy against PGD-AT."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Mine n7 clean-image teacher disagreements; distill three students; benchmark against n7 wavelet/PGD-AT checkpoints on ε=8/255 CIFAR-10-C AutoAttack and clean accuracy."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Three-seed worst-corruption CIFAR-10-C AutoAttack accuracy: students 5.9% versus n7 PGD-AT 6.1%; clean accuracy fell 0.3 points."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Does clean-image disagreement mining concentrate on brittle high-frequency features, explaining students’ lower AutoAttack robustness than PGD-AT?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "High-frequency teacher disagreements cause students’ 5.9% AutoAttack accuracy; filtering the highest wavelet-energy quartile should exceed PGD-AT’s 6.1%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Stratify teacher disagreements by high-frequency wavelet energy; retrain three students excluding the top quartile and compare worst-corruption AutoAttack accuracy."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "High-frequency top-quartile disagreements accounted for 42% of student errors; filtering raised worst-corruption AutoAttack accuracy from 5.9% to 7.0%."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Defer disagreement distillation: filtering improves worst-corruption AutoAttack accuracy from 5.9% to 7.0%, still below PGD-AT’s 11.1% target."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n17",
+      "content": "Compare filtered-student and PGD-AT AutoAttack failures across CIFAR-10-C corruption types to document why deferred distillation misses target."
+    },
+    {
+      "id": "n26",
+      "type": "artifact",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "CIFAR-10-C AutoAttack failure atlas with per-corruption accuracy tables and overlapping-error counts for filtered students versus PGD-AT."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Train with worst-case clean-derived Fourier-band amplitude reweighting inside PGD, using teacher distillation to protect clean accuracy."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "Can clean-derived Fourier-band reweighting improve worst-corruption CIFAR-10-C AutoAttack accuracy without distillation exceeding the clean-accuracy budget?"
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Audit n26’s failures; train three clean-only Fourier-PGD/distillation models, then measure ε=8/255 worst-corruption AutoAttack and clean accuracy."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Three-seed Fourier-PGD averaged 12.0% worst-corruption CIFAR-10-C AutoAttack accuracy versus PGD-AT’s 6.1%, with 0.8-point clean-accuracy loss."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n28",
+      "content": "Fourier-PGD’s ≥5-point worst-corruption AutoAttack advantage over PGD-AT persists across independent training runs, with ≤1-point clean-accuracy loss."
+    },
+    {
+      "id": "n32",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Train five fresh paired PGD-AT/Fourier-PGD seeds without corruptions; compare worst-corruption CIFAR-10-C ε=8/255 AutoAttack, clean accuracy, and confidence intervals."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Train five new paired Fourier-PGD/PGD-AT seeds; bootstrap worst-corruption CIFAR-10-C AutoAttack gains and clean-accuracy losses at ε=8/255."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Five fresh pairs yielded worst-corruption CIFAR-10-C AutoAttack accuracy of 10.2% versus PGD-AT’s 6.3% (+3.9 points); clean accuracy fell 0.7 points."
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Retune Fourier-band weights using clean-only adversarial validation; rerun five paired seeds before CIFAR-10-C AutoAttack and clean CIFAR-10 evaluation."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Use n26’s failure atlas to preregister evaluation strata; retune Fourier weights on clean-only adversarial validation and train five paired seeds."
+    },
+    {
+      "id": "n37",
+      "type": "artifact",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Fourier-PGD v2 bundle containing clean-selected band weights, five paired model checkpoints per method, and preregistered evaluation strata."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Score n37’s five paired seeds across all 75 CIFAR-10-C conditions with ε=8/255 AutoAttack; report worst-corruption and clean accuracies."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Five-seed worst-corruption AutoAttack: Fourier-PGD v2 11.6% versus PGD-AT 6.3%, clean loss 0.8 points; filtered students rescued 6% of Fourier errors."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Select Fourier-PGD v2; test filtered-student ensembling for its 6% error rescue, retaining it only if clean accuracy stays within budget."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Ensemble Fourier-PGD v2 with filtered-disagreement students using clean-trained, differentiable logit gating to exploit complementary robust errors."
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "p4",
+      "content": "Differentiable clean-trained gating raises worst-corruption ε=8/255 AutoAttack accuracy ≥1 point above Fourier-PGD v2 without exceeding 1-point clean loss."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Train five clean-only differentiable gates combining Fourier-PGD v2 and filtered students; compare white-box ε=8/255 AutoAttack and clean accuracy."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Five-gate mean worst-corruption AutoAttack accuracy was 11.9% versus Fourier-PGD v2’s 11.6%; clean loss reached 1.2 points."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Can clean-logit regularization recover the gate’s 0.2-point excess clean loss without erasing its 0.3-point AutoAttack gain?"
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Sweep clean-logit KL weights on clean CIFAR-10 validation; retrain five gates and remeasure worst-corruption AutoAttack and clean loss."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Select KL weight from {0.1, 0.3, 1.0} on clean validation; retrain five gates and run full CIFAR-10-C AutoAttack."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Gate-KL evaluation bundle: selected clean-only KL weight, five gated checkpoints, and per-corruption AutoAttack and clean-accuracy tables."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n46",
+      "content": "Recompute paired ε=8/255 worst-corruption AutoAttack gains and clean-accuracy losses from n48, checking n42’s ≥1-point and ≤1-point thresholds."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Five-seed Gate-KL worst-corruption AutoAttack reached 12.8% versus Fourier-PGD v2’s 11.6% (+1.2 points); clean accuracy fell 0.9 points."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Train a multi-resolution shared-backbone classifier with joint native/half-resolution PGD attacks and clean-logit consistency, without corruption examples."
+    },
+    {
+      "id": "n52",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p5",
+      "content": "Does joint native/half-resolution adversarial training outperform Gate-KL on unseen CIFAR-10-C while keeping clean accuracy within baseline minus one point?"
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Multi-resolution PGD raises worst-corruption CIFAR-10-C AutoAttack accuracy ≥1 point over Gate-KL’s 12.8%, with ≤1-point clean-accuracy loss."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Initialize from n37 Fourier-PGD checkpoints; train five native/half-resolution PGD models with clean-logit consistency; compare ε=8/255 AutoAttack/clean accuracy against n48."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Five-seed worst-corruption CIFAR-10-C AutoAttack accuracy reached 14.0% versus Gate-KL’s 12.8%; clean accuracy fell 0.9 points versus baseline."
+    },
+    {
+      "id": "n56",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Select multi-resolution PGD over Gate-KL: 14.0% versus 12.8% worst-corruption AutoAttack accuracy at equal 0.9-point clean loss."
+    },
+    {
+      "id": "n57",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Freeze selected multi-resolution and matched PGD-AT checkpoints; independently audit all 75 CIFAR-10-C conditions with AutoAttack, PGD-100, and clean accuracy."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Audit five frozen model pairs across 75 CIFAR-10-C conditions using white-box AutoAttack and PGD-100 through the full preprocessing pipeline."
+    },
+    {
+      "id": "n59",
+      "type": "artifact",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Frozen audit bundle with five paired checkpoints, per-corruption AutoAttack/PGD-100 results, clean accuracies, attack configurations, and reproducible evaluation scripts."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "p5",
+      "content": "Reevaluate n37’s Fourier-PGD v2 alongside n59’s multi-resolution and PGD-AT checkpoints under identical AutoAttack/PGD-100 and clean-accuracy protocols."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Identical-pipeline audit confirmed 14.0% worst-corruption AutoAttack accuracy for multi-resolution versus 11.6% Fourier-PGD and 6.3% PGD-AT; clean loss was 0.9 points."
+    },
+    {
+      "id": "n62",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Supersede n40’s Fourier-PGD v2 with multi-resolution PGD: 14.0% versus 11.6% AutoAttack, 0.9-point clean loss; drop wavelet-only (1.3-point loss)."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n17",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n17",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "revise",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n39",
+      "relation": "revive",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "revive",
+      "target": "n42"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n40"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop image classifiers whose adversarial robustness generalizes to unseen corruption distributions while preserving clean accuracy.",
+    "requirements": [
+      "At ℓ∞ ε=8/255, exceed matched adversarial training’s worst-corruption CIFAR-10-C robust accuracy by ≥5 percentage points.",
+      "Keep clean CIFAR-10 accuracy within 1 percentage point of baseline, without corruption-specific training or adaptation."
+    ]
+  }
+}

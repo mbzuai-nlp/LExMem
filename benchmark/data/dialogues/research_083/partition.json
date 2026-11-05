@@ -1,0 +1,135 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "AR proxy moments and endpoint tightening with bounded bridges",
+      "boundary_reason": "The endpoint-tightening investigation reaches a decision to bound bridges; the next discussion turns to coverage calibration and validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Uniform AR coverage and independent validation of the bridge bound",
+      "boundary_reason": "The discussion ends with a validation-based coverage hypothesis before a shift to latent-mixture LP bounds."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "LP bounds for TV violations and limits of moment-slack AR",
+      "boundary_reason": "ProxyLP-v1 records the resulting LP-primary policy; the next question concerns larger latent-class discretizations."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Approximation-error inflation for multi-class ProxyLP bounds",
+      "boundary_reason": "A decision extends the LP policy to the tested class counts; the next discussion turns to audited uncertainty radii."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Independent certification of TV radii and bridge bounds",
+      "boundary_reason": "The certification test reports its coverage result before a new intersection proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Clipped LP/AR intersections and uniform coverage",
+      "boundary_reason": "ClippedIntersection-v1 establishes coverage under the revised conditions; the next discussion focuses on width certificates."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Dual-margin certificates for narrow clipped intersections",
+      "boundary_reason": "ClippedIntersection-v2 records the endpoint certificates before a shift to treatment-selection bounds."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Testing whether Γ-selection bounds always tighten at zero proxy strength",
+      "boundary_reason": "The test refutes unconditional tightening, prompting a more restricted hypothesis."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Outcome-probability gate for Γ=2 endpoint tightening",
+      "boundary_reason": "The qualifying gate is adopted; the remaining discussion benchmarks it against ProxyLP."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Benchmarking and choosing among Γ-selection, LP, and clipped-intersection bounds",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

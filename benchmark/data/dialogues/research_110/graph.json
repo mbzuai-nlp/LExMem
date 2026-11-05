@@ -1,0 +1,1110 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Infer identifiable direct regulatory edges from incomplete single-cell perturbations despite latent confounding and compensatory feedback.",
+      "requirements": [
+        "Achieve ≥80% direct-edge precision at 30% recall on ground-truth networks containing confounding and feedback.",
+        "Specify identifiability assumptions and distinguish unsupported edges from evidence of regulatory absence."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Develop PerturbID: latent-adjusted, feedback-aware intervention models using time-resolved perturbation profiles; distinguish identifiable edges, non-identifiable edges, and powered nulls."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which perturbation coverage and sampling windows let PerturbID identify direct effects despite latent confounding and compensatory feedback?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Randomized perturbations of ≥70% of regulators plus 2–6-hour sampling let PerturbID attain ≥80% precision at 30% recall on confounded-feedback networks."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Simulate 100 confounded-feedback networks; sweep randomized regulator coverage (30–90%) and sampling (2–24 hours), measuring PerturbID precision at 30% recall."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Across 100 networks, 70% coverage and 2–6-hour sampling achieved 83% precision at 30% recall, versus 65% with 24-hour-only sampling."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Prioritize ≥70% randomized regulator coverage and 2–6-hour sampling for PerturbID; 24-hour-only profiles miss the precision target."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n1",
+      "content": "Targeted double perturbations and 1–3-hour sampling yield ≥80% precision at 30% recall with 50% single-knockout coverage."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Benchmark PerturbID on 100 confounded-feedback networks at 50% knockout coverage, comparing uncertainty-targeted double perturbations against random pairs at 1–3 hours."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "At 50% coverage, targeted double perturbations reached 74% precision at 30% recall across 100 networks, versus 67% for random pairs."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n7",
+      "content": "PerturbID-50 benchmark package: 100 confounded-feedback networks, 50% knockout coverage, targeted and random double-perturbation designs, and 1–3-hour precision evaluation scripts."
+    },
+    {
+      "id": "n10",
+      "type": "plan",
+      "order": 12,
+      "exploration_parent_id": "p1",
+      "content": "Using ≥70% randomized coverage and 2–6-hour sampling, fit latent-adjusted dynamics; classify identifiable edges, unsupported pairs, and powered nulls."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Extend PerturbID-50 simulations to 70% coverage and 2–6-hour sampling; calibrate latent-adjusted edge, unsupported, and powered-null calls."
+    },
+    {
+      "id": "n12",
+      "type": "artifact",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "PerturbID-70 release: calibrated edge calls, unsupported flags, powered-null thresholds, and notebooks specifying intervention, latent-factor, and feedback-identifiability assumptions."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Develop AnchorIV: combine orthogonal CRISPRi guides, early nascent RNA, and negative-control genes to bound direct effects under confounding and feedback."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Benchmark AnchorIV with paired guides and early nascent RNA; test exclusion assumptions, precision at 30% recall, and null-versus-unsupported calibration."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Augment PerturbID-50 networks with paired-guide instruments and nascent RNA; quantify AnchorIV precision, exclusion violations, and powered-null calibration."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "AnchorIV-50 report: paired-guide exclusion diagnostics, nascent-RNA edge scores, precision-at-30%-recall curves, and calibrated unsupported-versus-powered-null calls."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Compare AnchorIV-50 and PerturbID-70 on matched networks at respective coverages, measuring precision at 30% recall and powered-null calibration."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On fast-feedback networks, AnchorIV-50 achieved 84% precision at 30% recall versus PerturbID-70’s 67% despite its feedback adjustment."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "How much paired-guide off-target activity can AnchorIV tolerate before its fast-feedback precision falls below 80% at 30% recall?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "At 50% coverage, paired-guide AnchorIV replaces double perturbations; ≤5% off-target activity preserves ≥80% precision at 30% recall under fast feedback."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Reproduce AnchorIV-50’s 84% fast-feedback baseline; inject 0–20% paired-guide off-target activity and measure precision at 30% recall."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Fast-feedback precision at 30% recall was 84% without off-targets, 81% at 5%, and 76% at 10%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n13",
+      "content": "Benchmark PerturbID-70 against ≤5%-off-target AnchorIV-50 across matched feedback and confounding strata, measuring precision at 30% recall and powered-null specificity."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "At 5% off-targets, fast-feedback precision: AnchorIV 81% versus PerturbID 67%; slow-feedback: 79% versus 88%; powered-null specificity: 92% versus 94%."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "p2",
+      "content": "Use AnchorIV-50 for fast-feedback networks only with ≤5% off-targets; retain PerturbID-70 for slow feedback, where precision reaches 88%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Develop ClampBound: randomized degron pulses plus nascent-RNA trajectories bound direct effects despite confounding and feedback, distinguishing unsupported from powered nulls."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Which degron pulse lengths and nascent-RNA sampling windows identify direct effects before fast feedback obscures them?"
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Sweep randomized 15–120-minute degron pulses and 15–180-minute nascent-RNA sampling on PerturbID-50 fast-feedback networks; measure ClampBound precision at 30% recall."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Fast-feedback precision at 30% recall: 86% with 30-minute pulses and 15–60-minute samples; 72% with 120-minute pulses and 180-minute samples."
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "On fast-feedback networks, 30-minute degron pulses with 15–60-minute sampling sustain ≥80% direct-edge precision at 30% recall."
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Validate 30-minute pulses with 15–60-minute sampling on held-out fast-feedback networks; estimate timing robustness and coverage needed for identifiable edges."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "On held-out confounded-feedback networks, sweep ClampBound coverage using 30-minute pulses/15–60-minute sampling; retest PerturbID’s 70%-coverage/2–6-hour design at 30% recall."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "On held-out fast-feedback networks, 2-hour-only PerturbID-70 reached 82% precision at 30% recall, versus 67% previously; ClampBound reached 85%."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Prioritize ClampBound at 85% fast-feedback precision; reconsider 2-hour-only PerturbID (82%) against AnchorIV (81%) in matched-timing trials."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Run matched-timing trials of prioritized ClampBound, PerturbID, and AnchorIV on confounded-feedback networks; score 30%-recall precision and null calibration."
+    },
+    {
+      "id": "n34",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "MatchedTiming-v1 benchmark: matched network splits, intervention schedules, precision-at-30%-recall comparisons, and identifiability and powered-null calibration diagnostics for three methods."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "MatchedTiming-v1: ClampBound achieved 86% fast-feedback precision at 30% recall versus PerturbID’s 82% and AnchorIV’s 81%; powered-null specificity was 93%."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p3",
+      "content": "When does cell-specific degron efficacy correlated with latent cell state invalidate ClampBound’s direct-edge bounds and powered-null calls?"
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Inject ρ=0–0.6 degron-efficacy–latent-state correlations into MatchedTiming-v1 while preserving randomized assignment; assess ClampBound precision, bound coverage, and false-absence rate."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "At ρ=0.4 efficacy–state correlation, ClampBound precision fell to 73% at 30% recall; nominal 95% bound coverage dropped to 79%."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Use ClampBound only if efficacy–state sensitivity checks retain ≥95% bound coverage; otherwise prefer PerturbID and mark affected edges unsupported."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Develop RescueMap: lineage-matched CRISPRi/CRISPRa rescues with early nascent RNA bound direct effects, separating identifiable edges from unsupported and powered nulls."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "How accurately must lineage matching balance latent cell state for CRISPRi/CRISPRa rescue concordance to identify direct edges under fast feedback?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "RescueMap replaces pulse-only identification: lineage-state imbalance ≤0.1 SD yields ≥80% precision at 30% recall under fast feedback."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Recreate ρ=0.4 efficacy–state confounding; sweep lineage imbalance 0–0.5 SD in RescueMap rescues, measuring precision at 30% recall."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "At ρ=0.4, RescueMap precision at 30% recall was 83% with ≤0.1-SD imbalance, versus 74% at 0.3 SD."
+    },
+    {
+      "id": "n44",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n40",
+      "content": "Without ≤0.1-SD lineage balance, RescueMap’s rescue concordance reflects shared latent state and yields ≥10% false direct-edge calls."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Prespecify n35’s 86%-precision ClampBound comparator; measure RescueMap false-edge fractions across 0.1–0.5-SD lineage imbalances at 30% recall."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Under weak confounding (ρ=0.1), RescueMap retained 91% precision at 30% recall despite 0.3-SD lineage imbalance."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n44",
+      "content": "Map RescueMap eligibility across ρ=0.1–0.4 confounding and 0.1–0.5-SD lineage imbalance; calibrate edge precision and powered-null validity."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Extend MatchedTiming-v1 across ρ=0.1–0.4 confounding and 0.1–0.5-SD lineage imbalance; measure RescueMap precision at 30% recall and powered-null specificity."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "RescueMap eligibility atlas: confounding-by-imbalance precision at 30% recall, powered-null specificity, and thresholds separating supported edges from unsupported pairs."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n47",
+      "content": "Stratify the RescueMap atlas by confounding strength; test whether >0.1-SD lineage imbalance consistently causes ≥10% false direct-edge calls."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Under strong confounding (ρ=0.4), 0.2-SD lineage imbalance caused 12% false edges at 30% recall; weak-confounding exceptions remain."
+    },
+    {
+      "id": "n52",
+      "type": "question",
+      "order": 57,
+      "exploration_parent_id": "n44",
+      "content": "Can negative-control genes estimate confounding strength well enough to relax RescueMap’s 0.1-SD balance requirement without inflating false edges?"
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Negative controls estimate ρ within 0.05; inferred ρ≤0.1 permits 0.3-SD lineage imbalance with ≥80% precision at 30% recall."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Fit negative-control ρ estimates using RescueMap atlas’s weak/strong-confounding strata; test ±0.05 error and precision at 30% recall, 0.3-SD imbalance."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Negative-control ρ estimates were within 0.05 in 92% of networks; selected ρ≤0.1 cases achieved 88% precision at 30% recall."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 61,
+      "exploration_parent_id": "p4",
+      "content": "Prespecify RescueMap eligibility: randomized guides, ≤0.1-SD imbalance or negative-control-estimated ρ≤0.1 at ≤0.3-SD imbalance; validate 30%-recall precision and unsupported-versus-powered-null calls."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Apply atlas-based RescueMap eligibility to 100 held-out confounded-feedback networks; measure precision at 30% recall and powered-null specificity."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "MatchedTiming-v2 extends v1 with RescueMap eligibility gates, 100 held-out networks, 30%-recall precision, powered-null specificity, and explicit unsupported-edge labels."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n56",
+      "content": "Stress-test MatchedTiming-v2’s eligible RescueMap calls at ρ=0.4 efficacy–state correlation; measure precision at 30% recall and powered-null specificity."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "At ρ=0.4, ≤0.1-SD-matched RescueMap achieved 83% precision at 30% recall and 94% powered-null specificity on MatchedTiming-v2."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 66,
+      "exploration_parent_id": "p4",
+      "content": "Choose RescueMap with ≤0.1-SD balance under strong confounding or control-verified weak confounding; otherwise use diagnostic-qualified AnchorIV, PerturbID, or ClampBound."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "depend_on",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n8",
+      "relation": "refute",
+      "target": "n6"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n10",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "revise",
+      "target": "n6"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "revise",
+      "target": "n44"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "revise",
+      "target": "n34"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n39"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Infer identifiable direct regulatory edges from incomplete single-cell perturbations despite latent confounding and compensatory feedback.",
+    "requirements": [
+      "Achieve ≥80% direct-edge precision at 30% recall on ground-truth networks containing confounding and feedback.",
+      "Specify identifiability assumptions and distinguish unsupported edges from evidence of regulatory absence."
+    ]
+  }
+}

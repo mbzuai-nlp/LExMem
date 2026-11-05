@@ -1,0 +1,989 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable long-document reasoning that resolves conflicting, temporally scoped claims while preserving auditable evidence for multi-hop conclusions.",
+      "requirements": [
+        "Exceed a matched-context retrieval baseline by 10 percentage points in conflicting-evidence question accuracy.",
+        "At least 90% of correct answers include complete, noncontradictory evidence chains respecting temporal scope."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Build ChronoProof: index cited claims by validity interval, resolve contradictions using source precedence, and verify temporally consistent multi-hop evidence paths."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should ChronoProof resolve claims when a newer publication reports an older validity interval than a conflicting primary source?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "On TempConflictQA’s backdated conflicts, interval-first matching and primary-source tie-breaking improve accuracy ≥10 points over matched-context retrieval."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Annotate TempConflictQA backdated conflicts; benchmark interval-first, primary-source tie-breaking against matched-context retrieval; audit complete, time-consistent evidence chains."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Benchmark ChronoProof against matched-context retrieval on 400 annotated TempConflictQA backdated-conflict questions; audit temporal validity and citation completeness."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "TempConflictQA benchmark report containing 400 annotated questions, paired ChronoProof/baseline answers, accuracy scores, and temporal evidence-chain audits."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Reaudit TempConflictQA report’s paired answers for ≥10-point backdated-conflict accuracy gains and ≥90% complete, temporally consistent chains among correct answers."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "On TempConflictQA backdated conflicts, ChronoProof achieved 74% versus 62% accuracy; 93% of correct answers had complete, noncontradictory, time-consistent chains."
+    },
+    {
+      "id": "n10",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Advance ChronoProof to broader conflicting-evidence trials: backdated conflicts yielded a 12-point accuracy gain and 93% valid evidence chains."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Ablate ChronoProof’s interval filtering and source precedence on 400 TempConflictQA backdated conflicts; compare accuracy and evidence-chain validity."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "TempConflictQA ablations: interval-off accuracy/valid-chain rates 65%/78%; precedence-off 69%/85%; full ChronoProof 74%/93%."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Removing source precedence preserves ChronoProof’s ≥10-point accuracy advantage and ≥90% valid evidence-chain rate on backdated conflicts."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Can ChronoProof omit source precedence while maintaining both accuracy and evidence-chain thresholds on unseen backdated conflicts?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Develop RevisionGraph: extract explicit supersession links and bitemporal claim histories, then derive minimal, citation-backed proofs via constraint solving."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Annotate TempConflictQA supersessions, implement RevisionGraph bitemporal proof search, then test ≥10-point gains over matched-context retrieval and ≥90% valid chains."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Reannotate the TempConflictQA report’s 400 questions for supersessions; compare RevisionGraph, ChronoProof, and matched-context retrieval on accuracy and chain validity."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "On 400 TempConflictQA questions, RevisionGraph achieved 79% accuracy and 95% correct-answer chain validity; ChronoProof scored 74%/93%, retrieval 62%."
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Explicit supersession links replace source precedence, maintaining ≥10-point gains over retrieval and ≥90% valid chains on unseen conflicts."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Test precedence-free RevisionGraph on 200 held-out TempConflictQA conflicts, comparing supersession-link ablations against retrieval for accuracy and valid-chain rate."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "On 200 held-out conflicts, precedence-free RevisionGraph achieved 75% accuracy and 92% correct-answer chain validity; retrieval scored 63%, supersession-off 67%/84%."
+    },
+    {
+      "id": "n22",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Adopt precedence-free RevisionGraph: held-out accuracy was 75% versus retrieval’s 63%, with 92% valid chains; ChronoProof’s precedence-off scored 69%/85%."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n16",
+      "content": "Implement precedence-free RevisionGraph v1.1 with supersession-linked bitemporal proof search and automated citation-chain validation."
+    },
+    {
+      "id": "n24",
+      "type": "artifact",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "RevisionGraph v1.1 release contains supersession extraction, bitemporal claim indexing, precedence-free proof search, and citation-chain validation."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "How can supersession-aware bitemporal proofs distinguish retroactive corrections from claims valid when an event occurred?"
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "On TempConflictQA retroactive corrections, separating event validity from publication availability improves as-of accuracy ≥10 points over single-time proofs."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Develop DualTimeRAG: jointly retrieve supporting and opposing passages, condition entailment on event and publication times, and emit citation-verified multi-hop proofs."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "How can DualTimeRAG retrieve superseded opposing passages without letting post-cutoff evidence contaminate as-of answers?"
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Using RevisionGraph v1.1 proofs, test event-time and publication-cutoff filtering of DualTimeRAG’s opposing passages against single-time retrieval on TempConflictQA retroactive corrections."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "On 120 TempConflictQA retroactive corrections, DualTimeRAG scored 78% as-of accuracy versus 71% for single-time retrieval proofs, only +7 points."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Adding publication-cutoff-gated supersession links to DualTimeRAG raises retroactive-correction as-of accuracy ≥10 points above single-time proofs without post-cutoff leakage."
+    },
+    {
+      "id": "n32",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Annotate retroactive corrections by event and publication time; gate supersession at cutoff; compare as-of accuracy and leakage against single-time proofs."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Benchmark RevisionGraph v1.1-backed cutoff-gated and ungated dual-time proofs against single-time proofs on 120 retroactive corrections, measuring as-of accuracy and leakage."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "On 120 corrections, gated/ungated accuracy reached 83%/85% versus single-time 71%; gated proofs still cited post-cutoff evidence in 3%."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n32",
+      "content": "Patch RevisionGraph v1.1 citation validation to reject post-cutoff evidence; remeasure DualTimeRAG’s as-of accuracy and leakage against single-time proofs."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "On 120 corrections, patched DualTimeRAG achieved 82% as-of accuracy versus single-time 71%, with zero post-cutoff citations."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Adopt cutoff-aware citation validation: accuracy remains 11 points above single-time proofs while post-cutoff leakage falls from 3% to zero."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Develop ScopeLedger: normalize entity, jurisdiction, and temporal scope; solve contradiction-aware claim graphs for minimal, machine-checkable evidence certificates."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p4",
+      "content": "When jurisdictions overlap, which geographically scoped claims should ScopeLedger combine without treating local exceptions as global contradictions?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "On TempConflictQA jurisdiction-overlap questions, set-intersection scope matching improves accuracy ≥10 points over jurisdiction-blind proofs while preserving ≥90% valid chains."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Annotate TempConflictQA jurisdiction overlaps; compare ScopeLedger intersection reasoning with jurisdiction-blind proofs; audit local-exception handling and evidence-chain validity."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Extend RevisionGraph v1.1 with ScopeLedger intersection matching and adopted cutoff validation; benchmark against jurisdiction-blind proofs on 150 annotated overlaps."
+    },
+    {
+      "id": "n43",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "ScopeLedger-Overlap150 release contains jurisdiction annotations, cutoff-validated proof certificates, paired jurisdiction-blind outputs, and local-exception error labels."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n41",
+      "content": "Audit ScopeLedger-Overlap150’s paired outputs for accuracy gains, ≥90% valid certificates, and local exceptions misclassified as global contradictions."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "On ScopeLedger-Overlap150, intersection matching achieved 81% versus 69% jurisdiction-blind accuracy; 94% of correct-answer certificates were complete and scope-consistent."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Adopt ScopeLedger intersection matching for jurisdiction overlaps: accuracy rose 12 points and 94% of correct answers retained valid certificates."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Develop ProofGuard: enumerate competing time-valid multi-hop chains, counterexample-check each against conflicting claims, and abstain without an auditable winner."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "p5",
+      "content": "Build TempConflictQA-MultiHop180; compare ProofGuard with matched-context retrieval at matched answer coverage, auditing temporal evidence chains and abstentions."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Extend ScopeLedger-Overlap150 into TempConflictQA-MultiHop180; benchmark ProofGuard, ScopeLedger, and matched-context retrieval at matched coverage with temporal-chain audits."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "At 90% coverage on TempConflictQA-MultiHop180, ProofGuard scored 73% accuracy/87% valid chains; ScopeLedger scored 76%/92%, retrieval 65% accuracy."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "On multi-hop jurisdiction exceptions, intersection-certified ScopeLedger proofs beat standalone counterexample checks by ≥3 points while retaining ≥90% valid chains."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Label nested-jurisdiction exceptions in MultiHop180; compare intersection-certified and standalone counterexample proofs at 90% coverage; audit exception propagation."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Using ScopeLedger-Overlap150 annotations, isolate 80 nested-exception MultiHop180 questions and audit matched-coverage accuracy and certificate validity across both proof methods."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "At 90% coverage on 80 nested exceptions, ScopeLedger scored 75% accuracy/93% valid chains; jurisdiction-blind 64%, ProofGuard 78% accuracy."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n52",
+      "content": "Using ScopeLedger-Overlap150 annotations, compare ProofGuard and ScopeLedger’s nested-exception errors and valid-chain rates at 90% coverage."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "At 90% coverage on 40 cross-border nested exceptions, ScopeLedger scored 83% accuracy/93% valid chains versus ProofGuard’s 78% accuracy."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Prioritize ScopeLedger for cross-border nested exceptions (83% versus 78%); investigate ProofGuard’s 78% versus 75% advantage across all 80."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "p5",
+      "content": "Retain ScopeLedger as default; defer standalone ProofGuard because overall chains fall below 90%, despite its nested-exception accuracy advantage."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "revise",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n40"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n46"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable long-document reasoning that resolves conflicting, temporally scoped claims while preserving auditable evidence for multi-hop conclusions.",
+    "requirements": [
+      "Exceed a matched-context retrieval baseline by 10 percentage points in conflicting-evidence question accuracy.",
+      "At least 90% of correct answers include complete, noncontradictory evidence chains respecting temporal scope."
+    ]
+  }
+}

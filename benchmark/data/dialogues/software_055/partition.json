@@ -1,0 +1,133 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Reserved write I/O and preemptible compaction slices meet the twofold write-latency target",
+      "boundary_reason": "The scheduling approach is adopted; discussion shifts to ownership and quota durability."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "OwnerLedger v1 implementation and crash-reassignment quota leak",
+      "boundary_reason": "Crash testing exposes uncharged temporary SSTs, prompting a revised proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Tenant-partitioned outputs and batched durable precharges",
+      "boundary_reason": "Extended crash and latency tests support the revised precharge approach; focus shifts to generation fencing."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Fencing in-flight outputs during capacity reassignment",
+      "boundary_reason": "A race test finds refunds preceding durable stale-SST deletion, prompting a cleanup-ordering proposal."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "QuarantineLedger v2 cleanup ordering and its write-latency cost",
+      "boundary_reason": "Deployment is deferred after churn testing exceeds the latency target; discussion turns to reducing cleanup fsync bursts."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p5",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Epoch-batched cleanup with directory fsync before refunds",
+      "boundary_reason": "The safe batching order is adopted; the next stage integrates it into a new version."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "QuarantineLedger v3 validation and eight-tenant saturation failure",
+      "boundary_reason": "Crash and churn checks pass, but saturation exceeds the write-latency target, prompting cleanup gating."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Write-queue-slack gating for cleanup fsyncs",
+      "boundary_reason": "Tests support the gating change and it is adopted; the next stage implements and validates v4."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "QuarantineLedger v4 implementation, validation, and adoption",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

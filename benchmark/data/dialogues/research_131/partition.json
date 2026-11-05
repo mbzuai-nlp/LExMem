@@ -1,0 +1,162 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Testing uncertainty-gated bypass on unseen clicks and whispered /s/",
+      "boundary_reason": "The click-mixture result supports a decision to retain the bypass; the next stage evaluates it more broadly."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Training and auditing WhisperMix-v2 on held-out speakers and unseen noises",
+      "boundary_reason": "The held-out evaluation is complete; the next discussion returns to a gate ablation."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Comparing transient-supervised and energy-only gating",
+      "boundary_reason": "The ablation resolves its specific insertion-reduction hypothesis; a different enhancement approach follows."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Training and benchmarking ContinuityMask-80 against WhisperMix-v2",
+      "boundary_reason": "The comparison leads to a baseline and prioritization decision; the next test targets a specific click-overlap condition."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Testing ContinuityMask-80 on −5 dB click-overlap /t/ mixtures",
+      "boundary_reason": "The targeted test concludes; the graph moves to noise-memory subtraction."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Investigating fricative contamination and strict update gating in NoiseMem-80",
+      "boundary_reason": "Strict gating avoids excess consonant errors but misses the SI-SDR target, motivating a revised update rule."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Testing and independently retesting continuity-verified NoiseMem-80 updates",
+      "boundary_reason": "The replicated results support a preference decision; a paired-mixture approach follows."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Testing paired-mixture consistency on whispered /t/ and click overlaps",
+      "boundary_reason": "Five-split results challenge the initial finding, prompting a revised paired-training method."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Refining and testing confidence-masked paired training",
+      "boundary_reason": "Development-only tuning supports advancing the revised method; the next proposal concerns risk-constrained masks."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Evaluating RiskMask-80 across unseen-click noise families",
+      "boundary_reason": "The worst-family result falls short despite the initial success, motivating calibration and veto revisions."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67",
+        "n68"
+      ],
+      "topic": "Revising RiskMask-80 calibration and transient veto",
+      "boundary_reason": "Retuning supports an advance decision; the next stage audits the frozen model."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74"
+      ],
+      "topic": "Auditing frozen RiskMask-80 and selecting it for held-out deployment",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

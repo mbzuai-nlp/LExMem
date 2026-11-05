@@ -1,0 +1,948 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a subsurface two-phase flow surrogate that preserves local mass conservation while generalizing across unseen permeability connectivity.",
+      "requirements": [
+        "Maximum cellwise mass-balance error stays below 0.1% of injected mass per timestep.",
+        "On unseen channel connectivity, breakthrough-time error remains below 5% versus a converged finite-volume solver."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use a permeability-conditioned graph network to predict face mobilities; solve pressure and update saturation with shared conservative finite-volume fluxes."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Does face-mobility learning keep breakthrough-time error below 5% on unseen channel connectivity with conservative finite-volume updates?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "On ChannelShift-2D, conservative updates with graph-predicted face mobilities yield <5% maximum breakthrough-time error across unseen channel topologies."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Train on ChannelShift-2D straight/sinuous channels; test held-out branching connectivity against converged finite-volume breakthrough times and cellwise residuals."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run 100 held-out ChannelShift-2D branching cases; compare breakthrough-time errors and injected-mass-normalized cellwise residuals against converged finite-volume solutions."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across 100 held-out ChannelShift-2D branching cases, maximum breakthrough-time error was 4.3%; maximum cellwise residual was 0.03% injected mass/timestep."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Advance the graph-mobility surrogate to broader connectivity testing; held-out branching cases met both mass-balance and breakthrough thresholds."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "ChannelShift-2D branching evaluation report with 100-case breakthrough-time comparisons, cellwise mass-residual maps, and converged finite-volume reference solutions."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Audit the ChannelShift-2D report by recomputing breakthrough times and cellwise residuals from its archived solutions and checking reference convergence."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Audit found saturation clipping caused 0.22% maximum cellwise imbalance per timestep relative to injected mass; reported 0.03% preceded clipping."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "p1",
+      "content": "Can conservative face-flux limiting replace saturation clipping without degrading breakthrough accuracy on unseen branching channels?"
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Replace saturation clipping with shared-face positivity-preserving flux limiting; rerun 100 ChannelShift-2D branching cases, measuring breakthrough error and post-update mass residuals."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "With shared-face flux limiting, 100 ChannelShift-2D branching cases achieved 0.02% maximum post-update mass imbalance and 4.6% maximum breakthrough-time error."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Train topology-conditioned multiscale pressure bases, then use locally conservative Darcy flux reconstruction and positivity-preserving finite-volume transport."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Train pressure bases on ChannelShift-2D; reconstruct conservative fluxes and compare bounded-transport breakthrough and cellwise residuals with finite-volume references."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Using ChannelShift-2D report references, test multiscale pressure bases and reconstructed fluxes on 100 branching cases for breakthrough and mass-balance errors."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "ChannelShift-2D multiscale evaluation bundle with learned pressure bases, reconstructed face fluxes, and 100-case breakthrough and cellwise residual tables."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Audit the multiscale bundle against finite-volume references: recompute peak cellwise imbalance, breakthrough error, and face-flux continuity across 100 cases."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Across 100 branching cases, multiscale bases yielded 8.1% maximum breakthrough-time error despite 0.02% maximum cellwise imbalance."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Are unresolved thin-channel connections in the multiscale pressure bases responsible for the 8.1% peak breakthrough-time error?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Adding connectivity-aware bases at one-cell channel necks reduces maximum breakthrough-time error from 8.1% below 5%, retaining ≤0.1% cellwise imbalance."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Using the previously validated shared-face limiter, test one-cell-neck pressure bases on 100 branching cases for breakthrough and cellwise imbalance."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Across 100 branching cases, one-cell-neck bases reduced maximum breakthrough-time error from 8.1% to 4.7%, with 0.02% maximum cellwise imbalance."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n19",
+      "content": "Using shared-face limiting and the 4.7% neck-base result, ablate neck bases across 100 branching cases stratified by neck presence."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "On 100 new branching cases, neck bases reduced peak breakthrough error from 7.9% to 6.4%, still above 5%."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Defer neck-base multiscale surrogate: 4.7% peak breakthrough error on initial cases rose to 6.4% on new branching cases."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Train a graph network on rewired channels to predict face fluxes; project onto finite-volume continuity before bounded saturation updates."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Can continuity-projected face-flux learning maintain sub-5% breakthrough error when test channels contain junction patterns absent from training?"
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Replacing neck-specific pressure bases with continuity-projected flux learning yields <5% peak breakthrough error on unseen junctions and <0.1% cellwise imbalance."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Using shared-face limiting, compare plain bases, neck bases, and projected fluxes across 100 unseen-junction cases: breakthrough and cellwise imbalance."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Among 35 one-cell-neck junction cases, neck bases cut peak breakthrough error from 8.1% to 4.8%; maximum imbalance was 0.02%."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n26",
+      "content": "Benchmark projected fluxes against neck bases on n28’s 35 neck-junction and n23’s 100 branching cases, tracking breakthrough and imbalance."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Projected fluxes had 6.1% and 6.3% peak breakthrough errors on 35 neck-junction and 100 branching cases; maximum imbalance was 0.02%."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n26",
+      "content": "Test projected fluxes on 60 new X-junction networks; compare junction flux splits, breakthrough errors, and cellwise imbalance against finite-volume solutions."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Across 60 unseen X-junction networks, projected fluxes gave 4.4% maximum breakthrough-time error and 0.02% maximum cellwise imbalance."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Which connectivity features explain why projected fluxes meet breakthrough targets on X-junctions but fail on neck-junction and branching cases?"
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Stratify 195 held-out cases by neck-edge betweenness and junction degree; correlate breakthrough error with finite-volume flux-split discrepancies."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Combine n30’s 135 cases and n32’s 60 X-junctions; correlate breakthrough error with neck-edge betweenness, junction degree, and flux-split error."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Connectivity-error atlas for 195 cases, tabulating neck-edge betweenness, junction degree, flux-split discrepancies, and breakthrough errors."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Augment projected-flux learning with neck-betweenness-weighted junction flux-split supervision and shared-face-limited transport."
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "p4",
+      "content": "Train projected fluxes with atlas-weighted junction-split loss; test maximum breakthrough error and cellwise imbalance on held-out connectivity classes."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Train projected fluxes with atlas-derived split weights; test 150 fresh neck, branching, and X-junction cases for breakthrough and conservation."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Split-weighted flux benchmark: checkpoint and per-case breakthrough errors, cellwise residuals, and junction flux splits for 150 fresh networks."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n37",
+      "content": "Audit n39’s 150 networks against converged finite-volume solutions; ablate weighted split supervision and recompute worst-case breakthrough and mass-balance errors."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Across 150 cases, split weighting reduced peak breakthrough error from 6.2% to 4.6%; peak cellwise imbalance was 0.02% injected mass/timestep."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n37",
+      "content": "Using n39’s checkpoint, stress-test 120 new high-betweenness neck networks at 10⁴ permeability contrast against converged finite-volume references."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Across 120 high-betweenness neck cases at 10⁴ contrast, peak breakthrough-time error reached 7.3%; peak cellwise imbalance remained 0.02%."
+    },
+    {
+      "id": "n44",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Defer split-weighted flux surrogate: 4.6% peak breakthrough error on mixed cases rose to 7.3% at high-contrast necks."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Replace split-weighted fluxes at high-contrast necks with adaptive finite-volume pressure patches; globally project fluxes before shared-face-limited transport."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Can adaptive pressure patches at high-betweenness necks reduce 10⁴-contrast breakthrough error below 5% while preserving cellwise conservation?"
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Adaptive neck-pressure patches reduce peak 10⁴-contrast breakthrough error from 7.3% below 5%, keeping cellwise imbalance below 0.1%."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Select patches by neck betweenness and permeability contrast; compare patched versus unpatched fluxes on 120 high-contrast cases."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Solve 5×5 finite-volume neck-pressure patches on 120 10⁴-contrast cases; compare breakthrough errors and cellwise imbalance against unpatched fluxes."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Across 120 high-contrast neck cases, patches cut peak breakthrough error from 7.3% to 4.8%; peak cellwise imbalance was 0.03%."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n47",
+      "content": "Test adaptive neck-pressure patches on 80 fresh multi-neck, 10⁴-contrast networks; measure peak breakthrough error, cellwise imbalance, and runtime."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "On 80 fresh multi-neck networks, patches achieved 4.9% peak breakthrough error, 0.04% peak cellwise imbalance, and 3.1× finite-volume speedup."
+    },
+    {
+      "id": "n52",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Select adaptive neck-pressure patches for broader validation: both high-contrast cohorts met breakthrough and cellwise conservation thresholds."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n47",
+      "content": "Validate selected patched surrogate on 300 unseen braided, bifurcating, and multi-neck networks; measure peak breakthrough error and cellwise imbalance."
+    },
+    {
+      "id": "n54",
+      "type": "artifact",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "Braided-300 validation bundle with finite-volume references, patched-surrogate outputs, per-case breakthrough errors, cellwise residuals, and connectivity labels."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p5",
+      "relation": "revise",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a subsurface two-phase flow surrogate that preserves local mass conservation while generalizing across unseen permeability connectivity.",
+    "requirements": [
+      "Maximum cellwise mass-balance error stays below 0.1% of injected mass per timestep.",
+      "On unseen channel connectivity, breakthrough-time error remains below 5% versus a converged finite-volume solver."
+    ]
+  }
+}

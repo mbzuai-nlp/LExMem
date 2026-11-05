@@ -1,0 +1,137 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Contact-calibrated probing for occluded grasps",
+      "boundary_reason": "Initial evaluation supports advancement; the next segment carries out a separate validation plan."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Novel-dynamics validation of contact-calibrated probing",
+      "boundary_reason": "Validation results conclude this stage before an alternative microprobe hypothesis is tested."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Testing low-force microprobes on unseen materials",
+      "boundary_reason": "The test falls short on damage and grasp failures, prompting a shift to material-based gating."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "l2",
+        "a5",
+        "r2"
+      ],
+      "topic": "Developing a material-shift gate for noncontact views",
+      "boundary_reason": "The routing policy is produced; the next segment evaluates its threshold in a combined approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h3",
+        "a6",
+        "e4",
+        "d2"
+      ],
+      "topic": "Evaluating MaterialGate-v1 threshold and advancing integration",
+      "boundary_reason": "The threshold test supports advancement to integrated trials."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "l3",
+        "a7",
+        "r3",
+        "a8",
+        "e5"
+      ],
+      "topic": "Freezing the gate threshold and assessing integrated MPC",
+      "boundary_reason": "The frozen-threshold assessment is complete; the next test stresses it under unseen occlusions."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "a9",
+        "e6",
+        "d3"
+      ],
+      "topic": "Stress-testing frozen-gate MPC on OccluDyn-1000",
+      "boundary_reason": "Excess damage and insufficient failure reduction lead to deployment deferral and a revised calibration plan."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "l4",
+        "a10",
+        "r4",
+        "a11",
+        "e7",
+        "d4"
+      ],
+      "topic": "Occlusion-conditioned MaterialGate-v2 thresholds",
+      "boundary_reason": "V2 reduces damage but not enough grasp failures; discussion shifts to visibility rewards."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p3",
+        "q4",
+        "h4",
+        "a12",
+        "e8",
+        "d5"
+      ],
+      "topic": "Adding motion-robust grasp-surface visibility rewards",
+      "boundary_reason": "The initial test supports advancement to a separate validation trial."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "l5",
+        "a13",
+        "r5",
+        "a14",
+        "e9",
+        "d6"
+      ],
+      "topic": "Validating visibility-rewarded MPC on OccluDyn-4k",
+      "boundary_reason": "Validation misses the failure-reduction target, prompting investigation of visibility prediction under rotation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "q5",
+        "h5",
+        "a15",
+        "e10",
+        "d7"
+      ],
+      "topic": "Diagnosing rotation-related visibility errors",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Test whether 16 observation snapshots suffice for latent-SDE energy and held-out forcing predictions",
+      "boundary_reason": "The initial snapshot comparison is complete; the next discussion examines errors by forcing mode and sign."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "Identify the mode-3 negative-forcing error hidden by pooled results",
+      "boundary_reason": "The stratified result raises a new question about training versus memory length."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Test sign-resolved training and the information supplied by older observations",
+      "boundary_reason": "The mixed findings motivate a separate investigation of whether longer histories help by denoising."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Compare noise-aware 16-snapshot and 64-snapshot encoders, then choose by observation noise",
+      "boundary_reason": "A decision closes the latent-SDE investigation before a different model is proposed."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Evaluate fixed and forcing-conditioned Mori–Zwanzig memory kernels",
+      "boundary_reason": "The response-error audit leads to a decision to defer these kernels."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Evaluate a 32-stratum Markov operator and its rare-transition sensitivity",
+      "boundary_reason": "Bootstrap degradation creates a new question about pooling sparse strata."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Pool sparse neighboring energy strata and decide whether to adopt the operator",
+      "boundary_reason": "The pooling test and adoption decision close this model discussion."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Test a delay-coordinate Koopman generator on unseen negative mode-3 forcing",
+      "boundary_reason": "After constant-forcing and amplitude tests, the focus shifts to time-varying forcing and longer rollouts."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Test time-varying forcing and long-horizon energy accuracy before deciding on Koopman-KS",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

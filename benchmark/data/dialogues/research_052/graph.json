@@ -1,0 +1,890 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn classifiers that reject shifting spurious cues without environment labels while preserving stable predictive features specific to minority groups.",
+      "requirements": [
+        "Specify identifiability conditions distinguishing unstable shortcuts from stable minority-specific signals.",
+        "Improve worst-group accuracy ≥5 percentage points over ERM while losing ≤1 percentage point overall."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train latent-subgroup invariant predictors using shortcut-varying, minority-signal-preserving augmentations; target 5-point worst-group gains with ≤1-point overall loss versus ERM."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What observable augmentation-consistency and subgroup-support conditions distinguish shifting shortcuts from stable minority-specific cues without environment labels?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "With label overlap and two independent shortcut interventions per subgroup, stable minority cues retain conditional label association; shortcut associations vanish."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Cross background-scene swaps with independent palette edits on Waterbirds; check label overlap and conditional cue–label stability in inferred subgroups."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Create crossed Waterbirds scene-swap/palette-edit views; test label overlap and subgroup-conditional label associations for background, palette, and morphology."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On Waterbirds, despite ≥30 examples per label and independent edits, background–label AUC remained 0.73 within inferred subgroups."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "With verified label-preserving shortcut-only edits and minority counterfactual overlap, shortcut-induced score changes identify instability; invariant morphology retains minority signal."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Audit 200 foreground-masked Waterbirds scene swaps for label fidelity and minority counterfactual overlap; compare background-logit sensitivity against morphology-label AUC."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Waterbirds: 97% of 200 swaps preserved labels; minority counterfactual overlap reached 84%; background/morphology logit shifts were 0.41/0.03."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Adopt audited scene-swap sensitivity over subgroup association: background AUC remained 0.73, while morphology logit shifts were only 0.03."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Cross scene swaps with palette edits; stratify inferred Waterbirds subgroups by swap sensitivity, checking label overlap and cue–label AUC."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Waterbirds audit table v1 records crossed edits, inferred subgroups, label-overlap counts, and cue–label AUC by swap-sensitivity stratum."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How should scene-swap penalties be weighted across inferred subgroups to raise worst-group accuracy without suppressing minority morphology?"
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Train Waterbirds models with subgroup-weighted scene-swap penalties and foreground-consistency loss; compare worst-group and overall accuracy against ERM."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "On Waterbirds, penalties raised worst-group accuracy from 72.0% to 77.4%, but overall accuracy fell from 96.1% to 94.8%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Add swap-invariant minority residual heads to frozen ERM; gate corrections by audited scene-swap sensitivity, preserving baseline predictions elsewhere."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Audit minority overlap and scene-swap fidelity; train gated invariant residuals on Waterbirds; test ≥5-point worst-group gain, ≤1-point overall loss."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Use audit table v1 to select Waterbirds strata with ≥30 samples per label; train swap-invariant, sensitivity-gated residuals on frozen ERM."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Waterbirds residual-head checkpoint v1 contains frozen ERM weights, subgroup-gated correction heads, and sensitivity thresholds selected from audit table v1."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Benchmark checkpoint v1 against ERM on held-out Waterbirds worst-group and overall accuracy; verify audit table v1 swap fidelity and overlap."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On held-out Waterbirds, gated residuals raised worst-group accuracy from 72.0% to 78.1%; overall accuracy fell from 96.1% to 95.5%."
+    },
+    {
+      "id": "n20",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Adopt gated residuals for Waterbirds: worst-group accuracy improved 6.1 points with 0.6-point overall loss, supported by 97% label-preserving swaps."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n15",
+      "content": "Run paired Waterbirds bootstrap comparing scene-swap penalties with residual-head checkpoint v1 on worst-group, overall, and minority-morphology accuracy."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Waterbirds paired bootstrap: λ=0.15 penalties achieved 77.2% worst-group and 95.3% overall versus ERM’s 72.0%/96.1%; minority-morphology accuracy matched residuals at 86%."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "Does gate misrouting erase residual-head gains when unseen minority backgrounds show low scene-swap sensitivity?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "On unseen minority backgrounds, gate recall below 70% reduces residuals’ worst-group gain below 5 points versus ERM."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Evaluate checkpoint v1 on unseen Waterbirds minority backgrounds; sweep gate thresholds, recording minority gate recall and worst-group gain versus ERM."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "On unseen Waterbirds minority backgrounds, 65% gate recall yielded 74.3% worst-group accuracy versus ERM’s 69.0%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Blend λ=0.15 invariant and gated-residual models using audited counterfactual overlap, retaining minority morphology without relying solely on sensitivity gates."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "On held-out Waterbirds, overlap-weighted blending will exceed 78.1% worst-group accuracy while retaining ≥95.1% overall and ≥86% minority-morphology accuracy."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Calibrate overlap-weighted blends using audit table v1 validation strata; test held-out Waterbirds worst-group, overall, and minority-morphology accuracy."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "On held-out Waterbirds, overlap-weighted blending reached 79.0% worst-group, 95.3% overall, and 86.4% minority-morphology accuracy."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Adopt overlap-weighted blend: 79.0% worst-group and 95.3% overall; retain residual component, which gained 5.3 points despite 65% gate recall."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Does overlap-weighted blending retain a ≥5-point worst-group gain on unseen minority backgrounds with <50% counterfactual overlap?"
+    },
+    {
+      "id": "n32",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Stress-test the adopted blend on unseen Waterbirds minority backgrounds with <50% counterfactual overlap; compare worst-group and overall accuracy against ERM."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Construct unseen-background Waterbirds split with <50% minority counterfactual overlap; benchmark adopted blend and ERM on worst-group and overall accuracy."
+    },
+    {
+      "id": "n34",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Waterbirds audit table v2 extends v1 with unseen-background split IDs, minority overlap (<50%), swap-fidelity flags, and blend-versus-ERM accuracy."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Validate audit table v2 split membership and swap fidelity; recompute blend-versus-ERM worst-group and overall accuracy for <50% overlap."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "On 43%-overlap unseen Waterbirds, blending achieved 75.1% versus 69.0% ERM worst-group, with 94.2% versus 94.8% overall accuracy."
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "On unseen minority backgrounds, residual-head worst-group gains remain ≥5 points at 65% gate recall but fall below 5 at <45%."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Using audit table v2 unseen-background splits, sweep residual-head gates across 35–70% minority recall; compare worst-group gains against ERM."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "On unseen Waterbirds, residual heads gained 5.3 points at 65% gate recall, but 3.8 points at 40%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Replace sensitivity-only routing with morphology-consistency soft gates and invariant fallback for low-overlap minorities, using audited label-preserving swaps."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Can morphology-consistency gates restore ≥5-point worst-group gains when sensitivity-gate recall falls below 45%, without exceeding 1-point overall loss?"
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Calibrate morphology-consistency gates on audit table v2; compare worst-group and overall accuracy against ERM at 40% sensitivity-gate recall."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Using audit table v2, benchmark morphology-consistency-gated invariant fallback against overlap-weighted blending on Waterbirds worst-group/overall accuracy at 40% gate recall."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "At 40% gate recall, morphology-gated fallback scored 76.2% worst-group and 94.3% overall; blending scored 75.1%/94.2%, ERM 69.0%/94.8%."
+    },
+    {
+      "id": "n44",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Adopt morphology-gated fallback over blending at 40% gate recall: worst-group accuracy rises 1.1 points, with 0.5-point ERM-relative overall loss."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Audit CelebA shortcut-only edits and minority overlap, then test adopted fallback for ≥5-point worst-group gain and ≤1-point overall loss."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Apply audit table v2’s fidelity-and-overlap protocol to 200 CelebA gender-presentation edits; verify Blond_Hair labels and minority counterfactual support."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "CelebA Blond_Hair audit v1 records 200 gender-presentation edits, label-fidelity flags, minority counterfactual overlap, and subgroup-support counts."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n41",
+      "content": "Validate CelebA audit v1 label fidelity and overlap; benchmark calibrated morphology-gated fallback against ERM at 40% gate recall."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "At 40% gate recall, CelebA fallback scored 76.0% worst-group/91.2% overall versus ERM’s 70.5%/91.8%; edit fidelity was 94%, overlap 42%."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "p4",
+      "content": "Retain morphology-gated fallback over residual-only gating: CelebA gains 5.5 worst-group points with 0.6 overall loss at 40% recall."
+    },
+    {
+      "id": "n51",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Revise residual-only adoption: use morphology-gated invariant fallback below 45% gate recall; retain residual heads otherwise."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "revise",
+      "target": "n11"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n24"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n20"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n51"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn classifiers that reject shifting spurious cues without environment labels while preserving stable predictive features specific to minority groups.",
+    "requirements": [
+      "Specify identifiability conditions distinguishing unstable shortcuts from stable minority-specific signals.",
+      "Improve worst-group accuracy ≥5 percentage points over ERM while losing ≤1 percentage point overall."
+    ]
+  }
+}

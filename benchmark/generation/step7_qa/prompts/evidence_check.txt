@@ -1,0 +1,16 @@
+Verify the proposed dialogue evidence for a fixed QA.
+
+{{INPUT_JSON}}
+
+constraints.max_evidence_messages_per_slot is a hard upper limit for each answer slot.
+
+For every answer slot:
+- Evidence must be one flat list of message IDs. Reject any nested list or alternative-set format.
+- Use the cited messages alone to check that the answer can be obtained directly or reliably inferred, with its scope, conditions, units, and references resolved. Do not use the proposed answer as a missing premise.
+- Reject evidence that is too broad: repeated paraphrases, background-only messages, or extra messages that do not add support or necessary context.
+- Do not require uniqueness or strict minimality. Pass a focused sufficient set even if another focused set could also work.
+- Reject any slot with more than constraints.max_evidence_messages_per_slot cited messages.
+
+Only messages mapped from the slot's evidence_node_ids may support it. Do not rewrite evidence or QA. Pass only if every slot has one valid evidence list. Return JSON only:
+{"passed": true, "issues": []}
+On failure, set passed=false and list brief issues as plain strings identifying the slot and message IDs; do not use objects inside issues. On success, issues must be empty.

@@ -1,0 +1,1139 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design incremental link-time optimization that safely reuses optimized code despite changing cross-module symbol resolution and optimization dependencies.",
+      "requirements": [
+        "Preserve clean-build semantics across weak-symbol replacement, visibility changes, and cross-module function edits.",
+        "For single-function edits, median rebuild time ≤50% of clean LTO, with ≤3% executable runtime regression."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Cache optimized functions with dependency manifests tracking inlined bodies, imported summaries, symbol bindings, and visibility; rebuild the affected closure."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which recorded dependencies ensure cached functions are invalidated when weak-symbol replacements or visibility changes alter cross-module resolution?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Resolver fingerprints covering candidate definitions, prevailing bindings, and visibility will yield zero stale reuses across weak-symbol and visibility mutations."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Implement resolver fingerprints and dependency-closure invalidation; test weak/visibility mutations and cross-module edits against clean builds, rebuild and runtime budgets."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run ResolverFlip-200 weak-replacement and visibility-flip cases; compare prevailing bindings and optimized-function hashes with deterministic clean LTO."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ResolverFlip-200 matched clean-LTO bindings and optimized-function hashes in all 200 cases, with zero stale cache reuses."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Adopt resolver fingerprints for invalidation because ResolverFlip-200 found no binding mismatches or stale cache reuses."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Benchmark the adopted fingerprint-backed cache on EditLTO-100 cross-module function edits, measuring rebuild-time ratio, runtime delta, and clean-build equivalence."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "EditLTO-100 report records per-edit rebuild ratios, executable runtime deltas, and clean-build equivalence checks for fingerprint-backed reuse."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 11,
+      "exploration_parent_id": "p1",
+      "content": "What dependency granularity keeps cross-module function edits from invalidating excessive cached code while preserving clean-build equivalence?"
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Compare function-level versus module-level dependency manifests on EditLTO-100, measuring invalidation counts, clean-build hash matches, rebuild ratios, and runtime deltas."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "EditLTO-100: function-level manifests produced six clean-build hash mismatches from unimported callee-summary edits; module-level invalidation produced none."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Augment resolver-fingerprinted function caches with epochs for all consulted callee summaries, including nonimported candidates, and invalidate affected partitions."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Instrument summary reads, persist consulted-callee epochs, invalidate dependent partitions, then rerun EditLTO-100 and ResolverFlip-200 against clean LTO."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Use the EditLTO-100 report’s failing edits to instrument nonimported callee-summary reads, persist epochs, and rerun clean-build and timing comparisons."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "EpochManifest-v2 records consulted imported and nonimported summary epochs per optimization partition and invalidates partitions when any recorded epoch changes."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Rerun EditLTO-100 and ResolverFlip-200 using EpochManifest-v2; compare hashes with clean LTO, median rebuild ratio, and runtime regression."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "EpochManifest-v2 matched clean-LTO hashes in EditLTO-100 and ResolverFlip-200; median rebuild was 43% of clean LTO, worst runtime regression 1.8%."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Does EpochManifest-v2 stay below 50% of clean-LTO rebuild time on 500,000-function links with dense summary dependencies?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "On 500,000-function links, EpochManifest-v2 will retain median rebuild time below 50% of clean LTO despite dense summary dependencies."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Benchmark EpochManifest-v2 on DenseLink-500K with 100 single-function edits and 40 cross-module summary readers per function; measure median rebuild/clean-LTO ratio."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "DenseLink-500K median rebuild reached 68% of clean LTO across 100 edits, exceeding the hypothesized 50% threshold."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n21",
+      "content": "Profile DenseLink-500K’s 100 edits, attributing the 68% rebuild ratio to summary-epoch invalidation fanout, repartitioning, and code generation."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Profiling attributed 25 percentage points to eviction-amplified summary fanout and recompilation; pinned-cache reruns reached 43% of clean LTO."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Adopt pinned-cache mode for DenseLink-500K: eviction raised median rebuild time from 43% to 68% of clean LTO."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Use cost-aware pinning of high-fanout EpochManifest-v2 partitions in a content-addressed cache to reduce eviction-driven recompilation."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "Implement 16-GiB cost-and-fanout pinning; rerun DenseLink-500K, EditLTO-100, and ResolverFlip-200 for rebuild, runtime, and clean-build equivalence."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Implement 16-GiB cost-and-fanout pinning for content-addressed EpochManifest-v2 partitions, retaining fingerprint and epoch checks before reuse."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "PinCache-16G adds a 16-GiB cost-and-fanout eviction policy while retaining resolver-fingerprint and summary-epoch validation on cache hits."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Run PinCache-16G on DenseLink-500K, EditLTO-100, and ResolverFlip-200; check clean-build hashes, median rebuild ratios, and executable runtime deltas."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "DenseLink-500K: PinCache-16G median rebuild rose to 71% of clean LTO versus 68% unpinned, despite matching clean-build hashes."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "Which partitions should PinCache-16G prioritize to approach unrestricted pinning’s 43% rebuild ratio on DenseLink-500K?"
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Profile DenseLink-500K evictions; compare 16-GiB fanout, compile-cost, and edit-local-reuse pinning against PinCache-16G by median rebuild ratio."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "DenseLink-500K: high-fanout pinning of expensive partitions cut median rebuild to 48% of clean LTO versus PinCache-16G’s 71%."
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "n33",
+      "content": "Ranking pins by edit-weighted recompilation cost should lower DenseLink-500K median rebuild below 45% of clean LTO within 16 GiB."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Train edit-weighted pin scores on 50 DenseLink-500K edits; measure held-out median rebuild ratio under 16 GiB against the 48% baseline."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "On 50 held-out DenseLink-500K edits, edit-weighted pinning achieved 44% median rebuild time versus the 48% baseline within 16 GiB."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n36",
+      "content": "Stress-test edit-weighted pinning on 100 new DenseLink-500K edits targeting previously unseen functions; compare median rebuild against 45%."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "On 100 unseen-function DenseLink-500K edits, edit-weighted pinning reached 57% median rebuild time, missing the hypothesized 45% threshold."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Restrict edit-weighted pinning to recurring edit patterns; its 44% held-out rebuild ratio rose to 57% on unseen functions."
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n33",
+      "content": "Combining edit-weighted pins with high-fanout fallback should keep both recurring and unseen-function DenseLink-500K median rebuilds below 50% within 16 GiB."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Reserve 8 GiB for high-fanout partitions, rank remaining pins by edit-weighted cost, and retest recurring and unseen DenseLink-500K edits."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Benchmark the 8-GiB high-fanout reserve plus 8-GiB edit-weighted pins on recurring and unseen DenseLink-500K edits."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "With the 16-GiB hybrid reserve, DenseLink-500K median rebuilds were 46% for recurring edits and 49% for unseen-function edits."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n42",
+      "content": "Rerun 100 unseen-function DenseLink-500K edits after reshuffling summary-reader fanout; compare hybrid pinning’s median rebuild ratio with 50%."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "After summary-reader fanout reshuffling, hybrid pinning’s unseen-function median rebuild reached 54% of clean LTO, exceeding its 50% target."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Limit hybrid pinning to stable fanout workloads: rebuilds met 50% initially but reached 54% after fanout reshuffling."
+    },
+    {
+      "id": "n49",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Refreshing pin priorities after summary-fanout changes should bring reshuffled DenseLink-500K unseen-edit median rebuilds below 50% within 16 GiB."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "On reshuffled DenseLink-500K, refresh hybrid pin priorities using current summary fanout; compare unseen-edit median rebuilds against unrefreshed 54%."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Refreshing hybrid pin priorities reduced reshuffled DenseLink-500K unseen-edit median rebuilds from 54% to 48% of clean LTO within 16 GiB."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n49",
+      "content": "Repeat refreshed-priority pinning across five independent DenseLink-500K fanout reshuffles; measure per-reshuffle unseen-edit median rebuild ratios."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Across five new DenseLink-500K reshuffles, refreshed pinning yielded unseen-edit median rebuilds of 47%, 49%, 52%, 54%, and 56%."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "Gate hybrid pinning on stable fanout; refreshing helps some reshuffles, but three of five still exceed the 50% rebuild budget."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 55,
+      "exploration_parent_id": "g1",
+      "content": "Record per-partition summary queries and answers; invalidate only on changed answers, preserving resolver checks and conservatively invalidating untracked reads."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p4",
+      "content": "Instrument summary-query answers with conservative fallback; benchmark answer-delta invalidation on DenseLink-500K reshuffles for clean-build hashes and rebuild/runtime budgets."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Use the EditLTO-100 report’s six mismatch cases to instrument summary-query answers, then test answer-delta invalidation on DenseLink-500K reshuffles."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "AnswerTrace-v1 stores each partition’s summary-query key, returned optimization attributes, and resolver fingerprint; uninstrumented queries force conservative invalidation."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Test AnswerTrace-v1 across five DenseLink-500K reshuffles, EditLTO-100, and ResolverFlip-200; compare clean-build hashes, rebuild ratios, and runtime."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "AnswerTrace-v1 matched clean-build hashes across all suites; five reshuffled DenseLink-500K medians were 42–47%, with worst runtime regression 1.7%."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Adopt AnswerTrace-v1 with conservative fallback: clean-build hashes matched, reshuffled rebuild medians stayed 42–47%, and worst runtime regression was 1.7%."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 62,
+      "exploration_parent_id": "g1",
+      "content": "Use snapshot-isolated optimization certificates to validate symbol bindings and summary answers before atomically linking cached code."
+    },
+    {
+      "id": "n63",
+      "type": "question",
+      "order": 63,
+      "exploration_parent_id": "p5",
+      "content": "How can concurrent object-file updates be prevented from mixing symbol bindings and summary answers from different link snapshots?"
+    },
+    {
+      "id": "n64",
+      "type": "hypothesis",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Snapshot-versioned certificates and commit-time validation will prevent mixed-generation executables during concurrent weak-symbol and callee-summary updates."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Using AnswerTrace-v1 certificates, race 1,000 concurrent weak-symbol and callee-summary updates; verify each executable matches one clean-build snapshot."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Across 1,000 concurrent-update races, every executable matched one clean-build snapshot; commit validation retried 37 conflicting links."
+    },
+    {
+      "id": "n67",
+      "type": "decision",
+      "order": 67,
+      "exploration_parent_id": "n63",
+      "content": "Adopt snapshot-versioned certificates and atomic commit validation; all 1,000 raced links matched a clean-build snapshot."
+    },
+    {
+      "id": "n68",
+      "type": "plan",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "Integrate adopted snapshot certificates with AnswerTrace-v1; rerun edit, resolution, and concurrent-update suites against clean builds and performance budgets."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Integrate AnswerTrace-v1 certificates with EpochManifest-v2 fallback epochs; run EditLTO-100, ResolverFlip-200, and concurrent-update races against clean LTO."
+    },
+    {
+      "id": "n70",
+      "type": "artifact",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "SnapshotLTO-v1 integrates AnswerTrace-v1 certificates, EpochManifest-v2 fallback epochs, and atomic commit validation, with clean-build and performance test reports."
+    },
+    {
+      "id": "n71",
+      "type": "activity",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Benchmark SnapshotLTO-v1 on EditLTO-100, ResolverFlip-200, five DenseLink-500K reshuffles, and 1,000 concurrent races; compare clean-build hashes and performance."
+    },
+    {
+      "id": "n72",
+      "type": "evidence",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "SnapshotLTO-v1 matched clean-build snapshots across all suites and 1,000 races; DenseLink-500K rebuild medians were 44–49%, worst runtime regression 2.1%."
+    },
+    {
+      "id": "n73",
+      "type": "decision",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "Ship SnapshotLTO-v1: epoch and answer-trace baselines plus snapshot-race equivalence support 44–49% median rebuilds and 2.1% worst runtime regression."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "refute",
+      "target": "n49"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "decompose",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n71",
+      "relation": "produce",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "n73"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n73"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n73"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design incremental link-time optimization that safely reuses optimized code despite changing cross-module symbol resolution and optimization dependencies.",
+    "requirements": [
+      "Preserve clean-build semantics across weak-symbol replacement, visibility changes, and cross-module function edits.",
+      "For single-function edits, median rebuild time ≤50% of clean LTO, with ≤3% executable runtime regression."
+    ]
+  }
+}

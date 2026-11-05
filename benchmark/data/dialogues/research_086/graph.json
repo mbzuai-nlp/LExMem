@@ -1,0 +1,950 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a continual reinforcement learning agent that adapts to hidden dynamics changes without forgetting policies for recurring regimes.",
+      "requirements": [
+        "Achieve 20% lower post-switch cumulative regret than matched-budget reset agents across recurring, unannounced dynamics shifts.",
+        "Retain at least 90% of prior-regime normalized return under fixed memory and no regime labels."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use dynamics-prediction errors to trigger context-based retrieval or training of policy adapters, merging redundant adapters within fixed memory."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What context similarity threshold retrieves an existing adapter after an unannounced switch without confusing regimes with similar one-step predictions?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "A 0.85 cosine threshold on 32-step residual signatures yields under 5% false retrieval and recalls recurring adapters within 40 steps."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "On SwitchWalker-12, test 0.85 cosine retrieval of 32-step residual signatures across confusable regimes; measure false retrieval and recall latency."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "On SwitchWalker-12, 0.85-threshold retrieval produced 3.8% false matches and retrieved recurring adapters within 37 steps at the 95th percentile."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 7,
+      "exploration_parent_id": "n2",
+      "content": "Stress-test 0.85-threshold retrieval on SwitchWalker-12 under 15% observation dropout; measure false matches and 95th-percentile adapter recall latency."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "With 15% observation dropout, SwitchWalker-12 false retrieval rose to 11.2%, and 95th-percentile adapter recall latency reached 62 steps."
+    },
+    {
+      "id": "n7",
+      "type": "hypothesis",
+      "order": 9,
+      "exploration_parent_id": "n1",
+      "content": "Mask-aware 64-step residual signatures with uncertainty-adjusted thresholds should yield under 5% false retrieval and sub-40-step recall at 15% dropout."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Compare fixed-threshold and mask-aware retrieval on SwitchWalker-12 at 0% and 15% dropout, measuring false-match rate and recall latency."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "At 0% dropout, fixed retrieval yielded 3.8% false matches and 37-step p95 recall; mask-aware yielded 7.1% false matches at 15%."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "n7",
+      "content": "Can action-conditioned transition probes cut mask-aware false retrieval below 5% at 15% dropout without exceeding 40-step p95 recall?"
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Four action-conditioned probes should lower mask-aware false retrieval below 5% while preserving sub-40-step p95 recall at 15% dropout."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Against SwitchWalker-12’s 7.1% mask-aware false-retrieval baseline, test four action-conditioned probes at 15% dropout; measure false retrieval and p95 recall."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "On SwitchWalker-12 at 15% dropout, four probes reduced false retrieval from 7.1% to 4.2%, with 38-step p95 recall."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Protect recurring policies with a 4,096-transition diversity coreset and replay-gradient projection during every adapter update."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Can replay-gradient projection using a 4,096-transition label-free coreset retain 90% prior-regime return without increasing post-switch regret?"
+    },
+    {
+      "id": "n15",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Coreset replay-gradient projection preserves at least 90% prior-regime normalized return without increasing post-switch regret versus unprojected updates."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Run matched-memory SwitchWalker-12 ablations of replay-gradient projection versus unprojected updates; measure prior-regime normalized return and post-switch cumulative regret."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On SwitchWalker-12, projection retained 93% versus 84% unprojected, but increased post-switch cumulative regret from 1,100 to 1,360 reward-points."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n15",
+      "content": "Stratify the SwitchWalker-12 projection ablation by novel versus recurring switches; measure 200-step regret and prior-regime return under fixed memory."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On recurring SwitchWalker-12 switches, projection retained 93% versus 84% unprojected and reduced 200-step regret from 810 to 740 reward-points."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "n15",
+      "content": "Can four-probe retrieval gate projection to recurring regimes, preserving 90% return without the 260-point overall regret penalty?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Four-probe-gated projection will retain ≥90% prior-regime return while limiting cumulative post-switch regret to ≤1,100 reward-points."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Using prior overall and recurring-switch projection ablations, test four-probe-gated projection on SwitchWalker-12; measure cumulative regret and normalized retention."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "On SwitchWalker-12, four-probe-gated projection retained 91% prior-regime return with 1,065 reward-points cumulative post-switch regret."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n21",
+      "content": "Benchmark four-probe-gated projection on novel-heavy SwitchWalker-12 schedules against prior overall and recurring-switch projection baselines; measure retention and cumulative regret."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "On novel-heavy SwitchWalker-12 schedules, four-probe gating retained 88% prior-regime return and incurred 1,185 reward-points cumulative regret."
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n20",
+      "content": "Gate hard projection on four-probe-confirmed recurrence; use interference-triggered replay otherwise to achieve ≥90% retention and ≤1,100-point regret."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Test recurrence-gated projection plus interference-triggered replay against four-probe gating on balanced and novel-heavy SwitchWalker-12; measure retention and post-switch regret."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "On balanced/novel-heavy SwitchWalker-12, recurrence-gated projection plus replay retained 92%/90% return, with 1,030/1,085 reward-points post-switch regret."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Build SwitchKeeper: four-probe retrieval, recurrence-gated projection, interference-triggered replay, and utility-based eviction within eight adapters and 4,096 transitions."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "When nine or more regimes recur, can utility-based eviction protect rare policies under the eight-adapter limit without labels?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Rarity-weighted eviction with shared-adapter distillation preserves ≥90% rare-regime return across 12 unlabeled regimes within eight adapter slots."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Run SwitchWalker-12 with 12 unlabeled regimes and eight adapter slots; compare rarity-weighted eviction plus distillation against LRU on rare-regime return."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "On SwitchWalker-12, rarity-weighted eviction with distillation retained 86% rare-regime return versus LRU’s 78%, missing the 90% target."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Stratify SwitchWalker-12 rare-regime retention by policy similarity after rarity-weighted eviction and distillation, keeping eight adapter slots fixed."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Among policy-similar rare regimes on SwitchWalker-12, rarity-weighted eviction plus distillation retained 93% normalized return within eight adapter slots."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "n30",
+      "content": "Can gradient-interference-aware adapter merging retain 90% return for policy-dissimilar rare regimes within eight slots?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Merging only adapters with nonnegative replay-gradient cosine will retain ≥90% return for policy-dissimilar rare regimes within eight slots."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Using 86% overall and 93% similar-regime retention baselines, test nonnegative replay-gradient cosine merging on dissimilar SwitchWalker-12 regimes within eight slots."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "On dissimilar SwitchWalker-12 rare regimes, nonnegative-cosine merging retained 91% return within eight slots, versus 79% with rarity-weighted eviction."
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n29",
+      "content": "Similarity-aware distillation plus nonnegative-gradient-cosine merging should preserve ≥90% rare-regime return across 12 unlabeled regimes within eight adapters."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Compare rarity-weighted distillation against similarity-aware distillation plus nonnegative-cosine merging on SwitchWalker-12; measure rare-regime retention across 12 regimes within eight adapters."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "On 12-regime SwitchWalker-12, rarity-weighted distillation retained 93% for similar rare policies; similarity-aware merging retained 89% overall."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Can reserving one adapter slot for high-interference rare regimes raise overall retention from 89% to 90% within eight slots?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Reserving one slot for the highest-interference rare adapter raises overall prior-regime retention to ≥90% without exceeding eight slots."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Using 86% baseline, 93% similar, 91% dissimilar, and 89% overall retention, test reserved-slot merging on SwitchWalker-12 within eight slots."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "On 12-regime SwitchWalker-12, reserving one high-interference rare-adapter slot raised overall prior-regime retention from 89% to 91%."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "p3",
+      "content": "Benchmark SwitchKeeper’s four-probe retrieval, recurrence-gated projection, interference-triggered replay, and reserved-slot merging against matched-budget resets on SwitchWalker-12; measure regret and retention."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "On recurring SwitchWalker-12 shifts, SwitchKeeper’s post-switch regret was 1,030 versus 1,350 reset reward-points (24% lower); prior-regime retention was 91%."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "p3",
+      "content": "Replicate SwitchKeeper’s 24% regret advantage and 91% retention on held-out SwitchWalker-12 schedules with 15% observation dropout and matched-budget resets."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "With 15% dropout, held-out SwitchWalker-12 showed 1,170 versus 1,350 reset regret-points (13% lower) and 88% prior-regime retention."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 54,
+      "exploration_parent_id": "p3",
+      "content": "Can dropout-calibrated probe weighting restore SwitchKeeper’s 20% regret advantage and 90% retention on held-out schedules with 15% dropout?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n50",
+      "content": "Mask-calibrated weighting of four probes will reduce held-out 15%-dropout regret to ≤1,080 reward-points while restoring ≥90% retention."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n51",
+      "content": "Benchmark calibrated probes on held-out SwitchWalker-12 at 15% dropout against clean, dropout, and reset baselines; measure regret and retention."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "On held-out SwitchWalker-12 with 15% dropout, calibrated probes achieved 1,060 versus 1,350 reset regret-points (21.5% lower) and 91% retention."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "p3",
+      "content": "Adopt mask-calibrated SwitchKeeper: clean schedules passed, uncalibrated dropout failed, and calibration restored 21.5% regret reduction with 91% retention."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 59,
+      "exploration_parent_id": "n54",
+      "content": "Freeze calibrated SwitchKeeper; benchmark unlabeled recurring switches against matched-budget resets under fixed memory, targeting ≥20% regret reduction and ≥90% retention."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n55",
+      "content": "Freeze calibrated SwitchKeeper; run five-seed unlabeled SwitchWalker-12 recurring-switch trials against matched-budget resets under fixed memory, recording regret and retention."
+    },
+    {
+      "id": "n57",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n56",
+      "content": "SwitchKeeper benchmark report with five-seed regret and retention tables, reset comparisons, memory accounting, and unlabeled switch schedules."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n7",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n7"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a continual reinforcement learning agent that adapts to hidden dynamics changes without forgetting policies for recurring regimes.",
+    "requirements": [
+      "Achieve 20% lower post-switch cumulative regret than matched-budget reset agents across recurring, unannounced dynamics shifts.",
+      "Retain at least 90% of prior-regime normalized return under fixed memory and no regime labels."
+    ]
+  }
+}

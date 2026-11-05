@@ -1,0 +1,1266 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop causal speech enhancement that distinguishes whispered consonants from transient noise without fabricating speech during ambiguous acoustic events.",
+      "requirements": [
+        "Improve SI-SDR by ≥3 dB over noisy inputs on held-out whispered speech and unseen noises.",
+        "Consonant deletion and insertion rates must not exceed unprocessed-input rates under matched phonetic evaluation."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use a zero-lookahead causal mask estimator with consonant/transient discriminators and uncertainty-gated attenuation, preserving ambiguous input instead of synthesizing speech."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which confidence threshold preserves whispered /t/ bursts while suppressing keyboard clicks at 0 dB SNR?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "A 0.65 consonant-posterior threshold should retain ≥90% whispered /t/ bursts while enabling ≥70% keyboard-click attenuation at 0 dB SNR."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Sweep thresholds 0.45–0.85 on held-out 0 dB whisper/keyboard mixtures; compare /t/ retention, click suppression, SI-SDR, and consonant errors."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Sweep thresholds 0.45–0.85 across 400 held-out 0 dB whisper/keyboard mixtures; measure /t/ retention, click attenuation, SI-SDR, consonant errors."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "At 0.65, /t/ retention was 82% across 400 mixtures despite 74% click attenuation, missing the predicted 90% retention."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Lowering the posterior threshold to 0.55 should retain ≥90% of whispered /t/ bursts while attenuating ≥60% of keyboard clicks."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Evaluate 0.55 on 200 fresh 0 dB whisper/keyboard mixtures; measure /t/ retention, click attenuation, consonant errors, and SI-SDR."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Across 200 fresh mixtures, 0.55 retained 92% of /t/ bursts and attenuated 63% of clicks, supporting the revised threshold."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt 0.55 instead of failed 0.65: fresh mixtures retained 92% of /t/ bursts while attenuating 63% of clicks."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "At selected 0.55, score blinded consonant deletion and insertion rates against noisy baselines on 200 fresh whisper/keyboard mixtures."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "WhisperClick-200 audit report contains blinded consonant alignments and matched deletion/insertion rates for 0.55-enhanced and noisy inputs."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can the 0.55 gate achieve ≥3 dB SI-SDR gain on unseen dish clatter without increasing consonant insertions?"
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Audit WhisperClick-200 alignments; score 200 unseen dish-clatter mixtures at 0.55 for SI-SDR gain and consonant insertions versus noisy inputs."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "On 200 unseen dish-clatter mixtures, 0.55 gating gained 3.4 dB SI-SDR; consonant deletion/insertion rates fell 9.1%/7.2%→8.7%/6.8% versus noisy."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Using WhisperClick-200 audit criteria, score frozen 0.55 gating on 300 new whisper/clatter mixtures for SI-SDR and deletion/insertion rates."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "On 300 new whisper/clatter mixtures, 0.55 gating gained 3.3 dB SI-SDR but raised consonant insertions from noisy 6.9% to 9.0%."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Defer 0.55-gate deployment: initial clatter audit passed, but independent validation raised consonant insertions from 6.9% to 9.0%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Replace posterior gating with causal 120-ms onset-context classification and attenuation-only masks; pass uncertain frames unchanged to avoid fabricated consonants."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can 120 ms of past-only onset context distinguish whispered /k/ releases from dish-clatter impulses with overlapping spectra?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "A 120-ms past-only onset classifier achieves ≥0.90 AUROC distinguishing whispered /k/ releases from unseen dish-clatter impulses."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Train 120-ms causal classifier; test /k/-clatter AUROC, SI-SDR, and consonant errors with attenuation-only uncertainty-pass-through masks on unseen clatter."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "On 300 held-out mixtures, /k/-clatter AUROC was 0.92; SI-SDR gained 3.2 dB; deletion/insertion rates were 8.4%/6.6% versus noisy 8.8%/6.9%."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "Can uncertainty pass-through preserve whispered /s/ amid unseen steam hiss without raising deletions or losing ≥3 dB SI-SDR gain?"
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Evaluate the frozen 120-ms classifier on 300 held-out whisper/steam-hiss mixtures; compare /s/ deletion, consonant insertion, and SI-SDR against noisy inputs."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "On 300 unseen steam-hiss mixtures, SI-SDR gained 2.4 dB, while /s/ deletions rose from 10.8% noisy to 15.2% enhanced."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Retain onset-context classification for clatter, but defer deployment: steam hiss raised /s/ deletions and limited SI-SDR gain to 2.4 dB."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Add a causal fricative-preservation veto to attenuation-only onset-context masking, detecting preceding vowel transitions and passing ambiguous hiss-like frames unchanged."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "Can a past-only vowel-to-fricative transition veto preserve whispered /s/ during steam hiss without sacrificing ≥3 dB SI-SDR gain?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "A transition veto and recalibrated mask yield ≤10.8% /s/ deletions, ≥3 dB SI-SDR gain, and no added insertions."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Tune transition veto on development mixtures; test frozen mask on 300 new steam-hiss mixtures for /s/ deletions, insertions, SI-SDR."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "On 300 new steam-hiss mixtures, SI-SDR gained 3.1 dB; /s/ deletions rose 10.7%→12.0%, while insertions fell 6.8%→6.5%."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n31",
+      "content": "Run paired transition-veto ablations on 200 fresh steam-hiss mixtures, stratifying /s/ deletions by preceding vowel and measuring SI-SDR and insertions."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "On 200 fresh mixtures, veto cut /s/ deletions 12.3%→10.5% (noisy 10.7%), gained 3.1 dB SI-SDR; insertions stayed below noisy."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Retain the veto for independent validation, not deployment: fresh ablation met deletion limits, but the earlier steam-hiss test failed."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Does the transition veto protect word-initial whispered /s/, which lacks a preceding vowel, during unseen steam hiss?"
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Stratify 300 unseen steam-hiss mixtures by word-initial versus postvocalic /s/; compare vetoed and noisy deletion, insertion, and SI-SDR."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Label word-initial and postvocalic /s/ in 300 independent steam-hiss mixtures; score frozen veto versus noisy inputs under matched alignment."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "SteamHiss-300 audit table contains matched word-initial/postvocalic /s/ alignments, deletion and insertion rates, and SI-SDR for vetoed versus noisy mixtures."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n38",
+      "content": "Analyze SteamHiss-300 word-initial versus postvocalic /s/ deletions against noisy baselines; check insertion rates and ≥3 dB SI-SDR gain."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "SteamHiss-300 noisy→vetoed: initial/postvocalic /s/ deletions 11.2%/10.5%→10.9%/10.1%; consonant insertions 6.8%→6.5%; SI-SDR gained 3.2 dB."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Using SteamHiss-300 alignments, ablate the veto only for word-initial /s/; compare paired deletion, insertion, and SI-SDR changes."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Among 60 silence-preceded word-initial /s/ tokens, vetoed/ablated deletions were 16.7%/16.7% versus noisy 11.7%, exposing unprotected onsets."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Defer veto deployment despite aggregate gains: silence-preceded initial /s/ deletions exceed the noisy baseline, requiring onset-specific protection."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Use an 80-ms causal onset hold for silence-preceded hiss; pass ambiguous frames unchanged, then attenuate only confirmed noise."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Can an 80-ms onset hold preserve silence-preceded /s/ against steam hiss while maintaining ≥3 dB SI-SDR gain and baseline insertions?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "An 80-ms causal onset hold keeps silence-preceded /s/ deletions ≤11.7%, gains ≥3 dB SI-SDR, and avoids added consonant insertions."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Freeze an 80-ms onset-hold mask; evaluate unseen steam hiss and clatter with matched initial-/s/ deletions, insertions, and SI-SDR."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Test frozen past-only 80-ms onset hold on 300 unseen steam-hiss mixtures; score silence-preceded /s/ deletions, consonant insertions, and SI-SDR."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "On 300 unseen steam-hiss mixtures, onset hold reduced initial /s/ deletions 11.7%→10.0% and insertions 6.8%→6.7%, but SI-SDR gained 2.6 dB."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n49",
+      "content": "Test frozen 80-ms hold on 300 new steam-hiss-plus-clatter mixtures; compare initial-/s/ deletions, insertions, and SI-SDR with noisy inputs."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "On 300 mixed-noise mixtures, silence-preceded /s/ deletions fell 11.6%→10.5%, insertions 6.9%→6.7%, and SI-SDR gained 3.2 dB."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Defer deployment: onset hold gains 3.2 dB on mixed noise but only 2.6 dB on pure hiss despite safe consonants."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "After deferral, ablate the onset hold on pure-hiss mixtures; measure residual hiss energy, SI-SDR, and initial-/s/ deletions."
+    },
+    {
+      "id": "n56",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "PureHiss-Hold ablation report compares residual hiss energy, SI-SDR gain, and initial-/s/ deletions with versus without the 80-ms hold."
+    },
+    {
+      "id": "n57",
+      "type": "question",
+      "order": 57,
+      "exploration_parent_id": "p4",
+      "content": "Can a past-only sustained-hiss cue shorten the 80-ms hold without increasing initial-/s/ deletions, restoring ≥3 dB SI-SDR on pure hiss?"
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Inspect PureHiss-Hold residual energy; test causal sustained-hiss-triggered early release against 80-ms hold and noisy baselines for SI-SDR, initial-/s/ deletions, insertions."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "On 300 pure-hiss mixtures, early release raised SI-SDR gain from 2.6 to 3.1 dB; initial-/s/ deletions fell 11.7%→10.9%, insertions 6.8%→6.6%."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Replace deferred fixed hold with sustained-hiss early release for independent validation; pure-hiss gains now meet SI-SDR and consonant limits."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 61,
+      "exploration_parent_id": "g1",
+      "content": "Calibrate causal attenuation-only masks to consonant deletion/insertion risk budgets, passing out-of-distribution transients unchanged rather than synthesizing speech."
+    },
+    {
+      "id": "n62",
+      "type": "question",
+      "order": 62,
+      "exploration_parent_id": "p5",
+      "content": "Can phoneme-conditional risk calibration bound consonant deletions and insertions under unseen impulses while retaining ≥3 dB SI-SDR gain?"
+    },
+    {
+      "id": "n63",
+      "type": "hypothesis",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Phoneme-stratified calibration with a 1% error-risk budget keeps deletion/insertion rates at noisy baselines and gains ≥3 dB SI-SDR."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Fit phoneme-stratified 1%-risk calibration on development mixtures; evaluate 300 held-out impulse mixtures for SI-SDR and matched consonant errors."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "On 300 held-out impulse mixtures, calibration gained 3.4 dB SI-SDR, but consonant insertions rose from 7.0% noisy to 8.3%."
+    },
+    {
+      "id": "n66",
+      "type": "hypothesis",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Adding impulse-specific abstention to phoneme calibration should reduce insertions to ≤7.0% without exceeding noisy deletions or sacrificing ≥3 dB SI-SDR."
+    },
+    {
+      "id": "n67",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Tune impulse-specific abstention on development mixtures; test frozen calibration on 300 fresh impulses for SI-SDR and matched consonant errors."
+    },
+    {
+      "id": "n68",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "On 300 fresh impulse mixtures, abstention gained 3.2 dB SI-SDR; deletions fell 9.0%→8.8% and insertions 7.0%→6.8% versus noisy."
+    },
+    {
+      "id": "n69",
+      "type": "decision",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Advance impulse abstention to cross-noise validation: it corrected calibration’s insertion failure while preserving 3.2 dB SI-SDR gain."
+    },
+    {
+      "id": "n70",
+      "type": "question",
+      "order": 70,
+      "exploration_parent_id": "p5",
+      "content": "Does impulse abstention preserve noisy-input consonant deletion/insertion rates and ≥3 dB SI-SDR gain on unseen mixed hiss-and-click noise?"
+    },
+    {
+      "id": "n71",
+      "type": "plan",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Freeze impulse-abstention calibration; test 400 disjoint whisper mixtures with unseen hiss-and-click noise against matched noisy SI-SDR and consonant errors."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "Test frozen impulse-abstention calibration on 400 disjoint whisper/hiss-click mixtures; measure SI-SDR gain and matched consonant errors against noisy inputs."
+    },
+    {
+      "id": "n73",
+      "type": "artifact",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "HissClick-400 report contains paired noisy/enhanced SI-SDR and matched consonant deletion/insertion rates for frozen impulse-abstention calibration."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 74,
+      "exploration_parent_id": "n71",
+      "content": "Audit HissClick-400 for ≥3 dB SI-SDR gain and nonincreasing consonant errors; stratify failures by hiss-dominant versus click-dominant segments."
+    },
+    {
+      "id": "n75",
+      "type": "evidence",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "HissClick-400 gained 3.1 dB SI-SDR; consonant deletions fell 9.2%→9.0% and insertions 7.1%→6.9% versus noisy inputs."
+    },
+    {
+      "id": "n76",
+      "type": "activity",
+      "order": 76,
+      "exploration_parent_id": "n71",
+      "content": "Reaudit HissClick-400 paired alignments for silence-preceded /s/ and click-adjacent /t/; compare subgroup deletion/insertion rates and SI-SDR against noisy inputs."
+    },
+    {
+      "id": "n77",
+      "type": "evidence",
+      "order": 77,
+      "exploration_parent_id": "n76",
+      "content": "HissClick-400 silence-preceded /s/ deletions rose from 11.5% noisy to 15.0% enhanced, despite aggregate 3.1 dB SI-SDR gain."
+    },
+    {
+      "id": "n78",
+      "type": "decision",
+      "order": 78,
+      "exploration_parent_id": "n77",
+      "content": "Withdraw impulse-abstention advancement: aggregate metrics passed, but silence-preceded /s/ deletions rose 11.5%→15.0% on mixed noise."
+    },
+    {
+      "id": "n79",
+      "type": "decision",
+      "order": 79,
+      "exploration_parent_id": "g1",
+      "content": "Block deployment; independently validate sustained-hiss early release across noises and onset subgroups, given other candidates’ SI-SDR or consonant failures."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "refute",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "n62"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n63"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "refute",
+      "target": "n63"
+    },
+    {
+      "source": "n66",
+      "relation": "revise",
+      "target": "n63"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n62"
+    },
+    {
+      "source": "n67",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "produce",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "support",
+      "target": "n66"
+    },
+    {
+      "source": "n65",
+      "relation": "support",
+      "target": "n69"
+    },
+    {
+      "source": "n68",
+      "relation": "support",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "address",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "decompose",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n71",
+      "relation": "decompose",
+      "target": "n74"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n70"
+    },
+    {
+      "source": "n74",
+      "relation": "evaluate",
+      "target": "n73"
+    },
+    {
+      "source": "n74",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n71",
+      "relation": "decompose",
+      "target": "n76"
+    },
+    {
+      "source": "n76",
+      "relation": "address",
+      "target": "n70"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "n73"
+    },
+    {
+      "source": "n76",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n76",
+      "relation": "produce",
+      "target": "n77"
+    },
+    {
+      "source": "n77",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n75",
+      "relation": "support",
+      "target": "n78"
+    },
+    {
+      "source": "n77",
+      "relation": "support",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n75"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n78"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop causal speech enhancement that distinguishes whispered consonants from transient noise without fabricating speech during ambiguous acoustic events.",
+    "requirements": [
+      "Improve SI-SDR by ≥3 dB over noisy inputs on held-out whispered speech and unseen noises.",
+      "Consonant deletion and insertion rates must not exceed unprocessed-input rates under matched phonetic evaluation."
+    ]
+  }
+}

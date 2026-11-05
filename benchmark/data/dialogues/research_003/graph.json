@@ -1,0 +1,740 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop unsupervised speech recognition accent adaptation that separates pronunciation shifts from speaker and channel variation without sacrificing existing accents.",
+      "requirements": [
+        "Reduce unseen-accent word error rate ≥15% relative to frozen recognizer using only unlabeled adaptation speech.",
+        "Limit existing-accent WER increases to one percentage point under independently varying speakers and channels."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train pronunciation LoRA on confidence-filtered pseudo-transcripts with speaker/channel adversaries; gate adaptation by accent prototypes, retaining frozen decoding otherwise."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can accent-prototype distances trigger pronunciation LoRA without false activations under independently changed speakers and microphones?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Speaker/channel-invariant accent prototypes will gate LoRA for ≥80% of unseen-accent utterances but ≤5% of existing-accent utterances."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Train adversarial accent prototypes on unlabeled speech; calibrate the gate on existing accents; measure activation and WER across crossed speakers/channels."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Train adversarial prototypes on unlabeled speech; test unseen/existing accent gate activation across 12 speakers crossed with four microphones."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across 12 speakers and four microphones, prototype gating activated on 84% unseen-accent and 3.8% existing-accent utterances."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Retain adversarial prototype gating for LoRA evaluation: unseen-accent activation exceeds 80% while existing-accent activation remains below 5%."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n3",
+      "content": "Fit gated pronunciation LoRA using unlabeled speech; compare frozen/adapted WER on unseen and existing accents across held-out speaker–microphone crosses."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "AccentGate-WER v1: gated LoRA checkpoint and frozen-versus-adapted WER tables stratified by accent, held-out speaker, and microphone."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Bootstrap AccentGate-WER v1 tables across held-out speaker–microphone crosses; check ≥15% unseen-accent WER reduction and ≤1-point existing-accent increase."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Bootstrapped paired WER shows 6.3% of existing-accent utterances worsened; frozen fallback implies gate activation exceeded 5%."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n1",
+      "content": "Worst-case speaker–microphone calibration with augmentation-consistent gating will yield ≥80% unseen-accent and ≤5% existing-accent activation on held-out crosses."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Following n10's 6.3% regressions, recalibrate worst-case gate thresholds on unlabeled existing-accent speech; test augmentation-consistent activation across held-out crosses."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Infer accent-specific phoneme substitution transducers from unlabeled ASR lattices using speaker/channel-invariant embeddings; conservatively rerank frozen beams."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Mine unlabeled lattice confusions, fit accent transducers, confidence-gate frozen-beam reranking, and assess unseen/existing WER across speaker/channel crosses."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Reuse AccentGate-WER v1's speaker–microphone strata to partition unlabeled speech; mine lattice confusions and fit accent-specific phoneme transducers."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "LatticeShift v1: accent-specific phoneme transducer weights, confidence-gated beam-reranking code, and speaker–microphone-stratified unlabeled lattice counts."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Do LatticeShift v1's learned phoneme substitutions transfer across independently varied speakers and microphones without tracking channel artifacts?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Unlike microphone-specific substitutions, LatticeShift's accent substitutions will cut unseen-accent WER ≥15% across held-out speaker–microphone crosses."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Run LatticeShift v1 and microphone-specific transducer controls on held-out speaker–microphone crosses; compare unseen-accent WER reductions and existing-accent changes."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On held-out crosses, LatticeShift reduced unseen-accent WER 18% versus frozen; microphone-specific transducers achieved 6%, with existing-accent WER +0.4 points."
+    },
+    {
+      "id": "n20",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Prefer LatticeShift reranking over prototype-gated LoRA: 18% unseen-accent WER reduction, +0.4-point existing-accent change, versus gating regressions."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n13",
+      "content": "Compare gated LoRA, LatticeShift v1, and frozen decoding across held-out speaker–microphone crosses; report unseen-accent WER reduction and existing-accent drift."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Recalibrated gating activated on 82% unseen-accent and 4.2% existing-accent utterances; LatticeShift cut WER 18% versus LoRA’s 12%."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "How many unlabeled adaptation hours does LatticeShift need for reliable phoneme substitutions across held-out speaker–microphone pairs?"
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Subsample LatticeShift adaptation audio to 0.5/2/8 hours; assess held-out WER against n19's 18% gain to identify minimum viable duration."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Adapt phoneme-posterior normalization using speaker/channel augmentation consistency, while anchoring frozen predictions on unlabeled existing-accent speech."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Augmentation-consistent posterior normalization with frozen-prediction anchoring will reduce unseen-accent WER ≥15% while limiting existing-accent drift to ≤1 point."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Train posterior normalization with speaker/microphone augmentations and frozen-prediction anchoring; measure unseen and existing accent WER on held-out crosses."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Posterior normalization reduced unseen-accent WER 9% versus frozen, below 15% required, despite +0.3-point existing-accent drift."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Does frozen-prediction anchoring suppress adaptation of accent-specific vowel mergers, limiting unseen-accent WER reduction to 9%?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Relaxing frozen-prediction anchoring for vowel-merger phonemes will lower merger-word WER ≥5% relative to anchored normalization."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Ablate vowel-merger anchoring in posterior normalization; compare merger-word and existing-accent WER against fully anchored decoding across held-out crosses."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Relaxed vowel anchoring cut merger-word WER 7% versus anchored; unseen-accent WER improved 16% versus frozen, existing-accent drift +0.7 points."
+    },
+    {
+      "id": "n32",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p3",
+      "content": "Can unlabeled lattice statistics identify vowel-merger phonemes for anchor relaxation without exceeding one-point existing-accent WER drift?"
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Mine unlabeled cross-speaker/microphone lattice confusions to select relaxed vowels; compare WER against anchored and vowel-relaxed baselines on held-out crosses."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Lattice-selected vowels cut unseen-accent WER 15.6% versus frozen, with +0.6-point existing-accent drift on held-out speaker–microphone crosses."
+    },
+    {
+      "id": "n35",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Choose lattice-selected vowel relaxation over fixed anchoring and preselected mergers: 15.6% unseen-accent WER reduction, +0.6-point existing-accent drift."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Build speaker/channel-invariant, pseudo-labeled phonetic exemplar memory from unlabeled augmentations; acoustically rescore frozen hypotheses with conservative fallback."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "p4",
+      "content": "Build augmentation-invariant phonetic exemplars, rescore frozen beams with confidence-gated retrieval, then test WER across held-out speaker–microphone crosses."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Use LatticeShift v1's lattice counts to select stable pseudo-phoneme segments; train augmentation-invariant exemplar embeddings and a confidence-gated beam rescorer."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "ExemplarRescore v1: unlabeled phonetic embedding index, gated frozen-beam rescorer, and speaker–microphone-stratified pseudo-phoneme provenance logs."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n36",
+      "content": "Evaluate ExemplarRescore v1 against frozen and LatticeShift decoding on held-out speaker–microphone crosses; report accent WER and false retrieval rates."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "ExemplarRescore cut unseen-accent WER 17% versus frozen, with +0.5-point existing-accent drift; LatticeShift achieved 18% and +0.4 points."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Select LatticeShift as primary: 18% unseen-accent WER reduction and +0.4-point existing-accent drift outperform exemplar and lattice-selected normalization."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n20"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop unsupervised speech recognition accent adaptation that separates pronunciation shifts from speaker and channel variation without sacrificing existing accents.",
+    "requirements": [
+      "Reduce unseen-accent word error rate ≥15% relative to frozen recognizer using only unlabeled adaptation speech.",
+      "Limit existing-accent WER increases to one percentage point under independently varying speakers and channels."
+    ]
+  }
+}

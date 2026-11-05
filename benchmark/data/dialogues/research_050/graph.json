@@ -1,0 +1,953 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop simultaneous speech translation that preserves late-resolved negation and semantic roles while committing irreversible output under bounded latency.",
+      "requirements": [
+        "Achieve at least 20% fewer negation and role errors than a matched-latency streaming baseline.",
+        "Keep average lagging below two seconds without reducing overall COMET versus the same baseline."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use source-conditioned role–polarity lattices and a 1.5-second adaptive commit gate to emit only prefixes invariant across plausible continuations."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can the decoder identify irreversible target prefixes that survive late-arriving negators and role disambiguation within the 1.5-second gate?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Within the 1.5-second gate, committing prefixes shared across a calibrated 95%-mass lattice yields ≥97% role–polarity prefix correctness."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "On 600 CoVoST2 Japanese–English utterances, measure 95%-mass lattice prefix role–polarity correctness, AL, and COMET against matched-latency baselines with 1.5-second gates."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "On 600 Japanese–English CoVoST2 utterances, 1.5-second-gated prefixes reached 97.4% role–polarity correctness versus 94.0% baseline; AL 1.8s, COMET 78.3 versus 78.1."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Retain the 95%-mass, 1.5-second gate for broader testing: prefix correctness exceeds 97% while AL and COMET meet constraints."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "With the retained 1.5-second gate, calibrate 95%-mass lattices by clause type and test invariant-prefix commits on late-negation/role-swap subsets."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Calibrate clause-stratified lattices on 400 additional CoVoST2 utterances; test gated commits on 200 disjoint late-negation/role-swap cases for errors, AL, COMET."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "ClauseCal-v1 bundles 400-utterance clause-stratified calibrators, 200-case late-negation/role-swap annotations, and gated-versus-baseline error, AL, and COMET tables."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Audit ClauseCal-v1’s 200-case annotations and recompute clause-wise lattice coverage, gated negation/role errors, AL, and COMET against baseline."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "On ClauseCal-v1’s 200-case audit, gated/baseline errors were 9/12 negation and 13/18 role; AL 1.86s; COMET 77.9/77.7."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n1",
+      "content": "Clause-specific negator and case-marker hazard scores will catch ≥80% of unsafe 95%-mass commits while keeping AL below 2s."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Fit clause-specific negator/case-marker hazards on ClauseCal-v1’s 400 utterances; test unsafe-commit recall and AL on 300 held-out late-cue cases."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "On 300 held-out late-cue cases, hazard scores flagged 19/25 unsafe commits (76% recall), below 80%; AL was 1.89s."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Add late-cue forecasts to the lattice gate; test ≥20% fewer negation/role errors, AL <2s, and nondecreasing COMET on CoVoST2."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Integrate a clause-conditioned late-cue forecast into the 95%-mass gate and benchmark it against matched-latency streaming on 1,000 CoVoST2 utterances."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "LateCueGate-v1 contains clause-conditioned forecast weights, a 95%-mass commit decoder, and 1,000-utterance CoVoST2 matched-latency benchmark logs."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Use clause-aware reordering to emit role-neutral lead-ins, delaying polarity and agent–patient commitments under a 1.8-second lag budget."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "How can clause-aware reordering defer agent–patient and polarity decisions without producing ungrammatical English or exceeding 1.8 seconds?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Constrained role-neutral English lead-ins will reduce negation/role errors ≥20% while preserving ≥95% grammaticality, AL <1.8s, and baseline COMET."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Using LateCueGate-v1’s 1,000-utterance CoVoST2 logs, compare lattice-only, role-neutral, combined, and matched-latency baseline decoders: errors, grammaticality, AL, COMET."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On 1,000 utterances, lattice-only cut baseline negation/role errors 25% (AL 1.78s, COMET 78.3/78.1); role-neutral grammaticality was 92%."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Advance lattice-only LateCueGate-v1: its 25% error reduction meets constraints; defer role-neutral lead-ins because 92% grammaticality misses 95%."
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "When retained LateCueGate-v1 stalls, syntax-verified role-neutral lead-ins should yield ≥95% grammaticality, ≥20% fewer errors, AL <1.8s, and nondecreasing COMET."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Implement syntax-verified lead-ins at LateCueGate-v1 stalls; compare with lattice-only and matched-latency baseline on errors, grammaticality, AL, COMET."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "On 1,000 CoVoST2 utterances, syntax-verified stall lead-ins achieved 96% grammaticality, 28% fewer negation/role errors versus baseline, AL 1.76s, COMET 78.4/78.1."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "p2",
+      "content": "Extend the validated syntax-verified stall lead-ins to held-out CoVoST2 speakers; audit clause-wise grammaticality, polarity/role errors, AL, and COMET."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Stream 500 speaker-disjoint CoVoST2 utterances through syntax-verified stall gating; score clause-wise grammaticality, negation/role errors, AL, and COMET versus baseline."
+    },
+    {
+      "id": "n27",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "SpeakerHoldout-500 contains speaker-disjoint audio, irreversible output timestamps, clause labels, grammaticality judgments, and baseline-comparative error, AL, and COMET scores."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n25",
+      "content": "Audit SpeakerHoldout-500 against ClauseCal-v1 clause strata, measuring calibration drift, grammaticality, negation/role errors, AL, and COMET versus baseline."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "On SpeakerHoldout-500, stall lead-ins yielded 95.6% grammaticality and 23% fewer negation/role errors; AL 1.79s, COMET 77.8/77.6 versus baseline."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Adopt syntax-verified stall lead-ins with LateCueGate-v1: ClauseCal-v1 gate audits and held-out tests show ≥23% fewer errors without latency/COMET regressions."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 34,
+      "exploration_parent_id": "g1",
+      "content": "Train a streaming encoder with counterfactual negator and case-marker swaps to sharpen polarity/role predictions before irreversible commits."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 35,
+      "exploration_parent_id": "p3",
+      "content": "Generate aligned negator/case-marker counterfactuals, retrain the streaming encoder, then compare adopted-gate errors, AL, and COMET on fresh speaker-disjoint CoVoST2."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Use LateCueGate-v1 commit logs to align 2,000 negator/case-marker-swapped Japanese utterances; fine-tune the streaming encoder with role–polarity contrastive loss."
+    },
+    {
+      "id": "n33",
+      "type": "artifact",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "SwapEnc-v1 packages 2,000 aligned Japanese negator/case-marker counterfactuals, role–polarity contrastive training code, and fine-tuned streaming encoder weights."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Does SwapEnc-v1's counterfactual training reduce natural speaker-disjoint late-cue errors without degrading COMET or exceeding 2-second AL?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "With the adopted gate, SwapEnc-v1 cuts speaker-disjoint negation/role errors ≥10% versus the original encoder, with AL <2s and nondecreasing COMET."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Compare SwapEnc-v1 and original encoders on 600 fresh speaker-disjoint CoVoST2 utterances with adopted gates; score negation/role errors, AL, COMET."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "On 600 speaker-disjoint utterances, SwapEnc-v1 reduced adopted-gate negation/role errors from 62 to 54 (12.9%); AL 1.83s, COMET 78.0/77.8."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Adopt SwapEnc-v1 with the retained gate: 12.9% fewer errors than the original encoder, AL 1.83s, and COMET improves 0.2."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n31",
+      "content": "Ablate SwapEnc-v1 and syntax-verified lead-ins under adopted gating on 800 fresh speaker-disjoint CoVoST2 utterances; measure errors, grammaticality, AL, COMET."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "On 800 speaker-disjoint utterances, SwapEnc-v1 plus lead-ins cut original-encoder errors 64→56 (baseline 80); grammaticality 96%, AL 1.84s, COMET 78.2/78.0."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p3",
+      "content": "Do counterfactual swaps overfit synthetic cue positions, leaving naturally delayed negators or case markers unsafe to commit?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "On naturally delayed cues, SwapEnc-v1 reduces original-encoder negation/role errors ≥10%, approaching its 12.9% speaker-disjoint reduction."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Compare adopted-gate SwapEnc-v1 and the original encoder on 300 naturally late-cued CoVoST2 utterances: negation/role errors by cue position, AL, COMET."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "On 300 naturally late-cued utterances, SwapEnc-v1 made 38 errors versus 35 original and 44 baseline; AL 1.86s, COMET 77.5/77.7."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Defer SwapEnc-v1 despite aggregate gains: natural late cues worsen errors and COMET; retain original encoder with lattice gate and lead-ins."
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "Validate retained original-encoder lattice gating and syntax-verified lead-ins on speaker-disjoint late-cue CoVoST2: errors, AL, COMET versus matched-latency baseline."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Use SpeakerHoldout-500 labels to stratify 600 new speaker-disjoint late-cue utterances; compare retained system and matched-latency baseline on errors, AL, COMET."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "SpeakerHoldout-1100 revises SpeakerHoldout-500 with 600 additional speaker-disjoint late-cue utterances, stratified annotations, and retained-system/baseline error, AL, COMET logs."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Audit SpeakerHoldout-1100’s 600 new cases by ClauseCal-v1 strata; ablate lattice gate and syntax-verified lead-ins against matched-latency baseline: errors, AL, COMET."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "On 600 late-cue cases, baseline/lattice/full negation/role errors were 100/84/76; full AL was 1.85s, COMET 77.9/77.7 (full/baseline)."
+    },
+    {
+      "id": "n51",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n50",
+      "content": "Finalize original-encoder lattice gate plus syntax-verified lead-ins: 24% fewer late-cue errors, AL 1.85s, COMET +0.2; exclude SwapEnc-v1."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n45"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop simultaneous speech translation that preserves late-resolved negation and semantic roles while committing irreversible output under bounded latency.",
+    "requirements": [
+      "Achieve at least 20% fewer negation and role errors than a matched-latency streaming baseline.",
+      "Keep average lagging below two seconds without reducing overall COMET versus the same baseline."
+    ]
+  }
+}

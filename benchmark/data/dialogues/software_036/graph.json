@@ -1,0 +1,1063 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a multi-tenant storage engine that isolates write latency while sharing compaction capacity and preserving crash-consistent tenant boundaries.",
+      "requirements": [
+        "Keep tenant p99 write latency within 2× its standalone baseline during competing compactions within quotas.",
+        "Prevent cross-tenant data exposure and storage quota evasion across crashes and capacity reassignment."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use per-tenant WALs and encryption keys, reserved foreground I/O, fair-share compaction, and atomic manifests binding extents to quota ownership."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can compactions share I/O without pushing any in-quota tenant’s p99 write latency above 2× its standalone baseline?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Per-tenant foreground queues reserving 70% of device IOPS and weighted-deficit compaction keep in-quota write p99 ≤2× standalone."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Run TenantMix-8 with 70% foreground IOPS reservation and weighted-deficit compaction; compare tenant write p99 against standalone under competing compactions."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "TenantMix-8: in-quota tenant B’s write p99 reached 2.7× standalone during competing compactions despite 70% foreground IOPS reservation."
+    },
+    {
+      "id": "n7",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Replace fixed IOPS reservation with latency-feedback compaction throttling because tenant B reached 2.7× standalone write p99."
+    },
+    {
+      "id": "n8",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Throttle compaction when 10-second tenant write p99 exceeds 1.5× standalone, then rerun TenantMix-8 to verify 2× bounds."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Implement 10-second per-tenant p99 feedback controlling compaction tokens, then rerun TenantMix-8 with competing compactions and enforced quotas."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "CompactionController v1 adds 10-second tenant p99-triggered token throttling and TenantMix-8 output comparing write p99 against standalone."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Using CompactionController v1, rerun TenantMix-8 and compare tenant write p99 ratios and compaction throughput against fixed reservation."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "TenantMix-8: CompactionController v1 held in-quota write p99 at ≤1.8× standalone while sustaining 82% of unthrottled compaction throughput."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n3",
+      "content": "Replacing fixed 70% IOPS reservation with 10-second p99 feedback and weighted-deficit compaction keeps bursty tenants’ write p99 ≤2× standalone."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Run TenantBurst-8 with 30-second write bursts and competing compactions on CompactionController v1; compare in-quota write p99 against standalone."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "TenantBurst-8: under 30-second bursts and competing compactions, in-quota write p99 peaked at 1.9× standalone with CompactionController v1."
+    },
+    {
+      "id": "n16",
+      "type": "decision",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Adopt CompactionController v1: TenantMix-8 sustained 82% compaction throughput, while TenantBurst-8 kept in-quota write p99 ≤1.9× standalone."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "TenantBurst-8 report records per-tenant write p99 ratios, burst schedules, compaction throughput, and controller token traces."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Pair atomic ownership manifests with epoch-fenced capacity leases, WAL-backed quota reservations, and per-extent key destruction before reuse."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Implement atomic manifests, fenced leases, and WAL-backed quota reservations; crash-test key destruction and reassignment for leakage and quota evasion."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Extend CompactionController v1 with WAL-backed quota reservations, atomic ownership manifests, and epoch-fenced leases; crash-test compaction-driven reassignment."
+    },
+    {
+      "id": "n21",
+      "type": "artifact",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "OwnershipManifest v1 records extent tenant, lease epoch, encryption-key ID, and WAL-backed reserved bytes in atomic commits."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "If power fails during extent reassignment, how does recovery prevent stale-epoch reads and premature quota refunds?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Recovery fencing stale leases and withholding quota refunds until durable tombstones and key revocation prevents cross-tenant reads and undercount."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Run ReassignCrash-1000 against OwnershipManifest v1, injecting failures at lease fencing, tombstoning, and key revocation; audit reads and quota."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "ReassignCrash-1000: 2/1,000 crashes let tenant A’s cached handles read B’s reassigned extents despite lease fencing and key revocation."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Reject OwnershipManifest v1 reassignment; require per-read epoch validation for cached handles because 2/1,000 crashes exposed reassigned extents."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n19",
+      "content": "Replay TenantBurst-8 report traces through OwnershipManifest v1 with crash-injected compaction reassignment; audit write p99, cross-tenant reads, and quota drift."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Crash-injected TenantBurst-8 had zero quota drift; ownership-manifest fsync raised in-quota write p99 to 2.3× standalone."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n19",
+      "content": "Add per-read epoch checks to OwnershipManifest v1; rerun ReassignCrash-1000 during reassignment, auditing unauthorized reads and quota refunds."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "ReassignCrash-1000: per-read epoch checks stopped stale reads, but 3/1,000 crashes refunded 64 MiB before tombstone durability."
+    },
+    {
+      "id": "n31",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Retain epoch-checked reads; defer refunds until durable tombstones, batching non-boundary manifest fsyncs to address quota evasion and 2.3× p99."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Combine p99-feedback compaction, batched routine manifests, atomic ownership commits, epoch-checked reads, and durable-tombstone/key-revocation-gated refunds."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "How can routine manifest batching keep write p99 ≤2× while crash-time reassignment preserves isolation and accurate quotas?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Batched routine manifests, synchronous ownership commits, epoch-checked reads, and post-tombstone/key-revocation refunds keep write p99 ≤2× without exposure or undercount."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Patch OwnershipManifest v1 with batched routine commits, synchronous ownership commits, epoch-checked reads, and tombstone/key-revocation-gated refunds; rerun TenantBurst-8 and ReassignCrash-1000."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "TenantBurst-8: in-quota write p99 reached 2.2× standalone during ownership commits; ReassignCrash-1000 found no unauthorized reads or quota drift."
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Dedicated metadata-device commits preserve tombstone/key-revocation-gated refunds and epoch-checked reads while keeping in-quota write p99 ≤2× standalone."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Route OwnershipManifest v1 commits to a dedicated metadata SSD; rerun TenantBurst-8 and ReassignCrash-1000, auditing p99, reads, and quota."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "OwnershipManifest v2 places synchronous ownership commits on a dedicated metadata SSD and retains epoch-checked reads and tombstone-gated refunds."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n38",
+      "content": "TenantBurst-8 write p99 stayed ≤1.85× standalone; ReassignCrash-1000 found zero unauthorized reads or quota drift with metadata-SSD commits."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Integrate OwnershipManifest v2 with CompactionController v1; soak-test crashes and in-quota compactions for ≤2× standalone p99 and zero leakage/undercount."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Run 24-hour TenantSoak-8 integrating OwnershipManifest v2 and CompactionController v1; inject reassignment crashes, auditing write p99, unauthorized reads, and quota drift."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "TenantSoak-8: frequent reassignments saturated the metadata SSD, raising in-quota write p99 to 2.3× standalone."
+    },
+    {
+      "id": "n44",
+      "type": "decision",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Retain metadata-SSD ownership commits, but throttle reassignment: TenantSoak-8 hit 2.3× write p99 versus TenantBurst-8’s 1.85×."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Gate reassignment on metadata-SSD utilization while retaining p99-feedback compaction, synchronous ownership commits, epoch-checked reads, and durable-refund barriers."
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Gate reassignment above 70% metadata-SSD utilization; rerun TenantSoak-8 and ReassignCrash-1000 for ≤2× p99 and zero leakage/undercount."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Add 70%-utilization reassignment gate to OwnershipManifest v2, then run 24-hour TenantSoak-8 and ReassignCrash-1000 with quota audits."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "OwnershipManifest v3 adds a 70%-metadata-SSD-utilization reassignment gate to v2’s synchronous ownership commits and epoch-checked reads."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n46",
+      "content": "Rerun TenantSoak-8 and ReassignCrash-1000 on OwnershipManifest v3; measure in-quota write p99, unauthorized reads, quota drift, and reassignment backlog."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "TenantSoak-8: metadata commit bursts drove in-quota write p99 to 2.15× standalone despite gating; ReassignCrash-1000 showed zero leakage or drift."
+    },
+    {
+      "id": "n51",
+      "type": "question",
+      "order": 51,
+      "exploration_parent_id": "p4",
+      "content": "How can reassignment avoid metadata commit bursts without weakening durable ownership boundaries or quota accounting?"
+    },
+    {
+      "id": "n52",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "A 200-commits/s token bucket with 20-token capacity should hold write p99 ≤2× while preserving synchronous ownership and quota barriers."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Add 200-commits/s, 20-token reassignment limiter to OwnershipManifest v3; rerun TenantSoak-8 and ReassignCrash-1000 against burst-related 2.15× p99."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "TenantSoak-8 write p99 peaked at 1.92× standalone; ReassignCrash-1000 found zero unauthorized reads or quota drift with commit limiting."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 55,
+      "exploration_parent_id": "p4",
+      "content": "Package OwnershipManifest v3 with commit limiting and CompactionController v1; validate sustained p99, reassignment backlog, isolation, and quota reconciliation."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Integrate OwnershipManifest v3’s 200-commits/s limiter with CompactionController v1; run crash-injected 72-hour TenantSoak-8, auditing backlog, p99, unauthorized reads, and quota."
+    },
+    {
+      "id": "n57",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "OwnershipManifest v4 adds a 200-commits/s, 20-token reassignment limiter to v3’s metadata-utilization gate and durable ownership protocol."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n55",
+      "content": "Run crash-injected 72-hour TenantSoak-8 on OwnershipManifest v4; compare write p99, reassignment backlog, unauthorized reads, and quota drift."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "72-hour TenantSoak-8: write p99 peaked at 1.94× standalone; reassignment backlog stayed ≤80 extents; zero unauthorized reads or quota drift."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Adopt OwnershipManifest v4 with CompactionController v1: commit limiting cut 2.15× p99 to 1.92–1.94× without exposure or quota drift."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n28",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "revise",
+      "target": "n23"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "revise",
+      "target": "n39"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "revise",
+      "target": "n48"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a multi-tenant storage engine that isolates write latency while sharing compaction capacity and preserving crash-consistent tenant boundaries.",
+    "requirements": [
+      "Keep tenant p99 write latency within 2× its standalone baseline during competing compactions within quotas.",
+      "Prevent cross-tenant data exposure and storage quota evasion across crashes and capacity reassignment."
+    ]
+  }
+}

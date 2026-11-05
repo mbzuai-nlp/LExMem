@@ -1,0 +1,135 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Directional evidence for joint fault inference and the initial implementation plan",
+      "boundary_reason": "The probe-and-counter approach is adopted, and implementation is planned."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "PathGraph v1 implementation and held-out evaluation",
+      "boundary_reason": "The evaluation identifies shared-interface false fault labels, prompting a revised approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Fanout-conditioned PathGraph v2 and its ablation results",
+      "boundary_reason": "Results across cohorts motivate further calibration."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Stratum-calibrated PathGraph v3 on held-out cohorts",
+      "boundary_reason": "Held-out cohort targets are met before a separate topology-shift stress test."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Topology shift, correlated telemetry loss, and PathGraph deployment limits",
+      "boundary_reason": "The decision limits deployment to validated independent-loss conditions."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p2",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Four-probe adaptive strategy for correlated-loss incidents",
+      "boundary_reason": "Simulation supports the strategy; implementation is the next stage."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "ProbeSelector v1 implementation, validation, and blackout/reroute stress test",
+      "boundary_reason": "Stress-test failures raise a new question about probe and route safeguards."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Conduit-disjoint probes, route-epoch safeguards, and deployment decision",
+      "boundary_reason": "The deployment decision closes the adaptive-probing discussion."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p3",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Route-epoch evidence fusion and optical-skew gating",
+      "boundary_reason": "A skew-gated fusion policy is selected before implementation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "EpochFuse v1 implementation, mixed-skew validation, and adoption",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

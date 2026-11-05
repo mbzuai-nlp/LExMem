@@ -1,0 +1,144 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Test whether a role-negation lattice gate identifies stable target prefixes",
+      "boundary_reason": "The prefix-stability result supports retaining the gate; evaluation of translation outcomes begins next."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Benchmark the retained gate against matched-latency wait-k on MuST-C",
+      "boundary_reason": "The MuST-C benchmark is complete; the next discussion tests another dataset."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Assess CoVoST 2 transfer and prepare adaptive lattice gates",
+      "boundary_reason": "The fixed gate is deferred and an adaptive-gate artifact is produced; a different proposal follows."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Evaluate risk-triggered paraphrases and prepare semantic reranking",
+      "boundary_reason": "The reranker checkpoint concludes this approach’s current work; the next proposal uses a role ledger."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Test initial streaming role-ledger reliability",
+      "boundary_reason": "The initial F1 result misses the hypothesis threshold, prompting a revised ledger test."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Compare revision-aware ledgers, retain the original, and prepare its benchmark",
+      "boundary_reason": "The ledger benchmark report is produced; a new acoustic-prediction proposal follows."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Evaluate acoustic-regret commits and calibrate pause-dependent cue disablement",
+      "boundary_reason": "The pause-gated checkpoint concludes this approach’s current work; a counterfactual-continuation proposal follows."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Test four counterfactual continuations and examine disfluency-weighted results",
+      "boundary_reason": "Reweighting misses both safety thresholds, motivating a repair-aware continuation hypothesis."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Compare four and six continuations under corrected disfluency weights",
+      "boundary_reason": "The corrected results support retaining four continuations; a baseline benchmark is planned next."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70"
+      ],
+      "topic": "Prepare the audited four-continuation benchmark against wait-k",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

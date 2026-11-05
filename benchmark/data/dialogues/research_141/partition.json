@@ -1,0 +1,170 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Select an instantaneous injection cap and assemble an initial LES benchmark",
+      "boundary_reason": "The cap choice and its initial benchmark artifact are complete; the next nodes examine spectral performance in more detail."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Assess spectral error and high-k deficits under instantaneous capping",
+      "boundary_reason": "The spectral comparison and cap-intervention audit identify a specific deficit for the next discussion to address."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Develop budget-preserving shellwise injection reallocation",
+      "boundary_reason": "The proposed high-k reallocation reaches an implementation and benchmark artifact; the next node starts a different closure proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Test an energy-triggered eddy-viscosity threshold",
+      "boundary_reason": "The threshold test refutes its peak-energy prediction; the next node introduces a different closure."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Evaluate a zero-net-work residual stress across Reynolds numbers and grids",
+      "boundary_reason": "The grid audit exposes a 128³ spectral shortfall, motivating a focused conditioning question."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Test k/k_c conditioning and its fresh-seed reproducibility",
+      "boundary_reason": "Fresh-seed results contradict the initial conditioning prediction and prompt diagnosis of the discrepancy."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Diagnose fresh-seed high-k transfer bias and prepare calibration",
+      "boundary_reason": "The diagnosis leads to a calibration decision and benchmark artifact; the next node starts a stochastic closure proposal."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Bound stochastic injection and assess its spectral and backscatter effects",
+      "boundary_reason": "The cap sweep, fresh-seed comparison, and noise ablation motivate a focused noise-covariance refinement."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Fit DNS-matched noise covariance and validate the stochastic closure",
+      "boundary_reason": "The refined closure is adopted and a validation bundle is produced; the next node introduces a reservoir closure."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Sweep reservoir capacity and stress-test held-out Reynolds numbers",
+      "boundary_reason": "The fresh-seed Reλ=180 spectral miss creates a new question about its cause."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74"
+      ],
+      "topic": "Compare reservoir capacities and trace Reλ=180 low-k stress error",
+      "boundary_reason": "Matched replay links much of the error to exhausted-credit frames, prompting a narrower question about credit exhaustion."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79",
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Trace high-k credit withdrawals and develop protected low-k reservoir credit",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

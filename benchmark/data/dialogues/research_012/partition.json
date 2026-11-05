@@ -1,0 +1,130 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Anchor-gated transport, its false-match benchmark, and overlap assumptions",
+      "boundary_reason": "The benchmark supports adoption and is recorded in a report; the next discussion tests its overlap flags."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "Bridge-state ablation and unsupported-link detection",
+      "boundary_reason": "The ablation result concludes the overlap-path check; the next discussion tests a different anchor-gating criterion."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Donor-bootstrap anchor stability and the decision against bootstrap gating",
+      "boundary_reason": "The bootstrap result leads to a decision, followed by a shift to hierarchical latent factors."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "BridgeFactor design, fitting plan, and initial artifact",
+      "boundary_reason": "The initial artifact is available; the next discussion examines what its replicated states can identify."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Identifiability of BridgeFactor batch corrections",
+      "boundary_reason": "The simulation leads to a restriction on corrections; benchmarking the restricted method follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n22",
+        "n23"
+      ],
+      "topic": "BridgeFactor false-match benchmark against transport and MNN",
+      "boundary_reason": "The comparative benchmark is complete; the next discussion investigates a specific T-cell merging failure."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Activated-to-resting T-cell merging with BridgeFactor residuals",
+      "boundary_reason": "The residual ablation answers the local question; the next proposal changes to conformal match sets."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Testing pooled and subtype-level conformal score exchangeability",
+      "boundary_reason": "Subtype tests localize the pooled-calibration failure; the next discussion tests certificate rejection."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Subtype-calibrated overlap certificates for activated-only cells",
+      "boundary_reason": "The rejection and false-match results lead to adoption; the next proposal explores trajectory alignment."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Marker-order trajectory alignment design and initial artifact",
+      "boundary_reason": "TrajectoryAlign v0.1 is produced; the next discussion audits its performance."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "TrajectoryAlign audit and comparative method decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

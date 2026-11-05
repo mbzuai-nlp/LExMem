@@ -1,0 +1,751 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop streaming speech recognition that handles temporarily ambiguous speech accurately while committing words irreversibly with low latency.",
+      "requirements": [
+        "Achieve word error rate within 5% relative of an equally trained revisable streaming baseline.",
+        "Keep 95th-percentile word-end-to-commit latency below 800 milliseconds, with zero revisions after commitment."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a revision-risk gate on streaming hypothesis histories; commit buffered words below calibrated risk or at a 650-ms word-end deadline."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What fraction of temporarily ambiguous words remain high-risk at the 650-ms forced-commit deadline?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "On ambiguity-tagged StreamMix words, fewer than 8% exceed 10% calibrated revision risk at the 650-ms deadline."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Calibrate revision risk on StreamMix-dev, replay ambiguity-tagged StreamMix-test, and count words exceeding 10% risk at the 650-ms word-end deadline."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "On ambiguity-tagged StreamMix-test, 6.4% of words exceeded 10% calibrated revision risk at the 650-ms word-end deadline."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Retain the 650-ms forced-commit deadline for prototyping because only 6.4% of ambiguity-tagged words exceed 10% revision risk."
+    },
+    {
+      "id": "pl1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Implement 650-ms risk-gated commits; test StreamMix-test WER within 5% relative of equally-trained revisable baseline, p95 <800 ms, zero revisions."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "pl1",
+      "content": "Implement the 650-ms risk-gated decoder and replay StreamMix-test against an equally trained revisable baseline, measuring WER, p95 latency, and revisions."
+    },
+    {
+      "id": "ar1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "StreamMix v1 decoder and replay report containing immutable commit logs, WER comparison, p95 word-end latency, and post-commit revision counts."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "ar1",
+      "content": "Independently audit StreamMix v1 commit logs and replay report for relative WER gap, p95 latency, and zero post-commit revisions."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "StreamMix-test audit: gated WER 12.5% versus equally trained revisable 12.0% (4.2% relative); p95 latency 682 ms; zero post-commit revisions."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "q1",
+      "content": "Among overlapping-speaker, ambiguity-tagged StreamMix words, over 13% exceed 10% revision risk at the 650-ms word-end deadline."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "Stratify ambiguity-tagged StreamMix-test words by overlapping-speaker annotation and measure the fraction above 10% calibrated revision risk at 650 ms."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "a4",
+      "content": "Among overlapping-speaker, ambiguity-tagged StreamMix-test words, 11.2% exceeded 10% calibrated revision risk at the 650-ms deadline."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Does revision-risk calibration transfer to far-field speech while preserving the 5% relative WER gap and 800-ms p95 latency limits?"
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "q2",
+      "content": "Replay the unchanged risk gate on far-field RoomMix-test against an equally trained revisable baseline; measure WER, p95 latency, revisions."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "a5",
+      "content": "RoomMix-test: unchanged gate WER 18.2% versus revisable 17.0% (7.1% relative); p95 latency 714 ms; zero revisions."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Add far-field-conditioned risk calibration and overlap-aware N-best rescoring before the 650-ms deadline, retaining irreversible commits."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can far-field calibration and overlap-aware rescoring close RoomMix’s 7.1% relative WER gap without increasing p95 latency beyond 800 ms?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "q3",
+      "content": "On RoomMix-test, far-field calibration plus overlap-aware rescoring reduces WER to ≤17.8%, with p95 latency <800 ms and zero revisions."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "h3",
+      "content": "Using RoomMix’s 18.2% WER result, tune far-field calibration and overlap-aware rescoring on RoomMix-dev; evaluate RoomMix-test WER, p95 latency, revisions."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "a6",
+      "content": "RoomMix-test: calibrated rescoring yields 17.7% WER versus revisable 17.0% (4.1% relative), 746-ms p95 latency, zero revisions."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "e5",
+      "content": "Adopt far-field-calibrated, overlap-aware rescoring: RoomMix meets all targets, while 11.2% of overlapping ambiguous words exceed 10% deadline risk."
+    },
+    {
+      "id": "pl2",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "d2",
+      "content": "Validate adopted rescoring on held-out RoomMix speaker/noise strata; compare WER, p95 latency, and revisions against the revisable baseline."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "pl2",
+      "content": "Extend StreamMix v1’s immutable-commit replay harness to audit held-out RoomMix speaker/noise strata against revisable WER, p95 latency, and revisions."
+    },
+    {
+      "id": "ar2",
+      "type": "artifact",
+      "order": 27,
+      "exploration_parent_id": "a7",
+      "content": "RoomMix strata audit report with speaker/noise-sliced WER gaps, p95 word-end commit latencies, and immutable-commit revision counts."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "pl2",
+      "content": "Recompute RoomMix speaker/noise WER gaps and p95 commit latencies from raw logs; verify report thresholds and zero revisions."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "a8",
+      "content": "RoomMix speaker/noise audit: worst-stratum relative WER gap 4.8%, maximum stratum p95 commit latency 781 ms, zero post-commit revisions."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Far-field-conditioned calibration alone yields RoomMix-test WER ≤17.85% versus revisable 17.0%, p95 latency <800 ms, and zero revisions."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "h4",
+      "content": "Using StreamMix v1 and RoomMix strata audits, replay unchanged gate, calibration-only, and combined rescoring; compare WER, p95 latency, revisions."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a9",
+      "content": "Ablation: StreamMix unchanged gate 12.5% WER versus 12.0% revisable, 682-ms p95; RoomMix calibration-only 18.0% versus 17.0% revisable."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Predict future phonemes to rescore ambiguous N-best prefixes; commit on agreement or at the 650-ms deadline."
+    },
+    {
+      "id": "pl3",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Train future-phoneme N-best rescoring; benchmark agreement-or-650-ms commits against revisable WER, p95 latency, and revisions on StreamMix/RoomMix."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "pl3",
+      "content": "Use RoomMix’s 18.2% unchanged-gate WER to target error prefixes; train future-phoneme N-best rescoring and replay agreement-or-650-ms commits."
+    },
+    {
+      "id": "ar3",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "a10",
+      "content": "Future-phoneme rescoring prototype with trained N-best predictor, agreement-or-650-ms commit policy, and StreamMix/RoomMix replay logs."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "ar3",
+      "content": "Audit prototype replay logs against revisable baselines for ≤5% relative WER gap, <800-ms p95 latency, and zero revisions."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "a11",
+      "content": "Prototype audit: StreamMix WER 12.4% versus 12.0% revisable; RoomMix 17.6% versus 17.0%; maximum p95 latency 755 ms; zero revisions."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "e8",
+      "content": "Advance future-phoneme rescoring over calibration-only: RoomMix WER improves from 18.0% to 17.6%, with 755-ms maximum p95 and zero revisions."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p3",
+      "content": "Among RoomMix clips below 5 dB SNR, what fraction of future-phoneme agreement commits are incorrect?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "q4",
+      "content": "On RoomMix-test clips below 5 dB SNR, fewer than 15% of future-phoneme agreement commits are incorrect."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "h5",
+      "content": "Filter RoomMix-test replay logs to clips below 5 dB SNR; align agreement-committed words with references and calculate incorrect-commit fraction."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "a12",
+      "content": "On RoomMix-test clips below 5 dB SNR, 17.3% of future-phoneme agreement commits were incorrect."
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "e9",
+      "content": "Two consecutive 100-ms phoneme-agreement checks reduce incorrect agreement commits from 17.3% to below 15% on RoomMix-test below 5 dB SNR."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "h6",
+      "content": "Require two 100-ms-spaced agreement checks before the 650-ms deadline in prototype ar3; measure incorrect commits on sub-5-dB RoomMix-test."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a13",
+      "content": "With two 100-ms-spaced checks, incorrect agreement commits fell to 14.6% on sub-5-dB RoomMix-test, versus 17.3% previously."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "e10",
+      "content": "Advance dual-check future-phoneme commits for sub-5-dB speech; retain overlap-aware rescoring for other strata pending latency audit."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "d4",
+      "content": "Integrate dual-check commits for sub-5-dB RoomMix speech with audited overlap-aware rescoring elsewhere; compare WER, p95 latency, revisions against revisable baseline."
+    },
+    {
+      "id": "ar4",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "a14",
+      "content": "Hybrid decoder v2 with sub-5-dB dual-check routing, overlap-aware rescoring elsewhere, and reproducible RoomMix/StreamMix commit logs."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "pl1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "pl1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "a5",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a6",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "pl2",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "pl2",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "pl2",
+      "relation": "decompose",
+      "target": "a7"
+    },
+    {
+      "source": "pl2",
+      "relation": "decompose",
+      "target": "a8"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "ar1"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "refute",
+      "target": "h4"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "pl3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "pl3",
+      "relation": "decompose",
+      "target": "a10"
+    },
+    {
+      "source": "pl3",
+      "relation": "decompose",
+      "target": "a11"
+    },
+    {
+      "source": "a10",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "ar3"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "ar3"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "ar3"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "revise",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a13",
+      "relation": "depend_on",
+      "target": "ar3"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "a14",
+      "relation": "depend_on",
+      "target": "d4"
+    },
+    {
+      "source": "a14",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a14",
+      "relation": "depend_on",
+      "target": "ar3"
+    },
+    {
+      "source": "a14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "ar4"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop streaming speech recognition that handles temporarily ambiguous speech accurately while committing words irreversibly with low latency.",
+    "requirements": [
+      "Achieve word error rate within 5% relative of an equally trained revisable streaming baseline.",
+      "Keep 95th-percentile word-end-to-commit latency below 800 milliseconds, with zero revisions after commitment."
+    ]
+  }
+}

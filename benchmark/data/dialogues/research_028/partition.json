@@ -1,0 +1,126 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Initial zero-safe odds-ratio approach and structural-zero validation",
+      "boundary_reason": "The next audit tests latent-law attainability and finds a new failure."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11"
+      ],
+      "topic": "Attainability audit exposing an undefined dropout-odds case",
+      "boundary_reason": "The unattainable bound prompts a revised definition of zero-cell dropout odds."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Positive-denominator support partitions for dropout odds",
+      "boundary_reason": "A subsequent boundary audit tests whether the partition retains all valid laws."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "All-dropout counterexample and explicit zero-retention strata",
+      "boundary_reason": "The discussion shifts to a three-stage transport-coupling approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Global consistency of three-stage transport couplings",
+      "boundary_reason": "The next proposal replaces odds constraints with total-variation budgets."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Total-variation constraints and joint-mass repair for absent-treatment histories",
+      "boundary_reason": "A new question examines what the repaired constraint permits at rare histories."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Rare-history leakage under joint-mass dropout total variation",
+      "boundary_reason": "The discussion moves to an additive-bias alternative."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Additive-bias caps and the all-dropout coverage failure",
+      "boundary_reason": "A new proposal introduces history-normalized selection caps."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "History-normalized selection caps and zero-support stress tests",
+      "boundary_reason": "The final node selects an approach using findings from several branches."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n52"
+      ],
+      "topic": "Selection of NormSelect",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

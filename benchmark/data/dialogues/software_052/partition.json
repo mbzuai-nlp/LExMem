@@ -1,0 +1,153 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Test and revise quorum-signed leases to meet revocation and authentication targets",
+      "boundary_reason": "The revised lease parameters are adopted; the next discussion tests their resilience under correlated failures."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Examine correlated refresh failures and rollback for the adopted leases",
+      "boundary_reason": "A resilience report and the remaining reliability question set up evaluation of another design."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Compare workload-bound tokens with leases using resilience-trace replay",
+      "boundary_reason": "The replay-based comparison reaches a decision; live broker-chaos trials begin next."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Investigate staged-key loss on rollback and HSM-persisted dual keys",
+      "boundary_reason": "Rollback trials establish the effect of persisting dual keys; a regional-token proposal follows."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Evaluate regional tokens in replay and live partitioned-rotation trials",
+      "boundary_reason": "Live results support adopting regional tokens; implementation planning begins next."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Implement regional tokens and validate rollback-safe key persistence",
+      "boundary_reason": "Broker v0.3 is produced, and replay evidence addresses stale-epoch issuance; the next proposal explores vouchers."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Test renewal vouchers and correct quorum-loss cutoff timing",
+      "boundary_reason": "Initial and corrected canary measurements are available; the next discussion examines worst-timed loss and rollback more directly."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Replay worst-timed voucher failures and decide whether to retain regional tokens",
+      "boundary_reason": "The voucher comparison reaches a decision; shadow testing is planned next."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Shadow-canary regional tokens against HSM-fenced vouchers",
+      "boundary_reason": "The shadow-canary report is produced; a signing-capability alternative follows."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Replay HSM-fenced regional signing capabilities against prior baselines",
+      "boundary_reason": "Trace-replay results are available; live partitioned trust-root rotation is the next issue."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Live-test signing capabilities during trust-root rotation and rollback",
+      "boundary_reason": "The live comparison concludes with a decision to retain regional tokens; rollout planning follows."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Canary the regional-token rollout against revocation and authentication gates",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

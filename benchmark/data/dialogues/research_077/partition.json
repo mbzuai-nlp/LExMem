@@ -1,0 +1,141 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Test question-conditioned masks and plan to reduce edited-distractor coverage",
+      "boundary_reason": "The initial mask test leads to an exclusion-loss sweep plan."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Run and reproduce the mask exclusion-loss sweep",
+      "boundary_reason": "The sweep identifies a checkpoint meeting the single-distractor mask thresholds; the next discussion tests simultaneous edits."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Test selected masks on simultaneous two-distractor edits",
+      "boundary_reason": "The mask checkpoint is selected for end-to-end evaluation, followed by a shift to scene-graph VQA."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Build intervention graphs and audit affected-edge labels",
+      "boundary_reason": "The label audit leads to deferring graph VQA training."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Compare frozen graph rules with mask VQA and test repaired-edge graph training",
+      "boundary_reason": "Trained graph VQA misses both targets; the next proposal combines graph rules with mask VQA."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Test frozen graph gating of mask-grounded VQA",
+      "boundary_reason": "Graph gating reduces irrelevant-edit flips but misses the paired-accuracy target, prompting an override test."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Evaluate a confidence override for graph-gated mask VQA",
+      "boundary_reason": "Reported override scores meet both targets, leading to an independent audit."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Audit override scores and suspend graph-gated mask VQA",
+      "boundary_reason": "Corrected scores miss both targets, prompting a new approach without graph gates."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Reconcile edit IDs and evaluate baseline pairwise edit-difference VQA",
+      "boundary_reason": "Baseline paired accuracy meets its target, but distractor flips remain too high."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Increase question-matched distractor training for pairwise VQA",
+      "boundary_reason": "The 2:1 training result meets both reported thresholds, prompting independent verification."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Independently audit and adopt the 2:1 pairwise VQA checkpoint",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

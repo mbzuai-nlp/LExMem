@@ -1,0 +1,900 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a learned plasma fluid closure that recovers collisionless plasma echoes while preserving energy under unseen forcing histories.",
+      "requirements": [
+        "Predict echo amplitudes within 10% of Vlasov–Poisson reference values on held-out forcing histories.",
+        "Keep unforced total energy drift below 0.1% over 100 plasma periods."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use 64 Hermite memory modes, skew-symmetric moment coupling, and discrete-gradient time stepping to recover echoes while conserving unforced energy."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can 64 Hermite modes retain phase-mixed information across unseen forcing delays without compromising discrete-gradient energy conservation?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Across held-out forcing delays, 64 Hermite modes should yield ≤10% echo-amplitude error and <0.1% unforced energy drift over 100 periods."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Generate Vlasov–Poisson two-pulse trajectories, train the 64-mode closure, then evaluate held-out delay echo errors and 100-period energy drift."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run EchoDelay-v1: train on 2–8-period pulse separations; test 9–12-period delays against Vlasov–Poisson echoes and 100-period unforced energy drift."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "EchoDelay-v1 yielded 8.6% maximum echo-amplitude error at 9–12-period delays and 0.06% unforced energy drift after 100 periods."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Retain the 64-mode closure for broader forcing-history validation; EchoDelay-v1 met both echo-error and energy-drift thresholds."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Validate the retained 64-mode closure on EchoHistory-v2’s unseen three-pulse and chirped drives, measuring echo error and post-drive energy drift."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Run EchoHistory-v2 on 200 unseen three-pulse and chirped histories against Vlasov–Poisson; measure echo-amplitude error and 100-period post-drive energy drift."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "EchoHistory-v2 benchmark bundle containing 200 paired closure and Vlasov–Poisson trajectories, per-history echo-amplitude errors, and 100-period post-drive energy traces."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Analyze EchoHistory-v2’s paired trajectories, computing maximum echo-amplitude error separately for three-pulse and chirped histories and 100-period post-drive energy drift."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "EchoHistory-v2 maximum echo errors were 8.9% (three-pulse) and 9.5% (chirped); unforced post-drive energy drift was 0.08% over 100 periods."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n1",
+      "content": "At 16–24-period pulse delays, high-mode reflection will push echo error above 10% while energy drift remains below 0.1%."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Run EchoDelay-Long across 16–24-period delays; measure Vlasov–Poisson echo error, mode-63 spectral pileup, and 100-period unforced energy drift."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "EchoDelay-Long showed 9.8% maximum echo error, mode-63 energy below 0.2% of Hermite energy, and 0.09% unforced drift."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p1",
+      "content": "Does the 64-mode closure retain accurate difference-wavenumber echoes for unseen pulse pairs with k₂/k₁ between 1.5 and 2.5?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Run EchoK-v1 on unseen pulse pairs with k₂/k₁=1.5–2.5; compare difference-wavenumber echo-amplitude errors against Vlasov–Poisson."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "EchoK-v1 benchmark table pairing Vlasov–Poisson and closure difference-wavenumber echo amplitudes, with per-ratio errors for k₂/k₁=1.5–2.5."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Train a port-Hamiltonian closure with oscillatory memory kernels and discrete-gradient stepping to reconstruct echoes while conserving unforced energy."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can port-Hamiltonian oscillatory memory retain cross-wavenumber phase correlations through unseen pulse sequences while conserving unforced total energy?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "A 32-pole port-Hamiltonian memory closure will achieve ≤10% unseen cross-wavenumber echo error and <0.1% unforced energy drift over 100 periods."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Fit 32-pole port-Hamiltonian memory on training pulses; score EchoK-v1 cross-wavenumber errors and 100-period unforced energy drift."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "EchoK-v1’s 32-pole closure reached 14.2% maximum echo error at k₂/k₁=2.5, despite 0.04% unforced energy drift."
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Antisymmetric cross-wavenumber coupling in the 32-pole memory should yield ≤10% EchoK-v1 error and <0.1% unforced drift over 100 periods."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Implement antisymmetric cross-wavenumber coupling in the 32-pole closure; rerun EchoK-v1 and measure maximum echo error and 100-period energy drift."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "With antisymmetric coupling, EchoK-v1 maximum echo error fell from 14.2% to 8.7%; unforced energy drift was 0.05% over 100 periods."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Advance both closures to matched joint-history benchmarking: the 64-mode closure passed EchoHistory-v2; coupled 32-pole memory passed EchoK-v1."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "p2",
+      "content": "Benchmark both closures on EchoJoint-v1 held-out chirped, three-pulse, cross-wavenumber histories; compare echo errors and 100-period unforced energy drift."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Run both closures on EchoJoint-v1 mixed-drive histories; measure echo-amplitude error against Vlasov–Poisson and 100-period unforced energy drift."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "EchoJoint-v1 report containing paired Vlasov–Poisson and closure echo amplitudes by mixed-drive history, plus 100-period unforced energy traces."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Compute both closures’ worst-case echo errors and energy drift from EchoJoint-v1; compare 64-mode results with EchoHistory-v2."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "EchoJoint-v1: 64-mode echo error reached 13.4% versus EchoHistory-v2’s 9.5%; coupled 32-pole achieved 8.8% error and 0.06% unforced 100-period drift."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n26",
+      "content": "Audit EchoJoint-v1 worst-case histories for both closures; compare echo phase mismatch and 100-period unforced energy drift against acceptance thresholds."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "EchoJoint-v1 audit: 32-pole had 8.8% echo error, 0.04-rad phase error, and 0.06% energy drift; 64-mode phase error reached 0.16 rad."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "Does coupled 32-pole memory maintain ≤10% echo error for unseen 24–32-period delays at k₂/k₁=2.5?"
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Extend EchoJoint-v1’s audited 32-pole baseline to 24–32-period delays at k₂/k₁=2.5; compare echo error and 100-period unforced energy drift."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n34",
+      "content": "At 32-period delay and k₂/k₁=2.5, coupled 32-pole echo error reached 16.3%; unforced 100-period energy drift remained 0.07%."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "Prioritize coupled 32-pole over 64-mode for mixed histories, but expand memory to address 16.3% long-delay echo error."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Expand port-Hamiltonian memory to 64 antisymmetrically coupled poles, retaining discrete-gradient stepping for long-delay echoes and unforced energy conservation."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Will 64 coupled poles resolve the 32-period, k₂/k₁=2.5 echo deficit without exceeding 0.1% unforced energy drift?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Expanding to 64 coupled poles will reduce 32-period, k₂/k₁=2.5 echo error below 10%, retaining <0.1% unforced 100-period drift."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Following the 32-pole long-delay failure, fit 64 coupled poles; retest 24–32-period echoes and 100-period unforced energy drift."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Use EchoK-v1’s per-ratio error table to allocate 64 antisymmetrically coupled poles, then fit on separate training trajectories."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Coupled64-v1 checkpoint containing fitted 64-pole weights, EchoK-v1-guided pole allocation, antisymmetric coupling matrices, and discrete-gradient solver configuration."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Run Coupled64-v1 on the 24–32-period, k₂/k₁=2.5 challenge; compare echo error with 16.3% baseline and unforced energy drift."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Coupled64-v1 cut 32-period, k₂/k₁=2.5 echo error from 16.3% to 8.4%; unforced drift was 0.08% over 100 periods."
+    },
+    {
+      "id": "n44",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "p3",
+      "content": "Does Coupled64-v1 maintain ≤10% echo error under unseen four-pulse chirped drives with randomized wavevectors and <0.1% unforced energy drift?"
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "After 32-pole prioritization and long-delay success, benchmark Coupled64-v1 on 200 unseen four-pulse chirps against Vlasov–Poisson echoes; check 100-period unforced drift."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "Across 200 unseen four-pulse chirps, Coupled64-v1’s maximum echo error was 9.2%; 100-period unforced energy drift was 0.09%."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Select Coupled64-v1 over initially promising 64-mode Hermite and prioritized 32-pole memory; long-delay and four-pulse tests meet both thresholds."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n22"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n11"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a learned plasma fluid closure that recovers collisionless plasma echoes while preserving energy under unseen forcing histories.",
+    "requirements": [
+      "Predict echo amplitudes within 10% of Vlasov–Poisson reference values on held-out forcing histories.",
+      "Keep unforced total energy drift below 0.1% over 100 plasma periods."
+    ]
+  }
+}

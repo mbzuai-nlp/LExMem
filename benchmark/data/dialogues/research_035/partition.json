@@ -1,0 +1,119 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Initial test of disentangled emotion and emphasis conditioning",
+      "boundary_reason": "The initial findings support retaining the conditioning approach; the next discussion expands testing to unseen speakers."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "pl1",
+        "a2",
+        "ar1",
+        "a3",
+        "e2",
+        "d2"
+      ],
+      "topic": "Unseen-speaker benchmark for compositional diffusion TTS",
+      "boundary_reason": "The benchmark leads to an adoption decision; the next discussion tests a joint-prosody alternative."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3",
+        "a5",
+        "e4"
+      ],
+      "topic": "Joint-prosody versus separated controls on withheld combinations",
+      "boundary_reason": "The comparison and speaker-stratified analysis conclude before a new synthesis proposal begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h3",
+        "a6",
+        "e5"
+      ],
+      "topic": "Initial unseen-speaker evaluation of duration-constrained adapters",
+      "boundary_reason": "The initial benchmark is complete; the next discussion ablates its duration constraints."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "pl2",
+        "a7",
+        "ar2",
+        "a8",
+        "e6",
+        "a9",
+        "e7",
+        "d3"
+      ],
+      "topic": "Duration ablation and speaker-level failures",
+      "boundary_reason": "The audit leads to a decision to defer broad deployment; the next discussion tests adaptive bounds."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "pl3",
+        "a10",
+        "ar3",
+        "a11",
+        "e8",
+        "d4"
+      ],
+      "topic": "Speaker-adaptive bounds for five failing voices",
+      "boundary_reason": "The retest ends in rejection of adapter deployment; a different approach follows."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h4",
+        "a12",
+        "e9",
+        "d5"
+      ],
+      "topic": "Normalized prosody transport for the failing voices",
+      "boundary_reason": "Results support advancing transport to full unseen-speaker testing; the next discussion introduces another approach."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "a13",
+        "e10"
+      ],
+      "topic": "Counterfactual-swap TTS with 30% paired coverage",
+      "boundary_reason": "The 30% coverage test misses its targets, prompting a revised coverage hypothesis."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "h6",
+        "a14",
+        "e11",
+        "d6"
+      ],
+      "topic": "Counterfactual-swap TTS with 60% speaker-balanced pairing",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

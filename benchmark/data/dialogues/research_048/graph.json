@@ -1,0 +1,841 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a learned surrogate for compressible Euler dynamics that preserves conservation and entropy admissibility across shocks on unseen meshes.",
+      "requirements": [
+        "Keep normalized mass, momentum, and energy drift below 10⁻⁶ over 1,000 periodic, unforced timesteps.",
+        "Match an entropy-stable finite-volume baseline’s shock accuracy without increasing discrete entropy violations on unseen meshes."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Learn mesh-equivariant, positive-semidefinite entropy-variable dissipation around entropy-conservative face fluxes, with shared face updates and timestep entropy limiting."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can learned face dissipation retain baseline shock-position accuracy on unseen meshes while the entropy limiter prevents discrete entropy increases?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "On unseen meshes, learned fluxes will achieve density L1 error within 5% of baseline and zero positive global entropy residuals."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Run 1,000-step periodic EulerShockMesh-v1 on unseen meshes against entropy-stable finite volumes; record density L1, positive global entropy residuals, conservation drift."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "EulerShockMesh-v1 unseen meshes: density L1 0.0214 versus baseline 0.0210 (+1.9%); zero positive global entropy residuals; maximum normalized drift 3.2×10⁻⁸."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Retain the constrained face-flux surrogate for local entropy audits: density L1 is within 1.9% of baseline, with 3.2×10⁻⁸ drift."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Audit retained surrogate’s facewise entropy residuals, 1,000-step conservation drift, and shock L1 on unseen meshes; refine limiter if needed."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "On EulerShockMesh-v1 unseen meshes, log facewise Tadmor entropy residuals, 1,000-step conservation drift, and shock-location error against finite volumes."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "EulerShockMesh-v1 audit bundle containing per-face Tadmor residual maps, shock-location error tables, and 1,000-step conservation-drift traces against baseline."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Compare audit-bundle positive facewise Tadmor residuals and shock-location errors against baseline; verify each conserved quantity’s 1,000-step drift."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Unseen-mesh audit: zero positive facewise Tadmor residuals; shock-location error 0.37 versus baseline 0.36 local cells; maximum conservation drift 3.2×10⁻⁸."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "At what unseen-mesh aspect ratio does shock-location error exceed baseline by 0.1 cell despite nonpositive facewise Tadmor residuals?"
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Sweep unseen EulerShockMesh-v1 cell aspect ratios 1–16; compare surrogate and baseline shock-location errors and facewise Tadmor residuals."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "At aspect ratio 12, surrogate shock-location error reached 0.69 versus baseline 0.38 cells, despite zero positive facewise Tadmor residuals."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Use audit-bundle shock-error tables and face-residual maps to calibrate aspect-ratio-aware normal dissipation within conservative, entropy-limited face fluxes."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Calibrate aspect-ratio-aware dissipation from audit maps; test ≤5% shock L1 gap, nonpositive face entropy residuals, and <10⁻⁶ 1,000-step drift."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Fit aspect-ratio-aware dissipation using audit-bundle maps; rerun unseen-mesh aspect-ratio 1–16 shocks, logging L1, facewise entropy, and 1,000-step drift."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Aspect-12 shock error improved 0.69→0.40 cells (baseline 0.38); worst-case density L1 gap 3.4%, zero positive facewise residuals, maximum drift 4.1×10⁻⁸."
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Aspect-ratio-aware dissipation shifts the first 0.1-cell shock-location excess beyond aspect ratio 16 without positive facewise Tadmor residuals."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Sweep held-out EulerShockMesh-v1 aspect ratios 16–32; locate first >0.1-cell shock-error excess over baseline and count positive facewise Tadmor residuals."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "First >0.1-cell shock-error excess occurred at aspect ratio 24 (0.54 versus baseline 0.40); zero positive facewise Tadmor residuals."
+    },
+    {
+      "id": "n20",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Adopt aspect-aware dissipation for aspect ratios ≤16; original failed at 12, while calibrated flux first exceeds shock tolerance at 24."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n14",
+      "content": "Validate adopted aspect-aware flux on unseen periodic meshes (aspect ratios ≤16); measure 1,000-step drift, shock L1, facewise entropy residuals."
+    },
+    {
+      "id": "n22",
+      "type": "artifact",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "EulerShockMesh-v1 validation report with 1,000-step drift traces, baseline-relative shock L1 tables, and facewise entropy residual maps for aspect ratios ≤16."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "Does aspect-ratio-aware dissipation retain baseline shock accuracy for oblique shocks on unseen skewed meshes with aspect ratios ≤16?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "On unseen skewed meshes (aspect ratio ≤16), oblique-shock density L1 remains within 5% of baseline without positive facewise Tadmor residuals."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Audit validation report’s shock L1, drift, and entropy maps; independently measure oblique-shock L1 and Tadmor residuals on unseen skewed meshes."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "On aspect-12 skewed meshes, 35° oblique-shock density L1 was 0.031 versus baseline 0.026 (+19.2%); positive facewise Tadmor residuals: zero."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Add skewness-aware, face-aligned tensor dissipation to shared entropy-conservative fluxes, retaining positive-semidefinite entropy-variable coupling and facewise limiting."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "Can skewness-aware tensor dissipation reduce 35° oblique-shock density L1 excess from 19.2% to ≤5% on aspect-12 meshes?"
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Using validation-report baselines, compare original and skewness-aware fluxes on unseen aspect-12 skewed meshes: oblique-shock L1, Tadmor residuals, drift."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Aspect-12 skewed shocks: original flux L1 0.0268, tensor flux 0.0263, baseline 0.0260; both had zero positive facewise residuals."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Select tensor flux for skewed oblique shocks: its 1.2% L1 excess beats the earlier aspect-aware flux’s 19.2%."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Tensor dissipation keeps oblique-shock density L1 within 5% of baseline on unseen skewed meshes (aspect ≤16), without positive Tadmor residuals."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Test tensor flux on held-out skewed meshes (aspect 2–16, angles 15°–75°); compare baseline-relative density L1, Tadmor residuals, 1,000-step drift."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Held-out skewed meshes: worst density L1 excess 4.3% versus baseline; zero positive facewise Tadmor residuals; maximum drift 5.6×10⁻⁸."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "After skewed-mesh validation, stress-test tensor flux on unseen mixed-topology shocks: ≤5% L1 excess, zero facewise entropy violations, <10⁻⁶ 1,000-step drift."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Run tensor flux on held-out triangular–quadrilateral periodic shock meshes for 1,000 steps; log baseline-relative density L1, Tadmor residuals, conservation drift."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "MixedTopoShock-v1 report tabulating tensor-flux and finite-volume density L1, per-face Tadmor residuals, and 1,000-step mass–momentum–energy drift."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Train geometry-equivariant subcell reconstructions, then apply conservative entropy-bounded projection before shared entropy-stable flux updates on mixed-topology meshes."
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "p4",
+      "content": "Entropy-bounded subcell reconstruction achieves ≤5% shock-density L1 excess on unseen mixed-topology meshes, with zero positive Tadmor residuals and <10⁻⁶ drift."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Fit projected reconstructions using EulerShockMesh-v1 audit maps; benchmark MixedTopoShock-v1 baseline-relative shock L1, facewise Tadmor residuals, and 1,000-step drift."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "MixedTopoShock-v1: reconstructed shock-density L1 0.029 versus baseline 0.025 (+16%); zero positive Tadmor residuals, maximum drift 7.4×10⁻⁸."
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Adding interface-aware tensor coupling to projected reconstructions yields ≤5% mixed-topology shock L1 excess, zero positive Tadmor residuals, <10⁻⁶ drift."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Train interface-aware tensor coupling on mixed triangle–quadrilateral faces; retest held-out MixedTopoShock-v1 L1 excess, Tadmor residuals, and 1,000-step drift."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Held-out MixedTopoShock-v1: shock-density L1 0.0259 versus baseline 0.0250 (+3.6%); zero positive Tadmor residuals; maximum drift 8.1×10⁻⁸."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Adopt tensor flux, adding projected interface-aware reconstruction on mixed meshes: mixed and skewed tests show ≤4.3% L1 excess."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Validate adopted hybrid on unseen mixed meshes: 1,000-step drift <10⁻⁶, shock L1 excess ≤5%, zero positive facewise Tadmor residuals."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Using MixedTopoShock-v1 report, compare hybrid with tensor-only and finite-volume baselines on unseen meshes; log shock L1, Tadmor residuals, 1,000-step drift."
+    },
+    {
+      "id": "n46",
+      "type": "artifact",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "MixedTopoShock-v1 validation bundle: per-mesh shock L1 comparisons against tensor-only and finite volumes, facewise Tadmor maps, 1,000-step conservation traces."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "Cross-check both MixedTopoShock-v1 reports on matched meshes; compare hybrid versus tensor-only density L1, positive Tadmor counts, and 1,000-step drift."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Matched MixedTopoShock-v1 meshes: hybrid/tensor-only density L1 0.0259/0.0270 (baseline 0.0250); neither had positive Tadmor residuals; maximum drifts 8.1×10⁻⁸/6.9×10⁻⁸."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Retain adopted hybrid for mixed meshes and tensor flux for skewed shocks; test aspect ratios ≥24 separately after aspect-aware failure."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "revise",
+      "target": "n24"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n43"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a learned surrogate for compressible Euler dynamics that preserves conservation and entropy admissibility across shocks on unseen meshes.",
+    "requirements": [
+      "Keep normalized mass, momentum, and energy drift below 10⁻⁶ over 1,000 periodic, unforced timesteps.",
+      "Match an entropy-stable finite-volume baseline’s shock accuracy without increasing discrete entropy violations on unseen meshes."
+    ]
+  }
+}

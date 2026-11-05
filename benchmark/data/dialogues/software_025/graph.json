@@ -1,0 +1,981 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a mixed-criticality accelerator runtime guaranteeing control-task deadlines despite nonpreemptible inference kernels and shared-memory interference.",
+      "requirements": [
+        "Under declared execution and interference bounds, all admitted control jobs meet 2 ms deadlines.",
+        "Guarantee starvation-free inference progress under adversarial arrivals without compromising admitted control deadlines."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use admission-tested cyclic reservations with ≤200-µs inference slices, bounded memory interference, 2-ms control response checks, and guaranteed inference slots."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should admission bounds account for kernel blocking and shared-memory contention while guaranteeing inference slots under adversarial control releases?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Per-2-ms-frame 200-µs inference reservations, 200-µs blocking, and bounded memory-stall charges keep admitted control responses ≤2 ms."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Derive admission inequalities from hypothesized reservation, blocking, and memory-stall bounds; implement the scheduler and stress-test deadlines and inference progress."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run FrameStorm with adversarial control releases, 200-µs kernels, and bounded memory contention; measure 2-ms deadline misses and inference-slot occupancy."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "FrameStorm: an admitted control job took 2.08 ms despite 180-µs blocking, two 200-µs frame reservations, and 100-µs in-bound stalls."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Charge two reservations per 2-ms response window, plus 200-µs blocking and bounded memory stalls; admit only if response ≤2 ms."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Sweep FrameStorm release offsets at 10-µs granularity under two-reservation admission; measure worst control latency and maximum inference-service gap."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "FrameStorm offset sweep: zero of 100,000 admitted control jobs missed deadlines (worst 1.96 ms); inference received 200 µs per frame."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Adopt two-reservation admission checks with protected inference slots: FrameStorm exposed the prior undercount, and revised-admission sweeps met deadlines."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Implement FrameGuard with ≤200-µs certified inference kernels, protected per-frame slots, memory-bandwidth caps, and two-reservation admission checks."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "FrameGuard v0.1 provides two-reservation admission checks, ≤200-µs kernel validation, protected inference slots, memory-bandwidth caps, and deadline telemetry."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How does FrameGuard prevent oversized kernels or excessive memory traffic from invalidating admitted control response bounds?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use separate control/inference accelerator engines, partition DRAM bandwidth, and admit control by isolated worst-case bounds while reserving inference capacity."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "First verify independent engine queues and enforceable DRAM quotas, then derive isolation-based admission tests and minimum inference-service guarantees."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Use FrameGuard v0.1 telemetry to probe engine-queue independence and DRAM quota enforcement under concurrent control releases and inference bursts."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "EngineIsolation probe report contains concurrent-run queue-latency traces, per-engine DRAM counters, and quota-enforcement checks."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Audit EngineIsolation traces for queue independence and quota violations; compare FrameGuard reservations against dual-engine partitioning on latency and inference gaps."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "EngineIsolation: independent queues and enforced 60/40 DRAM quotas yielded 1.72-ms worst control latency and ≤2-ms inference gaps."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Prefer dual-engine isolation where available: 1.72-ms worst control latency versus FrameGuard’s 1.96 ms; retain FrameGuard otherwise."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n13",
+      "content": "Fault-inject 250-µs launches into FrameGuard and DRAM quota overruns into both modes; verify rejection, throttling, deadlines, and inference service."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "FaultInjection: oversized kernels were rejected and DRAM excess throttled, but certified 200-µs kernels completed 0/1,000: 12-µs dispatch exceeded reservation."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Can independent engine queues and enforced DRAM partitions guarantee inference progress despite dispatch overhead without violating control admission bounds?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "With ≤12-µs dispatch, 60/40 DRAM-partitioned engines meet admitted 2-ms control deadlines and bound backlogged inference completion gaps to 2 ms."
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "Shared dispatch locking causes >2-ms inference gaps under adversarial control arrivals despite 60/40 DRAM quotas and intact control deadlines."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Use a debt-capped inference server guaranteeing minimum windowed service; admit control using dispatch-inclusive blocking and DRAM-interference bounds."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "What debt cap and service window guarantee 200-µs inference kernels plus 12-µs dispatch without violating control admission?"
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Sweep debt caps and service windows across independent and shared-lock dispatch under adversarial arrivals; measure control deadlines and inference gaps."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "With 212-µs debt caps and 2-ms windows, both dispatch modes had zero deadline misses and ≤1.99-ms inference gaps."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n24",
+      "content": "Randomize release phases over million-job shared-lock traces at 212-µs debt caps; measure inference completion gaps and dispatch-lock waits."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Million-job shared-lock traces exposed 2.14-ms inference gaps during 38-µs lock waits; admitted control jobs had zero deadline misses."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "How should debt-capped inference service account for shared dispatch-lock waits without jeopardizing admitted control deadlines?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Capping dispatch-lock waits at 40 µs and reserving 252 µs per 2-ms window preserves control deadlines and inference progress."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Replay both debt-sweep and million-job traces with 40-µs lock caps and 252-µs reservations; measure deadline misses and inference gaps."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Replayed million-job traces with 40-µs lock caps and 252-µs reservations: zero control deadline misses; maximum inference gap 1.99 ms."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Adopt 252-µs inference reservations with 40-µs lock caps; the 212-µs setting missed the inference-gap target."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Use a persistent accelerator dispatcher with ≤100-µs nonpreemptible tiles, bank-partitioned memory, and admission-tested mandatory inference turns."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "p4",
+      "content": "Certify ≤100-µs tiles and bank isolation, implement persistent dispatch, then compare deadline latency and inference gaps against 252-µs reservations."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Use EngineIsolation traces to configure bank partitions; certify ≤100-µs tiles and test persistent dispatch against adversarial control arrivals."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "EngineIsolation v2 report replaces DRAM-quota checks with bank-partition certification and adds ≤100-µs tile certificates and persistent-dispatch latency traces."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Compare EngineIsolation v2 bank-isolation and tile traces against v1 quota traces; audit interference bounds and worst-case dispatch latency."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Audit confirmed EngineIsolation v2’s ≤100-µs tiles, ≤9-µs dispatch, and ≤25-µs bank interference; v1 lacked bank-isolation certificates."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n34",
+      "content": "Run TileStorm using audited EngineIsolation v2 bounds; compare persistent dispatch with 252-µs reservations on deadlines and inference gaps."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "EngineIsolation v3 report replaces v2’s dispatch-only traces with TileStorm deadline and inference-gap comparisons against 252-µs reservations."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Audit EngineIsolation v3 TileStorm traces against v2 certificates; compute worst admitted control latency, inference gaps, and bound violations."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "TileStorm: persistent dispatch had zero bound violations, 1.78-ms worst control latency, and 1.94-ms inference gaps versus 1.99-ms baseline."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n40",
+      "content": "Prefer certified persistent dispatch on bank-partitioned devices: TileStorm cut inference gaps to 1.94 ms with 1.78-ms control latency."
+    },
+    {
+      "id": "n44",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p4",
+      "content": "How can persistent dispatch enforce mandatory inference turns under continuous control arrivals without introducing unbounded control blocking?"
+    },
+    {
+      "id": "n45",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Charging two mandatory 134-µs inference turns per control response window preserves admitted deadlines and guarantees backlogged inference progress."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Extend EngineIsolation v3 TileStorm traces with adversarial release phases; charge two 134-µs turns and measure deadline misses, inference gaps."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Adversarial TileStorm phases: two-turn admission yielded zero control deadline misses across 1 million jobs and maximum inference gap 1.97 ms."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 53,
+      "exploration_parent_id": "g1",
+      "content": "Use release-aware guarded inference launches, admission-tested protected inference windows, and memory token buckets to bound control interference."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "p5",
+      "content": "Derive guarded-launch and memory-token admission bounds atop certified persistent dispatch and two-turn accounting; stress-test deadlines and inference gaps."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Integrate EngineIsolation v3 tile certificates with FrameGuard v0.1 admission; implement release-aware launch guards and memory token buckets."
+    },
+    {
+      "id": "n50",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "FrameGuard v0.2 adds certified ≤100-µs tiles, release-aware launch guards, memory token buckets, and two-turn control admission."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Run GuardStorm with adversarial releases and DRAM bursts, comparing FrameGuard v0.2 against two-turn TileStorm on deadline misses and inference gaps."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "GuardStorm: FrameGuard v0.2 missed zero of 1 million control deadlines; worst latency 1.81 ms, inference gap 1.92 ms."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "p5",
+      "content": "Choose FrameGuard v0.2 over persistent dispatch for shorter inference gaps; retain faster dual-engine isolation and 252-µs reservations as fallbacks."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "depend_on",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n33"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a mixed-criticality accelerator runtime guaranteeing control-task deadlines despite nonpreemptible inference kernels and shared-memory interference.",
+    "requirements": [
+      "Under declared execution and interference bounds, all admitted control jobs meet 2 ms deadlines.",
+      "Guarantee starvation-free inference progress under adversarial arrivals without compromising admitted control deadlines."
+    ]
+  }
+}

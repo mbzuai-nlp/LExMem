@@ -1,0 +1,101 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "SwapAnchor nuisance-code swaps, causal-feature leakage, and source-accuracy deficit",
+      "boundary_reason": "The source-accuracy deficit and cluster audit lead to a new question about source-only filtering."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "GateSwap stability filtering and source-accuracy evaluation",
+      "boundary_reason": "The 0.9 stability gate is selected for unseen-correlation testing; the next proposal changes methods."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p3",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "CrossRisk pseudo-domain clustering and the pooled-label AMI correction",
+      "boundary_reason": "The clustering audit resolves the AMI discrepancy and raises a separate question about training on the resulting pseudo-domains."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p4",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "CrossRisk-Guard training and initial accuracy and feature-retention results",
+      "boundary_reason": "Initial evaluation is complete; attention shifts to rare pseudo-domain overfitting."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Pseudo-domain prevalence floors and paired-seed validation",
+      "boundary_reason": "Paired-seed results qualify the claimed gain and prompt a new question about transferable cues in rare clusters."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Stability-weighted rare-cluster risk and conflicting v1/v2 results",
+      "boundary_reason": "Contrasting results across v1 and v2 motivate a focused explanation of the difference."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "v1/v2 rare-cluster composition and ablation audit",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

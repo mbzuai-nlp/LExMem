@@ -1,0 +1,123 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Select style-marginalized likelihood for novelty scoring",
+      "boundary_reason": "The scoring comparison ends in a decision; the discussion shifts to adapter rehearsal."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Plan and report a prototype-only rehearsal sweep",
+      "boundary_reason": "The sweep report is produced; the discussion returns to recurring-domain false positives."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Test whether nearest-prototype scoring controls recurring-domain false positives",
+      "boundary_reason": "The retest refutes the nearest-prototype hypothesis, prompting a joint-method plan."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Evaluate marginal-likelihood scoring with 0.5-weight rehearsal",
+      "boundary_reason": "The joint-evaluation audit closes this approach before a different proposal begins."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Test fixed appearance-direction removal on standard DomainNet streams",
+      "boundary_reason": "The initial result supports fixed removal; testing shifts to rare-domain streams."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Address rare-domain failure with adaptive-rank gating",
+      "boundary_reason": "Adaptive-rank gating is selected; the next stage tunes retention."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Sweep Fisher regularization with adaptive-rank gating",
+      "boundary_reason": "The Fisher-sweep table is produced before a new recognition approach begins."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Test gated HMM regime-conditioned conformal calibration",
+      "boundary_reason": "Gating improves ordinary recurring-regime results; the next test targets rapid returns."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Repair rapid-return calibration with frozen sketches",
+      "boundary_reason": "Calibration freezes are adopted; evaluation moves to the full frozen-backbone method."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Audit frozen-sketch HMM against novelty and retention goals",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

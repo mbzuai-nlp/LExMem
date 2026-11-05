@@ -1,0 +1,2242 @@
+[
+ {
+  "dialogue_id": "research_001",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_021",
+  "evolved_graph": "graph_3",
+  "nodes": 46,
+  "sessions": 10,
+  "messages": 1668,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_002",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_092",
+  "evolved_graph": "graph_70",
+  "nodes": 46,
+  "sessions": 9,
+  "messages": 1710,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_003",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_043",
+  "evolved_graph": "graph_106",
+  "nodes": 46,
+  "sessions": 11,
+  "messages": 1812,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_004",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_022",
+  "evolved_graph": "graph_106",
+  "nodes": 46,
+  "sessions": 12,
+  "messages": 1560,
+  "questions": 2
+ },
+ {
+  "dialogue_id": "research_005",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_093",
+  "evolved_graph": "graph_49",
+  "nodes": 47,
+  "sessions": 8,
+  "messages": 1434,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_006",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_092",
+  "evolved_graph": "graph_49",
+  "nodes": 47,
+  "sessions": 6,
+  "messages": 1962,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_007",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_005",
+  "evolved_graph": "graph_19",
+  "nodes": 48,
+  "sessions": 12,
+  "messages": 1692,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_008",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_050",
+  "evolved_graph": "graph_52",
+  "nodes": 48,
+  "sessions": 11,
+  "messages": 1724,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_009",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_064",
+  "evolved_graph": "graph_82",
+  "nodes": 48,
+  "sessions": 7,
+  "messages": 1960,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_010",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_032",
+  "evolved_graph": "graph_9",
+  "nodes": 48,
+  "sessions": 7,
+  "messages": 1664,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_011",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_001",
+  "evolved_graph": "graph_52",
+  "nodes": 48,
+  "sessions": 10,
+  "messages": 1822,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_012",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_025",
+  "evolved_graph": "graph_145",
+  "nodes": 49,
+  "sessions": 11,
+  "messages": 1784,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_013",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_091",
+  "evolved_graph": "graph_35",
+  "nodes": 49,
+  "sessions": 6,
+  "messages": 1948,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_014",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_042",
+  "evolved_graph": "graph_94",
+  "nodes": 49,
+  "sessions": 10,
+  "messages": 1456,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_015",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_022",
+  "evolved_graph": "graph_145",
+  "nodes": 49,
+  "sessions": 9,
+  "messages": 1908,
+  "questions": 1
+ },
+ {
+  "dialogue_id": "research_016",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_097",
+  "evolved_graph": "graph_94",
+  "nodes": 49,
+  "sessions": 9,
+  "messages": 2066,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_017",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_041",
+  "evolved_graph": "graph_86",
+  "nodes": 49,
+  "sessions": 11,
+  "messages": 1570,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_018",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_077",
+  "evolved_graph": "graph_35",
+  "nodes": 49,
+  "sessions": 6,
+  "messages": 1176,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_019",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_018",
+  "evolved_graph": "graph_94",
+  "nodes": 49,
+  "sessions": 10,
+  "messages": 1780,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_020",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_082",
+  "evolved_graph": "graph_5",
+  "nodes": 50,
+  "sessions": 7,
+  "messages": 1846,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_021",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_100",
+  "evolved_graph": "graph_5",
+  "nodes": 50,
+  "sessions": 10,
+  "messages": 1920,
+  "questions": 3
+ },
+ {
+  "dialogue_id": "research_022",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_046",
+  "evolved_graph": "graph_89",
+  "nodes": 51,
+  "sessions": 10,
+  "messages": 2066,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "research_023",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_015",
+  "evolved_graph": "graph_142",
+  "nodes": 51,
+  "sessions": 10,
+  "messages": 1892,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_024",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_005",
+  "evolved_graph": "graph_97",
+  "nodes": 51,
+  "sessions": 12,
+  "messages": 2150,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_025",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_003",
+  "evolved_graph": "graph_132",
+  "nodes": 51,
+  "sessions": 8,
+  "messages": 2022,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_026",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_060",
+  "evolved_graph": "graph_89",
+  "nodes": 51,
+  "sessions": 9,
+  "messages": 2268,
+  "questions": 18
+ },
+ {
+  "dialogue_id": "research_027",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_100",
+  "evolved_graph": "graph_89",
+  "nodes": 51,
+  "sessions": 9,
+  "messages": 1642,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_028",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_073",
+  "evolved_graph": "graph_61",
+  "nodes": 52,
+  "sessions": 10,
+  "messages": 1486,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_029",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_087",
+  "evolved_graph": "graph_6",
+  "nodes": 52,
+  "sessions": 9,
+  "messages": 2446,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_030",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_053",
+  "evolved_graph": "graph_36",
+  "nodes": 52,
+  "sessions": 8,
+  "messages": 2018,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_031",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_077",
+  "evolved_graph": "graph_6",
+  "nodes": 52,
+  "sessions": 9,
+  "messages": 2056,
+  "questions": 21
+ },
+ {
+  "dialogue_id": "research_032",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_010",
+  "evolved_graph": "graph_99",
+  "nodes": 52,
+  "sessions": 8,
+  "messages": 2146,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_033",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_099",
+  "evolved_graph": "graph_6",
+  "nodes": 52,
+  "sessions": 9,
+  "messages": 1790,
+  "questions": 15
+ },
+ {
+  "dialogue_id": "research_034",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_098",
+  "evolved_graph": "graph_99",
+  "nodes": 52,
+  "sessions": 8,
+  "messages": 1688,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_035",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_047",
+  "evolved_graph": "graph_128",
+  "nodes": 52,
+  "sessions": 9,
+  "messages": 1938,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_036",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_009",
+  "evolved_graph": "graph_53",
+  "nodes": 53,
+  "sessions": 9,
+  "messages": 1874,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_037",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_076",
+  "evolved_graph": "graph_54",
+  "nodes": 53,
+  "sessions": 8,
+  "messages": 2062,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_038",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_013",
+  "evolved_graph": "graph_93",
+  "nodes": 53,
+  "sessions": 12,
+  "messages": 1870,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_039",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_083",
+  "evolved_graph": "graph_11",
+  "nodes": 53,
+  "sessions": 12,
+  "messages": 2054,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_040",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_063",
+  "evolved_graph": "graph_54",
+  "nodes": 53,
+  "sessions": 9,
+  "messages": 2092,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_041",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_017",
+  "evolved_graph": "graph_11",
+  "nodes": 53,
+  "sessions": 9,
+  "messages": 2324,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_042",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_037",
+  "evolved_graph": "graph_54",
+  "nodes": 53,
+  "sessions": 9,
+  "messages": 1714,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_043",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_037",
+  "evolved_graph": "graph_11",
+  "nodes": 53,
+  "sessions": 13,
+  "messages": 1846,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_044",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_089",
+  "evolved_graph": "graph_33",
+  "nodes": 53,
+  "sessions": 9,
+  "messages": 2482,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_045",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_039",
+  "evolved_graph": "graph_125",
+  "nodes": 54,
+  "sessions": 12,
+  "messages": 2494,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_046",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_014",
+  "evolved_graph": "graph_95",
+  "nodes": 54,
+  "sessions": 7,
+  "messages": 2492,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_047",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_096",
+  "evolved_graph": "graph_125",
+  "nodes": 54,
+  "sessions": 9,
+  "messages": 2278,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_048",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_097",
+  "evolved_graph": "graph_122",
+  "nodes": 54,
+  "sessions": 11,
+  "messages": 2202,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_049",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_070",
+  "evolved_graph": "graph_69",
+  "nodes": 55,
+  "sessions": 8,
+  "messages": 2164,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_050",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_045",
+  "evolved_graph": "graph_119",
+  "nodes": 55,
+  "sessions": 11,
+  "messages": 1878,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_051",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_074",
+  "evolved_graph": "graph_69",
+  "nodes": 55,
+  "sessions": 9,
+  "messages": 2246,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_052",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_031",
+  "evolved_graph": "graph_101",
+  "nodes": 56,
+  "sessions": 10,
+  "messages": 2020,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_053",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_058",
+  "evolved_graph": "graph_143",
+  "nodes": 56,
+  "sessions": 11,
+  "messages": 1946,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_054",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_031",
+  "evolved_graph": "graph_98",
+  "nodes": 56,
+  "sessions": 9,
+  "messages": 1980,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_055",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_023",
+  "evolved_graph": "graph_87",
+  "nodes": 56,
+  "sessions": 12,
+  "messages": 2156,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_056",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_088",
+  "evolved_graph": "graph_116",
+  "nodes": 56,
+  "sessions": 8,
+  "messages": 2546,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_057",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_086",
+  "evolved_graph": "graph_55",
+  "nodes": 56,
+  "sessions": 9,
+  "messages": 2646,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_058",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_020",
+  "evolved_graph": "graph_116",
+  "nodes": 56,
+  "sessions": 9,
+  "messages": 2620,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_059",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_065",
+  "evolved_graph": "graph_79",
+  "nodes": 56,
+  "sessions": 9,
+  "messages": 2744,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_060",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_057",
+  "evolved_graph": "graph_143",
+  "nodes": 56,
+  "sessions": 10,
+  "messages": 1980,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_061",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_003",
+  "evolved_graph": "graph_68",
+  "nodes": 57,
+  "sessions": 10,
+  "messages": 2206,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_062",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_040",
+  "evolved_graph": "graph_114",
+  "nodes": 57,
+  "sessions": 9,
+  "messages": 2596,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_063",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_007",
+  "evolved_graph": "graph_34",
+  "nodes": 57,
+  "sessions": 12,
+  "messages": 2112,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_064",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_036",
+  "evolved_graph": "graph_104",
+  "nodes": 57,
+  "sessions": 7,
+  "messages": 1482,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_065",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_088",
+  "evolved_graph": "graph_68",
+  "nodes": 57,
+  "sessions": 10,
+  "messages": 2056,
+  "questions": 18
+ },
+ {
+  "dialogue_id": "research_066",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_064",
+  "evolved_graph": "graph_140",
+  "nodes": 58,
+  "sessions": 12,
+  "messages": 2144,
+  "questions": 1
+ },
+ {
+  "dialogue_id": "research_067",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_022",
+  "evolved_graph": "graph_146",
+  "nodes": 58,
+  "sessions": 9,
+  "messages": 2678,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_068",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_046",
+  "evolved_graph": "graph_150",
+  "nodes": 58,
+  "sessions": 10,
+  "messages": 1962,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_069",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_002",
+  "evolved_graph": "graph_25",
+  "nodes": 58,
+  "sessions": 8,
+  "messages": 2010,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_070",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_059",
+  "evolved_graph": "graph_26",
+  "nodes": 59,
+  "sessions": 13,
+  "messages": 2694,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_071",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_041",
+  "evolved_graph": "graph_80",
+  "nodes": 59,
+  "sessions": 9,
+  "messages": 1936,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_072",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_009",
+  "evolved_graph": "graph_23",
+  "nodes": 59,
+  "sessions": 11,
+  "messages": 2040,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_073",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_026",
+  "evolved_graph": "graph_137",
+  "nodes": 59,
+  "sessions": 9,
+  "messages": 1734,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_074",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_096",
+  "evolved_graph": "graph_23",
+  "nodes": 59,
+  "sessions": 12,
+  "messages": 2504,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_075",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_070",
+  "evolved_graph": "graph_26",
+  "nodes": 59,
+  "sessions": 12,
+  "messages": 2476,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_076",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_013",
+  "evolved_graph": "graph_103",
+  "nodes": 59,
+  "sessions": 11,
+  "messages": 2376,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_077",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_061",
+  "evolved_graph": "graph_74",
+  "nodes": 60,
+  "sessions": 11,
+  "messages": 2198,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_078",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_011",
+  "evolved_graph": "graph_111",
+  "nodes": 60,
+  "sessions": 11,
+  "messages": 2020,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_079",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_099",
+  "evolved_graph": "graph_39",
+  "nodes": 60,
+  "sessions": 14,
+  "messages": 2278,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_080",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_044",
+  "evolved_graph": "graph_126",
+  "nodes": 60,
+  "sessions": 10,
+  "messages": 2054,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_081",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_039",
+  "evolved_graph": "graph_67",
+  "nodes": 60,
+  "sessions": 10,
+  "messages": 2130,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_082",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_026",
+  "evolved_graph": "graph_16",
+  "nodes": 60,
+  "sessions": 9,
+  "messages": 1822,
+  "questions": 15
+ },
+ {
+  "dialogue_id": "research_083",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_071",
+  "evolved_graph": "graph_118",
+  "nodes": 61,
+  "sessions": 10,
+  "messages": 2916,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_084",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_027",
+  "evolved_graph": "graph_139",
+  "nodes": 61,
+  "sessions": 12,
+  "messages": 3034,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_085",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_004",
+  "evolved_graph": "graph_75",
+  "nodes": 61,
+  "sessions": 9,
+  "messages": 2290,
+  "questions": 16
+ },
+ {
+  "dialogue_id": "research_086",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_090",
+  "evolved_graph": "graph_8",
+  "nodes": 61,
+  "sessions": 9,
+  "messages": 3204,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_087",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_037",
+  "evolved_graph": "graph_139",
+  "nodes": 61,
+  "sessions": 8,
+  "messages": 2296,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_088",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_076",
+  "evolved_graph": "graph_15",
+  "nodes": 61,
+  "sessions": 9,
+  "messages": 1888,
+  "questions": 14
+ },
+ {
+  "dialogue_id": "research_089",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_069",
+  "evolved_graph": "graph_30",
+  "nodes": 61,
+  "sessions": 12,
+  "messages": 2440,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_090",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_082",
+  "evolved_graph": "graph_30",
+  "nodes": 61,
+  "sessions": 9,
+  "messages": 2678,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_091",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_084",
+  "evolved_graph": "graph_75",
+  "nodes": 61,
+  "sessions": 9,
+  "messages": 2534,
+  "questions": 15
+ },
+ {
+  "dialogue_id": "research_092",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_008",
+  "evolved_graph": "graph_139",
+  "nodes": 61,
+  "sessions": 11,
+  "messages": 2432,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_093",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_077",
+  "evolved_graph": "graph_60",
+  "nodes": 62,
+  "sessions": 10,
+  "messages": 2940,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_094",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_035",
+  "evolved_graph": "graph_96",
+  "nodes": 62,
+  "sessions": 12,
+  "messages": 2456,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_095",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_004",
+  "evolved_graph": "graph_108",
+  "nodes": 62,
+  "sessions": 12,
+  "messages": 2482,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_096",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_057",
+  "evolved_graph": "graph_66",
+  "nodes": 62,
+  "sessions": 8,
+  "messages": 2228,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "research_097",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_059",
+  "evolved_graph": "graph_47",
+  "nodes": 62,
+  "sessions": 10,
+  "messages": 2798,
+  "questions": 16
+ },
+ {
+  "dialogue_id": "research_098",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_067",
+  "evolved_graph": "graph_108",
+  "nodes": 62,
+  "sessions": 16,
+  "messages": 2860,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_099",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_003",
+  "evolved_graph": "graph_71",
+  "nodes": 62,
+  "sessions": 11,
+  "messages": 2526,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_100",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_027",
+  "evolved_graph": "graph_77",
+  "nodes": 64,
+  "sessions": 9,
+  "messages": 2622,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_101",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_060",
+  "evolved_graph": "graph_138",
+  "nodes": 64,
+  "sessions": 11,
+  "messages": 2816,
+  "questions": 3
+ },
+ {
+  "dialogue_id": "research_102",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_063",
+  "evolved_graph": "graph_124",
+  "nodes": 65,
+  "sessions": 11,
+  "messages": 2780,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_103",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_097",
+  "evolved_graph": "graph_83",
+  "nodes": 65,
+  "sessions": 10,
+  "messages": 2734,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_104",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_076",
+  "evolved_graph": "graph_18",
+  "nodes": 65,
+  "sessions": 10,
+  "messages": 2128,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_105",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_073",
+  "evolved_graph": "graph_112",
+  "nodes": 65,
+  "sessions": 10,
+  "messages": 2066,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_106",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_005",
+  "evolved_graph": "graph_50",
+  "nodes": 65,
+  "sessions": 8,
+  "messages": 2578,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "research_107",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_017",
+  "evolved_graph": "graph_136",
+  "nodes": 66,
+  "sessions": 12,
+  "messages": 2340,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_108",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_034",
+  "evolved_graph": "graph_88",
+  "nodes": 66,
+  "sessions": 12,
+  "messages": 2446,
+  "questions": 37
+ },
+ {
+  "dialogue_id": "research_109",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_031",
+  "evolved_graph": "graph_136",
+  "nodes": 66,
+  "sessions": 11,
+  "messages": 2696,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "research_110",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_024",
+  "evolved_graph": "graph_147",
+  "nodes": 66,
+  "sessions": 14,
+  "messages": 2438,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_111",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_098",
+  "evolved_graph": "graph_65",
+  "nodes": 66,
+  "sessions": 9,
+  "messages": 1874,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_112",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_003",
+  "evolved_graph": "graph_38",
+  "nodes": 66,
+  "sessions": 9,
+  "messages": 2332,
+  "questions": 14
+ },
+ {
+  "dialogue_id": "research_113",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_062",
+  "evolved_graph": "graph_133",
+  "nodes": 66,
+  "sessions": 12,
+  "messages": 3098,
+  "questions": 16
+ },
+ {
+  "dialogue_id": "research_114",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_087",
+  "evolved_graph": "graph_65",
+  "nodes": 66,
+  "sessions": 9,
+  "messages": 2848,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_115",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_038",
+  "evolved_graph": "graph_88",
+  "nodes": 66,
+  "sessions": 10,
+  "messages": 2884,
+  "questions": 15
+ },
+ {
+  "dialogue_id": "research_116",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_034",
+  "evolved_graph": "graph_120",
+  "nodes": 67,
+  "sessions": 9,
+  "messages": 2864,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_117",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_058",
+  "evolved_graph": "graph_63",
+  "nodes": 67,
+  "sessions": 10,
+  "messages": 2476,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_118",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_045",
+  "evolved_graph": "graph_13",
+  "nodes": 70,
+  "sessions": 10,
+  "messages": 2936,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_119",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_086",
+  "evolved_graph": "graph_109",
+  "nodes": 70,
+  "sessions": 13,
+  "messages": 3202,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_120",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_056",
+  "evolved_graph": "graph_13",
+  "nodes": 70,
+  "sessions": 13,
+  "messages": 2712,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_121",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_054",
+  "evolved_graph": "graph_73",
+  "nodes": 71,
+  "sessions": 12,
+  "messages": 3056,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_122",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_069",
+  "evolved_graph": "graph_48",
+  "nodes": 71,
+  "sessions": 11,
+  "messages": 2256,
+  "questions": 14
+ },
+ {
+  "dialogue_id": "research_123",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_100",
+  "evolved_graph": "graph_24",
+  "nodes": 72,
+  "sessions": 9,
+  "messages": 2612,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_124",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_080",
+  "evolved_graph": "graph_72",
+  "nodes": 72,
+  "sessions": 14,
+  "messages": 2682,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "research_125",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_030",
+  "evolved_graph": "graph_4",
+  "nodes": 73,
+  "sessions": 10,
+  "messages": 2748,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_126",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_012",
+  "evolved_graph": "graph_42",
+  "nodes": 73,
+  "sessions": 11,
+  "messages": 2806,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "research_127",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_087",
+  "evolved_graph": "graph_105",
+  "nodes": 73,
+  "sessions": 12,
+  "messages": 2552,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_128",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_061",
+  "evolved_graph": "graph_42",
+  "nodes": 73,
+  "sessions": 11,
+  "messages": 2528,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_129",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_011",
+  "evolved_graph": "graph_20",
+  "nodes": 74,
+  "sessions": 15,
+  "messages": 2954,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_130",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_099",
+  "evolved_graph": "graph_20",
+  "nodes": 74,
+  "sessions": 12,
+  "messages": 2324,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_131",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_044",
+  "evolved_graph": "graph_20",
+  "nodes": 74,
+  "sessions": 12,
+  "messages": 2488,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_132",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_087",
+  "evolved_graph": "graph_127",
+  "nodes": 75,
+  "sessions": 11,
+  "messages": 3072,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "research_133",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_055",
+  "evolved_graph": "graph_127",
+  "nodes": 75,
+  "sessions": 11,
+  "messages": 3010,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_134",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_054",
+  "evolved_graph": "graph_37",
+  "nodes": 75,
+  "sessions": 12,
+  "messages": 3368,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "research_135",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_044",
+  "evolved_graph": "graph_32",
+  "nodes": 79,
+  "sessions": 11,
+  "messages": 2518,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "research_136",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_089",
+  "evolved_graph": "graph_32",
+  "nodes": 79,
+  "sessions": 13,
+  "messages": 3600,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "research_137",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_092",
+  "evolved_graph": "graph_51",
+  "nodes": 81,
+  "sessions": 13,
+  "messages": 2854,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_138",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_002",
+  "evolved_graph": "graph_57",
+  "nodes": 81,
+  "sessions": 10,
+  "messages": 3862,
+  "questions": 18
+ },
+ {
+  "dialogue_id": "research_139",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_023",
+  "evolved_graph": "graph_91",
+  "nodes": 81,
+  "sessions": 13,
+  "messages": 3092,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "research_140",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_016",
+  "evolved_graph": "graph_10",
+  "nodes": 82,
+  "sessions": 12,
+  "messages": 3756,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_141",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_091",
+  "evolved_graph": "graph_45",
+  "nodes": 82,
+  "sessions": 12,
+  "messages": 3188,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_142",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_060",
+  "evolved_graph": "graph_10",
+  "nodes": 82,
+  "sessions": 12,
+  "messages": 2986,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_143",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_059",
+  "evolved_graph": "graph_10",
+  "nodes": 82,
+  "sessions": 16,
+  "messages": 4136,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "research_144",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_032",
+  "evolved_graph": "graph_44",
+  "nodes": 84,
+  "sessions": 12,
+  "messages": 3684,
+  "questions": 14
+ },
+ {
+  "dialogue_id": "research_145",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_043",
+  "evolved_graph": "graph_7",
+  "nodes": 88,
+  "sessions": 10,
+  "messages": 3166,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "research_146",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_050",
+  "evolved_graph": "graph_7",
+  "nodes": 88,
+  "sessions": 10,
+  "messages": 3370,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "research_147",
+  "task_type": "research_idea_exploration",
+  "seed_task": "task_055",
+  "evolved_graph": "graph_7",
+  "nodes": 88,
+  "sessions": 12,
+  "messages": 5138,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_001",
+  "task_type": "software_development",
+  "seed_task": "task_119",
+  "evolved_graph": "graph_17",
+  "nodes": 45,
+  "sessions": 4,
+  "messages": 1618,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_002",
+  "task_type": "software_development",
+  "seed_task": "task_105",
+  "evolved_graph": "graph_17",
+  "nodes": 45,
+  "sessions": 5,
+  "messages": 1624,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_003",
+  "task_type": "software_development",
+  "seed_task": "task_145",
+  "evolved_graph": "graph_70",
+  "nodes": 46,
+  "sessions": 10,
+  "messages": 1936,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "software_004",
+  "task_type": "software_development",
+  "seed_task": "task_110",
+  "evolved_graph": "graph_3",
+  "nodes": 46,
+  "sessions": 10,
+  "messages": 1634,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_005",
+  "task_type": "software_development",
+  "seed_task": "task_130",
+  "evolved_graph": "graph_46",
+  "nodes": 47,
+  "sessions": 9,
+  "messages": 1532,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "software_006",
+  "task_type": "software_development",
+  "seed_task": "task_146",
+  "evolved_graph": "graph_19",
+  "nodes": 48,
+  "sessions": 6,
+  "messages": 1832,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_007",
+  "task_type": "software_development",
+  "seed_task": "task_121",
+  "evolved_graph": "graph_82",
+  "nodes": 48,
+  "sessions": 8,
+  "messages": 1524,
+  "questions": 15
+ },
+ {
+  "dialogue_id": "software_008",
+  "task_type": "software_development",
+  "seed_task": "task_137",
+  "evolved_graph": "graph_94",
+  "nodes": 49,
+  "sessions": 10,
+  "messages": 1686,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "software_009",
+  "task_type": "software_development",
+  "seed_task": "task_123",
+  "evolved_graph": "graph_145",
+  "nodes": 49,
+  "sessions": 7,
+  "messages": 1914,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_010",
+  "task_type": "software_development",
+  "seed_task": "task_104",
+  "evolved_graph": "graph_62",
+  "nodes": 50,
+  "sessions": 8,
+  "messages": 1704,
+  "questions": 3
+ },
+ {
+  "dialogue_id": "software_011",
+  "task_type": "software_development",
+  "seed_task": "task_144",
+  "evolved_graph": "graph_142",
+  "nodes": 51,
+  "sessions": 10,
+  "messages": 1956,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "software_012",
+  "task_type": "software_development",
+  "seed_task": "task_103",
+  "evolved_graph": "graph_36",
+  "nodes": 52,
+  "sessions": 7,
+  "messages": 2174,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "software_013",
+  "task_type": "software_development",
+  "seed_task": "task_142",
+  "evolved_graph": "graph_128",
+  "nodes": 52,
+  "sessions": 9,
+  "messages": 1624,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_014",
+  "task_type": "software_development",
+  "seed_task": "task_111",
+  "evolved_graph": "graph_61",
+  "nodes": 52,
+  "sessions": 11,
+  "messages": 1880,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "software_015",
+  "task_type": "software_development",
+  "seed_task": "task_102",
+  "evolved_graph": "graph_85",
+  "nodes": 52,
+  "sessions": 10,
+  "messages": 2344,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_016",
+  "task_type": "software_development",
+  "seed_task": "task_110",
+  "evolved_graph": "graph_40",
+  "nodes": 53,
+  "sessions": 7,
+  "messages": 2082,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_017",
+  "task_type": "software_development",
+  "seed_task": "task_120",
+  "evolved_graph": "graph_33",
+  "nodes": 53,
+  "sessions": 9,
+  "messages": 2034,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_018",
+  "task_type": "software_development",
+  "seed_task": "task_143",
+  "evolved_graph": "graph_122",
+  "nodes": 54,
+  "sessions": 9,
+  "messages": 1948,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "software_019",
+  "task_type": "software_development",
+  "seed_task": "task_149",
+  "evolved_graph": "graph_119",
+  "nodes": 55,
+  "sessions": 11,
+  "messages": 1886,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "software_020",
+  "task_type": "software_development",
+  "seed_task": "task_138",
+  "evolved_graph": "graph_79",
+  "nodes": 56,
+  "sessions": 8,
+  "messages": 2536,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_021",
+  "task_type": "software_development",
+  "seed_task": "task_114",
+  "evolved_graph": "graph_90",
+  "nodes": 57,
+  "sessions": 7,
+  "messages": 2094,
+  "questions": 15
+ },
+ {
+  "dialogue_id": "software_022",
+  "task_type": "software_development",
+  "seed_task": "task_137",
+  "evolved_graph": "graph_144",
+  "nodes": 57,
+  "sessions": 6,
+  "messages": 2530,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "software_023",
+  "task_type": "software_development",
+  "seed_task": "task_108",
+  "evolved_graph": "graph_25",
+  "nodes": 58,
+  "sessions": 8,
+  "messages": 2712,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_024",
+  "task_type": "software_development",
+  "seed_task": "task_146",
+  "evolved_graph": "graph_100",
+  "nodes": 58,
+  "sessions": 10,
+  "messages": 2100,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_025",
+  "task_type": "software_development",
+  "seed_task": "task_150",
+  "evolved_graph": "graph_64",
+  "nodes": 59,
+  "sessions": 10,
+  "messages": 2332,
+  "questions": 3
+ },
+ {
+  "dialogue_id": "software_026",
+  "task_type": "software_development",
+  "seed_task": "task_122",
+  "evolved_graph": "graph_137",
+  "nodes": 59,
+  "sessions": 8,
+  "messages": 2130,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_027",
+  "task_type": "software_development",
+  "seed_task": "task_114",
+  "evolved_graph": "graph_64",
+  "nodes": 59,
+  "sessions": 10,
+  "messages": 2702,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_028",
+  "task_type": "software_development",
+  "seed_task": "task_112",
+  "evolved_graph": "graph_26",
+  "nodes": 59,
+  "sessions": 9,
+  "messages": 2312,
+  "questions": 1
+ },
+ {
+  "dialogue_id": "software_029",
+  "task_type": "software_development",
+  "seed_task": "task_142",
+  "evolved_graph": "graph_113",
+  "nodes": 59,
+  "sessions": 9,
+  "messages": 1862,
+  "questions": 3
+ },
+ {
+  "dialogue_id": "software_030",
+  "task_type": "software_development",
+  "seed_task": "task_114",
+  "evolved_graph": "graph_64",
+  "nodes": 59,
+  "sessions": 11,
+  "messages": 2684,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_031",
+  "task_type": "software_development",
+  "seed_task": "task_126",
+  "evolved_graph": "graph_126",
+  "nodes": 60,
+  "sessions": 9,
+  "messages": 2252,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_032",
+  "task_type": "software_development",
+  "seed_task": "task_109",
+  "evolved_graph": "graph_67",
+  "nodes": 60,
+  "sessions": 10,
+  "messages": 2258,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_033",
+  "task_type": "software_development",
+  "seed_task": "task_150",
+  "evolved_graph": "graph_16",
+  "nodes": 60,
+  "sessions": 8,
+  "messages": 2224,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "software_034",
+  "task_type": "software_development",
+  "seed_task": "task_121",
+  "evolved_graph": "graph_41",
+  "nodes": 60,
+  "sessions": 9,
+  "messages": 1812,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "software_035",
+  "task_type": "software_development",
+  "seed_task": "task_149",
+  "evolved_graph": "graph_41",
+  "nodes": 60,
+  "sessions": 9,
+  "messages": 2208,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "software_036",
+  "task_type": "software_development",
+  "seed_task": "task_124",
+  "evolved_graph": "graph_74",
+  "nodes": 60,
+  "sessions": 9,
+  "messages": 2220,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_037",
+  "task_type": "software_development",
+  "seed_task": "task_103",
+  "evolved_graph": "graph_111",
+  "nodes": 60,
+  "sessions": 9,
+  "messages": 2196,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_038",
+  "task_type": "software_development",
+  "seed_task": "task_147",
+  "evolved_graph": "graph_15",
+  "nodes": 61,
+  "sessions": 10,
+  "messages": 2340,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "software_039",
+  "task_type": "software_development",
+  "seed_task": "task_141",
+  "evolved_graph": "graph_8",
+  "nodes": 61,
+  "sessions": 7,
+  "messages": 2710,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_040",
+  "task_type": "software_development",
+  "seed_task": "task_129",
+  "evolved_graph": "graph_15",
+  "nodes": 61,
+  "sessions": 10,
+  "messages": 2112,
+  "questions": 14
+ },
+ {
+  "dialogue_id": "software_041",
+  "task_type": "software_development",
+  "seed_task": "task_133",
+  "evolved_graph": "graph_60",
+  "nodes": 62,
+  "sessions": 8,
+  "messages": 1930,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "software_042",
+  "task_type": "software_development",
+  "seed_task": "task_121",
+  "evolved_graph": "graph_60",
+  "nodes": 62,
+  "sessions": 9,
+  "messages": 2206,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_043",
+  "task_type": "software_development",
+  "seed_task": "task_118",
+  "evolved_graph": "graph_60",
+  "nodes": 62,
+  "sessions": 9,
+  "messages": 2088,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_044",
+  "task_type": "software_development",
+  "seed_task": "task_147",
+  "evolved_graph": "graph_66",
+  "nodes": 62,
+  "sessions": 8,
+  "messages": 2694,
+  "questions": 16
+ },
+ {
+  "dialogue_id": "software_045",
+  "task_type": "software_development",
+  "seed_task": "task_116",
+  "evolved_graph": "graph_148",
+  "nodes": 62,
+  "sessions": 9,
+  "messages": 2566,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "software_046",
+  "task_type": "software_development",
+  "seed_task": "task_127",
+  "evolved_graph": "graph_115",
+  "nodes": 63,
+  "sessions": 10,
+  "messages": 2324,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "software_047",
+  "task_type": "software_development",
+  "seed_task": "task_125",
+  "evolved_graph": "graph_138",
+  "nodes": 64,
+  "sessions": 12,
+  "messages": 2768,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_048",
+  "task_type": "software_development",
+  "seed_task": "task_133",
+  "evolved_graph": "graph_102",
+  "nodes": 65,
+  "sessions": 9,
+  "messages": 1968,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_049",
+  "task_type": "software_development",
+  "seed_task": "task_116",
+  "evolved_graph": "graph_18",
+  "nodes": 65,
+  "sessions": 10,
+  "messages": 2552,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "software_050",
+  "task_type": "software_development",
+  "seed_task": "task_116",
+  "evolved_graph": "graph_50",
+  "nodes": 65,
+  "sessions": 8,
+  "messages": 3186,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_051",
+  "task_type": "software_development",
+  "seed_task": "task_149",
+  "evolved_graph": "graph_18",
+  "nodes": 65,
+  "sessions": 9,
+  "messages": 2084,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_052",
+  "task_type": "software_development",
+  "seed_task": "task_133",
+  "evolved_graph": "graph_112",
+  "nodes": 65,
+  "sessions": 12,
+  "messages": 2314,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "software_053",
+  "task_type": "software_development",
+  "seed_task": "task_134",
+  "evolved_graph": "graph_83",
+  "nodes": 65,
+  "sessions": 9,
+  "messages": 2324,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "software_054",
+  "task_type": "software_development",
+  "seed_task": "task_140",
+  "evolved_graph": "graph_65",
+  "nodes": 66,
+  "sessions": 8,
+  "messages": 2530,
+  "questions": 7
+ },
+ {
+  "dialogue_id": "software_055",
+  "task_type": "software_development",
+  "seed_task": "task_124",
+  "evolved_graph": "graph_88",
+  "nodes": 66,
+  "sessions": 9,
+  "messages": 2356,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "software_056",
+  "task_type": "software_development",
+  "seed_task": "task_148",
+  "evolved_graph": "graph_38",
+  "nodes": 66,
+  "sessions": 7,
+  "messages": 2476,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_057",
+  "task_type": "software_development",
+  "seed_task": "task_148",
+  "evolved_graph": "graph_88",
+  "nodes": 66,
+  "sessions": 10,
+  "messages": 2612,
+  "questions": 22
+ },
+ {
+  "dialogue_id": "software_058",
+  "task_type": "software_development",
+  "seed_task": "task_133",
+  "evolved_graph": "graph_136",
+  "nodes": 66,
+  "sessions": 11,
+  "messages": 2428,
+  "questions": 15
+ },
+ {
+  "dialogue_id": "software_059",
+  "task_type": "software_development",
+  "seed_task": "task_137",
+  "evolved_graph": "graph_38",
+  "nodes": 66,
+  "sessions": 9,
+  "messages": 2488,
+  "questions": 17
+ },
+ {
+  "dialogue_id": "software_060",
+  "task_type": "software_development",
+  "seed_task": "task_140",
+  "evolved_graph": "graph_63",
+  "nodes": 67,
+  "sessions": 9,
+  "messages": 1992,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "software_061",
+  "task_type": "software_development",
+  "seed_task": "task_131",
+  "evolved_graph": "graph_120",
+  "nodes": 67,
+  "sessions": 8,
+  "messages": 2746,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "software_062",
+  "task_type": "software_development",
+  "seed_task": "task_104",
+  "evolved_graph": "graph_1",
+  "nodes": 68,
+  "sessions": 10,
+  "messages": 2842,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "software_063",
+  "task_type": "software_development",
+  "seed_task": "task_117",
+  "evolved_graph": "graph_123",
+  "nodes": 69,
+  "sessions": 9,
+  "messages": 3300,
+  "questions": 13
+ },
+ {
+  "dialogue_id": "software_064",
+  "task_type": "software_development",
+  "seed_task": "task_111",
+  "evolved_graph": "graph_109",
+  "nodes": 70,
+  "sessions": 13,
+  "messages": 2848,
+  "questions": 5
+ },
+ {
+  "dialogue_id": "software_065",
+  "task_type": "software_development",
+  "seed_task": "task_110",
+  "evolved_graph": "graph_109",
+  "nodes": 70,
+  "sessions": 11,
+  "messages": 2852,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "software_066",
+  "task_type": "software_development",
+  "seed_task": "task_129",
+  "evolved_graph": "graph_21",
+  "nodes": 71,
+  "sessions": 9,
+  "messages": 2874,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "software_067",
+  "task_type": "software_development",
+  "seed_task": "task_107",
+  "evolved_graph": "graph_48",
+  "nodes": 71,
+  "sessions": 9,
+  "messages": 3068,
+  "questions": 24
+ },
+ {
+  "dialogue_id": "software_068",
+  "task_type": "software_development",
+  "seed_task": "task_115",
+  "evolved_graph": "graph_42",
+  "nodes": 73,
+  "sessions": 11,
+  "messages": 2654,
+  "questions": 4
+ },
+ {
+  "dialogue_id": "software_069",
+  "task_type": "software_development",
+  "seed_task": "task_145",
+  "evolved_graph": "graph_29",
+  "nodes": 74,
+  "sessions": 10,
+  "messages": 2774,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "software_070",
+  "task_type": "software_development",
+  "seed_task": "task_102",
+  "evolved_graph": "graph_149",
+  "nodes": 75,
+  "sessions": 11,
+  "messages": 3450,
+  "questions": 11
+ },
+ {
+  "dialogue_id": "software_071",
+  "task_type": "software_development",
+  "seed_task": "task_101",
+  "evolved_graph": "graph_31",
+  "nodes": 77,
+  "sessions": 10,
+  "messages": 3114,
+  "questions": 12
+ },
+ {
+  "dialogue_id": "software_072",
+  "task_type": "software_development",
+  "seed_task": "task_128",
+  "evolved_graph": "graph_2",
+  "nodes": 79,
+  "sessions": 8,
+  "messages": 3056,
+  "questions": 6
+ },
+ {
+  "dialogue_id": "software_073",
+  "task_type": "software_development",
+  "seed_task": "task_113",
+  "evolved_graph": "graph_51",
+  "nodes": 81,
+  "sessions": 12,
+  "messages": 2816,
+  "questions": 17
+ },
+ {
+  "dialogue_id": "software_074",
+  "task_type": "software_development",
+  "seed_task": "task_122",
+  "evolved_graph": "graph_91",
+  "nodes": 81,
+  "sessions": 13,
+  "messages": 2654,
+  "questions": 8
+ },
+ {
+  "dialogue_id": "software_075",
+  "task_type": "software_development",
+  "seed_task": "task_136",
+  "evolved_graph": "graph_45",
+  "nodes": 82,
+  "sessions": 12,
+  "messages": 3292,
+  "questions": 10
+ },
+ {
+  "dialogue_id": "software_076",
+  "task_type": "software_development",
+  "seed_task": "task_112",
+  "evolved_graph": "graph_7",
+  "nodes": 88,
+  "sessions": 8,
+  "messages": 3520,
+  "questions": 9
+ },
+ {
+  "dialogue_id": "software_077",
+  "task_type": "software_development",
+  "seed_task": "task_112",
+  "evolved_graph": "graph_56",
+  "nodes": 92,
+  "sessions": 11,
+  "messages": 4410,
+  "questions": 31
+ }
+]

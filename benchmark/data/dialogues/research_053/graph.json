@@ -1,0 +1,945 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop robotic active perception that resolves grasp-relevant occlusions while accounting for uncertain object motion induced by sensing actions.",
+      "requirements": [
+        "Reduce failed grasps by 20% relative to a fixed-view baseline under matched action budgets.",
+        "Maintain object-damage rates below 1% across previously unseen object dynamics and occlusion patterns."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use risk-constrained belief-space MPC to select occlusion-clearing views or probes using action-conditioned motion ensembles and a 0.5% damage-risk cap."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can action-conditioned motion ensembles calibrate damage-risk estimates for unseen objects while selecting probes that reveal occluded grasp surfaces?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Contact-stratified conformal calibration will keep unseen-object damage below 1% while ensemble-guided probes cut occluded-grasp failures ≥20% versus budget-matched fixed views."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Run OccluMotion-2000 on held-out dynamics and occlusions, comparing conformally calibrated probes against budget-matched fixed views for damage and grasp-failure rates."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "On OccluMotion-2000, contact-calibrated probes cut held-out grasp failures from 20% to 15% versus budget-matched fixed views; damage was 0.4%."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Advance contact-calibrated probing to the next validation stage; held-out grasp failures fell 25% while damage remained 0.4%."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "After advancement, test 500 novel-dynamics grasps under unseen occlusions against budget-matched fixed views; verify ≥20% fewer failures and <1% damage."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "l1",
+      "content": "Randomize 500 novel-dynamics grasps across unseen occlusions between contact-calibrated probing and fixed-view control, matching budgets and recording failures and damage."
+    },
+    {
+      "id": "r1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "OccluMotion-500 validation bundle containing randomized arm assignments, matched-budget action traces, held-out dynamics labels, grasp outcomes, and object-damage annotations."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "r1",
+      "content": "Audit OccluMotion-500 labels and matched budgets; estimate stratified failure-reduction and damage confidence intervals against 20% and 1% thresholds."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "On held-out OccluMotion-500, budget-matched failures fell from 50/250 (20%) to 36/250 (14.4%) with probing; probe damage was 1/250 (0.4%)."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "q1",
+      "content": "Low-force microprobe updates will limit unseen-material damage-risk underestimation to ≤0.5 percentage points and cut grasp failures ≥20% versus fixed views."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "Test MaterialShift-2000: 1,000 unseen-material grasps per arm; compare low-force microprobe-updated damage-risk calibration and grasp failures against budget-matched fixed views."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "a4",
+      "content": "On MaterialShift-2000, microprobes predicted 0.4% damage but observed 1.4% (14/1,000); grasp failures fell only from 20% to 17%."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Can material-shift gating replace risky microprobes with noncontact views while retaining ≥20% grasp-failure reduction and <1% damage?"
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "q2",
+      "content": "Train vision-based material-shift gating to replace flagged microprobes with noncontact views; compare budget-matched grasp failures and damage on held-out materials."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "l2",
+      "content": "Train a vision-embedding shift detector on separate development materials, routing flagged objects to noncontact camera views instead of microprobes."
+    },
+    {
+      "id": "r2",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "a5",
+      "content": "MaterialGate-v1 contains a trained vision-embedding shift detector and routing policy that substitutes noncontact views for flagged microprobes."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Combine MaterialGate-v1 with action-conditioned belief-space planning: select noncontact views for material shifts and calibrated probes otherwise."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Where should MaterialGate-v1 set its shift threshold to avoid damaging missed detections without suppressing informative probes?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "q3",
+      "content": "Setting MaterialGate-v1's threshold for ≥95% damage-prone-material recall keeps damage <1% and reduces grasp failures ≥20% versus budget-matched fixed views."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "h3",
+      "content": "Set MaterialGate-v1's threshold for ≥95% development recall; test unseen MaterialShift-2kB recall, damage, and budget-matched failures versus fixed views."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "a6",
+      "content": "On MaterialShift-2kB, MaterialGate-v1 recalled 96% of damage-prone materials; failures fell from 20% to 15.4%, with 0.6% damage."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "e4",
+      "content": "Advance MaterialGate-v1 and calibrated probing to integration trials: separately, failures fell 23% and 28%, with 0.6% and 0.4% damage."
+    },
+    {
+      "id": "l3",
+      "type": "plan",
+      "order": 26,
+      "exploration_parent_id": "d2",
+      "content": "After advancement, tune MaterialGate-v1 thresholds for ≥95% damage-prone recall; validate integrated failure, damage, and probe rates on unseen materials."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "l3",
+      "content": "Sweep MaterialGate-v1 thresholds on development materials, logging damage-prone recall and retained probe rate; freeze the ≥95%-recall setting."
+    },
+    {
+      "id": "r3",
+      "type": "artifact",
+      "order": 28,
+      "exploration_parent_id": "a7",
+      "content": "MaterialGate-v1 threshold card freezes a 0.37 shift-score cutoff achieving ≥95% development recall, with retained-probe curves and routing rules."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "l3",
+      "content": "Audit OccluMotion-500 outcomes and budgets; prospectively assess frozen 0.37 gate on unseen materials for failures, damage, and probe retention."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "a8",
+      "content": "On MaterialShift-3k, ungated ensemble-MPC (0.5% cap) caused 1.3% damage; MaterialGate-v1 MPC caused 0.6%, with 23% fewer failures than fixed views."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "l3",
+      "content": "Stress-test integrated MaterialGate-v1 MPC's frozen 0.37 cutoff on unseen-material, unseen-occlusion OccluDyn-1000; measure probe retention, damage, and budget-matched failures."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a9",
+      "content": "On OccluDyn-1000, frozen-gate MPC caused 1.2% damage (6/500); failures fell from 20% to 17% versus budget-matched fixed views."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "e6",
+      "content": "Defer frozen-gate MPC deployment: MaterialShift-3k passed, but OccluDyn-1000 exceeded the damage limit and achieved only 15% fewer failures."
+    },
+    {
+      "id": "l4",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "d3",
+      "content": "After deferral, calibrate occlusion-conditioned gate thresholds for ≥95% damage-prone recall; retest damage, probe retention, and failures on unseen dynamics."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "l4",
+      "content": "Starting from MaterialGate-v1's 0.37 cutoff, tune occlusion-stratified thresholds on OccluGate-Dev for ≥95% damage-prone recall and maximal probe retention."
+    },
+    {
+      "id": "r4",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "a10",
+      "content": "MaterialGate-v2 threshold card replaces uniform 0.37 with mild/moderate/severe-occlusion cutoffs of 0.37/0.30/0.23, plus probe-routing and development-recall tables."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "l4",
+      "content": "Test MaterialGate-v2’s cutoffs with integrated MPC on novel-dynamics, unseen-occlusion OccluDyn-2k versus budget-matched fixed views; measure failures, damage, probe retention."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "a11",
+      "content": "On OccluDyn-2k, MaterialGate-v2 MPC cut failures from 20% to 17% versus budget-matched fixed views; damage was 0.7%."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "e7",
+      "content": "Defer deployment: v2 lowers OccluDyn damage from 1.2% to 0.7% but leaves failure reduction at 15%, unlike MaterialShift’s 23%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Augment MaterialGate-v2 MPC with grasp-surface visibility rewards and motion-robust camera views, retaining probes only when calibrated safe."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Can grasp-surface visibility rewards recover OccluDyn’s missing failure reduction without raising damage above 1% under motion uncertainty?"
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "q4",
+      "content": "Adding motion-robust grasp-surface visibility rewards to MaterialGate-v2 MPC will reduce OccluDyn failures to ≤16%, with damage <1%."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "h4",
+      "content": "Using MaterialGate-v1’s detector, compare motion-robust visibility-rewarded v2 MPC against standard v2 and budget-matched fixed views on OccluDyn-3k: failures, damage."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "a12",
+      "content": "On OccluDyn-3k, visibility-rewarded MPC had 15.6% failures versus 17% standard v2 and 20% budget-matched fixed views; damage was 0.6%."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "e8",
+      "content": "Advance visibility-rewarded MaterialGate-v2 MPC to validation: OccluDyn-3k met failure-reduction and damage targets, unlike standard v2."
+    },
+    {
+      "id": "l5",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "d5",
+      "content": "After advancement, test visibility-rewarded MPC on unseen-dynamics OccluDyn-4k against budget-matched fixed views; verify ≥20% fewer failures and <1% damage."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "l5",
+      "content": "Deploy MaterialGate-v1’s detector within visibility-rewarded v2 MPC for randomized OccluDyn-4k trials, logging motion, budgets, failures, and damage."
+    },
+    {
+      "id": "r5",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "a13",
+      "content": "OccluDyn-4k trial bundle contains randomized assignments, matched-budget action logs, object-motion trajectories, grasp outcomes, and damage annotations."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "l5",
+      "content": "Audit OccluDyn-4k randomization and budgets; compare visibility-rewarded MPC against fixed views using failure-reduction and damage confidence bounds."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "a14",
+      "content": "On OccluDyn-4k, visibility-rewarded MPC cut failures from 400/2,000 (20%) to 340/2,000 (17%), only 15%; damage was 0.7%."
+    },
+    {
+      "id": "d6",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "e9",
+      "content": "Defer deployment: visibility-rewarded MPC achieved 22% fewer failures on OccluDyn-3k but only 15% on validation OccluDyn-4k."
+    },
+    {
+      "id": "q5",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p3",
+      "content": "Do action-induced rotations under severe occlusion make predicted grasp-surface visibility unreliable on OccluDyn-4k?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "q5",
+      "content": "For severely occluded OccluDyn-4k objects, sensing-induced rotations >15° will double grasp-surface visibility-fraction MAE versus rotations ≤5°."
+    },
+    {
+      "id": "a15",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "h5",
+      "content": "For deferred-deployment requalification, rerun MaterialGate-v1 routing on OccluDyn-4k logs; compare severe-occlusion visibility MAE for ≤5°/>15° rotations."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "a15",
+      "content": "On severe-occlusion OccluDyn-4k, visibility-fraction MAE reached 0.24 after >15° rotations versus 0.10 after ≤5°, undermining motion-robust views."
+    },
+    {
+      "id": "d7",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "e10",
+      "content": "Defer deployment; pursue rotation-aware visibility calibration because early gains did not generalize, and severe-occlusion rotations raised visibility MAE to 0.24."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a5"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "r2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a6",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "l3",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "l3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a7"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a8"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "r3"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a9"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "l4",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "l4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a10"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a11"
+    },
+    {
+      "source": "a10",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "r4"
+    },
+    {
+      "source": "r4",
+      "relation": "revise",
+      "target": "r3"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "r4"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "r4"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "l5",
+      "relation": "depend_on",
+      "target": "d5"
+    },
+    {
+      "source": "l5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "l5",
+      "relation": "decompose",
+      "target": "a13"
+    },
+    {
+      "source": "l5",
+      "relation": "decompose",
+      "target": "a14"
+    },
+    {
+      "source": "a13",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "r5"
+    },
+    {
+      "source": "a14",
+      "relation": "depend_on",
+      "target": "r5"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "r5"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d6"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "d6"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r5"
+    },
+    {
+      "source": "a15",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a15",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e10",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d7"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop robotic active perception that resolves grasp-relevant occlusions while accounting for uncertain object motion induced by sensing actions.",
+    "requirements": [
+      "Reduce failed grasps by 20% relative to a fixed-view baseline under matched action budgets.",
+      "Maintain object-damage rates below 1% across previously unseen object dynamics and occlusion patterns."
+    ]
+  }
+}

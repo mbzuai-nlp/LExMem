@@ -1,0 +1,975 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop informative treatment-effect confidence sets when confounding proxies are weak and their conditional independence assumptions are approximately violated.",
+      "requirements": [
+        "Guarantee at least 95% asymptotic coverage uniformly over explicitly quantified proxy-strength and assumption-violation classes.",
+        "Characterize when confidence sets are strictly narrower than outcome-range-only bounds without requiring point identification."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Invert slack-adjusted Anderson–Rubin proxy moments at 95% uniformly over δ≤0.05 conditional-independence violations and zero-strength proxies; tighten via positive endpoint margins."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When do profiled proxy moments exclude both outcome-range endpoints after δ-slack, even as proxy singular values approach zero?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Proxy-moment gaps at both endpoints exceeding δ plus the 95% critical radius yield strict bound tightening, even with rank-deficient proxies."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Derive uniformly calibrated 95% inversion and compute profiled endpoint margins across proxy strengths 0–0.2 and violations δ≤0.05."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run 10,000 Monte Carlo replications per cell (n=1,000; proxy singular value 0–0.2; δ=0–0.05), recording coverage and endpoint exclusion."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ProxyGrid-v1 tabulates treatment-effect coverage, confidence-set width, and endpoint exclusion across 10,000-replication strength–δ cells at n=1,000."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Stratify ProxyGrid-v1 by whether both endpoint gaps exceed δ plus the 95% critical radius; test strict tightening in zero-strength cells."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "In ProxyGrid-v1 zero-strength cells, 18% exceeded both endpoint-gap thresholds yet retained width 2.0 (binary outcomes) through unbounded bridges."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "For bridges bounded by 5, both profiled endpoint gaps exceeding δ plus critical radius ensure tightening at zero strength."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Reanalyze ProxyGrid-v1 imposing |bridge|≤5; check whether threshold-qualified zero-strength cells tighten, and report 95% coverage across δ≤0.05."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "With |bridge|≤5, all threshold-qualified zero-strength ProxyGrid-v1 cells narrowed below 2.0; minimum simulated coverage over δ≤0.05 was 95.1%."
+    },
+    {
+      "id": "n13",
+      "type": "decision",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Adopt |bridge|≤5 instead of unrestricted bridges: zero-strength endpoint tightening occurred without observed coverage loss."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n5",
+      "content": "Derive worst-case AR critical values and prove ≥95% uniform asymptotic coverage for |bridge|≤5, δ≤0.05, proxy strengths 0–0.2."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "With |bridge|≤5 and bounded, nondegenerate moments, Gaussian-max calibration proves ≥95% uniform asymptotic coverage for strengths 0–0.2, δ≤0.05."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Can auxiliary validation data justify |bridge|≤5 when proxies have zero strength, preserving the uniform 95% coverage guarantee?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Independent validation certifying bridge norm ≤5 at 97.5% confidence enables 97.5% AR inversion with ≥95% coverage, including zero-strength proxies."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Use LP-relaxed latent mixtures with δ≤0.05 proxy-independence violations and simultaneous 95% multinomial bands; dual bounds certify narrowing without inversion."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Calibrate 95% multinomial bands; establish uniform LP coverage at strengths 0–0.2 and δ≤0.05; derive dual conditions for strict tightening."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Apply 95%-band LP and bounded-bridge AR sets to ProxyGrid-v1; compare minimum coverage, median width, and endpoint exclusion."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "ProxyGrid-v1 TV-stress (δ=0.04) caused bridge drift 0.20: LP covered 95.3%; moment-slack AR had 0% limiting coverage."
+    },
+    {
+      "id": "n22",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Adopt LP for TV-bounded violations; retain proved AR coverage only under moment-space δ or bridge-adjusted TV slack."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Implement n22’s LP-primary, AR-moment-only policy; prove 95% uniform LP coverage for TV δ≤0.05, strengths 0–0.2; derive dual certificates."
+    },
+    {
+      "id": "n24",
+      "type": "artifact",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "ProxyLP-v1 documents LP-primary/AR-moment-only rules, uniform 95% LP coverage for TV δ≤0.05 and strengths 0–0.2, and dual tightening certificates."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Does ProxyLP-v1 retain endpoint exclusion and 95% coverage when latent-class discretization grows beyond two classes at zero proxy strength?"
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "If K-class approximation error ≤εK, εK-inflated LP bands preserve ≥95% coverage; positive adjusted dual margins exclude zero-strength endpoints."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Stress-test ProxyLP-v1 at K=2,4,8 and zero proxy strength; inflate bands by certified εK and measure coverage and endpoint exclusion."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "At K=2,4,8 and δ≤0.05, εK-inflated ProxyLP-v1 attained ≥95.1% zero-strength coverage; positive bilateral dual margins excluded both endpoints."
+    },
+    {
+      "id": "n29",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Extend the LP-primary policy to K=2,4,8 with certified εK inflation; report strict narrowing only with positive bilateral dual margins."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Can audited TV-radius upper bounds replace fixed δ=0.05 in ProxyLP-v1 without losing uniform coverage at zero strength?"
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Independently certify TV radii and |bridge|≤5 at 97.5%; separately invert LP/AR at 97.5% and test zero-strength coverage."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Independent 97.5% bridge certification plus 97.5% AR inversion yielded 95.2% minimum coverage across zero-strength ProxyGrid-v1 cells."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Intersect 97.5% ProxyLP-v1 and 97.5% AR sets using TV slack 10δ under |bridge|≤5; certify narrowing through endpoint margins."
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "With TV slack 10δ and |bridge|≤5, intersecting 97.5% LP/AR sets covers ≥95% uniformly; either component’s positive endpoint margin narrows bounds."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Simulate 97.5% ProxyLP-v1/AR intersections with |bridge|≤5, 10δ slack, strengths 0–0.2, δ≤0.05; assess minimum coverage and endpoint-margin tightening."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "At overlap 0.2 and δ=0.05, weighted AR drift reached 0.63, exceeding 10δ=0.50; intersection coverage fell to 93.1%."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "What overlap-dependent slack bounds weighted AR drift under TV violations δ≤0.05 and |bridge|≤5?"
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Derive overlap-dependent TV dual-norm slack for weighted AR moments, then retest the δ=0.05, overlap-0.2 failure cell."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Derive overlap-dependent δ·osc(weighted score) slack; retest intersection coverage at overlap 0.2 and |bridge|≤5 zero-strength endpoint tightening."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "At overlap 0.2, weighted-score clipping to oscillation ≤10 restored 95.2% minimum intersection coverage with 10δ slack and zero-strength tightening."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Adopt |bridge|≤5, oscillation-10 clipping, and 10δ slack for 97.5% intersections; unclipped weighting covered only 93.1%."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n38",
+      "content": "Prove oscillation-10 TV slack and ≥95% uniform coverage for clipped 97.5% LP/AR intersections (|bridge|≤5, overlap≥0.2, δ≤0.05, strengths 0–0.2)."
+    },
+    {
+      "id": "n43",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "ClippedIntersection-v1 proves ≥95% uniform coverage for intersected 97.5% sets under oscillation≤10, |bridge|≤5, overlap≥0.2, δ≤0.05, strengths 0–0.2."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "p3",
+      "content": "Replace overlap-slack retesting with clipped LP/AR dual-margin thresholds for width<2.0; validate ClippedIntersection-v1 at zero strength, δ≤0.05."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Compute clipped LP/AR endpoint dual margins on zero-strength ProxyGrid-v1 cells across δ≤0.05; compare certified width against 2.0."
+    },
+    {
+      "id": "n46",
+      "type": "artifact",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "ClippedIntersection-v2 adds bilateral LP/AR dual-margin certificates for width<2.0 at zero strength and δ≤0.05, retaining v1’s uniform coverage conditions."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Develop Γ≤2 treatment-selection odds bounds with δ≤0.05 proxy-TV uncertainty, using simultaneous 95% bands to retain validity at zero proxy strength."
+    },
+    {
+      "id": "n48",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "p4",
+      "content": "Can Γ≤2 selection restrictions yield width<2.0 at zero proxy strength when ClippedIntersection-v2 has no positive dual margins?"
+    },
+    {
+      "id": "n49",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "At treatment propensity 0.5 and Γ≤2, selection-only LP yields width<2.0 for binary outcomes despite zero proxy strength and δ≤0.05."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "On ProxyGrid-v1 zero-strength, zero-margin cells, solve 95%-band TV-robust Γ≤2 LP at propensity 0.5; test coverage and width<2.0 across δ≤0.05."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "At propensity 0.5 and δ=0.05, Γ=2 LP retained width 2.0 in 24% of zero-strength, zero-margin cells; coverage ≥95.1%."
+    },
+    {
+      "id": "n52",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "At zero proxy strength, Γ≤2 and δ≤0.05 yield width<2.0 if both arms’ 95%-band-adjusted outcome probabilities lie within [0.2,0.8]."
+    },
+    {
+      "id": "n53",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Derive Γ=2 armwise LP width bounds under band-adjusted outcomes in [0.2,0.8]; validate δ≤0.05, zero-strength cells."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Select ClippedIntersection-v2-certified zero-margin cells with band-adjusted arm probabilities in [0.2,0.8]; test Γ=2 LP width<2.0 and coverage at zero strength, δ≤0.05."
+    },
+    {
+      "id": "n55",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "GammaSelection-v1 tabulates Γ=2 LP widths and coverage for zero-strength, zero-margin cells with band-adjusted arm probabilities in [0.2,0.8]."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Audit GammaSelection-v1 for width<2.0 and ≥95% coverage; derive Γ=2 endpoint certificates for arm probabilities in [0.2,0.8]."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "GammaSelection-v1: all qualifying cells had width≤1.84 and minimum coverage 95.2%; Γ=2 armwise LP certificates excluded both outcome-range endpoints."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Gate Γ=2 tightening on both band-adjusted arm probabilities in [0.2,0.8]: qualifying widths≤1.84, while ungated cells can retain width 2.0."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Benchmark GammaSelection-v1 against ProxyLP-v1 on matched zero-strength cells; compare minimum coverage, median width, and endpoint exclusion across δ≤0.05."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "On matched qualifying zero-strength cells, GammaSelection-v1 median width was 1.62 versus ProxyLP-v1’s 1.89; minimum coverage was 95.2% versus 95.1%."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "p4",
+      "content": "Prefer Γ=2 bounds when [0.2,0.8]-gated (median width 1.62 versus 1.89); otherwise retain εK-inflated LP; separately report certified clipped intersections."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "revive",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "revise",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "revise",
+      "target": "n43"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "refute",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "revise",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n29"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop informative treatment-effect confidence sets when confounding proxies are weak and their conditional independence assumptions are approximately violated.",
+    "requirements": [
+      "Guarantee at least 95% asymptotic coverage uniformly over explicitly quantified proxy-strength and assumption-violation classes.",
+      "Characterize when confidence sets are strictly narrower than outcome-range-only bounds without requiring point identification."
+    ]
+  }
+}

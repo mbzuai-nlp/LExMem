@@ -1,0 +1,151 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Establish quorum-watermark validation for snapshot-safe cache hits during failover",
+      "boundary_reason": "The watermark question is resolved and adopted; the discussion moves to implementation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Implement CacheGuard v1 and verify snapshot equality across promotion gaps",
+      "boundary_reason": "The correctness rerun is complete; the next discussion evaluates latency."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Measure CacheGuard v1 latency under ReadMix-80/20",
+      "boundary_reason": "The benchmark misses the latency target, motivating a different validation approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Test quorum-sourced validation as a remedy for lag-related cache bypasses",
+      "boundary_reason": "Quorum validation is retained for correctness but rejected as the sole latency fix."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Prefetch quorum-index segments and implement CacheGuard v2",
+      "boundary_reason": "The prefetched validation design has been tested and implemented; a competing cache design follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Build and compare eager invalidation with CacheGuard v2",
+      "boundary_reason": "The latency comparisons are complete; the discussion shifts to a crash-safety question."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Investigate stale hits after a publication crash and patch eager invalidation",
+      "boundary_reason": "The failure is identified and a commit-embedded invalidation patch is produced; a new interval-based design follows."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Develop and fuzz snapshot-validity intervals for immutable cached results",
+      "boundary_reason": "IntervalCache v1 completes its failover fuzz test; the next discussion explores shard fragments."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Test basic shard-fragment recomposition against bypass and latency targets",
+      "boundary_reason": "The initial fragment prototype misses its targets, prompting a revised approach."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Prefetch certified fragments and select the improved IntervalCache design",
+      "boundary_reason": "The improved design is selected; the discussion moves to canary validation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64"
+      ],
+      "topic": "Canary prefetched-fragment IntervalCache and decide whether to expand it",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

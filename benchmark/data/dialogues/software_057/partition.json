@@ -1,0 +1,140 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Initial runtime design and validation of crash-recovery DMA fencing",
+      "boundary_reason": "DMA fencing is adopted; discussion shifts to implementing and testing the broader runtime."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Fault testing reveals driver-hang recovery exceeds 50 ms",
+      "boundary_reason": "The 68-ms hang result prompts a revised recovery approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Testing the assumed 10-ms DMA stop after independent reset",
+      "boundary_reason": "Hang replays refute the 10-ms assumption."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Revising DMA quiescence timing and overlapping shadow-map preparation",
+      "boundary_reason": "The revised recovery sequence reaches 44 ms in hang replays; focus shifts to deadline and partition isolation."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Testing dedicated-core scheduling and IOMMU isolation",
+      "boundary_reason": "Isolation holds, but IOTLB invalidation causes deadline misses."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Fabric QoS and bounded invalidation fix deadlines but not saturated-bus recovery",
+      "boundary_reason": "The recovery policy is deferred after a 56-ms saturated-bus result."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Reserved recovery bandwidth and reset-first handling under concurrent faults",
+      "boundary_reason": "Reset-first recovery is adopted after concurrent-fault replay meets the recovery limit."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Implementing Runtime v0.9 and testing its recovery boundaries",
+      "boundary_reason": "A hardware-in-loop test exposes a lost reset-completion interrupt and 52-ms recovery."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Evaluating and adopting reset-status polling for lost interrupts",
+      "boundary_reason": "Polling meets the replay targets; discussion shifts to patching and recertifying the runtime."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Implementing, testing, and approving Recovery Runtime v1.0",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

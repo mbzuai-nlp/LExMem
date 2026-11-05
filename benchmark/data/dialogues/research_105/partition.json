@@ -1,0 +1,139 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Correcting two-stage response-type bounds with cross-history coupling",
+      "boundary_reason": "The unattainable LP endpoint is replaced by a coupled bound with an admissible witness."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Projected multinomial bands and the question of uniform coverage",
+      "boundary_reason": "The confidence-region implementation is recorded, leaving its sparse-history coverage question open."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Coupled-law profiling and simulated coverage comparisons",
+      "boundary_reason": "The profiling version is advanced pending a uniform-coverage proof."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Rare-cell coverage failures and exact least-favorable inversion",
+      "boundary_reason": "Exact inversion is tested against the identified rare-cell failure."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Three-stage SOS bounds and limitations of exact inversion",
+      "boundary_reason": "The coverage result leads to restricting exact inversion to validated two-stage settings."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Three-stage SOS certification and exact-band projection",
+      "boundary_reason": "The three-stage solver artifact and a feasible shared-latent witness are recorded."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Simultaneous calibration of three-stage exact bands",
+      "boundary_reason": "Bonferroni calibration addresses undercoverage from per-history bands."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Branch-and-bound certification of sharp three-stage bounds",
+      "boundary_reason": "The calibrated certification approach is adopted and packaged in v0.4."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Anytime confidence sequences under optional stopping",
+      "boundary_reason": "Two-stage stopped-time coverage is benchmarked before the discussion shifts to three-stage sensitivity caps."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Shared-latent sensitivity caps and the final anytime-bound implementation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

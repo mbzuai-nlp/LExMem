@@ -1,0 +1,125 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "pl1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "ShiftGuard’s faint-stain failure under spatial relighting",
+      "boundary_reason": "The result leads to a decision to add residual scoring; the next segment implements and tests that change."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "pl2",
+        "a2",
+        "ar1",
+        "a3",
+        "e2"
+      ],
+      "topic": "ShiftGuard-R residual fusion and evaluation across unseen shifts",
+      "boundary_reason": "The evaluation meets the stated targets; the next segment tests a more specific highlight condition."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "ShiftGuard-R faint-stain recall under localized highlights",
+      "boundary_reason": "The highlight test falls below target, prompting a different fusion question."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "a5",
+        "ar2",
+        "e4"
+      ],
+      "topic": "Three-scale residual fusion for highlighted stains",
+      "boundary_reason": "The ablation establishes an improved baseline; the next segment introduces a separate approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "pl3",
+        "a6",
+        "e5"
+      ],
+      "topic": "CounterfactualView compared with ShiftGuard at an unseen 12° viewpoint",
+      "boundary_reason": "The comparison favors CounterfactualView; the next segment probes larger viewpoint shifts."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "q3",
+        "h3",
+        "a7",
+        "e6",
+        "h4",
+        "a8",
+        "e7",
+        "d2"
+      ],
+      "topic": "CounterfactualView at rendered and real-camera 20° viewpoints",
+      "boundary_reason": "The real-camera texture shortfall leads to a decision to prioritize pose-aware alignment."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "a9",
+        "ar3",
+        "q4",
+        "h5"
+      ],
+      "topic": "Pose-conditioned texture alignment in CounterfactualView v0.3",
+      "boundary_reason": "The implementation and its testable prediction are established; the next segment introduces a structural alternative."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "q5",
+        "pl4",
+        "a10",
+        "e8",
+        "d3"
+      ],
+      "topic": "InvariantPatchGraph for self-occlusion and missing-part detection",
+      "boundary_reason": "The benchmark leads to a decision to combine structural and texture scorers."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "pl5",
+        "a11",
+        "ar4",
+        "a12",
+        "e9",
+        "d4"
+      ],
+      "topic": "Fused CounterfactualView v0.4 evaluation and selection",
+      "boundary_reason": "The joint evaluation meets targets and supports selection; the next segment examines an occlusion-specific limitation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "a13",
+        "e10",
+        "d5"
+      ],
+      "topic": "Heavy-occlusion failure and suspension of v0.4 selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

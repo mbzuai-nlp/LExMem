@@ -1,0 +1,892 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop reinforcement learning transfer for robotic manipulation that reuses skills under hidden dynamics shifts while limiting negative transfer.",
+      "requirements": [
+        "Match from-scratch success rates using 50% fewer target interactions when manipulation dynamics partially overlap.",
+        "On incompatible targets, stay within 5 percentage points of from-scratch success under equal interaction budgets."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use five-step dynamics probes and confidence-gated source skills alongside a scratch policy, disabling reuse when normalized prediction error exceeds 0.2."
+    },
+    {
+      "id": "n1",
+      "type": "hypothesis",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Probe-gated transfer matches scratch success at half the interactions on overlapping dynamics; incompatible-target success stays within 5 points of scratch."
+    },
+    {
+      "id": "n2",
+      "type": "activity",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "On ShiftManip-12, compare gated transfer at 10k interactions against scratch at 20k (overlapping dynamics) or 10k (incompatible dynamics)."
+    },
+    {
+      "id": "n3",
+      "type": "evidence",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "ShiftManip-12 success: overlapping gated 78%/10k versus scratch 77%/20k; incompatible gated 61% versus scratch 63%, both 10k."
+    },
+    {
+      "id": "n4",
+      "type": "question",
+      "order": 6,
+      "exploration_parent_id": "n1",
+      "content": "Do five-step dynamics probes flag incompatible contact transitions at the 0.2 error cutoff before skill reuse harms success?"
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Using ShiftManip-12's 61%-versus-63% incompatible baseline, audit five-step probes' pre-reuse detection recall and success loss at error cutoffs 0.1/0.2/0.3."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Run ShiftManip-12 incompatible-target trials at error cutoffs 0.1, 0.2, and 0.3; measure pre-reuse detection recall and 10k-interaction success."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "ShiftManip-12 audit.csv records cutoffs 0.1/0.2/0.3, pre-reuse detection recall of 94/87/71%, and 10k success of 60/61/56%, respectively."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Validate audit.csv against trial logs; compute missed-transition rates and success deficits versus 63% scratch, with bootstrap intervals by cutoff."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Validated logs: 0.2 cutoff missed 13% of incompatible transitions and trailed scratch by 2 points; 0.3 missed 29%, trailing 7."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "p1",
+      "content": "Ablate probing and confidence gating on ShiftManip-12 across five seeds; compare 10k success and transferred-skill usage with full gating."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Five-seed ablation on ShiftManip-12's incompatible compliant-gripper target: full gating reached 47% success versus scratch 55% and ungated transfer 52%."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Are false-positive incompatibility flags or five-step probe costs responsible for the compliant-gripper target’s eight-point deficit versus scratch?"
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Using validated cutoff logs and compliant-gripper trials, compare oracle versus learned flags and free versus charged probes at 10k interactions."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Run a compliant-gripper ablation crossing oracle versus learned incompatibility flags with charged versus free five-step probes; measure 10k-interaction success."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "CompliantGrip-ablation.csv records 10k success: learned/charged 47%, learned/free 49%, oracle/charged 53%, oracle/free 55%; scratch 55%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Replace fixed cutoff with tactile-conditioned compatibility gating and scratch fallback; probe only when expected transfer gains exceed interaction costs."
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Tactile-conditioned gating recovers ≥4 compliant-gripper success points by reducing false-positive flags; eliminating probe costs alone recovers ≤2."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Using CompliantGrip-ablation.csv baselines, compare tactile-adaptive versus fixed gating across five ShiftManip-12 seeds; measure false flags, probe costs, and success."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Five-seed ShiftManip-12: tactile gating cut compliant-gripper false flags 31%→12% and raised success 47%→53%; free probes alone gained 2 points."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Using CompliantGrip-ablation.csv baselines, mask tactile inputs in compliant-gripper gating with probe budgets fixed; compare false flags and 10k success."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "With tactile inputs masked and probe budgets fixed, compliant-gripper success remained 53%, with 13% false flags versus 12% unmasked."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Does adaptive calibration, rather than tactile sensing, explain the six-point compliant-gripper success gain under fixed probe budgets?"
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Using the 47%-to-53% gain and tactile-masked 53% baseline, compare adaptive versus fixed calibration at matched probe budgets across five seeds."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Using 53% masked/unmasked baselines, cross adaptive/fixed calibration and tactile presence at matched probe budgets; measure success and false flags."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Matched-budget compliant-gripper success was 53% with adaptive calibration versus 47% fixed, regardless of tactile inputs, refuting tactile causality."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n21",
+      "content": "Adaptive error-quantile calibration, not tactile sensing, should keep incompatible-target false flags below 15% and success within five scratch points."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Given matched-budget calibration gains, test error-quantile gating across six incompatible ShiftManip-12 targets; measure false flags and 10k success versus scratch."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Across six incompatible ShiftManip-12 targets, calibrated gating held false flags at 9–14% and 10k success within four points of scratch."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "p2",
+      "content": "Adopt tactile-free error-quantile gating: calibration drives the 47%→53% gain, and six incompatible targets remain within four scratch points."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Warm-start from the source skill whose bootstrapped target-return lower bound exceeds scratch; otherwise train from scratch."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "At fixed probe budgets, return-bound gating should cut compliant-gripper false flags below 15% and raise success from 47% to ≥52%."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Run five-seed ShiftManip-12 return-bound gating trials at matched probe budgets; measure compliant-gripper false flags and 10k success versus scratch."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Five-seed compliant-gripper trials: return-bound gating cut false flags from 31% to 11% and raised 10k success from 47% to 54%."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "p3",
+      "content": "Test return-bound gating on held-out ShiftManip-12 targets: overlapping at 10k versus scratch at 20k; incompatible at 10k versus scratch."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Held-out overlapping targets: return-bound gating reached 66% success at 10k interactions versus scratch 76% at 20k, missing transfer-efficiency target."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Does return-bound gating reject useful source skills on held-out overlapping targets because early target-return estimates are too conservative?"
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Using 54% compliant-gripper and 66%-versus-76% overlap results, compare rejected skills’ oracle returns against 80/95/99% bootstrap bounds."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Replay rejected skills at 80/95/99% bootstrap bounds; log oracle returns and 10k overlap/gripper success against 66%/54% baselines."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "At 95% bounds, 42% of rejected overlapping skills outperformed scratch in oracle replay; 80% bounds raised success 66%→75%."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "p3",
+      "content": "Reject fixed 95% return bounds: gripper protection costs overlapping-target success; prioritize testing 80% bounds for incompatible-target safety."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 43,
+      "exploration_parent_id": "g1",
+      "content": "Combine 80% return-bound skill selection with an error-quantile incompatibility veto and scratch fallback to preserve reuse without unsafe transfer."
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "p4",
+      "content": "Hybrid gating reaches scratch’s 20k success with 10k interactions on overlapping targets and stays within five points on incompatible targets."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "On held-out ShiftManip-12 targets, compare hybrid 10k success against scratch at 20k overlapping and 10k incompatible interactions across five seeds."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Five-seed held-out ShiftManip-12: hybrid success was 77%/10k versus scratch 76%/20k overlapping; 60% versus 63% incompatible at 10k."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Using ShiftManip-12 baselines, test hybrid gating on 24 unseen shifts across 10 seeds; check 10k/20k parity and ≤5-point incompatibility deficits."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Run 10-seed HybridManip-24 with randomized friction, payload, gripper compliance, and actuator lag; record per-shift success at 10k/20k."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "HybridManip-24 results.csv records per-shift, 10-seed success for hybrid and scratch, interaction budgets, dynamics labels, and incompatibility-veto decisions."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Validate HybridManip-24 results.csv budgets and seeds; bootstrap hybrid-10k versus scratch-20k overlap parity and equal-budget incompatible deficits per shift."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Validated HybridManip-24: 12 overlapping shifts averaged 76% hybrid/10k versus 75% scratch/20k; 12 incompatible shifts had ≤4-point equal-budget deficits."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "Adopt hybrid gating: held-out and HybridManip-24 tests matched 20k scratch success at 10k overlap interactions, with ≤4-point incompatible deficits."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "evaluate",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "produce",
+      "target": "n3"
+    },
+    {
+      "source": "n3",
+      "relation": "support",
+      "target": "n1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "depend_on",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "revise",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop reinforcement learning transfer for robotic manipulation that reuses skills under hidden dynamics shifts while limiting negative transfer.",
+    "requirements": [
+      "Match from-scratch success rates using 50% fewer target interactions when manipulation dynamics partially overlap.",
+      "On incompatible targets, stay within 5 percentage points of from-scratch success under equal interaction budgets."
+    ]
+  }
+}

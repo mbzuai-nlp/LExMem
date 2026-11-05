@@ -1,0 +1,125 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Test and adopt graph-novelty routing for the scope-sketch parser",
+      "boundary_reason": "The gate is selected; the discussion shifts to training and evaluating the full parser."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Evaluate the v1 parser and diagnose binder-capture and familiar-accuracy errors",
+      "boundary_reason": "The v1 results motivate a new capture-free decoding proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Build, evaluate, and adopt capture-free scope-forest decoding in v2",
+      "boundary_reason": "The v2 adoption decision closes the initial evaluation; a broader audit follows."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Audit v1 and v2 across seeds and classify v2’s remaining withheld errors",
+      "boundary_reason": "The error analysis identifies missing gold forests as the larger issue, leading to a new expansion proposal."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Improve gold-forest coverage and reranking, then audit the adopted model",
+      "boundary_reason": "The reranker audit report concludes this approach before a distinct scope-graph proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Verify quantifier swaps and build the alpha-equivariant AlphaScope checkpoint",
+      "boundary_reason": "The checkpoint is produced; the discussion shifts to a typed CCG approach."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Implement ScopeCCG and measure its initial exact-match and type-error results",
+      "boundary_reason": "Initial evaluation ends before a depth-specific error investigation."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Reconcile ScopeCCG test results, audit depth-specific errors, and defer the approach",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

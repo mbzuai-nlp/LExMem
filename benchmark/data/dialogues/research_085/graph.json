@@ -1,0 +1,1100 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop selective language-model unlearning that removes source-specific information while preserving independently supported facts shared with the removed source.",
+      "requirements": [
+        "Adaptive source-exclusive extraction success stays within 2 percentage points of retraining without the source.",
+        "Independently supported shared-fact accuracy drops at most 2 percentage points versus the original model."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Provenance-linked fact clusters guide gradient ascent on source-exclusive spans and original-model distillation on independently corroborated facts."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can provenance-linked clusters separate source-exclusive spans from independently supported facts despite paraphrased overlap?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "On ParaphraseProvenance-1, provenance-linked clusters achieve ≥95% source-exclusive precision and ≥95% independently supported fact recall despite paraphrases."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Construct ParaphraseProvenance-1 with annotated paraphrase pairs, cluster claims by entailment and provenance, then audit exclusive precision and shared-fact recall."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Annotate 1,200 ParaphraseProvenance-1 claims, run entailment-provenance clustering, and measure exclusive precision and shared-fact recall against blinded labels."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On 1,200 ParaphraseProvenance-1 claims, clustering achieved 96.1% source-exclusive precision and 95.4% independently supported fact recall."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Adopt entailment-provenance clusters for unlearning masks because exclusive precision and shared-fact recall both exceeded 95%."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "ParaphraseProvenance-1 audit bundle contains 1,200 annotated claims, entailment-provenance cluster assignments, and exclusive-precision/shared-recall scoring scripts."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n5",
+      "content": "Using adopted cluster masks and ParaphraseProvenance-1 scripts, score source-exclusive precision and shared-fact recall on 300 fresh cross-document paraphrases."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "On 300 held-out ParaphraseProvenance-1 cross-document paraphrases, source-exclusive precision fell to 88.7%, below the hypothesized 95%."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Adding document-level evidence alignment and bidirectional entailment raises cross-document source-exclusive precision from 88.7% to ≥95%, preserving shared-fact recall ≥95%."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Align document-level evidence, require bidirectional entailment, then measure exclusive precision and shared-fact recall on 300 new cross-document paraphrases."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Apply document-level alignment and bidirectional entailment to 300 new cross-document paraphrases; score exclusive precision and shared-fact recall."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "On 300 new cross-document paraphrases, exclusive precision reached 96.0%, but shared-fact recall fell to 92.3%, below 95%."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Sweep document-alignment and bidirectional-entailment thresholds on 300 fresh cross-document paraphrases, measuring shared-fact recall at ≥95% exclusive precision."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "On 300 fresh cross-document paraphrases, tuned alignment achieved 95.3% source-exclusive precision and 95.1% shared-fact recall."
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "With calibrated alignment thresholds, bidirectional-entailment clusters retain ≥95% exclusive precision and shared-fact recall on held-out source pairs."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Freeze calibrated thresholds, annotate 500 paraphrases from ten unseen source pairs, and assess exclusive precision and shared-fact recall."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Apply frozen cluster thresholds to 500 blinded paraphrases from ten unseen source pairs; compute exclusive precision and shared-fact recall."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Across 500 blinded paraphrases from ten unseen source pairs, exclusive precision was 95.6% and shared-fact recall 95.2%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n19",
+      "content": "Stratify 500 blinded paraphrases across ten unseen source pairs by lexical distance; audit pairwise exclusive precision and shared-fact recall."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Among ten unseen source pairs, the lowest-overlap pair scored 89.4% exclusive precision and 93.0% shared-fact recall."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Citation-aware retrieval with calibrated entailment and uncertain-mask abstention yields ≥95% exclusive precision and shared-fact recall on low-overlap pairs."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Retrieve citation-linked corroboration for low-overlap claims, recalibrate entailment, abstain on uncertain masks, and audit precision, recall, and coverage."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Test citation-aware retrieval and uncertain-mask abstention on 400 low-overlap claims; measure exclusive precision, shared-fact recall, and mask coverage."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "On 400 low-overlap claims, citation-aware retrieval achieved 96.2% exclusive precision and 95.5% shared-fact recall at 88% mask coverage."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n25",
+      "content": "Test frozen citation-aware thresholds on 600 low-overlap claims from unseen source pairs; report exclusive precision, shared-fact recall, and coverage."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "On 600 unseen low-overlap claims, exclusive precision was 95.8%, but shared-fact recall fell to 91.7% at 84% coverage."
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Independence-verified retrieval of uncited sources before abstention restores ≥95% shared-fact recall at ≥95% exclusive precision on unseen low-overlap pairs."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Retrieve uncited corroboration, verify source independence, then test exclusive precision, shared-fact recall, and coverage on unseen low-overlap pairs."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Compare citation-aware abstention and independence-verified uncited retrieval on 600 fresh low-overlap claims; score exclusive precision, shared-fact recall, coverage."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "On 600 fresh low-overlap claims, citation-aware abstention scored 95.4% exclusive precision/95.1% shared recall; independence-verified retrieval scored 96.0%/93.2%."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n31",
+      "content": "Compare independence-verifier false rejections across both 600-claim cohorts; rerun uncited retrieval and score exclusive precision and shared-fact recall."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Across both cohorts, correcting verifier false rejections yielded 94.1% shared-fact recall at 95.6% exclusive precision."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Use holdout failures and verifier-correction audits to expand uncited retrieval; test exclusive precision and shared-fact recall on 400 fresh claims."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "On 400 fresh low-overlap claims, expanded uncited retrieval achieved 95.3% exclusive precision and 95.2% shared-fact recall."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Adopt expanded uncited retrieval with citation-aware abstention fallback; both met precision and recall thresholds, unlike verifier correction alone."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Train sparse activation gates using source-present versus source-removed causal traces, constrained by replay of independently corroborated facts."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p2",
+      "content": "Can sparse causal-trace gates suppress source-exclusive recall without disrupting activations used by independently corroborated facts?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Sparse causal-trace gates yield adaptive exclusive extraction ≤source-removed retraining+2 pp and shared-fact accuracy ≥original−2 pp on SourceSplit-1."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Build SourceSplit-1 causal traces, fit sparse gates with shared-fact replay, then compare adaptive extraction and fact accuracy against both baselines."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Train 0.5%-sparse gates on SourceSplit-1 traces with shared-fact replay; compare adaptive extraction against retraining and fact accuracy against original."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "SourceSplit-1 adaptive extraction: 7.8% gated versus 6.5% retrained; shared-fact accuracy: 83.2% gated versus 84.8% original."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n42",
+      "content": "Stress-test the 0.5%-sparse SourceSplit-1 gates with paraphrase search and activation steering; rescore adaptive extraction and shared-fact accuracy."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Under paraphrase search and activation steering, gated extraction rose to 12.4% versus 6.5% retrained; shared-fact accuracy remained 83.0%."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Reject 0.5%-sparse gates as standalone unlearning: steering increased extraction 5.9 pp above retraining despite preserved shared-fact accuracy."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "SourceSplit-1 steering suite packages paraphrase-search prompts, activation-steering vectors, and scripts scoring gated extraction against retraining and shared-fact accuracy."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Fit adversarially robust low-rank weight edits to source-exclusive gradients, preserving corroborated-fact logits across paraphrases and steering perturbations."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p3",
+      "content": "Can adversarially trained low-rank edits close the 5.9-pp steering extraction gap without degrading corroborated-fact accuracy?"
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Train rank-16 edits against SourceSplit-1 steering attacks, constrain corroborated-fact logits, then compare adaptive extraction and accuracy against baselines."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "After gate rejection, select replacement benchmarking provenance-ascent, gates, and rank-16 edits with adopted masks and steering-suite attacks; audit suite coverage."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "SourceSplit-1 steering extraction: provenance-ascent 9.8%, gates 12.4%, rank-16 edits 8.1%, retraining 6.5%; edited shared accuracy 83.3%."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n51",
+      "content": "After 8.1% pilot extraction, extend the SourceSplit-1 steering suite with unseen attacks; rescore rank-16 extraction and shared-fact accuracy."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "On unseen SourceSplit-1 attacks, rank-16 extraction reached 11.2% versus 6.9% retrained; shared-fact accuracy stayed 83.1% versus 84.8% original."
+    },
+    {
+      "id": "n56",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Alternating unseen-attack generation with rank-32 edits reduces extraction to ≤8.9% while keeping shared-fact accuracy ≥82.8% on SourceSplit-1."
+    },
+    {
+      "id": "n57",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Alternate attack generation and rank-32 edit training with corroborated-fact replay; evaluate extraction and accuracy on held-out SourceSplit-1 attacks."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Train rank-32 edits against alternating steering attacks, using prior rank-16 failures; score held-out extraction and corroborated-fact accuracy."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "On held-out SourceSplit-1 attacks, rank-32 extraction was 8.7% versus 6.9% retrained, with 82.9% shared accuracy; fresh adaptive attacks reached 11.0%."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Reject standalone rank-32 edits after 11.0% fresh-attack extraction; pursue provenance-masked adversarial edits instead of previously rejected gates."
+    },
+    {
+      "id": "n61",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "SourceSplit-1 rank-32 audit bundle contains alternating-attack checkpoints, held-out prompts, fresh adaptive attacks, and extraction/accuracy scoring scripts."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "revise",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n59",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop selective language-model unlearning that removes source-specific information while preserving independently supported facts shared with the removed source.",
+    "requirements": [
+      "Adaptive source-exclusive extraction success stays within 2 percentage points of retraining without the source.",
+      "Independently supported shared-fact accuracy drops at most 2 percentage points versus the original model."
+    ]
+  }
+}

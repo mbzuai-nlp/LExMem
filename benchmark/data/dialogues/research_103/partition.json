@@ -1,0 +1,139 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Facewise entropy projection, shock accuracy, and adoption of constrained blending",
+      "boundary_reason": "The blending decision closes the shock-accuracy investigation; the next nodes begin a broader audit."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Periodic conservation and TriShock acceptance audit for blended fluxes",
+      "boundary_reason": "The audit reports its acceptance-gate results; the next test shifts to skewed meshes."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Skewed-mesh shock-error test and limited deployment decision",
+      "boundary_reason": "The deployment decision closes this approach before a new proposal begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Metric-conditioned viscosity for skewed-mesh shock accuracy",
+      "boundary_reason": "The held-out shock and entropy evaluation ends; the next nodes begin a periodic conservation audit."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Conservation, entropy, shock-error, and fallback audit of metric-conditioned viscosity",
+      "boundary_reason": "The audit results close this approach before the WENO proposal begins."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Learned WENO shock accuracy and rollback across training seeds",
+      "boundary_reason": "The decision defers deployment; the next plan addresses the rollback problem."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Rollback-regularized WENO retraining and acceptance audit",
+      "boundary_reason": "The five-seed audit ends before a different flux-network proposal begins."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Discrete-gradient fluxes and tuning adaptive HLL dissipation",
+      "boundary_reason": "Fixed-threshold tuning yields a passing result; the next investigation tests skewness-conditioned thresholds."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Skewness-conditioned thresholds versus a fixed HLL dissipation threshold",
+      "boundary_reason": "The comparison ends with a threshold choice; the next plan tests that choice on polygon meshes."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Polygon-mesh validation and wider-validation decision for fixed-threshold fluxes",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

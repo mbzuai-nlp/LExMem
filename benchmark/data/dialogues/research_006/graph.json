@@ -1,0 +1,747 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Infer spatial conductivity and unknown boundary flux from sparse temperature observations while preserving uncertainty under nonidentifiability.",
+      "requirements": [
+        "Achieve 90% interval coverage within five percentage points for conductivity and flux across identifiability regimes.",
+        "Match known-flux conductivity reconstruction error within 20% when joint recovery is identifiable."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use hierarchical Bayesian heat-equation inversion with Gaussian-process log-conductivity, spline boundary flux, and joint MCMC posterior intervals."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can joint posterior inference maintain calibrated conductivity and flux intervals when sparse observations leave their sensitivities nearly collinear?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Marginalizing GP and flux-spline hyperparameters yields 85–95% coverage of 90% pointwise intervals across sensitivity-matrix condition numbers 10–1000."
+    },
+    {
+      "id": "pl1",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Simulate heat fields across condition numbers 10–1000; compare hyperparameter-marginalized MCMC coverage and identifiable-case conductivity error against known-flux inversion."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "pl1",
+      "content": "Run 200 synthetic heat-equation trials per condition-number bin (10–1000), measuring conductivity/flux interval coverage and known-flux-relative conductivity RMSE."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "a1",
+      "content": "Across condition numbers 10–1000, 90% intervals covered conductivity 88–92% and flux 86–93%; identifiable-case conductivity RMSE was 1.14× known-flux."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "pl1",
+      "content": "Rerun the 200-trial bins using plug-in GP and flux-spline hyperparameters; compare 90% interval coverage against full marginalization."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "a2",
+      "content": "At condition number 1000, oscillatory-flux cases showed 79% marginalized versus 68% plug-in flux coverage, despite calibrated pooled coverage."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "q1",
+      "content": "Frequency-adaptive flux priors with hyperparameter marginalization should raise oscillatory-flux coverage from 79% to 85–95% without degrading conductivity coverage."
+    },
+    {
+      "id": "pl2",
+      "type": "plan",
+      "order": 11,
+      "exploration_parent_id": "h2",
+      "content": "Fit marginalized frequency-adaptive Fourier flux priors; rerun flux-shape-stratified trials across condition numbers 10–1000, measuring coverage and known-flux-relative conductivity RMSE."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "pl2",
+      "content": "Rerun 200 matched trials per flux-shape and condition-number bin (10–1000) with marginalized adaptive Fourier priors; measure coverage and conductivity RMSE."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "a3",
+      "content": "Adaptive Fourier priors raised condition-1000 oscillatory-flux coverage from 79% to 89%; conductivity coverage stayed 88–92%, identifiable RMSE 1.16× known-flux."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "Adopt marginalized adaptive Fourier priors: oscillatory coverage rises from 79% to 89% versus 68% plug-in; identifiable RMSE remains 1.16× known-flux."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Optimize sensor locations and sampling times by joint-sensitivity singular values, preserving posterior variance along conductivity–flux null directions."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Which eight-sensor locations and sampling times increase the smallest joint-sensitivity singular value while retaining 85–95% interval coverage?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 17,
+      "exploration_parent_id": "q2",
+      "content": "Optimized eight-sensor placement and sampling doubles the minimum joint-sensitivity singular value versus uniform design while retaining 85–95% conductivity/flux coverage."
+    },
+    {
+      "id": "pl3",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "h3",
+      "content": "Optimize eight sensor–time pairs by minimum singular value; test interval coverage and conductivity RMSE against uniform designs across identifiability regimes."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "pl3",
+      "content": "Optimize eight sensor–time pairs per condition-number bin; compare minimum singular values and adaptive-posterior coverage against uniform placement in 200 trials."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "a4",
+      "content": "Optimized eight-sensor designs achieved 2.3× uniform-design minimum singular values; 90% intervals covered conductivity 88–92% and flux 86–93%."
+    },
+    {
+      "id": "ar1",
+      "type": "artifact",
+      "order": 21,
+      "exploration_parent_id": "a4",
+      "content": "SensorDesign-8 v1.0 contains optimized sensor coordinates, sampling times, singular-value spectra, and 200-trial coverage comparisons against uniform placement."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 22,
+      "exploration_parent_id": "g1",
+      "content": "Trace conductivity–flux profile-likelihood ridges under bounded-smoothness constraints, retaining wide intervals along weakly identified directions."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p3",
+      "content": "Can bounded-smoothness profile intervals cover conductivity–flux ridges without inflating identifiable-case conductivity RMSE beyond 1.20× known-flux?"
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "q3",
+      "content": "Compute 90% bounded-smoothness profile intervals over 200 trials per condition-number bin; assess conductivity/flux coverage and known-flux-relative RMSE."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "a5",
+      "content": "At condition number 1000, 90% profiles covered oscillatory flux only 78%, despite identifiable conductivity RMSE of 1.13× known-flux."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "q3",
+      "content": "Frequency-adaptive smoothness bounds and bootstrap-calibrated profile thresholds raise oscillatory-flux coverage from 78% to 85–95%, preserving ≤1.20× known-flux conductivity RMSE."
+    },
+    {
+      "id": "pl4",
+      "type": "plan",
+      "order": 27,
+      "exploration_parent_id": "h4",
+      "content": "Calibrate frequency-adaptive profile bounds using parametric bootstrap; retest oscillatory-flux coverage and identifiable-case conductivity RMSE against original profiles."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "pl4",
+      "content": "Bootstrap-calibrate frequency-adaptive profile thresholds, then evaluate 200 held-out trials per bin against original profiles for oscillatory-flux coverage and conductivity RMSE."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "a6",
+      "content": "Bootstrap-calibrated adaptive profiles raised condition-1000 oscillatory-flux coverage from 78% to 89%; identifiable conductivity RMSE remained 1.15× known-flux."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 30,
+      "exploration_parent_id": "q3",
+      "content": "Use bootstrap-calibrated adaptive profiles, not fixed smoothness: oscillatory-flux coverage improved from 78% to 89%, with conductivity RMSE 1.15× known-flux."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Fuse calibrated Bayesian posteriors and adaptive profile intervals by reporting their union, protecting coverage where either approximation fails."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p4",
+      "content": "Can unioned posterior–profile intervals achieve 85–95% coverage while keeping identifiable-case widths below 1.5× posterior-only intervals?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "q4",
+      "content": "Unioned posterior–profile intervals achieve 85–95% conductivity/flux coverage across condition numbers 10–1000, with identifiable-case widths ≤1.5× posterior-only."
+    },
+    {
+      "id": "pl5",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "h5",
+      "content": "Union adaptive-posterior and bootstrap-profile intervals on matched trials; stratify coverage and interval-width ratios by condition number and flux shape."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "pl5",
+      "content": "Using SensorDesign-8 v1.0, union adaptive-posterior and bootstrap-profile intervals in 200 trials per bin; measure coverage and identifiable-case widths."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "a7",
+      "content": "Across condition numbers 10–1000, unioned 90% intervals covered conductivity 90–94% and flux 88–94%; identifiable widths were 1.32× posterior-only."
+    },
+    {
+      "id": "ar2",
+      "type": "artifact",
+      "order": 37,
+      "exploration_parent_id": "a7",
+      "content": "JointHeat-UQ v1.0 provides adaptive Fourier posterior sampling, bootstrap-profile intervals, their union, and SensorDesign-8 coverage reports."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "pl5",
+      "content": "Stress-test JointHeat-UQ v1.0 on 300 held-out sharp-interface conductivity fields with correlated sensor noise; measure union coverage, width, and known-flux-relative RMSE."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "a8",
+      "content": "Across 300 sharp-interface, correlated-noise trials, union conductivity/flux coverage reached 87–92% versus posterior-only 78–84%; identifiable conductivity RMSE was 1.18× known-flux."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "q4",
+      "content": "Adopt union intervals: coverage was 88–94% in matched trials and 87–92% under stress; identifiable width 1.32× posterior-only."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Jointly invert two controlled interior-heater experiments sharing conductivity but assigning independent unknown fluxes, breaking single-experiment conductivity–flux confounding."
+    },
+    {
+      "id": "q5",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "p5",
+      "content": "Which distinct interior-heater schedules improve shared-conductivity identifiability without assuming equal boundary fluxes across experiments?"
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "q5",
+      "content": "Alternating left- and right-interior heater pulses reduce joint-sensitivity condition number by ≥3× versus matched pulses while preserving 85–95% coverage."
+    },
+    {
+      "id": "pl6",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "h6",
+      "content": "Compare alternating versus matched interior-heater pulses under independent experiment-specific fluxes; quantify condition numbers, 90% coverage, and known-flux-relative conductivity RMSE."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "pl6",
+      "content": "Use JointHeat-UQ v1.0 in 200 paired trials with independent fluxes; compare alternating/matched pulses, condition numbers, coverage, and RMSE."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a9",
+      "content": "In 200 paired trials, alternating pulses cut condition number 3.4×; conductivity and independent-flux coverage was 88–93%, RMSE 1.12× known-flux."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "q5",
+      "content": "Prefer alternating heater pulses over matched schedules: condition numbers fell 3.4× with 88–93% coverage and 1.12× known-flux conductivity RMSE."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "pl1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "a2",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "refute",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "revise",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "pl2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "pl2",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "h2"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "pl3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "pl3",
+      "relation": "decompose",
+      "target": "a4"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "ar1"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "pl4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "pl4",
+      "relation": "decompose",
+      "target": "a6"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "pl5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "pl5",
+      "relation": "decompose",
+      "target": "a7"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "ar1"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "ar2"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "pl5",
+      "relation": "decompose",
+      "target": "a8"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "pl6",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "pl6",
+      "relation": "decompose",
+      "target": "a9"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e9"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Infer spatial conductivity and unknown boundary flux from sparse temperature observations while preserving uncertainty under nonidentifiability.",
+    "requirements": [
+      "Achieve 90% interval coverage within five percentage points for conductivity and flux across identifiability regimes.",
+      "Match known-flux conductivity reconstruction error within 20% when joint recovery is identifiable."
+    ]
+  }
+}

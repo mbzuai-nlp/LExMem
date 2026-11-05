@@ -1,0 +1,750 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design distributed training recovery that preserves optimizer and data progress consistency across failures and worker membership changes.",
+      "requirements": [
+        "Recovered executions match failure-free optimizer-update and sample-consumption histories, including failures during resharding.",
+        "Recovery adds at most 5% failure-free step latency versus identical training without recovery support."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use deterministic sample IDs and reductions, pipelined durable step journals, checkpoint replay, and epoch-fenced atomic resharding."
+    },
+    {
+      "id": "n01",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can step journals and ownership fences prevent duplicate updates or samples when a worker crashes mid-reshard?"
+    },
+    {
+      "id": "n02",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n01",
+      "content": "Epoch-fenced step-journal commits and deterministic sample-ID replay preserve identical update hashes and sample-ID sequences across mid-reshard crashes."
+    },
+    {
+      "id": "n03",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n02",
+      "content": "Implement fenced commits; crash 8→12-worker reshard phases; compare update hashes, sample sequences, and p95 step latency against uninterrupted baseline."
+    },
+    {
+      "id": "n04",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n03",
+      "content": "Run 100 ReshardCrash-8to12 trials with crashes during shard transfer and commit; compare update hashes and sample IDs against baseline."
+    },
+    {
+      "id": "n05",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n04",
+      "content": "In 100/100 ReshardCrash-8to12 trials, update hashes and sample-ID sequences matched uninterrupted 8→12-worker runs exactly."
+    },
+    {
+      "id": "n06",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n05",
+      "content": "Select fenced commits and deterministic replay because all 100 crash trials matched baseline histories; verify ≤5% latency before deployment."
+    },
+    {
+      "id": "n07",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n04",
+      "content": "ReshardCrash-8to12 trace bundle records 100 crash schedules, journal epochs, update hashes, and ordered sample IDs alongside baseline comparisons."
+    },
+    {
+      "id": "n08",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "n01",
+      "content": "Durable journal-tail acknowledgment before an epoch-fenced ownership swap prevents duplicate or missing updates and samples during reshard crashes."
+    },
+    {
+      "id": "n09",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n08",
+      "content": "Replay ReshardCrash-8to12 traces, kill owners around journal-tail acknowledgment and epoch swap, then compare update and sample histories."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n09",
+      "content": "In 3/40 targeted replays, crashes after durable tail acknowledgment but before epoch-fenced swap skipped one update: cursor outpaced optimizer checkpoint."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Extend selected fenced commits to atomically journal optimizer deltas with sample cursors; retest reshard crashes and ≤5% latency."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Implement atomic step records binding optimizer deltas to sample cursors, then inject crashes across acknowledgment, checkpoint, and ownership-swap boundaries."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "AtomicStepJournal v2 commits optimizer deltas and sample cursors together, replaying uncheckpointed records before epoch-fenced ownership swaps."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Group-commit atomic optimizer-delta/sample-cursor records before update visibility; snapshot incrementally off-thread to target ≤5% p95 step-latency overhead."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Benchmark v2 group commits and background snapshots; verify identical update/sample histories and ≤5% p95 latency overhead against recovery-free runs."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Benchmark AtomicStepJournal v2 through 8→12-worker crashes, comparing basic journaling and group-commit snapshots against recovery-free histories and p95 latency."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Across 100 reshard crashes, group commits matched update hashes/sample sequences; p95 latency rose 3.8% versus recovery-free, basic journaling 8.1%."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can group commits and off-thread snapshots keep p95 overhead ≤5% under repeated membership changes while preserving atomic replay?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "With overlapping snapshots and bounded commit batches, repeated 8↔12-worker resharding retains exact histories at ≤5% p95 overhead."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Stress AtomicStepJournal v2 through 50 crash-injected 8↔12-worker reshardings; verify update hashes/sample IDs and benchmark crash-free p95 against recovery-disabled runs."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Off-thread incremental snapshots produced torn checkpoints in 2/50 reshardings; pinned overlapping snapshots and bounded commits preserved histories, 4.6% overhead."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Adopt AtomicStepJournal v2 with pinned overlapping snapshots and bounded group commits: exact histories at 4.6% p95 overhead."
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "Revise benchmark to pin overlapping snapshots and bound group commits; retest repeated 8↔12-worker crash replay and ≤5% p95 overhead."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Configure v2 pinned overlapping snapshots and ≤2-ms/16-record commits; replay 100 crash-injected 8↔12 reshardings, checking histories and baseline p95."
+    },
+    {
+      "id": "n24",
+      "type": "artifact",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "AtomicStepJournal v2 benchmark bundle contains 100 reshard-crash schedules, pinned-snapshot manifests, update/sample comparisons, and recovery-disabled p95 traces."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Bind immutable sample ranges to logical steps, then transfer versioned optimizer shards behind quorum-fenced handoff manifests."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Implement step-bound sample ranges and quorum-fenced shard manifests atop AtomicStepJournal v2; crash-test histories and ≤5% p95 overhead."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Replay the AtomicStepJournal v2 benchmark bundle after implementing step-bound ranges and quorum handoffs; compare histories and p95 overhead."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "All 100 reshard-crash replays matched baseline update hashes and sample ranges; p95 step overhead was 4.8%."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n26",
+      "content": "ShardHandoff v1 adds step-bound sample-range leases and quorum-fenced optimizer-shard manifests to AtomicStepJournal v2."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Use virtual-rank gradient reductions and journaled per-step RNG counters to preserve update hashes across worker-count changes."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p4",
+      "content": "Can virtual-rank reductions and journaled RNG counters preserve bitwise update hashes when worker membership changes mid-step?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "Fixed virtual-rank reduction trees and step-keyed RNG counters yield identical update hashes despite 8→12-worker mid-step crashes."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "Inject 100 mid-step 8→12-worker crashes with virtual-rank reductions and step-keyed RNG; compare update hashes against uninterrupted runs."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "Step-keyed counters diverged in 4/100 crashes; journaled per-microbatch dropout counters restored 100/100 matching virtual-rank update hashes."
+    },
+    {
+      "id": "n33",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n31",
+      "content": "VirtualRankReplay v1 fixes gradient reduction order and journals per-microbatch dropout counters for deterministic mid-step replay."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Use replayable prefetch queues keyed by logical-step sample ranges; advance consumption only with committed optimizer records."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "p5",
+      "content": "Implement step-keyed prefetch replay with commit-gated cursors; test crashes during resharding for exact sample histories and ≤5% latency overhead."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Integrate ShardHandoff v1 and VirtualRankReplay v1 with commit-gated prefetch; crash-test 8↔12 reshardings, comparing update hashes, sample IDs, and p95 latency."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Across 100 crash-injected 8↔12 reshardings, commit-gated prefetch matched failure-free update hashes and sample-ID sequences; p95 overhead was 4.9%."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n36",
+      "content": "Adopt commit-gated prefetch with ShardHandoff v1 and VirtualRankReplay v1’s microbatch counters: exact crash histories, 4.9% p95 overhead."
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "p5",
+      "content": "Package adopted recovery stack, then validate exact update/sample histories under compound crashes and ≤5% recovery-disabled p95 latency overhead."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n38",
+      "content": "Using the v2 benchmark bundle, integrate ShardHandoff v1, VirtualRankReplay v1, and commit-gated prefetch; compare compound-crash histories and recovery-disabled p95."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "RecoveryStack v1 bundles AtomicStepJournal v2, ShardHandoff v1, VirtualRankReplay v1, commit-gated prefetch, and compound-crash benchmark scripts."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n01"
+    },
+    {
+      "source": "n02",
+      "relation": "address",
+      "target": "n01"
+    },
+    {
+      "source": "n03",
+      "relation": "address",
+      "target": "n01"
+    },
+    {
+      "source": "n03",
+      "relation": "decompose",
+      "target": "n04"
+    },
+    {
+      "source": "n04",
+      "relation": "evaluate",
+      "target": "n02"
+    },
+    {
+      "source": "n04",
+      "relation": "produce",
+      "target": "n05"
+    },
+    {
+      "source": "n04",
+      "relation": "produce",
+      "target": "n07"
+    },
+    {
+      "source": "n05",
+      "relation": "support",
+      "target": "n02"
+    },
+    {
+      "source": "n05",
+      "relation": "support",
+      "target": "n06"
+    },
+    {
+      "source": "n08",
+      "relation": "address",
+      "target": "n01"
+    },
+    {
+      "source": "n09",
+      "relation": "evaluate",
+      "target": "n08"
+    },
+    {
+      "source": "n09",
+      "relation": "depend_on",
+      "target": "n07"
+    },
+    {
+      "source": "n09",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "n08"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n06"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n14"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design distributed training recovery that preserves optimizer and data progress consistency across failures and worker membership changes.",
+    "requirements": [
+      "Recovered executions match failure-free optimizer-update and sample-consumption histories, including failures during resharding.",
+      "Recovery adds at most 5% failure-free step latency versus identical training without recovery support."
+    ]
+  }
+}

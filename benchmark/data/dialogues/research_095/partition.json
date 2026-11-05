@@ -1,0 +1,150 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Test distillation during provenance-gated editing and adopt conflict weighting",
+      "boundary_reason": "The weighting decision concludes the ablation discussion; the next activity audits the adopted method."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n12",
+        "n13"
+      ],
+      "topic": "Audit conflict-weighted distillation and assemble baseline comparisons",
+      "boundary_reason": "The audit bundle is produced; the next discussion examines unattributed paraphrases."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Test provenance gating on unattributed paraphrases",
+      "boundary_reason": "The decision rejects the current gate; the next proposal replaces it."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Calibrate and adopt SemanticGate-v2 for unattributed claims",
+      "boundary_reason": "The adoption decision closes the disjoint-paraphrase evaluation; the next test uses multi-turn probes."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n25",
+        "n26"
+      ],
+      "topic": "Compare provenance gates on general multi-turn probes",
+      "boundary_reason": "The general-probe result is reported; the next question focuses on blended claims."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Test SemanticGate-v2 on blended-claim prompts",
+      "boundary_reason": "Blended extraction leads to a release deferral; the next proposal adds response-level handling."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Assess whether blended claims can be selectively span-masked",
+      "boundary_reason": "The separability finding raises a new question about fused claims."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Investigate fused-claim rewriting and build SemanticGate-v3",
+      "boundary_reason": "The v3 bundle is produced; the next activity evaluates it on held-out prompts."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n43",
+        "n44"
+      ],
+      "topic": "Evaluate SemanticGate-v3 on held-out blended prompts",
+      "boundary_reason": "The held-out result concludes this evaluation; the next proposal explores a dual-teacher adapter."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Test a dual-teacher adapter on general and high-overlap blends",
+      "boundary_reason": "The high-overlap failure motivates a separate investigation of teacher-logit conflict."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Analyze teacher divergence and develop a restricted adapter",
+      "boundary_reason": "The restricted-adapter bundle is produced; the next activity audits end-to-end coverage."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Audit restricted-adapter routing and compare it with SemanticGate-v3",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

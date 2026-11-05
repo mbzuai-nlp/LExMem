@@ -1,0 +1,32 @@
+Check a newly generated English dialogue fragment against its supplied node and history.
+
+INPUT
+{{INPUT_JSON}}
+
+generation_input is exactly the context available to the generator. candidate contains only the new messages. Review this fragment, not the quality of the underlying graph.
+
+Reject material problems:
+- A substantive part of current_node, including supplied requirements, conditions, or values, is missing or changed.
+- A hypothesis becomes an established fact, a plan becomes an executed activity, or certainty or scope otherwise changes.
+- The fragment contradicts prior dialogue or misrepresents a directed relation to an earlier node.
+- It adds or modifies task-specific results, experiments, data, causes, implementation facts, commitments, or decisions not supplied by the current node or history, or advances to an unsupported next topic.
+- It exposes graph metadata, has broken role alternation, or has an incoherent handoff from the previous message.
+
+HISTORICAL INFORMATION CHECK
+For each candidate statement or question about history, distinguish source-node content from information merely available in the history or relations. Reject either role when it adds any of the following beyond the current_node:
+- A judgment that earlier information is valid, invalid, supported, refuted, obsolete, superseded, abandoned, or revived.
+- Instructions about which historical value/version is authoritative or must not be used, or conclusions about whether an earlier target is met or missed.
+- A recap of earlier changes, including a sequence of old, corrected, and new results, or questions inviting such a recap or status judgment.
+
+A historical judgment can be factually correct and still violate this rule. Its presence in earlier dialogue or elsewhere in the graph is not permission to repeat it in this block. Decision nodes and closing summaries have no exception. "After corrected audits" does not authorize narrating the audit history or its old values.
+
+Do not reject comparisons, corrections, decisions, or reasons explicitly contained in the current_node. Minimal historical references needed to identify its method, experiment, object, or comparison baseline are allowed. That permission does not extend to explaining which older alternatives are obsolete or why they are invalid.
+
+For each violation, quote the offending wording and explain the extra historical judgment or recap that the current_node does not state. Do not flag a keyword alone; assess the meaning and source-node scope. Do not reject solely for verbosity, repetition, paraphrasing, or clarification.
+
+Relations need only hold semantically in context. Do not require explicit references to earlier nodes, repeated historical content, or a verbal statement of each relation. General conceptual explanations are allowed when they do not introduce task-specific facts. Do not demand extra experimental detail, a minimum length, a fixed message count, or a final assistant reply. The final message may be from either role.
+
+OUTPUT
+Return only JSON:
+{"passed": true, "issues": []}
+If material problems exist, set passed to false and put concise, actionable descriptions in issues (an array of strings). passed must be true exactly when issues is empty. Do not rewrite the dialogue.

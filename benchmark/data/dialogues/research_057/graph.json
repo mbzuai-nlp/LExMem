@@ -1,0 +1,920 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Identify causally responsible actions in partially observed reinforcement learning despite delayed rewards and correlated, reward-irrelevant actions.",
+      "requirements": [
+        "Define counterfactual action contributions and establish their identifiability limits under hidden confounding.",
+        "Reach matched returns using 30% fewer environment interactions than recurrent PPO on delayed-reward tasks."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Propose ProbeCredit: randomized probes and belief-matched rollouts estimate delayed action effects; confounding bounds delimit identifiability, trajectory reuse targets efficiency."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When do randomized probes identify delayed action contributions if hidden state influences both behavior actions and eventual rewards?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Randomized action probes identify history-conditional average delayed-return effects despite hidden confounding, given probe positivity and a fixed continuation policy."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Derive randomized-probe return contrasts under positivity and fixed continuations; construct observationally equivalent confounded POMDPs demonstrating nonidentifiability without probes."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Derive fixed-continuation probe contrasts under positivity; construct observationally equivalent confounded POMDPs with different intervention effects."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Probe assignment identifies Δ(h,a,b)=E[G|h,Z=a]−E[G|h,Z=b] under positivity and fixed continuation; observationally equivalent confounded POMDPs yield different effects."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt randomized probes for history-conditional average contributions; report observational estimates only as sensitivity bounds because hidden-confounded effects remain unidentified."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "ProbeCredit identifiability note v0.1 documents probe-contrast derivation, positivity and fixed-continuation assumptions, and confounded POMDP counterexamples."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Enumerate note v0.1’s confounded POMDP pair; check observational equivalence and positive-probe contrasts against fixed-continuation intervention effects."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "With 50-step-censored logs, randomized 50/50 actions and fixed continuation yield identical observations but step-80 return effects of +1 versus −1."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "With complete reward-horizon follow-up, randomized probes identify history-conditional effects despite hidden confounding, given positivity and fixed continuations."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Extend randomized-probe rollouts with fixed continuations through step 80; compare full-horizon contrasts against censored estimates in confounded POMDPs."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Enumerate 50/50 probe rollouts through step 80 in both confounded POMDPs; compare contrasts with exact intervention effects and step-50 censoring."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Full step-80 follow-up yields ±0.5 probe contrasts versus ±1 forced-action effects when hidden actuator overrides affect half the trials."
+    },
+    {
+      "id": "n14",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Complete-horizon probes identify assignment effects under positivity and fixed continuation; forced-action effects require verified compliance or additional assumptions."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Enumerate step-80 trajectories with 0% and 50% actuator overrides; compare probe contrasts to exact assignment and forced-action effects."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "At 0% overrides, probe contrasts equal both effects (±1); at 50%, they equal assignment effects (±0.5), not forced-action effects (±1)."
+    },
+    {
+      "id": "n17",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Report full-horizon probe assignment effects by default; report forced-action contributions only when actuator compliance is verified."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 20,
+      "exploration_parent_id": "n15",
+      "content": "ProbeCredit compliance audit v0.2 tabulates step-80 probe contrasts, assignment effects, and forced-action effects at 0% and 50% overrides."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 21,
+      "exploration_parent_id": "g1",
+      "content": "Train a recurrent actor-critic with replayed probe-assignment targets and negative-control penalties, targeting matched returns within 70% of recurrent PPO interactions."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "Can replayed full-horizon probe targets suppress credit for correlated, reward-irrelevant actions while matching recurrent PPO returns within 70% of interactions?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On DelayedKeys-80 and SignalMaze-100, replayed probe targets should achieve normalized negative-control credit ≤0.05 and PPO-matched returns within 70% interactions."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Run five-seed DelayedKeys-80/SignalMaze-100 learning curves; count all probe interactions and measure PPO-return matching and normalized negative-control credit."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Across five seeds, DelayedKeys-80/SignalMaze-100 matched PPO returns using 64%/68% of interactions, including probes; negative-control credit was 0.03/0.04."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n20",
+      "content": "Ablate probe-target replay and negative-control penalties on DelayedKeys-80/SignalMaze-100; compare five-seed interaction ratios and irrelevant-action credit."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "On SignalMaze-100 with 90%-correlated distractors, full ProbeCredit required 82% of PPO interactions versus 67% without probe replay."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Retain ProbeCredit on standard tasks; reject its 90%-correlated configuration pending replay redesign because 82% exceeds the 70% interaction budget."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "AdaptiveProbe prioritizes full-horizon probes using pilot-calibrated uncertainty, targeting ≤70% PPO interactions on SignalMaze-100 with 90%-correlated distractors."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "Can uncertainty-prioritized probes meet the 70% interaction budget on 90%-distractor SignalMaze-100 without biasing assignment-effect estimates?"
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "With logged selection propensities and 10% exploration, AdaptiveProbe should match PPO returns within 70% interactions and keep assignment-effect bias ≤0.05."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Pilot-calibrate probe priorities; log propensities and apply inverse-propensity weighting; evaluate five-seed interaction ratios and oracle assignment-effect bias on 90%-distractor SignalMaze-100."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Run five-seed AdaptiveProbe on 90%-distractor SignalMaze-100 with 10% exploration; log propensities and measure weighted effect bias and PPO-relative interactions."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Across five seeds on 90%-distractor SignalMaze-100, AdaptiveProbe matched PPO returns at 69% interactions, but assignment-effect bias averaged 0.11."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n28",
+      "content": "Audit probe propensities by simulator-hidden-state strata; rerun 10% versus 25% exploration, measuring effect bias and interaction ratios."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Correcting mislogged 10%-exploration propensities reduced assignment-effect bias to 0.04; matched returns required 69% of PPO interactions."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Adopt AdaptiveProbe with validated propensity logging; the corrected run meets 0.05 bias and 70% interaction thresholds."
+    },
+    {
+      "id": "n34",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n31",
+      "content": "AdaptiveProbe propensity-audit v0.3 contains corrected 10%-exploration logs, hidden-state-stratum checks, and 10%-versus-25% exploration diagnostics."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Develop EventBridge: probe-calibrated latent dynamics propagate delayed rewards to responsible actions while negative-control interventions suppress distractor credit."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p4",
+      "content": "Can EventBridge assign delayed-reward credit to causal actions without mistaking highly correlated distractors for mediating events?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "EventBridge should recover ≥85% of nonzero probe-assignment effects and keep normalized distractor credit ≤0.05 on 90%-distractor SignalMaze-100."
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Train EventBridge on corrected AdaptiveProbe logs; compare action-attribution recall and distractor credit against oracle assignment effects and replay-only ProbeCredit."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Fit EventBridge on corrected SignalMaze-100 probe logs; evaluate five-seed attribution recall and normalized distractor credit against oracle assignment effects."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Across five SignalMaze-100 seeds, EventBridge recovered 88% of nonzero assignment effects and assigned distractors normalized credit 0.03."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n37",
+      "content": "Ablate EventBridge’s negative-control interventions and probe calibration; compare five-seed assignment-effect recall and distractor credit with replay-only ProbeCredit."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "On five held-out SignalMaze-100 seeds, EventBridge recall fell to 79%; removing negative controls raised distractor credit from 0.04 to 0.14."
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "With negative controls, EventBridge should achieve ≥75% assignment-effect recall and ≤0.05 distractor credit on unseen 95%-correlated SignalMaze-100 distractors."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Test frozen EventBridge on unseen 95%-correlated distractors; score oracle assignment-effect recall and normalized distractor credit across five seeds."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Evaluate frozen EventBridge on 90%- and unseen 95%-distractor SignalMaze-100; measure five-seed oracle assignment-effect recall and normalized distractor credit."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "On original 90%-distractor seeds, frozen EventBridge achieved 88% recall and 0.03 distractor credit; unseen 95%-distractor seeds yielded 77% and 0.04."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n43",
+      "content": "Following the 77%/0.04 pilot, evaluate frozen EventBridge on 20 fresh 95%-distractor seeds; bootstrap assignment-effect recall and distractor credit."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Across 20 fresh 95%-distractor seeds, frozen EventBridge achieved 71% assignment-effect recall and 0.06 normalized distractor credit."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n43",
+      "content": "Stratify 20-seed SignalMaze-100 trajectories by causal-event frequency and distractor co-occurrence; measure assignment-effect recall and distractor credit within strata."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Across 20 unseen 95%-distractor seeds, deployment-event-standardized recall was 76% and distractor credit 0.04; rare-event oversampling drove raw failures."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Restrict EventBridge to audited deployment-event distributions: standardized 76% recall and 0.04 distractor credit pass, but raw rare-event performance fails."
+    },
+    {
+      "id": "n51",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n48",
+      "content": "EventBridge audit v0.4 reports 20-seed event-stratified attribution, deployment-standardized metrics, and a rare-event applicability warning."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "revise",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n51"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Identify causally responsible actions in partially observed reinforcement learning despite delayed rewards and correlated, reward-irrelevant actions.",
+    "requirements": [
+      "Define counterfactual action contributions and establish their identifiability limits under hidden confounding.",
+      "Reach matched returns using 30% fewer environment interactions than recurrent PPO on delayed-reward tasks."
+    ]
+  }
+}

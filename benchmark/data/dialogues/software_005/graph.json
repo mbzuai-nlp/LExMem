@@ -1,0 +1,772 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a stateful edge proxy that preserves established TCP sessions across anycast rerouting and single-site failures.",
+      "requirements": [
+        "Preserve byte ordering and acknowledged data without endpoint changes, including failures during connection-state migration.",
+        "Keep p99 application-visible failover stalls below 500 milliseconds with 50-millisecond intersite RTT."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Synchronously mirror both TCP legs’ sequence state and payload before ACK; prewarm a movable-tuple backup for BFD-triggered, epoch-fenced takeover."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How does takeover avoid losing ACKed bytes or duplicating delivery if the active site crashes during state migration?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Under mid-migration crashes, quorum-committed payload and sequence checkpoints with epoch-fenced replay yield zero ACKed-byte loss or duplicate delivery."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Implement ACK-gated journaling and epoch-fenced takeover; inject checkpoint-boundary crashes at 50-ms RTT, measuring byte loss, duplicates, and p99 stalls."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run CrashBoundary-50 at 50-ms RTT: kill primaries across commit phases on 10,000 streams; measure loss, duplicates, p99 stalls."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "CrashBoundary-50 found duplicated backend delivery in 11/10,000 streams when independently committed TCP-leg checkpoints straddled a crash."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Atomic cross-leg write-ahead records before ACK or backend send, with fenced same-tuple replay, prevent ACKed-byte loss and duplicate delivery."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Implement atomic cross-leg WAL; rerun CrashBoundary-50’s 11 duplicate cases plus phase-boundary kills, measuring ACKed-byte loss, backend duplicates, and p99 stalls."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "CrashBoundary-50 retest: zero ACKed-byte loss or duplicate backend delivery across 10,000 streams; p99 stall 340 ms."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Adopt atomic cross-leg WAL over independent checkpoints: it eliminated the 11 duplicate cases while keeping p99 stalls at 340 ms."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Run AnycastFlip-50 with atomic WAL at 50-ms RTT; withdraw active-site routes, checking tuple continuity, ordered delivery, and p99 stalls."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "AnycastFlip-50 report contains route-withdrawal traces, unchanged endpoint tuples, zero reordered bytes, and 410-ms p99 application-visible stalls."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can epoch fencing exclude a stale primary while asymmetric anycast convergence sends packets to both sites?"
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Replay AnycastFlip-50 traces with 200-ms split-route convergence; test epoch fencing for stale-primary forwards, duplicate bytes, and p99 stalls."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "With 200-ms split-route convergence, stale primaries forwarded 14 packets after takeover; p99 stalls reached 570 ms, exceeding 500 ms."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p1",
+      "content": "Can synchronous mirroring keep failover p99 below 500 ms when transient intersite congestion builds a replication backlog?"
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "ACK-gated replication with a 64-KiB per-flow WAL cap keeps p99 failover stalls below 500 ms during 100-ms congestion bursts."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Inject 100-ms intersite congestion into AnycastFlip-50 route traces with 64-KiB WAL caps; measure p99 stalls, ACKed-byte loss, and duplicates."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "With 100-ms congestion bursts and 64-KiB WAL caps, AnycastFlip-50 recorded 460-ms p99 stalls, zero ACKed-byte loss, and zero duplicates."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "Keep 64-KiB ACK-gated WAL for 460-ms p99; require backend epoch fencing and stale-site redirection to address split-route forwarding."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 22,
+      "exploration_parent_id": "g1",
+      "content": "Add quorum-leased ownership and an epoch-fenced backend gateway; tunnel split-route packets to the owner while atomic WAL preserves TCP state."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "Can quorum-leased ownership fence an isolated primary during split-route convergence without pushing p99 failover stalls above 500 ms?"
+    },
+    {
+      "id": "n21",
+      "type": "plan",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Implement gateway-enforced lease epochs and stale-site tunneling; inject 200-ms split routes and primary isolation, measuring stale forwards and p99 stalls."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Run LeaseSplit-50: isolate primaries during 200-ms split routes; audit gateway epoch rejects, tunneled packets, and p99 application stalls."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "LeaseSplit-50 recorded zero stale backend forwards, but quorum lease expiry delayed takeover, yielding 620-ms p99 application stalls."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Retain gateway epoch fencing but reject expiry-gated takeover: its 620-ms p99 exceeds 500 ms; investigate faster fenced handoff."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "BFD-triggered quorum CAS revokes ownership and fences backend gateways before granting standby replay, avoiding lease-expiry waits."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Under 200-ms split routes, quorum CAS with gateway-acknowledged fencing yields zero stale backend forwards and p99 stalls below 500 ms."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Rerun LeaseSplit-50’s 200-ms split routes with BFD-triggered quorum CAS and gateway-acknowledged fencing; measure stale forwards and p99 stalls."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "LeaseSplit-50 CAS rerun recorded zero stale backend forwards across 10,000 streams and 430-ms p99 stalls under 200-ms split routes."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Can quorum CAS complete takeover within 500 ms if its coordinator crashes after gateway fencing but before standby grant?"
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Inject post-fence, pre-grant coordinator crashes in LeaseSplit-50 under 200-ms split routes; measure p99 stalls and stale forwards."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Post-fence coordinator crashes caused zero stale forwards but 780-ms p99 stalls while standbys awaited an orphaned grant."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n28",
+      "content": "Standbys use quorum-persisted gateway-fence acknowledgments for idempotent CAS grants after coordinator crashes, yielding zero stale forwards and sub-500-ms p99 stalls."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Rerun post-fence coordinator kills with persisted fence acknowledgments and standby CAS retries; record stale forwards and p99 takeover stalls."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "LeaseSplit-50 coordinator-kill rerun recorded zero stale forwards and 455-ms p99 stalls across 10,000 post-fence failures."
+    },
+    {
+      "id": "n34",
+      "type": "decision",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Adopt recoverable CAS grants: baseline stalls were 430 ms, coordinator crashes raised them to 780 ms, retries restored 455 ms."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Use a per-session overlay anchor with hot-standby TCP replicas, routing rerouted packets to the quorum-elected owner."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p4",
+      "content": "How can a failed overlay anchor be replaced without losing ACKed bytes or exceeding 500-ms p99 application stalls?"
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "Prepublish dual-anchor mappings and replicate atomic WAL; kill anchors at 50-ms RTT, measuring ACKed-byte loss and p99 stalls."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Run AnchorKill-50 on 10,000 streams: kill primary anchors during WAL migration at 50-ms RTT; measure ACKed-byte loss and p99 stalls."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "AnchorKill-50 report logs zero ACKed-byte loss across 10,000 streams and 485-ms p99 stalls during anchor replacement."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n36",
+      "content": "Repeat AnchorKill-50 with cold standby mapping caches after primary-site loss; compare ACKed-byte loss and p99 stalls to 485-ms baseline."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Cold-cache AnchorKill-50 recorded zero ACKed-byte loss and 492-ms p99 stalls across 10,000 streams, within the 500-ms target."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Keep dual-anchor mapping as fallback: cold-cache p99 reached 492 ms with zero ACKed-byte loss, leaving only 8 ms margin."
+    },
+    {
+      "id": "n42",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Adopt 64-KiB atomic ACK-gated WAL, recoverable quorum-CAS gateway fencing and stale-site tunneling; retain dual-anchor fallback, reject lease-expiry takeover."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n31",
+      "relation": "revise",
+      "target": "n25"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a stateful edge proxy that preserves established TCP sessions across anycast rerouting and single-site failures.",
+    "requirements": [
+      "Preserve byte ordering and acknowledged data without endpoint changes, including failures during connection-state migration.",
+      "Keep p99 application-visible failover stalls below 500 milliseconds with 50-millisecond intersite RTT."
+    ]
+  }
+}

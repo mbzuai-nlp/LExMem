@@ -1,0 +1,149 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Forcing–interaction swaps, identifiability conditions, and the initial removal-forecast benchmark",
+      "boundary_reason": "The initial benchmark falls short of the RMSE target; discussion shifts to a different forcing symmetry."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Removal ambiguity from environmental pulses between biomass anchors",
+      "boundary_reason": "The pulse counterexample is established; a new proposal turns to randomized controls and timed anchors."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "PulseAnchor-6 design and full-rank removal-forecast results",
+      "boundary_reason": "The benchmark result leads to a new question about uncertain pulse timing and missing anchors."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Robustness of pulse-anchor forecasts to timing jitter and missing anchors",
+      "boundary_reason": "Independent replicates refute the proposed 20% average gain, prompting a revised method."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Marginalizing pulse timing and missing biomass states",
+      "boundary_reason": "The revised method meets the benchmark target; discussion moves to knockdown-based identification."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Knockdown specificity, biomass spike-ins, and latent-feedback tests",
+      "boundary_reason": "After favorable tests, discussion shifts to lower-specificity knockdowns."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36"
+      ],
+      "topic": "Failure of identifiability certificates at low knockdown specificity",
+      "boundary_reason": "The failure motivates a focused question about off-target calibration and sham controls."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Calibrated off-target controls and a conditional knockdown-forecast decision",
+      "boundary_reason": "A conditional approach is adopted; discussion moves to sentinel strains and qPCR anchors."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "SentinelAnchor-6 observability and baseline removal-forecast results",
+      "boundary_reason": "Baseline results are established; discussion shifts to cross-feeding and missing-qPCR stress tests."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n47",
+        "n48"
+      ],
+      "topic": "Sentinel cross-feeding and missing-qPCR failures",
+      "boundary_reason": "The stress test reveals unreliable certificates and prompts a calibration question."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Cross-feeding calibration and rank-bottleneck qPCR scheduling",
+      "boundary_reason": "The first calibration approach misses both targets, prompting an uncertainty-aware revision."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Uncertainty-aware calibration, worst-case qPCR scheduling, and final decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

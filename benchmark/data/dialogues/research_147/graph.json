@@ -1,0 +1,1369 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a shared-control robot that distinguishes human intent changes from reactions to its assistance during collaborative object transport.",
+      "requirements": [
+        "Achieve intent-change F1 ≥0.85 for unseen partners when robot assistance itself induces human corrections.",
+        "Reduce unnecessary control overrides by 30% versus a fixed-assistance baseline without increasing peak interaction forces."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use counterfactual robot-action force predictions to isolate intent changes from assistance-induced corrections; uncertainty-gate overrides and cap interaction forces."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can counterfactual force residuals distinguish route changes from assistance-induced corrections for unseen partners when robot impedance shifts?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Impedance-conditioned counterfactual force residuals achieve intent-change F1 ≥0.85 for unseen partners across robot impedance shifts."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Collect labeled intent-change and assistance-reaction trials across safe impedance shifts; train a counterfactual-residual classifier and evaluate leave-one-partner-out F1."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Evaluate intent-change F1 on TransportShift-24 using leave-one-partner-out splits across three impedance settings, comparing conditioned residuals against raw-force features."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On TransportShift-24, impedance-conditioned residuals achieved leave-one-partner-out intent-change F1 0.87 across three settings, versus 0.73 for raw-force features."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Select impedance-conditioned residuals for the intent classifier; test uncertainty-gated overrides separately before deployment."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Run held-out-partner crossover trials with selected residual classifier, comparing force-capped gating against fixed assistance on unnecessary overrides and peak forces."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Crossover report documents 34% fewer unnecessary overrides than fixed assistance and peak interaction forces of 41 N versus 43 N."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Run matched-path assistance-perturbation ablations on TransportShift-24, measuring false intent-change alarms with versus without counterfactual robot-action prediction."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "On TransportShift-24 abrupt-impedance matched-path trials, counterfactual prediction increased false intent-change alarms to 27%, versus 12% without prediction."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 13,
+      "exploration_parent_id": "g1",
+      "content": "Mask force transients after abrupt impedance changes; infer intent from sustained handle-heading shifts, confidence-gate overrides, and cap peak forces."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "p2",
+      "content": "Calibrate a 300-ms impedance-change mask, then test heading-based gating on unseen partners for F1, override reduction, and peak force."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n11",
+      "content": "Using the crossover report’s 43 N peak as a safety ceiling, calibrate 300-ms masks and heading thresholds on training partners."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "HeadingGate-v1 specifies a 300-ms impedance-switch mask, 12° heading-change threshold sustained for 400 ms, and 43 N force cap."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Does HeadingGate-v1 miss genuine route changes initiated during its 300-ms impedance-switch mask on unseen partners?"
+    },
+    {
+      "id": "n15",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "HeadingGate-v1 detects ≥85% of route changes initiated during its mask because their heading shifts persist after masking."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "On held-out TransportShift-24 partners, trigger route changes during HeadingGate-v1’s 300-ms mask; measure detection recall, latency, and peak forces."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On held-out TransportShift-24 partners, masked-window route changes reached 88% recall, 0.78-s median detection latency, and 42 N peak force."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n15",
+      "content": "Stratify held-out TransportShift-24 masked-window route changes by heading-shift duration and switch timing; measure recall against the 85% target."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "In additional held-out TransportShift-24 trials spanning heading durations and switch timings, overall masked-window recall was 79%, below 85%."
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n15",
+      "content": "HeadingGate-v1 reaches ≥85% recall for masked-window route changes with post-mask heading shifts lasting ≥400 ms, despite lower overall recall."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Repeat masked-window route-change trials with new unseen partners, including brief shifts; estimate overall HeadingGate-v1 recall against 85%."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "In a new 12-partner TransportShift-24 cohort including brief shifts, HeadingGate-v1 achieved 86% overall masked-window route-change recall."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n20",
+      "content": "Stratify unseen-partner TransportShift-24 masked-window trials by post-mask heading persistence; test recall for shifts lasting ≥400 ms against 85%."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "In a separate eight-partner TransportShift-24 cohort, ≥400-ms post-mask shifts reached 81% recall, below the hypothesized 85%."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n20",
+      "content": "Replay 30 independent unseen-partner masked-window route changes with ≥400-ms post-mask heading persistence; score HeadingGate-v1 recall."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "In 30 independent masked-window route-change replays with ≥400-ms post-mask shifts, HeadingGate-v1 detected 27, yielding 90% recall."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 30,
+      "exploration_parent_id": "n20",
+      "content": "Keep HeadingGate-v1 in supervised trials; conflicting 81% and 90% sustained-shift recall requires replication before deployment."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Use force-capped assistance micro-pauses to test whether human corrections persist without assistance; confidence-gate overrides using the observed response."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Can 150-ms assistance micro-pauses distinguish genuine route changes from assistance-induced corrections without increasing peak interaction force?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "On unseen partners, 150-ms micro-pauses yield intent-change F1 ≥0.85 while keeping peak interaction force ≤43 N."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Implement randomized 150-ms force-capped micro-pauses; compare persistence-based intent labels against fixed assistance on unseen partners and monitor forces."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Run unseen-partner crossover trials with randomized 150-ms micro-pauses, scoring intent-change F1 and peak force against fixed assistance."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Unseen-partner crossover trials yielded intent-change F1 0.86 with 150-ms micro-pauses; peak force was 42 N versus 43 N fixed-assistance."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Stress-test 150-ms micro-pauses during abrupt impedance switches and simultaneous route changes on unseen partners; measure intent-change F1 and peak force."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "During abrupt impedance switches with simultaneous route changes, 150-ms micro-pauses yielded intent-change F1 0.78 and peak force 46 N."
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n29",
+      "content": "Impedance-aware, force-rate-limited micro-pauses restore unseen-partner intent-change F1 ≥0.85 and peak force ≤43 N during simultaneous switches."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Rate-limit 100-ms assistance ramps; compare intent-change F1 and peak force with unmodified pauses during coincident switches and route changes."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Test 100-ms rate-limited micro-pause ramps on unseen-partner coincident-switch trials; compare intent-change F1 and peak force against unmodified pauses."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "On unseen-partner coincident-switch trials, rate-limited pauses achieved intent-change F1 0.86 and 42 N peak force, versus 0.78 and 46 N."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n35",
+      "content": "Advance rate-limited micro-pauses to override-reduction testing: nominal pauses passed, but coincident-switch failures required the validated ramp modification."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Run unseen-partner crossover trials comparing rate-limited micro-pauses with fixed assistance for unnecessary overrides, intent-change F1, and peak force."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "MicroPause crossover report records intent-change F1 0.86, 33% fewer unnecessary overrides, and 42 N peak force versus 43 N baseline."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Learn partner-adaptive assistance-response kernels from low-amplitude impedance dithers; classify unexplained deviations as intent changes and force-limit confidence-gated overrides."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Calibrate response kernels with ±5% impedance dithers; evaluate unseen-partner intent F1, override reduction, and peak force against fixed assistance."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Collect ±5% impedance-dither trials from 16 TransportShift-24 partners; fit 200-ms force-response kernels under a 43 N limit."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "DitherKernel-v1 contains 16 partner-specific 200-ms force-response kernels fitted from ±5% impedance dithers, with a 43 N force limit."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Can DitherKernel-v1 calibrate an unseen partner before their first route change without mistaking dither-induced corrections for intent?"
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Three seconds of pre-change dithers calibrate DitherKernel-v1 for unseen partners, yielding intent-change F1 ≥0.85 and dither-correction false alarms ≤10%."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "On held-out TransportShift-24 partners, adapt DitherKernel-v1 using three seconds of pre-change dithers; score intent-change F1 and dither-correction false-alarm rate."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "After three-second calibration, DitherKernel-v1 achieved unseen-partner intent-change F1 0.86 and 8% false alarms on dither-induced corrections."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n46",
+      "content": "Repeat three-second DitherKernel-v1 calibration with new partners changing routes during dithers; measure first-change F1 and dither-correction false alarms."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "For first route changes during continued dithers after three-second calibration, DitherKernel-v1 scored F1 0.76 and 17% dither-correction false alarms."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n46",
+      "content": "After three-second calibration, pausing dithers on heading shifts and freezing kernel updates yields first-change F1 ≥0.85, false alarms ≤10%."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Implement heading-triggered dither pauses and frozen kernel updates; test first-change F1 and dither-correction false alarms after three-second calibration."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "On unseen-partner first-change trials, trigger dither pauses at 12° heading shifts; freeze kernel updates and score F1 and false alarms."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "With heading-triggered dither pauses, unseen-partner first-change F1 reached 0.86 and dither-correction false alarms fell to 9%."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n52",
+      "content": "Stress-test heading-triggered dither pauses under simultaneous impedance switches and first route changes; measure unseen-partner F1 and correction false alarms."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "During coincident impedance switches and first route changes, paused dithers yielded unseen-partner F1 0.79 and 14% correction false alarms."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n51",
+      "content": "Use paused dithers only without coincident switches; route coincident cases to validated rate-limited micro-pauses."
+    },
+    {
+      "id": "n58",
+      "type": "hypothesis",
+      "order": 63,
+      "exploration_parent_id": "n51",
+      "content": "Switch-aware routing uses paused dithers normally and rate-limited micro-pauses during coincident switches; first-change F1 ≥0.85, correction false alarms ≤10%."
+    },
+    {
+      "id": "n59",
+      "type": "plan",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Implement switch-aware routing after three-second calibration; evaluate first-change F1, correction false alarms, and peak force in unseen-partner crossovers."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "Compare switch-aware routing with always-paused dithers in unseen-partner crossovers; score first-change F1 and correction false alarms by switch condition."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "Without coincident switches, paused dithers achieved first-change F1 0.87 and 8% correction false alarms in unseen-partner crossovers."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n59",
+      "content": "Test switch-aware routing on unseen-partner coincident-switch trials, measuring first-change F1, correction false alarms, and peak interaction force."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n62",
+      "content": "On unseen-partner coincident-switch first changes, switch-aware routing scored F1 0.81 and 13% correction false alarms; peak force was 42 N."
+    },
+    {
+      "id": "n64",
+      "type": "decision",
+      "order": 69,
+      "exploration_parent_id": "n58",
+      "content": "Keep paused dithers for noncoincident changes (F1 0.87); use standalone rate-limited micro-pauses during switches, since hybrid routing scored 0.81."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 70,
+      "exploration_parent_id": "n64",
+      "content": "After three-second calibration, test paused dithers or switch-triggered standalone micro-pauses on unseen partners’ first changes; score F1 and false alarms."
+    },
+    {
+      "id": "n66",
+      "type": "artifact",
+      "order": 71,
+      "exploration_parent_id": "n65",
+      "content": "FirstChange report records unseen-partner F1 0.86, 9% dither-correction false alarms, and 42 N peak force across routed conditions."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 72,
+      "exploration_parent_id": "g1",
+      "content": "Fuse anticipatory gaze and torso orientation with handle forces to identify route changes before assistance-induced corrections; confidence-gate force-limited overrides."
+    },
+    {
+      "id": "n67",
+      "type": "question",
+      "order": 73,
+      "exploration_parent_id": "p5",
+      "content": "Do gaze and torso cues improve unseen-partner intent-change detection when robot assistance provokes corrective handle forces?"
+    },
+    {
+      "id": "n68",
+      "type": "hypothesis",
+      "order": 74,
+      "exploration_parent_id": "n67",
+      "content": "Gaze–torso–force fusion achieves unseen-partner intent-change F1 ≥0.85 during assistance-induced corrections and improves F1 by ≥0.05 over force-only detection."
+    },
+    {
+      "id": "n69",
+      "type": "plan",
+      "order": 75,
+      "exploration_parent_id": "n68",
+      "content": "Collect synchronized gaze, torso, and handle-force traces under assistance perturbations; compare fusion against force-only detection on held-out partners."
+    },
+    {
+      "id": "n70",
+      "type": "activity",
+      "order": 76,
+      "exploration_parent_id": "n69",
+      "content": "Run assistance-perturbation fusion ablations on held-out partners against force-only and MicroPause baselines; score intent F1, overrides, peak force."
+    },
+    {
+      "id": "n71",
+      "type": "evidence",
+      "order": 77,
+      "exploration_parent_id": "n70",
+      "content": "On held-out assistance-perturbation trials, fusion scored intent-change F1 0.89 versus 0.82 force-only and 0.86 MicroPause."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 78,
+      "exploration_parent_id": "n69",
+      "content": "Test gaze occlusion and torso misalignment during assistance-induced corrections; compare fusion with MicroPause on F1, overrides, and peak force."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 79,
+      "exploration_parent_id": "n72",
+      "content": "Under gaze occlusion and torso misalignment, fusion F1 fell to 0.77 versus 0.84 force-only and 0.85 MicroPause."
+    },
+    {
+      "id": "n74",
+      "type": "hypothesis",
+      "order": 80,
+      "exploration_parent_id": "n68",
+      "content": "Cue-quality gating preserves fusion’s ≥0.85 intent-change F1 under occlusion by reverting to force-limited MicroPause when gaze or torso reliability drops."
+    },
+    {
+      "id": "n75",
+      "type": "plan",
+      "order": 81,
+      "exploration_parent_id": "n74",
+      "content": "Calibrate gaze and torso reliability scores; switch to force-limited MicroPause below threshold, then test occlusion F1 and peak force."
+    },
+    {
+      "id": "n76",
+      "type": "activity",
+      "order": 82,
+      "exploration_parent_id": "n75",
+      "content": "Evaluate quality-gated fusion versus MicroPause on unseen-partner occlusion trials; measure intent-change F1, unnecessary overrides, and peak force."
+    },
+    {
+      "id": "n77",
+      "type": "evidence",
+      "order": 83,
+      "exploration_parent_id": "n76",
+      "content": "On unseen-partner occlusion trials, quality-gated fusion achieved intent-change F1 0.86 and 42 N peak force, matching MicroPause F1 0.86."
+    },
+    {
+      "id": "n78",
+      "type": "activity",
+      "order": 84,
+      "exploration_parent_id": "n75",
+      "content": "Compare quality-gated fusion with FirstChange on occluded, post-calibration dither and coincident-switch first changes; score F1, false alarms, peak force."
+    },
+    {
+      "id": "n79",
+      "type": "evidence",
+      "order": 85,
+      "exploration_parent_id": "n78",
+      "content": "On occluded first-change trials, quality-gated fusion achieved F1 0.87 versus FirstChange 0.86; false alarms 8%, peak force 42 N."
+    },
+    {
+      "id": "n80",
+      "type": "decision",
+      "order": 86,
+      "exploration_parent_id": "n74",
+      "content": "Adopt quality-gated fusion with MicroPause fallback: intact cues improve F1, while gating restores occlusion performance, including first changes."
+    },
+    {
+      "id": "n81",
+      "type": "activity",
+      "order": 87,
+      "exploration_parent_id": "n80",
+      "content": "Run unseen-partner mixed-visibility crossover trials of adopted quality-gated fusion versus fixed assistance; score intent F1, override reduction, peak force."
+    },
+    {
+      "id": "n82",
+      "type": "artifact",
+      "order": 88,
+      "exploration_parent_id": "n81",
+      "content": "MixedVisibility report records unseen-partner intent-change F1 0.88, 35% fewer unnecessary overrides, and 42 N peak force versus 43 N baseline."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "revise",
+      "target": "n51"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "refute",
+      "target": "n58"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n70",
+      "relation": "produce",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "support",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "refute",
+      "target": "n68"
+    },
+    {
+      "source": "n74",
+      "relation": "revise",
+      "target": "n68"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n75",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n76"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "n74"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n76",
+      "relation": "produce",
+      "target": "n77"
+    },
+    {
+      "source": "n77",
+      "relation": "support",
+      "target": "n74"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n74"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n78",
+      "relation": "produce",
+      "target": "n79"
+    },
+    {
+      "source": "n79",
+      "relation": "support",
+      "target": "n74"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n71"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n80"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n81",
+      "relation": "produce",
+      "target": "n82"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a shared-control robot that distinguishes human intent changes from reactions to its assistance during collaborative object transport.",
+    "requirements": [
+      "Achieve intent-change F1 ≥0.85 for unseen partners when robot assistance itself induces human corrections.",
+      "Reduce unnecessary control overrides by 30% versus a fixed-assistance baseline without increasing peak interaction forces."
+    ]
+  }
+}

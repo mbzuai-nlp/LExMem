@@ -1,0 +1,155 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "pl1",
+        "a1",
+        "e1",
+        "a2",
+        "ar1",
+        "a3",
+        "e2",
+        "d1"
+      ],
+      "topic": "Correction-aware claim labeling and initial claim-graph evaluation",
+      "boundary_reason": "The initial evaluation ends with a decision to keep the labeling method but defer deployment."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "q2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Missing entity aliases in incomplete temporal evidence chains",
+      "boundary_reason": "The alias-restoration audit concludes before a new reranking proposal begins."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "pl2",
+        "a5",
+        "ar2",
+        "q3",
+        "h2",
+        "a6",
+        "e4",
+        "h3",
+        "a7",
+        "e5",
+        "d2"
+      ],
+      "topic": "AliasTrace implementation and safeguards against cross-period entity merges",
+      "boundary_reason": "The alias-validation tests end with adoption of time-bounded aliases."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "a8",
+        "e6",
+        "a9",
+        "e7",
+        "d3"
+      ],
+      "topic": "AliasTrace benchmark and TemporalShift-200 stress test",
+      "boundary_reason": "The stress test ends in a deployment deferral and a shift to a new proof-checking approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "q4",
+        "h4",
+        "pl3",
+        "a10",
+        "ar3",
+        "a11",
+        "e8",
+        "a12",
+        "e9",
+        "d4"
+      ],
+      "topic": "ScopeProof failure audit and repair ablations",
+      "boundary_reason": "The ablation revises the failure diagnosis and leads to a repair-priority decision."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "h5",
+        "pl4",
+        "a13",
+        "e10",
+        "a14",
+        "e11",
+        "d5"
+      ],
+      "topic": "Independent validation of failure causes on TemporalShift variants",
+      "boundary_reason": "Re-adjudication reverses the initial comparison and closes with a decision to retain both repairs."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "q5",
+        "h6",
+        "pl5",
+        "a15",
+        "ar4",
+        "a16",
+        "e12",
+        "a17",
+        "e13",
+        "d6"
+      ],
+      "topic": "TwinScope joint proof search and unseen-variant evaluation",
+      "boundary_reason": "The unseen-variant results lead to a deployment deferral."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "h7",
+        "pl6",
+        "a18",
+        "e14",
+        "a19",
+        "e15",
+        "d7"
+      ],
+      "topic": "Link-aware passage selection for TwinScope",
+      "boundary_reason": "Fresh-variant results fall short and end the link-aware selection attempt."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "h8",
+        "pl7",
+        "a20",
+        "ar5",
+        "a21",
+        "e16"
+      ],
+      "topic": "Source-date-diverse selection and initial TwinScope v0.2 evaluation",
+      "boundary_reason": "The initial v0.2 benchmark falls short, prompting an audit of its missed chains."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "a22",
+        "e17",
+        "a23",
+        "ar6",
+        "a24",
+        "e18",
+        "d8"
+      ],
+      "topic": "Diagnosing v0.2 omissions and evaluating adaptive TwinScope v0.3 selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+Review the following empty graph skeleton for obvious structural or relation errors.
+
+The graph intentionally contains no concrete content. Judge only what its node types and connections establish. Do not invent a scenario, assume missing facts, or require every possible relation to be present.
+
+Check:
+- Exactly one goal and 3–5 proposals; unique IDs, valid references, and no duplicate or self-edges.
+- A connected exploration tree rooted at the goal, with proposals as its direct children and nodes numbered in left-to-right depth-first preorder.
+- Plausible node arrangements and relation directions, especially arbitrary depend_on links, unsupported cross-proposal links, circular prerequisites, and unnecessary or redundant edges.
+
+Allowed directed relations (source -> target):
+- address: proposal / hypothesis / plan / activity -> question / goal; advances the goal or resolves the question.
+- produce: activity -> evidence / artifact; generates the target.
+- evaluate: activity -> hypothesis / proposal / artifact; assesses the target.
+- support: evidence -> hypothesis / proposal / decision; provides grounds for the target.
+- refute: evidence -> hypothesis / proposal; contradicts the target.
+- depend_on: dependent node -> prerequisite node; requires the target, not merely related to it.
+- decompose: goal -> proposal; proposal -> proposal; plan -> activity.
+- revise: revised node -> earlier version node; modifies the earlier version.
+- revive: evidence / decision -> proposal / hypothesis; reopens a previously rejected, deferred, or inactive target.
+
+Allowed node types: goal, proposal, question, hypothesis, plan, activity, evidence, decision, artifact.
+
+Node order determines dialogue chronology; a revision or revival must occur after its target. Treat exploration_parent_id as traversal metadata, not a semantic relation. A backward or cross-branch edge is not inherently wrong. Different evidence nodes may support and refute the same target. Type-compatible links whose validity depends on future content are not definite errors; flag them as concerns only when you can explain a specific structural reason. Do not recommend extra nodes or edges merely for completeness.
+
+Return only JSON:
+{
+  "verdict": "reasonable | needs_review | unreasonable",
+  "issues": [
+    {
+      "severity": "error | concern",
+      "node_ids": [],
+      "edge": null,
+      "reason": "Brief explanation grounded in the graph.",
+      "suggestion": "Minimal correction or point to verify."
+    }
+  ]
+}
+
+For an edge issue, set edge to {"source": "...", "relation": "...", "target": "..."}. Use unreasonable for definite errors, needs_review for concerns only, and reasonable with an empty issues array when no specific issue is found. Do not rewrite the graph.
+
+GRAPH
+{{GRAPH_JSON}}

@@ -1,0 +1,136 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Testing shear-conditioned contact residuals to distinguish slip from drift during visual occlusion",
+      "boundary_reason": "The initial held-out classification test has a result; the discussion shifts to diagnostics and tracker-free validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Diagnosing contact-graph errors and assessing tracker-free furniture repositioning",
+      "boundary_reason": "Deployment is deferred after both tracker-free thresholds are missed; the next discussion investigates a specific error source."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Checking whether caster-swivel transients cause slip false positives",
+      "boundary_reason": "The swivel-transient analysis concludes; a new caster-aware approach begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Building CasterFactor-v1 and testing the accuracy and displacement of its 8 N probe",
+      "boundary_reason": "The initial probe tests establish differing displacement results; the next discussion tunes probe duration across furniture types."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Tuning caster-dependent probe duration and validating CasterFactor-v2 on unseen furniture",
+      "boundary_reason": "Tracker-free validation of the revised caster approach concludes; a lidar-tactile alternative begins."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Comparing lidar-tactile slip and drift detection in one-wall and two-wall scenes",
+      "boundary_reason": "The wall-visibility performance gap motivates a separate discussion of viewpoint changes."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Testing contact-preserving lidar sidesteps and deciding the role of lidar-tactile fusion",
+      "boundary_reason": "The auxiliary-use decision concludes the lidar discussion; a floor-flow alternative begins."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Calibrating FloorTactile-v1 and validating it on tile and carpet",
+      "boundary_reason": "Initial validation concludes; the next discussion tests performance on challenging floors."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Testing whether low floor-flow track counts explain glossy and textureless floor failures",
+      "boundary_reason": "The glossy-floor comparison challenges the track-count explanation, prompting a revised failure-mode investigation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Identifying quadrant-concentrated flow on textureless floors and choosing a fallback",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

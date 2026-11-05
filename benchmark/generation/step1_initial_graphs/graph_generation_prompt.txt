@@ -1,0 +1,49 @@
+Generate one empty, structurally plausible graph skeleton for later screening and content instantiation.
+
+INPUT
+{{INPUT_JSON}}
+
+REQUIREMENTS
+- The input contains one empty goal and 3–5 empty proposals. Preserve all supplied IDs and types, and use exactly these goal and proposal nodes. Expand their branches together into one complete graph; do not add or remove goals or proposals.
+- Generate only node types, structure, relations, and traversal order. Do not add concrete content, descriptions, status fields, state-history fields, dialogue, or QA.
+- Encourage many branches, deeper branching, and several long paths. Vary branch lengths and node-type sequences while keeping connections plausible. Avoid repeating one template or adding arbitrary nodes merely to increase size. Choose the total node count freely.
+- An example exploration path is goal -> proposal -> hypothesis -> activity -> evidence -> decision. This is one possible branch, not a required template or a sequence of directed semantic relations.
+
+NODE TYPES
+- goal: desired outcome.
+- proposal: candidate approach.
+- question: unresolved issue.
+- hypothesis: testable claim or assumption.
+- plan: organized intended steps.
+- activity: investigation, evaluation, implementation, or testing.
+- evidence: observed result or factual finding.
+- decision: recorded choice.
+- artifact: output or deliverable.
+These definitions guide structure only; leave all nodes without concrete content.
+
+RELATIONS (source -> target)
+- address: proposal / hypothesis / plan / activity -> question / goal; resolves an issue or advances the goal.
+- produce: activity -> evidence / artifact; generates an output.
+- depend_on: dependent node -> prerequisite node; requires the target, not merely associated with it.
+- evaluate: activity -> hypothesis / proposal / artifact; assesses the target.
+- support: evidence -> hypothesis / proposal / decision; provides grounds for the target.
+- refute: evidence -> hypothesis / proposal; contradicts the target.
+- decompose: goal -> proposal; proposal -> proposal; plan -> activity; breaks the source into approaches or activities.
+- revise: revised node -> earlier version node; modifies the earlier version.
+- revive: evidence / decision -> proposal / hypothesis; reopens a previously rejected, deferred, or inactive target.
+
+Consider the proposals jointly. Allow shared prerequisites, activities evaluating multiple proposals, evidence bearing on different branches, and decisions drawing on evidence across proposals where structurally plausible. Add cross-proposal relations when justified, without forcing every pair to connect or using depend_on as a generic association. Do not force relation coverage or label every adjacent pair in an exploration path. Connect the goal to each supplied proposal with decompose.
+
+TRAVERSAL
+Use exploration_parent_id to define one exploration tree rooted at g1; this is ordering metadata, not a semantic relation. The root's parent is null and every other node has one existing parent. All supplied proposals are direct children of the goal, in input order; p1 is the first child. Explore each proposal's subtree before moving to the next proposal. Shared nodes need only one exploration parent; semantic edges can connect them to other branches.
+
+Node order is also the chronological order of the generated dialogue. A revision or revival must occur after its target.
+
+Order nodes by left-to-right depth-first preorder: descend through each branch, then backtrack to explore remaining siblings. Sibling order follows appearance in the nodes array. Assign contiguous order values from 1 to N (g1 = 1, p1 = 2); each subtree occupies a contiguous interval. Semantic edges may point backward or across branches without changing this order or duplicating nodes.
+
+OUTPUT
+Return only one complete JSON object:
+- nodes: objects with exactly id, type, order, exploration_parent_id.
+- edges: objects with exactly source, relation, target.
+
+Use unique neutral IDs and valid references. Check node counts, seed preservation, relation directions, and depth-first order. No self-edges, duplicate edges, circular prerequisites, Markdown fences, explanations, or omitted sections.

@@ -1,0 +1,804 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Generate synchronized audio from silent video while distinguishing visually determined sound events from acoustically ambiguous alternatives.",
+      "requirements": [
+        "Reduce visible-event audio onset error by 20% versus an equally sized deterministic video-to-audio baseline.",
+        "Cover 90% of reference-supported sound alternatives across samples, with visually contradicted events below 5%."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Anchor visually determined audio onsets to tracked motion and contact peaks; sample ambiguous alternatives using diffusion with visual-consistency filtering."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What contact-confidence threshold anchors visible onsets without suppressing reference-supported sound alternatives?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "A 0.8 contact-confidence gate will cut onset error 20% while preserving 90% alternative coverage and under 5% visual contradictions."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Sweep contact-confidence gates from 0.6 to 0.9 on MultiSound-AV, measuring onset MAE, alternative coverage, and visual contradictions."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run 0.6–0.9 contact-gate sweeps on MultiSound-AV against a size-matched deterministic baseline, measuring onset MAE, alternative recall, and contradiction rate."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On MultiSound-AV, the 0.8 gate achieved 78-ms onset MAE versus 100-ms baseline, 92% alternative recall, and 3.8% visual contradictions."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n3",
+      "content": "Evaluate the 0.8 gate on held-out MultiSound-AV occlusions against a size-matched baseline, measuring onset MAE, alternative recall, and visual contradictions."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "On held-out MultiSound-AV occlusions, the 0.8 gate yielded 95-ms onset MAE versus 110-ms baseline, 83% alternative recall, and 6.2% contradictions."
+    },
+    {
+      "id": "n8",
+      "type": "question",
+      "order": 10,
+      "exploration_parent_id": "n2",
+      "content": "Can occlusion-aware contact uncertainty restore alternative recall while reducing visual contradictions on held-out MultiSound-AV clips?"
+    },
+    {
+      "id": "n9",
+      "type": "hypothesis",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Replacing the fixed gate with occlusion-calibrated contact probabilities should achieve ≤88-ms onset MAE, ≥90% alternative recall, and <5% contradictions."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Using 0.8-gate sweep and occlusion failures, calibrate contact probabilities; retest onset MAE, alternative recall, contradictions on held-out MultiSound-AV occlusions."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "On held-out MultiSound-AV occlusions, calibrated contacts achieved 86-ms onset MAE versus 110-ms baseline, 91% alternative recall, and 4.3% contradictions."
+    },
+    {
+      "id": "n12",
+      "type": "decision",
+      "order": 14,
+      "exploration_parent_id": "n8",
+      "content": "Adopt occlusion-calibrated contacts over the fixed gate: held-out results meet onset, alternative-recall, and visual-contradiction targets."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Retrieve diverse scene-matched sounds, align visible contacts via motion-guided warping, and retain multiple variants when acoustic identity is uncertain."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "How many scene-matched sound candidates should survive visual-consistency filtering to cover plausible alternatives without adding contradicted events?"
+    },
+    {
+      "id": "n14",
+      "type": "hypothesis",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Retaining five visually consistent, motion-warped candidates per clip should yield ≥90% alternative recall, <5% contradictions, and ≤80-ms onset MAE."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Sweep one, three, five, and eight motion-warped retrievals per clip on MultiSound-AV; measure alternative recall, contradiction rate, and onset MAE."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "On MultiSound-AV, five candidates achieved 92% alternative recall, 4.1% contradictions, and 77-ms onset MAE; eight caused 6.1% contradictions."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n14",
+      "content": "Test five-candidate retrieval on held-out MultiSound-AV occlusions against a size-matched deterministic baseline; measure alternative recall, contradictions, and onset MAE."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "On held-out MultiSound-AV occlusions, five candidates yielded 87% alternative recall, 7.0% contradictions, and 90-ms onset MAE versus 110-ms baseline."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "n14",
+      "content": "Can visibility-aware candidate selection preserve occluded-source alternatives while rejecting sounds from objects absent throughout the clip?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Adaptive 3–7-candidate selection conditioned on occlusion versus absence should achieve ≥90% recall, <5% contradictions, and ≤88-ms onset MAE."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Using sweep and occlusion failures, compare adaptive 3–7 versus fixed-five retrieval on held-out MultiSound-AV; measure recall, contradictions, onset MAE."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Held-out visible clips: fixed-five scored 91% recall, 4.6% contradictions, 79-ms MAE; adaptive occlusions scored 88%, 5.6%, 89-ms."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n20",
+      "content": "Using n22 failures, compare fixed-five and adaptive retrieval across held-out MultiSound-AV occluded-versus-absent sources; measure recall, contradictions, and onset MAE."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Occlusion/absence audit: fixed-five visible-source clips achieved 91% recall, 4.4% contradictions, 79-ms MAE; adaptive selection achieved 88%, 5.8%, 89-ms."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n19",
+      "content": "Retain fixed-five retrieval for clearly visible sources; reject adaptive selection and defer occluded cases after both miss held-out targets."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Build a probabilistic event graph to anchor visible impacts and sample plausible acoustic causes, rejecting visually absent sources."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "How should event-graph causal edges distinguish occluded sound sources from visually absent objects when sampling acoustic alternatives?"
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Object-persistence edges linking offscreen trajectories to impacts should achieve ≤88-ms onset MAE, ≥90% alternative recall, and <5% contradictions."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Benchmark object-persistence event graphs against edge-ablated graphs and deterministic baseline on held-out MultiSound-AV occlusions; measure onset MAE, alternative recall, contradictions."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "On MultiSound-AV occlusions, persistence graphs achieved 85-ms onset MAE versus 110-ms baseline, 93% alternative recall, and 4.1% contradictions."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 34,
+      "exploration_parent_id": "n26",
+      "content": "Adopt object-persistence edges for occlusions: held-out results meet all three targets where retrieval-based selection failed."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 35,
+      "exploration_parent_id": "g1",
+      "content": "Train a counterfactual contrastive audio generator with contact-shift and object-removal negatives to sharpen onsets while retaining acoustically plausible variants."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p4",
+      "content": "Can object-removal negatives reject truly absent sources without suppressing alternatives from persistently tracked but occluded objects?"
+    },
+    {
+      "id": "n32",
+      "type": "plan",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "Train persistence-aware and unconditional object-removal models with matched contact-shift negatives; compare occluded-source recall, absent-source contradictions, and onset MAE."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "Train matched-size contrastive generators with persistence-aware versus unconditional removal negatives; evaluate held-out MultiSound-AV occlusions and absent-object controls."
+    },
+    {
+      "id": "n34",
+      "type": "artifact",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "MultiSound-AV ContrastSet v1: matched generator checkpoints, occlusion/absence control clips, and per-clip onset, alternative-recall, and contradiction scores."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n32",
+      "content": "Audit ContrastSet v1 occlusion/absence labels and score reproducibility, then ablate removal negatives to test generator recall, contradictions, and onset MAE."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "ContrastSet v1: persistence-aware negatives yielded 94-ms onset MAE versus 110-ms baseline, 85% alternative recall, and 6.2% contradictions."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "n31",
+      "content": "Reject the contrastive generator: persistence-aware negatives missed onset, recall, and contradiction targets on ContrastSet v1."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 43,
+      "exploration_parent_id": "g1",
+      "content": "Route clearly visible sources through five-candidate retrieval and occluded sources through persistence graphs, using calibrated contacts for onset alignment."
+    },
+    {
+      "id": "n38",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "p5",
+      "content": "What visibility-confidence threshold routes partially occluded events between five-candidate retrieval and persistence graphs without duplicating sounds?"
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n38",
+      "content": "Visibility ≥0.75 routes retrieval, otherwise persistence; event-ID deduplication should yield ≤88-ms onset MAE, ≥90% alternative recall, <5% contradictions."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Integrate validated persistence graphs and failed contrastive controls; sweep visibility thresholds with event-ID deduplication, measuring onset MAE, recall, contradictions."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n40",
+      "content": "On held-out MultiSound-AV, 0.75 routing achieved 84-ms onset MAE versus 110-ms baseline, 92% alternative recall, and 4.2% contradictions."
+    },
+    {
+      "id": "n42",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n38",
+      "content": "Adopt 0.75 visibility routing with event-ID deduplication: the hybrid meets all three held-out targets."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "n14"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "revise",
+      "target": "n14"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n42"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Generate synchronized audio from silent video while distinguishing visually determined sound events from acoustically ambiguous alternatives.",
+    "requirements": [
+      "Reduce visible-event audio onset error by 20% versus an equally sized deterministic video-to-audio baseline.",
+      "Cover 90% of reference-supported sound alternatives across samples, with visually contradicted events below 5%."
+    ]
+  }
+}

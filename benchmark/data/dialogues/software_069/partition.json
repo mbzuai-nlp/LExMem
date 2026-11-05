@@ -1,0 +1,148 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Epoch-fenced manifests and initial mid-reshard and publication tests",
+      "boundary_reason": "ManifestRace exposed stale-worker duplicates and latency above the target, prompting a revised approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Epoch-checked step commits and piggybacked lease checks",
+      "boundary_reason": "The approach was adopted; the discussion shifts to a quorum-ledger alternative."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Quorum step ledger and compaction during resharding",
+      "boundary_reason": "Pausing compaction resolved the tested ledger failures, and the discussion shifts to standby shadows."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Shadow optimizer handoffs and ownership-commit markers",
+      "boundary_reason": "Shadow handoffs were retained as an alternative; checkpoint replay is a distinct approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Fixed-order checkpoint replay, pipelining, and mixed-precision stress tests",
+      "boundary_reason": "Mixed-precision mismatches and excess overhead motivate a microbatch-checkpoint revision."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Fenced microbatch checkpoints and checkpoint-publication failures",
+      "boundary_reason": "Adoption was deferred after mixed-generation restores; atomic publication is the next issue."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Atomic generation manifests for microbatch checkpoints",
+      "boundary_reason": "The revised replay approach was adopted; the discussion shifts to coded recovery."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66"
+      ],
+      "topic": "Erasure-coded recovery and parity-regeneration stress tests",
+      "boundary_reason": "Regeneration failures and latency above the target prompt generation fencing."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "Generation-fenced parity and stripe-manifest publication",
+      "boundary_reason": "Coded recovery was deferred after publication failures; the remaining node makes the overall design choice."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n74"
+      ],
+      "topic": "Final recovery-design selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

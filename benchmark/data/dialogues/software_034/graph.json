@@ -1,0 +1,973 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an SSD-backed key-value store that limits write amplification under long-lived snapshots without sacrificing crash consistency.",
+      "requirements": [
+        "Reduce total host-written bytes by 30% versus leveled LSM compaction under identical update-heavy workloads.",
+        "Preserve snapshot isolation and acknowledged writes across crashes; keep p99 reads within 10% of baseline."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Isolate snapshot-pinned versions in indexed immutable segments; compact active versions, fsync WAL before acknowledgment, and atomically publish manifests."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What pinning granularity reduces copied bytes without pushing p99 point reads beyond 110% of the leveled LSM baseline?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Under hour-long snapshots, 4-MiB version-segment pinning cuts host-written bytes ≥30% versus leveled LSM, with p99 reads ≤1.10× baseline."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Benchmark 1-, 4-, and 16-MiB snapshot-pinned segments against leveled LSM under hour-long snapshots; compare host-written bytes and p99 reads."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run UpdateBench-60 (80% updates, hour-long snapshots) comparing 1-, 4-, 16-MiB segments against leveled LSM; measure host-written bytes and p99 reads."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "UpdateBench-60: 4-MiB pinning wrote 68 GiB versus leveled LSM’s 100 GiB; p99 reads were 1.08× baseline."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Select 4-MiB snapshot-pinned segments: UpdateBench-60 met the write-byte reduction target with p99 reads below the 1.10× limit."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Implement selected 4-MiB pinning; run CrashBench-4M power-cut injections around WAL fsync and manifest publication, checking acknowledged writes and snapshot isolation."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "4-MiB pinning patch and CrashBench-4M report covering WAL and manifest fault points, acknowledged-write recovery, and snapshot-visibility checks."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Rerun UpdateBench-60 on the 4-MiB pinning patch with WAL fsync; compare host-written bytes and p99 reads against leveled LSM."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "With WAL fsync enabled, UpdateBench-60 measured 77 GiB versus leveled LSM’s 100 GiB; p99 reads were 1.08× baseline."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "One-MiB pinning with fsynced WAL group commits will write ≤70 GiB versus 100 GiB baseline, with p99 reads ≤1.10×."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Run UpdateBench-60 with 1-MiB pins and 2-ms fsynced WAL group commits; compare host-written GiB and p99 reads against leveled LSM."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "UpdateBench-60 with 1-MiB pins and fsynced group commits wrote 69 GiB versus 100 GiB baseline; p99 reads were 1.09×."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "How should recovery reconstruct snapshot pins after a crash between WAL fsync and atomic manifest publication?"
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "WAL-log snapshot registrations; inject CrashBench-1M cuts after WAL fsync, before manifest publication; verify recovered pins preserve visibility."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "CrashBench-1M: 10,000 injected crashes recovered all acknowledged writes and WAL-registered snapshot pins, with zero visibility violations."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Separate values into an append-only MVCC log, compact only key indexes, and fsync commits before publishing snapshot-visible index roots."
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Implement value-log MVCC; measure UpdateBench-60 host bytes and p99 versus LSM; fault-inject commits to verify durability and snapshot recovery."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Reuse CrashBench-1M recovery checks to compare 1-MiB pinning and value-log MVCC on UpdateBench-60 host bytes, p99 reads, and crashes."
+    },
+    {
+      "id": "n22",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "UpdateBench-60 comparison report with host-written GiB, p99 reads, and CrashBench-1M recovery checks for both designs."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Recompute both designs’ UpdateBench-60 write-byte and p99 ratios from the report; inspect CrashBench-1M logs for recovery violations."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "UpdateBench-60: value-log MVCC wrote 63 GiB versus 100 GiB baseline and 69 GiB pinning; p99 reads 1.06×, zero recovery violations."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Select value-log MVCC over 1-MiB pinning: 63 versus 69 GiB written, lower p99 reads, and zero recovery violations."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Implement selected value-log MVCC with snapshot-watermarked GC; fsync relocated values before publishing index roots and reclaiming old segments."
+    },
+    {
+      "id": "n27",
+      "type": "artifact",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Value-log MVCC patch adds snapshot-watermarked GC, fsynced relocation, and atomic index-root publication; includes UpdateBench-60 and CrashBench-1M harnesses."
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "p2",
+      "content": "Under 24-hour snapshots, watermarked GC keeps value-log MVCC host writes ≤70% of leveled LSM and p99 reads ≤1.10×."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Run UpdateBench-24h on the value-log MVCC patch and leveled LSM; measure host-written GiB and p99 reads during watermarked GC."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "UpdateBench-24h: value-log MVCC wrote 76 GiB versus leveled LSM’s 100 GiB; p99 reads reached 1.14× baseline during GC."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n28",
+      "content": "Profile UpdateBench-24h GC stalls; rerun with 80%-dead segment selection and 5-MiB/s relocation throttling, measuring host bytes and p99."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "UpdateBench-24h with 80%-dead GC and 5-MiB/s throttling wrote 69 GiB versus 100 GiB baseline; p99 reads fell to 1.09×."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Use snapshot-aware tiered LSM runs with fsynced WAL commits and Bloom-filtered indexes to reduce compaction writes while bounding reads."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Can snapshot-aware tiering cap point-read run probes without exceeding 70 GiB written on UpdateBench-24h?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Replacing value-log GC, four-run snapshot-aware tiering should write ≤70 GiB with ≤4 probes and ≤1.10× p99 on UpdateBench-24h."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Extend the value-log patch’s harness for four-run tiering on UpdateBench-24h; compare writes and p99 against both GC configurations, measure probes."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "UpdateBench-24h: four-run tiering wrote 66 GiB versus 100 GiB baseline, but p99 reads reached 1.13×."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n35",
+      "content": "Using the value-log patch’s harness, cache four-run indexes to address 1.13× p99; rerun UpdateBench-24h measuring writes, probes, and p99."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "UpdateBench-24h with cached four-run indexes wrote 67 GiB versus 100 GiB baseline; maximum probes were four, p99 reads 1.08×."
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "With a 64-MiB index cache, four-run tiering should sustain ≤70 GiB written, ≤4 probes, and ≤1.10× p99 on UpdateBench-24h."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Validate 64-MiB index-cache tiering across UpdateBench-24h seeds; measure host-written GiB, maximum run probes, p99 reads, and crash recovery."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Adapt the value-log harness for 64-MiB cached tiering; run five UpdateBench-24h seeds and CrashBench-1M, measuring host-written GiB, probes, p99, recovery."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Across five UpdateBench-24h seeds, cached tiering wrote 66–69 GiB versus 100 GiB baseline; ≤4 probes, ≤1.09× p99, zero crash violations."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n41",
+      "content": "Extend the value-log patch’s CrashBench-1M harness for 64-MiB cached-tier publication faults; rerun UpdateBench-24h after recovery, measuring bytes, probes, p99."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "After CrashBench-1M publication cuts, UpdateBench-24h wrote 68 GiB and probed ≤4 runs, but cold-cache p99 reached 1.16× baseline."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Reject cached tiering despite ≤1.09× warm p99: post-crash p99 reaches 1.16×; retain throttled value-log MVCC (69 GiB, 1.09×)."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Implement 80%-dead, 5-MiB/s value-log GC; run CrashBench-24h on relocation crashes, checking acknowledged writes and snapshot isolation."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Throttled value-log MVCC patch with 80%-dead GC, 5-MiB/s relocation cap, and CrashBench-24h relocation-fault report."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p3",
+      "content": "Can persisted run-index hints bring tiering’s post-crash p99 below 1.10× without raising host writes above 70 GiB?"
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Reuse n48’s crash-testing setup to fault persisted tiered-run hint publication; compare post-crash p99 and UpdateBench-24h writes against throttled MVCC."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Persisted tiered-run hints cut post-crash p99 to 1.07× baseline; UpdateBench-24h wrote 69 GiB versus leveled LSM’s 100 GiB."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 52,
+      "exploration_parent_id": "g1",
+      "content": "Use immutable Bε-tree batches with snapshot-aware version chains and fsynced commit records, avoiding full-level rewrites while indexing reads."
+    },
+    {
+      "id": "n53",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "p4",
+      "content": "Prototype immutable Bε-tree batches; compare UpdateBench-24h writes and p99 against leveled LSM, then inject commit and snapshot-recovery crashes."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Adapt n27’s benchmark harness and n48’s crash-fault tests for Bε-tree batches; measure UpdateBench-24h writes, p99 reads, and recovery."
+    },
+    {
+      "id": "n55",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Bε-tree prototype and UpdateBench-24h/CrashBench-24h comparison report covering host-written GiB, p99 reads, and acknowledged-write recovery."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n53",
+      "content": "Compare Bε-tree report’s writes, post-crash p99, and snapshot recovery against persisted-hint tiering’s 69 GiB and 1.07× p99."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "UpdateBench-24h: Bε-tree wrote 65 GiB versus 100 GiB baseline; post-crash p99 was 1.05×, with zero snapshot or durability violations."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Select Bε-tree over persisted-hint tiering: 65 versus 69 GiB written, 1.05× versus 1.07× post-crash p99, no recovery violations."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Harden selected Bε-tree prototype: fsync commit records before acknowledgment, atomically publish batch roots, and fault-test snapshot-version pruning."
+    },
+    {
+      "id": "n60",
+      "type": "artifact",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Hardened Bε-tree patch adds fsynced commits, atomic batch-root publication, snapshot-safe pruning, and CrashBench-24h fault tests."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an SSD-backed key-value store that limits write amplification under long-lived snapshots without sacrificing crash consistency.",
+    "requirements": [
+      "Reduce total host-written bytes by 30% versus leveled LSM compaction under identical update-heavy workloads.",
+      "Preserve snapshot isolation and acknowledged writes across crashes; keep p99 reads within 10% of baseline."
+    ]
+  }
+}

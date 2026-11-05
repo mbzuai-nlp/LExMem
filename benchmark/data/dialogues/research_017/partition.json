@@ -1,0 +1,130 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1",
+        "pl1"
+      ],
+      "topic": "Assess deadline revision risk and plan a 650-ms risk-gated decoder",
+      "boundary_reason": "The deadline decision and test plan are set; implementation and replay follow."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "a2",
+        "ar1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Implement and audit the StreamMix risk-gated decoder",
+      "boundary_reason": "The decoder audit is complete; the next discussion examines an overlapping-speaker subset."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Test deadline revision risk for overlapping speakers",
+      "boundary_reason": "The subset result is established; focus shifts to far-field transfer."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "a5",
+        "e4"
+      ],
+      "topic": "Test whether the unchanged risk gate transfers to far-field RoomMix speech",
+      "boundary_reason": "The far-field replay identifies a WER gap; the next proposal addresses it."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h3",
+        "a6",
+        "e5",
+        "d2",
+        "pl2"
+      ],
+      "topic": "Evaluate and adopt far-field calibration with overlap-aware rescoring",
+      "boundary_reason": "The approach is adopted and held-out validation is planned; its audit follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "a7",
+        "ar2",
+        "a8",
+        "e6"
+      ],
+      "topic": "Audit held-out RoomMix speaker and noise strata",
+      "boundary_reason": "The strata audit is complete; the next discussion isolates calibration's contribution."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "h4",
+        "a9",
+        "e7"
+      ],
+      "topic": "Ablate far-field calibration without rescoring",
+      "boundary_reason": "The calibration-only hypothesis is tested; focus shifts to future-phoneme rescoring."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "pl3",
+        "a10",
+        "ar3",
+        "a11",
+        "e8",
+        "d3"
+      ],
+      "topic": "Prototype and audit future-phoneme rescoring",
+      "boundary_reason": "The prototype is advanced; the next discussion examines low-SNR agreement commits."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "q4",
+        "h5",
+        "a12",
+        "e9"
+      ],
+      "topic": "Measure incorrect future-phoneme agreement commits below 5 dB SNR",
+      "boundary_reason": "The initial hypothesis is refuted; a revised commit check follows."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "h6",
+        "a13",
+        "e10",
+        "d4"
+      ],
+      "topic": "Test and advance dual-check commits for low-SNR speech",
+      "boundary_reason": "The dual-check decision is made; hybrid integration follows."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "a14",
+        "ar4"
+      ],
+      "topic": "Integrate a hybrid decoder and produce reproducible commit logs",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

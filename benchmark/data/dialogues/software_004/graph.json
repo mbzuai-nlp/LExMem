@@ -1,0 +1,695 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a distributed query-result cache preserving transaction snapshot semantics across concurrent writes, range predicates, and replica lag.",
+      "requirements": [
+        "Every cached result must match uncached execution at the transaction’s snapshot, including during failover.",
+        "Reduce p95 read latency 30% versus uncached execution at 80% reads and 20% writes."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Cache MVCC snapshot-interval results using commit-ordered key/range invalidations; serve only with failover-fenced watermarks covering the snapshot, otherwise bypass."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How are range-result validity intervals closed for phantom writes when invalidations lag or a cache owner fails over?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Durable commit-indexed range invalidations close intervals at write commit; fenced owners serving only replay-covered snapshots yield zero phantom hits."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Run PhantomFence-10M: interleave range inserts, delayed invalidations, and owner failovers; compare every cache hit against MVCC snapshot execution."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "PhantomFence-10M found 0/6.2M cache-hit mismatches across 400 owner failovers and 250 ms invalidation lag."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Given PhantomFence-10M’s zero mismatches, adopt commit-indexed range invalidations with fenced replay watermarks; require separate p95 validation before rollout."
+    },
+    {
+      "id": "pl1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Implement fenced range cache; benchmark 80/20 workload under replica lag and failover, requiring zero snapshot mismatches and ≥30% p95 reduction."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "pl1",
+      "content": "Implement the fenced cache; benchmark ReadMix-80/20 against uncached MVCC across 1M snapshot-checked queries, 250 ms replica lag, and failovers."
+    },
+    {
+      "id": "ar1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "ReadMix-80/20 benchmark report records 0/1M snapshot mismatches and 35% lower p95 versus uncached under replica lag and failovers."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "pl1",
+      "content": "Audit ReadMix-80/20 report against raw traces, recomputing snapshot mismatches and p95 speedup separately for failover and replica lag."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "Trace audit confirmed 0/1M snapshot mismatches; p95 fell 34% during failover and 32% at 250 ms replica lag."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "q1",
+      "content": "Transactionally maintained MVCC range-generation counters, read from snapshot-qualified replicas, should prevent phantom hits despite delayed invalidations and owner failover."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "Run GenFence-10M with concurrent range inserts, 250 ms replica lag, and owner failovers; compare generation-validated hits against snapshot execution."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "a4",
+      "content": "GenFence-10M observed 9/5.4M phantom hits: post-failover shard epochs reused MVCC generation values, falsely validating pre-failover ranges."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "How do independently advancing shard watermarks prevent mixed-version cache hits for cross-shard queries during distributed commits?"
+    },
+    {
+      "id": "pl2",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "q2",
+      "content": "Gate cross-shard hits on commit-resolved snapshot tokens and all shards’ fenced replay watermarks; test partial commits and failover."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "pl2",
+      "content": "Run CrossShard-2PC: pause commits after one shard applies, fail over replicas, and compare token-gated hits against uncached snapshot reads."
+    },
+    {
+      "id": "ar2",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "a5",
+      "content": "CrossShard-2PC report records 0/2M mixed-version hits across 10,000 partial commits and 200 failovers, with per-shard watermark traces."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Cache immutable results by globally unique snapshot tokens, query fingerprints, and execution context; populate through snapshot-consistent reads."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "How can snapshot-token caching preserve read-your-writes when transactions share a snapshot but differ in uncommitted local writes?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "q3",
+      "content": "Bypassing shared cache after each transaction’s first local write should eliminate read-your-writes mismatches without changing read-only hit rates."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "h3",
+      "content": "Replay CrossShard-2PC watermark traces with same-snapshot divergent local writes; compare bypassed reads against uncached results and measure read-only hit rates."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "a6",
+      "content": "CrossShard-2PC replay found zero local-write mismatches, but read-only hit rate fell from 78% to 61% when bypass suppressed cache warmup."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "e4",
+      "content": "Bypass write-transaction hits, but warm shared entries through independent read-only snapshot executions; restore ≥78% read-only hits without mismatches."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "h4",
+      "content": "Replay CrossShard-2PC traces with independent read-only snapshot warming; measure read-only hit rate and local-write mismatches against uncached execution."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "a7",
+      "content": "CrossShard-2PC replay yielded 72% read-only hits, below the 78% target, despite 0/2M local-write mismatches."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "h4",
+      "content": "Replay CrossShard-2PC with per-snapshot top-100 query prewarming through independent read-only executions; measure hit rate and local-write mismatches."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "a8",
+      "content": "Top-100 snapshot prewarming restored read-only hit rate to 79%, with 0/2M local-write mismatches across CrossShard-2PC replay."
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "e6",
+      "content": "Bypass shared cache after local writes; top-100 snapshot prewarming should maintain ≥78% read-only hits with zero mismatches."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "h5",
+      "content": "Replay CrossShard-2PC traces with local-write bypass and top-100 snapshot prewarming; check read-only hit rate and snapshot mismatches."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a9",
+      "content": "Combined bypass and top-100 prewarming delivered 79% read-only hits and 0/2M snapshot mismatches in CrossShard-2PC replay."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "e7",
+      "content": "Adopt local-write bypass with top-100 snapshot prewarming: simple warming missed 78%; combined replay reached 79% hits, zero mismatches."
+    },
+    {
+      "id": "pl3",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "d2",
+      "content": "Implement local-write bypass and top-100 snapshot prewarming; validate zero read-your-writes mismatches and ≥30% p95 reduction on ReadMix-80/20."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "pl3",
+      "content": "Implement local-write bypass and top-100 prewarming; run ReadMix-80/20 with concurrent writes, 250 ms lag, and failovers."
+    },
+    {
+      "id": "ar3",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "a10",
+      "content": "ReadMix-80/20 report records 0/1M snapshot mismatches and 33% lower p95 versus uncached with failovers and 250 ms lag."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Maintain predicate-indexed materialized results using globally ordered committed MVCC deltas; serve snapshot versions only after all participating shards catch up."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "How can predicate-indexed results handle range phantoms and join deletions without retaining a full materialization for every snapshot?"
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "q4",
+      "content": "Versioned predicate indexes and signed join deltas should reconstruct retained snapshots from periodic checkpoints without materializing every snapshot."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "h6",
+      "content": "Augment ReadMix-80/20 traces with range inserts and join deletions; measure minute-checkpoint, predicate-indexed delta reconstruction accuracy and storage."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "a11",
+      "content": "ReadMix-80/20: 0/1M snapshot mismatches on range inserts and join deletions; minute-checkpoint delta storage 18 GB versus 74 GB materialized."
+    },
+    {
+      "id": "pl4",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "e8",
+      "content": "Implement minute-checkpoint predicate indexes with range-insert and signed join deltas; validate failover snapshots and ≥30% ReadMix-80/20 p95 improvement."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "pl4",
+      "content": "Implement minute-checkpoint predicate indexes and signed join deltas; benchmark ReadMix-80/20 against uncached execution under range inserts and failovers."
+    },
+    {
+      "id": "ar4",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "a12",
+      "content": "ReadMix-80/20 delta-cache report records 0/1M snapshot mismatches and 31% lower p95 versus uncached across range inserts, joins, and failovers."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "pl4",
+      "content": "Audit ar4’s ReadMix-80/20 traces against MVCC snapshots, recomputing p95 and mismatches for failovers, range inserts, and join deletions."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a13",
+      "content": "ReadMix-80/20 trace audit confirmed 0/1M snapshot mismatches and 31% lower overall read p95; failover reads improved 30%."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "pl1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "pl1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "pl2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "pl2",
+      "relation": "decompose",
+      "target": "a5"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "ar2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a6",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "revise",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "revise",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "h5",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "h5",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "pl3",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "pl3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "pl3",
+      "relation": "decompose",
+      "target": "a10"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "ar3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "ar3"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "pl4",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "pl4",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "pl4",
+      "relation": "decompose",
+      "target": "a12"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "ar4"
+    },
+    {
+      "source": "pl4",
+      "relation": "decompose",
+      "target": "a13"
+    },
+    {
+      "source": "a13",
+      "relation": "depend_on",
+      "target": "ar4"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "ar4"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "p3"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a distributed query-result cache preserving transaction snapshot semantics across concurrent writes, range predicates, and replica lag.",
+    "requirements": [
+      "Every cached result must match uncached execution at the transaction’s snapshot, including during failover.",
+      "Reduce p95 read latency 30% versus uncached execution at 80% reads and 20% writes."
+    ]
+  }
+}

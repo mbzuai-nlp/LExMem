@@ -1,0 +1,122 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "n1",
+        "a1",
+        "e1",
+        "a2",
+        "e2",
+        "d1",
+        "n2",
+        "a3",
+        "r1"
+      ],
+      "topic": "Safe probing to distinguish friction and clearance, including a revised protocol for ambiguous pairs",
+      "boundary_reason": "The probing protocol and evaluation log are established; the discussion shifts to insertion control."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "q2",
+        "a4",
+        "e3",
+        "a5",
+        "e4",
+        "d2"
+      ],
+      "topic": "Posterior-conditioned insertion scheduling and its failure under wrench delay",
+      "boundary_reason": "The delay-induced force overshoot prompts a distinct predictive-braking proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h2",
+        "n3",
+        "a6",
+        "e5",
+        "a7",
+        "r2"
+      ],
+      "topic": "Predictive braking under delayed wrench feedback",
+      "boundary_reason": "A fresh-pair evaluation log is produced; the next proposal turns to passive compliance and a slip clutch."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "q4",
+        "a8",
+        "e6",
+        "d3"
+      ],
+      "topic": "Clutch-assisted spiral search and an audit of transient forces",
+      "boundary_reason": "The decision prioritizes clutch-assisted search; the next discussion adds acoustic jam sensing."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n4",
+        "a9",
+        "r3"
+      ],
+      "topic": "Preparing wrench–acoustic stick–slip detection and clutch-protected jam recovery",
+      "boundary_reason": "The augmented trial log is ready for a comparison of acoustic and wrench-only triggers."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "q5",
+        "a10",
+        "e7",
+        "a11",
+        "e8",
+        "d4",
+        "n5",
+        "a12",
+        "r4"
+      ],
+      "topic": "Acoustic versus wrench-only jam triggers across quiet and noisy conditions",
+      "boundary_reason": "Noise-gated trigger routing is calibrated; the discussion shifts to releasing deep jams."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "q6",
+        "h3",
+        "n6",
+        "a13",
+        "e9",
+        "a14",
+        "e10",
+        "d5",
+        "n7",
+        "a15",
+        "r5"
+      ],
+      "topic": "Deep-jam recovery, rotation safety, and a retraction-based revision",
+      "boundary_reason": "The revised recovery log is produced; the next question concerns warning before clutch slip."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "q7",
+        "a16",
+        "e11",
+        "a17",
+        "e12",
+        "d6"
+      ],
+      "topic": "Mixed-noise pre-slip warnings and prospective gated retraction",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

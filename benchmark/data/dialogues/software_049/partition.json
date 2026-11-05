@@ -1,0 +1,139 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Handle-region rules for borrowed and detached tasks",
+      "boundary_reason": "The handle-region rule is adopted after the initial 24-case test."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Proofs and expanded cancellation and migration regressions",
+      "boundary_reason": "The planned proofs and expanded fixture checks have reported results."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "a4",
+        "e3",
+        "d2"
+      ],
+      "topic": "Opaque API summaries omit child-task teardown obligations",
+      "boundary_reason": "The counterexample leads to a restriction on opaque APIs."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h2",
+        "a5",
+        "e4",
+        "l2",
+        "a6",
+        "r2"
+      ],
+      "topic": "Region-polymorphic child-join summaries for opaque APIs",
+      "boundary_reason": "The summary design reaches a proof artifact and cross-module test suite."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h3",
+        "a7",
+        "e5",
+        "a8",
+        "e6",
+        "d3"
+      ],
+      "topic": "Affine escrow under cancellation and completion races",
+      "boundary_reason": "Three-worker failures prompt a decision to require a single terminal token-consumption transition."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "h4",
+        "a9",
+        "e7",
+        "l3",
+        "a10",
+        "r3"
+      ],
+      "topic": "Exclusive terminal transitions for escrow release",
+      "boundary_reason": "The revised transition rule reaches preservation proofs and an opaque-summary checker."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "a11",
+        "e8",
+        "a12",
+        "e9",
+        "d4"
+      ],
+      "topic": "Finite teardown DAGs for recursive child tasks",
+      "boundary_reason": "Mutual-recursion findings limit SCC folding to guard-stable recursion without a finite join bound."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "h6",
+        "a13",
+        "e10",
+        "a14",
+        "e11",
+        "d5"
+      ],
+      "topic": "Explicit join bounds for cancellation-dependent recursion",
+      "boundary_reason": "A sibling-spawn counterexample leads to a requirement for distinct affine allowances."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "h7",
+        "a15",
+        "e12",
+        "a16",
+        "e13",
+        "a17",
+        "e14",
+        "d6"
+      ],
+      "topic": "Child-identified join allowances for dynamic siblings",
+      "boundary_reason": "Race traces motivate binding each allowance to its originating child."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "l4",
+        "a18",
+        "r4",
+        "a19",
+        "e15",
+        "d7"
+      ],
+      "topic": "Proof and audit of child-identified allowance soundness",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

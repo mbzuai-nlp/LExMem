@@ -1,0 +1,132 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Select a gated-write size that prevents post-revocation output while meeting the streaming throughput target",
+      "boundary_reason": "The 64-KiB gate is adopted; discussion shifts to implementing and validating the broker."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Implement EgressBroker v1 and evaluate leakage, throughput, and authorized-stream fidelity",
+      "boundary_reason": "Rollout is blocked after testing reveals truncated final chunks; discussion shifts to a flush fix."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Test whether gated end-of-stream flushing fixes partial-chunk truncation safely",
+      "boundary_reason": "The flush test meets byte-fidelity, leakage, and throughput targets; discussion shifts to integration and canary validation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Integrate and canary gated final flushing in EgressBroker v1.1",
+      "boundary_reason": "Canary validation finishes; discussion shifts to destination-scoped release capabilities."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Investigate atomic shared byte budgets and rejected writes at budget boundaries",
+      "boundary_reason": "The decision retains atomic debits but calls for splitting oversized writes; discussion shifts to implementation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Implement and test destination-scoped capabilities with budget-boundary splitting",
+      "boundary_reason": "Capability and budget tests finish; discussion shifts to microVM egress bypasses."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Test broker-only microVMs and virtio batching for IPC isolation and streaming overhead",
+      "boundary_reason": "Batching remains above the throughput limit, prompting a different gate-lock strategy."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Compare batch-held and per-chunk gates, then defer microVM rollout pending copy optimization",
+      "boundary_reason": "The comparison leads to a decision and a new shared-buffer prototype plan."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Prototype and validate sealed-buffer microVM transfer with per-chunk gates",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

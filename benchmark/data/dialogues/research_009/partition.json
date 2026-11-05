@@ -1,0 +1,101 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Test a fixed contact-confidence gate for audio onset alignment and alternative coverage",
+      "boundary_reason": "Held-out occlusion results expose a failure of the fixed gate, prompting a revised approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Calibrate contact probabilities for occluded events and adopt the calibrated approach",
+      "boundary_reason": "The contact-calibration decision closes this discussion before a shift to sound retrieval."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Test how many motion-warped sound candidates to retain, including on occluded clips",
+      "boundary_reason": "Held-out occlusion failures motivate a new visibility-aware selection question."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Evaluate visibility-aware retrieval and retain fixed-five candidates only for clearly visible sources",
+      "boundary_reason": "The retrieval decision closes this approach before a shift to event graphs."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Use object-persistence event-graph edges to handle occluded sound sources",
+      "boundary_reason": "The decision to adopt persistence edges closes the event-graph discussion."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Test and reject a persistence-aware contrastive audio generator",
+      "boundary_reason": "The generator decision closes this approach before hybrid routing is considered."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Route visible and occluded events through retrieval and persistence graphs with deduplication",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

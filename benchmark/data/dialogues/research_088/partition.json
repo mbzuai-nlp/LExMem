@@ -1,0 +1,128 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial stratified LP proposal and simulated improvement thresholds",
+      "boundary_reason": "The initial simulation supports advancing the approach, with a uniform-coverage proof still required."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Sharpness and coverage work, followed by an audit of the narrowing claim",
+      "boundary_reason": "The audit finds an admissible stratum that does not meet the proposed 15% narrowing threshold."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Adding an instrument–outcome difference threshold and testing low-prevalence strata",
+      "boundary_reason": "The low-prevalence stress test challenges the revised threshold rule."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Testing prevalence and uptake restrictions before replacing threshold-only rules",
+      "boundary_reason": "Mixed narrowing results lead to a decision to compare LP and no-IV widths directly."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Proposing direct gain certificates and testing weak-IV endpoint narrowing",
+      "boundary_reason": "The weak-IV enumeration supplies an observed gain to investigate with exact certificates."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Deriving and auditing a dual-basis gain atlas",
+      "boundary_reason": "Structural-zero tables produce false-positive certificates, requiring a different treatment of support."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Restricting gain certificates on structural-zero faces",
+      "boundary_reason": "False positives at intersecting faces lead to a decision to check those cases with primal LPs."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Support-adaptive checks and the need for a joint confidence region",
+      "boundary_reason": "A joint exact region restores simultaneous coverage, setting up formal verification."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Proving, auditing, and adopting support-adaptive bounds with joint projection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

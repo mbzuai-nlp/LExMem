@@ -1,0 +1,809 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop long-tail image recognition that preserves rare-class accuracy when predictive background correlations reverse without target-domain labels.",
+      "requirements": [
+        "Improve bottom-quintile class macro-accuracy by 5 percentage points over empirical risk minimization under background reversals.",
+        "Keep top-quintile class macro-accuracy within 1 percentage point of that baseline using identical training data."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train TailSwap using self-supervised foreground masks for tail-weighted background swaps and head-class distillation from same-data ERM."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How much foreground-mask error can TailSwap tolerate before background swaps erase discriminative rare-class features?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Under reversed backgrounds, TailSwap gains ≥5 tail-accuracy points versus ERM without >1-point head loss when foreground-mask false-negative rate ≤10%."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Sweep 0–30% foreground-mask false negatives during TailSwap training; compare reversed-background tail/head macro-accuracy with same-data ERM."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run LT-CUB-Rev mask-error sweep (0%, 5%, 10%, 20%, 30%); compare TailSwap's reversed-background tail/head macro-accuracy to same-data ERM."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "LT-CUB-Rev: at 10% mask misses, TailSwap tail/head macro-accuracy reached 43.1%/81.5% versus ERM's 37.8%/82.1%; at 20%, tail fell to 41.0%."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Advance TailSwap only with ≤10% foreground-mask false negatives; 20% errors reduce the tail gain below five points."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Calibrate TailSwap masks for ≤10% foreground misses on source-only cutouts, then measure LT-iNat-Rev tail/head macro-accuracy against same-data ERM."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "LT-iNat-Rev report with source-calibrated mask miss rates and TailSwap-versus-ERM tail/head macro-accuracy under reversed backgrounds."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Repeat the LT-CUB-Rev mask-error sweep without head distillation; compare reversed-background tail/head macro-accuracy against TailSwap and same-data ERM."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "On LT-CUB-Rev at 10% mask misses, removing distillation yielded 43.4% tail and 79.7% head macro-accuracy versus TailSwap's 43.1%/81.5%."
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Dilating foreground masks by eight pixels restores TailSwap's ≥5-point tail gain at 20% mask misses without exceeding one-point head loss."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Train LT-CUB-Rev TailSwap with 0-, 4-, and 8-pixel mask dilation at 20% mask misses; evaluate reversed-background tail/head macro-accuracy."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "At 20% mask misses, eight-pixel dilation yielded 42.3% tail and 81.3% head macro-accuracy versus ERM's 37.8%/82.1%."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n11",
+      "content": "Replicate eight-pixel dilation at 20% mask misses on LT-iNat-Rev; compare tail/head macro-accuracy with undilated TailSwap and same-data ERM."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "LT-iNat-Rev at 20% misses: eight-pixel dilation tail/head macro-accuracy 35.2%/76.0%, undilated 33.9%/76.2%, ERM 29.8%/76.7%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Train CoreGuard with mask-uncertainty-weighted foreground pooling, rare-class contrastive loss, and ERM head-logit distillation using source images only."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Does CoreGuard's uncertainty-weighted pooling suppress diagnostic tail-class features when small foreground parts receive low mask confidence?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On LT-CUB-Rev, CoreGuard loses ≥3 tail macro-accuracy points versus uniform pooling when diagnostic parts receive <0.5 mask confidence."
+    },
+    {
+      "id": "n18",
+      "type": "plan",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Stratify LT-CUB-Rev classes by source-part mask confidence; compare CoreGuard against uniform pooling on reversed-background tail accuracy."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On LT-CUB-Rev, bin tail classes by source diagnostic-part mask confidence below versus above 0.5; compare CoreGuard and uniform-pooling accuracy."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "LT-CUB-Rev low-confidence tail classes: CoreGuard scored 38.4% versus uniform pooling's 42.0% macro-accuracy; high-confidence classes scored 45.0% versus 44.5%."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Use uniform pooling when diagnostic-part confidence is below 0.5; retain uncertainty weighting otherwise to avoid the observed 3.6-point tail loss."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Train CoreGuard with uniform pooling below 0.5 source-part confidence on LT-iNat-Rev; compare reversed-background tail/head macro-accuracy against same-data ERM."
+    },
+    {
+      "id": "n23",
+      "type": "artifact",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "CoreGuard LT-iNat-Rev evaluation sheet listing source-part confidence bins, adaptive pooling settings, and reversed-background tail/head macro-accuracy versus ERM."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Train ClusterGuard with source-only background pseudo-environments, class-conditional tail-weighted group DRO, and ERM head-logit distillation."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "With ≥80% source background-cluster purity, ClusterGuard gains ≥5 tail points and loses ≤1 head point versus ERM on LT-iNat-Rev."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Measure source pseudo-environment purity using held-out source background tags; evaluate ≥80%-purity ClusterGuard against same-data ERM on LT-iNat-Rev tail/head macro-accuracy."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "On LT-iNat-Rev, 84%-pure ClusterGuard scored 34.0% tail and 76.1% head macro-accuracy versus ERM's 29.8%/76.7%."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n24",
+      "content": "Sweep ClusterGuard tail-group DRO weights 1, 2, and 4 with 84%-pure source clusters; retest LT-iNat-Rev against ERM."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "At tail-group weight 2, 84%-pure ClusterGuard reached 35.1% tail and 75.9% head macro-accuracy on LT-iNat-Rev versus ERM's 29.8%/76.7%."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "n24",
+      "content": "Does ClusterGuard retain its ≥5-point tail gain when rare classes span fewer than three source background clusters?"
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Stratify 84%-pure LT-iNat-Rev tail classes by <3 versus ≥3 source clusters; compare weight-2 ClusterGuard, initial ClusterGuard, and ERM."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Stratify 84%-pure LT-iNat-Rev tail classes by <3 versus ≥3 source clusters; compare initial and weight-2 ClusterGuard macro-accuracy against ERM."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "LT-iNat-Rev cluster-support audit listing source-cluster counts and <3/≥3 tail macro-accuracy for initial ClusterGuard, weight-2 ClusterGuard, and ERM."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Train PairAlign with source-only cross-background, same-class tail contrastive pairs and ERM head-logit distillation."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p4",
+      "content": "Do cross-background positive pairs with mismatched bird poses weaken PairAlign’s fine-grained tail-class discrimination?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "On LT-CUB-Rev, cross-background pairs with keypoint pose similarity <0.4 reduce tail macro-accuracy ≥3 points versus pose-matched pairs."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Train PairAlign on equal-count LT-CUB-Rev cross-background pairs with pose similarity <0.4 versus ≥0.4; compare reversed-background tail macro-accuracy."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "LT-CUB-Rev PairAlign tail macro-accuracy was 39.8% with pose similarity <0.4 versus 43.2% with ≥0.4 cross-background pairs."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Restrict PairAlign positives to pose similarity ≥0.4; mismatched poses cost 3.4 tail macro-accuracy points on LT-CUB-Rev."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Evaluate pose-filtered versus unfiltered PairAlign across three LT-CUB-Rev seeds, reporting tail/head macro-accuracy against same-data ERM."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Three-seed LT-CUB-Rev PairAlign comparison table with pose-filtered and unfiltered tail/head macro-accuracy, ERM baseline, and seed-level confidence intervals."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Train ContextAdv with source-only background crops, tail-weighted adversarial background prediction from object embeddings, and ERM head-logit distillation."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "p5",
+      "content": "Tune ContextAdv adversarial weight on source validation, then compare reversed-background tail/head macro-accuracy with same-data ERM on LT-CUB-Rev and LT-iNat-Rev."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n40",
+      "content": "Audit n39’s tail/head confidence intervals against held-out predictions; benchmark source-tuned ContextAdv versus ERM on LT-CUB-Rev and LT-iNat-Rev."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "n39 intervals passed audit; ContextAdv tail/head reached 43.0%/81.5% versus ERM’s 37.8%/82.1% on LT-CUB-Rev, and 35.0%/76.0% versus 29.8%/76.7% on LT-iNat-Rev."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n40",
+      "content": "Using n32’s support bins and n42’s benchmarks, test ContextAdv versus ERM tail/head macro-accuracy for <3 versus ≥3 source clusters."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "LT-iNat-Rev tail macro-accuracy: ContextAdv versus ERM was 34.2% versus 29.1% for <3 clusters, and 35.8% versus 30.5% for ≥3."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Advance ContextAdv: both reversal benchmarks meet tail/head targets, with tail gains persisting across sparse and well-supported source-cluster bins."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Run three-seed ContextAdv evaluations on unseen LT-CUB-Rev and LT-iNat-Rev backgrounds; report tail/head macro-accuracy differences versus same-data ERM."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "ContextAdv replication package with three-seed LT-CUB-Rev/LT-iNat-Rev tail/head macro-accuracy tables, source-only training configuration, and matched ERM checkpoints."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop long-tail image recognition that preserves rare-class accuracy when predictive background correlations reverse without target-domain labels.",
+    "requirements": [
+      "Improve bottom-quintile class macro-accuracy by 5 percentage points over empirical risk minimization under background reversals.",
+      "Keep top-quintile class macro-accuracy within 1 percentage point of that baseline using identical training data."
+    ]
+  }
+}

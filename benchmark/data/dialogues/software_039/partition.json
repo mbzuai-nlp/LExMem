@@ -1,0 +1,114 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Step-consistent asynchronous snapshots and checkpoint throughput",
+      "boundary_reason": "Coordinator validation resolves the mixed-step upload issue; discussion shifts to cross-layout restore."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "TP=8→4 resharding and reproducible dropout RNG",
+      "boundary_reason": "Corrected counters meet the TP=8→4 test; discussion shifts to fused-attention tile changes."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Philox replay across dense and ragged fused-attention tiles",
+      "boundary_reason": "Absolute-coordinate counters pass the dense and ragged TP=8→2 tests; discussion shifts to crash-safe storage."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Fencing stale manifests across worker replacement and epoch reuse",
+      "boundary_reason": "Incarnation UUID validation rejects stale manifests in the replayed races; discussion shifts to integrated restore testing."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Integrated crash restores and coordinator-crash durability gap",
+      "boundary_reason": "Coordinator crashes reveal committed manifests with unreadable optimizer shards, prompting a targeted fix."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Durable-read gating before HEAD publication",
+      "boundary_reason": "The fix is adopted after crash replays, with throughput overhead still requiring revalidation."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Implementing and reporting final crash-and-throughput validation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

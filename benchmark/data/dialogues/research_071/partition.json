@@ -1,0 +1,126 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Test fixed consensus thresholds and an adaptive alternative for irreversible commits",
+      "boundary_reason": "Adaptive decoding meets the aggregate targets; the discussion shifts to an ambiguity-duration audit."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Audit long-ambiguity performance and set a subgroup release gate",
+      "boundary_reason": "The audit and release criterion are defined; the next proposal pursues teacher distillation."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Distill a future-context teacher into a causal transducer and benchmark commits",
+      "boundary_reason": "The checkpoint misses the WER target, prompting a focused error diagnosis."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Diagnose distilled-model errors and adopt deadline-only homophone rescoring",
+      "boundary_reason": "Rescoring resolves the identified deadline-error issue; a different training approach follows."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Fine-tune on homophone minimal pairs and benchmark irreversible decoding",
+      "boundary_reason": "The minimal-pair checkpoint meets the measured targets; the next proposal explores resolution gating."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Train and tighten a resolution gate for early commits on clean speech",
+      "boundary_reason": "Tightened gating meets the clean-speech targets; testing under babble noise is a separate robustness question."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Assess resolution-gate robustness under 10-dB babble and condition rollout",
+      "boundary_reason": "Clean-speech gating is adopted while babble rollout remains conditional; the next proposal changes the commit method."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Calibrate and benchmark conformal singleton commits on clean and babble speech",
+      "boundary_reason": "Overall conformal results meet the targets; rare-homophone coverage remains to be checked."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Audit rare-homophone conformal coverage and decide clean/babble rollout",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

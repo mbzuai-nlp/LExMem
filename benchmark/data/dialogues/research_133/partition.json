@@ -1,0 +1,156 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Initial test of action-conditioned forecasts for unseen-partner intent changes",
+      "boundary_reason": "The initial benchmark misses its thresholds, and deployment of residual gating is deferred."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Lag-aware forecasting and residual-persistence window selection",
+      "boundary_reason": "Forecasting and window-sweep results establish a configuration for integrated testing."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Integrated gating trial and investigation of interaction-force peaks",
+      "boundary_reason": "Counterforce-linked peaks lead to a decision to defer deployment and revise gating."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Counterforce-triggered release and its unseen-partner test",
+      "boundary_reason": "The release trial reports its intent, override, and force results before a new filtering approach begins."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Dual-hypothesis authority softening and conflicting partner-test results",
+      "boundary_reason": "Different F1 results on new and held-out partners prompt a separate calibration investigation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Testing label-free partner calibration across counterforce delays",
+      "boundary_reason": "The calibration replication reports its results before the combined-control proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Combined calibrated control and crossover validation",
+      "boundary_reason": "The crossover result and replication report close the initial combined-control validation stage."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Destination-change latency and the shorter-gate tradeoff",
+      "boundary_reason": "Neither tested gate satisfies the proposed latency and intent-performance targets together."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Early counterforce release with 300-ms intent gating",
+      "boundary_reason": "EarlyRelease-v1 is advanced to replication before work shifts to unfamiliar conditions."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n64",
+        "n65",
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70"
+      ],
+      "topic": "Entropy warnings and passive fallback under payload and assistance shifts",
+      "boundary_reason": "The stress-data audit establishes warning recall and fallback force measurements."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75"
+      ],
+      "topic": "Conditional-fallback comparison, advancement, and replication report",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

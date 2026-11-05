@@ -1,0 +1,154 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Test a lighting-augmented flow for ambiguous three-image inverse rendering",
+      "boundary_reason": "Synthetic results meet both targets, and the decision shifts work to real-image validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1"
+      ],
+      "topic": "Prepare and report three-image DiLiGenT-MV validation of the selected flow",
+      "boundary_reason": "The evaluation report completes this validation stage before another posterior model is considered."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a3",
+        "e2"
+      ],
+      "topic": "Test a gauge-aware posterior mixture against the augmented flow",
+      "boundary_reason": "The mixture misses the proposed LPIPS and coverage targets; the next proposal uses diffusion."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "l2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Compare conformalized gauge-fixed diffusion with the flow on held-out relighting",
+      "boundary_reason": "Diffusion’s aggregate result raises a new question about specular-pixel coverage."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "q2",
+        "h3",
+        "a5",
+        "e4",
+        "a6",
+        "e5",
+        "h4",
+        "a7",
+        "e6",
+        "d2"
+      ],
+      "topic": "Investigate grazing-highlight coverage and correct swapped incidence bins",
+      "boundary_reason": "Corrected, roughness-stratified results resolve the apparent undercoverage and lead to a decision to retain diffusion with audits."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "l3",
+        "a8",
+        "r2"
+      ],
+      "topic": "Replicate diffusion using object-disjoint splits and corrected incidence bins",
+      "boundary_reason": "The revised report completes this replication stage before the particle-distillation proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "l4",
+        "a9",
+        "e7"
+      ],
+      "topic": "Benchmark roughness-calibrated posterior particles for efficient relighting",
+      "boundary_reason": "The particle benchmark establishes a baseline for the subsequent lighting-marginalization proposal."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "q3",
+        "h5",
+        "a10",
+        "e8",
+        "a11",
+        "e9",
+        "h6",
+        "a12",
+        "e10",
+        "d3"
+      ],
+      "topic": "Test Rao–Blackwellized particles and repair highlight-interval undercoverage",
+      "boundary_reason": "Calibration restores coverage across folds, supporting adoption before testing on unseen objects."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "l5",
+        "a13",
+        "r3"
+      ],
+      "topic": "Validate adopted particles on unseen LightStage-Objects",
+      "boundary_reason": "The updated relighting report completes this validation before uncertainty attribution is introduced."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "l6",
+        "a14",
+        "e11"
+      ],
+      "topic": "Validate conditional Shapley attribution against latent swaps",
+      "boundary_reason": "Aggregate agreement prompts a narrower question about glossy-object rankings."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "q4",
+        "h7",
+        "a15",
+        "e12",
+        "h8",
+        "a16",
+        "e13",
+        "d4"
+      ],
+      "topic": "Assess substantive geometry–BRDF attribution conflicts on glossy objects",
+      "boundary_reason": "The decision retains aggregate attribution but requires glossy-ranking warnings and swap checks."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "l7",
+        "a17",
+        "r4",
+        "a18",
+        "e14",
+        "d5"
+      ],
+      "topic": "Audit unseen glossy scenes and decide how to release predictions with attribution warnings",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

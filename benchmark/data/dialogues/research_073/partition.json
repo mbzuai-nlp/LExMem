@@ -1,0 +1,126 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Initial hierarchical epistasis model and held-out-background validation",
+      "boundary_reason": "The initial model misses both targets, prompting a revised approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Transcriptome-conditioned refinement and blinded validation dataset",
+      "boundary_reason": "The transcriptome model is selected and the blinded dataset is prepared; the next proposal introduces a different model."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "PathGNN training, blinded comparison, and stratified benchmark",
+      "boundary_reason": "The performance comparisons conclude before a separate feature-leakage audit."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "PathGNN feature-leakage audit and ablation",
+      "boundary_reason": "The audit identifies label-derived edges; the next discussion proposes a different modeling approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Leakage-free, strain-constrained iMM904 validation and selection",
+      "boundary_reason": "The model-selection decision is followed by a focused reaction-bound ablation study."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Reaction-bound ablations, scoring correction, and iMM904 retention",
+      "boundary_reason": "The corrected ablation results are interpreted and the model is retained; the next proposal introduces complex embeddings."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Complex-GP comparison and preparation of a new blinded panel",
+      "boundary_reason": "The complex-GP is held for further validation; the next proposal tests a gated mixture."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Discovery-trained gated mixture and blinded-panel results",
+      "boundary_reason": "The initial mixture results lead to a separate per-strain audit."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Per-strain audit and gated-model prospective-validation decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

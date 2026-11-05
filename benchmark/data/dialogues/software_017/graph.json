@@ -1,0 +1,814 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a typed Rust–JavaScript FFI preserving Rust aliasing guarantees across asynchronous callbacks, cancellation, and garbage collection.",
+      "requirements": [
+        "Establish memory safety through explicit boundary semantics covering reentrancy, cancellation, and JavaScript-retained Rust objects.",
+        "Achieve ≤20% callback latency overhead versus equivalent handwritten unsafe bindings on a declared benchmark suite."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Generate typed, generation-tagged handles with fast-path borrow leases, queued reentrant callbacks, cancellation-owned tasks, and GC reclamation after leases end."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When may JavaScript reenter, cancel, or collect a handle while Rust holds an active mutable lease?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Deferring reentrant callbacks, cancellation drops, and GC reclamation until lease release yields zero alias violations in JSLeaseStress-1."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Specify lease-state transitions for reentry, cancellation, and GC; implement wasm-bindgen handles; run JSLeaseStress-1 and CallbackBench."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run JSLeaseStress-1 for 100,000 seeded callback/cancellation schedules under Node --expose-gc, logging lease overlaps and stale-handle accesses."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "JSLeaseStress-1: 100,000 seeded schedules, zero overlapping leases or stale-handle dereferences; 8,412 cancellation/GC drops deferred until lease release."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt lease-release deferral for reentry and destruction; JSLeaseStress-1 found no alias violations, pending broader safety and latency validation."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n3",
+      "content": "Implement wasm-bindgen wrappers with generation-checked handles, queued reentry, cancellation tombstones, and FinalizationRegistry-triggered lease-safe cleanup."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "lease-ffi v0.1 contains generated scoped-borrow wrappers, generation-checked JS handles, reentry queues, and cancellation/GC cleanup code."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Benchmark CallbackBench’s sync, Promise, cancellation, and GC paths under Node 22; compare lease-ffi v0.1 median latency against handwritten unsafe bindings."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "CallbackBench Node 22 median overhead versus unsafe bindings: sync 12%, Promise 15%, cancellation 17%, GC 19%; all ≤20%."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n8",
+      "content": "Run Miri host-shim borrow checks and 50,000 Node 22 forced-GC traces on lease-ffi v0.1, including reentry and cancellation."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Three of 50,000 forced-GC traces freed handle slots before queued callbacks checked generations; Miri reproduced use-after-free."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "n8",
+      "content": "How can queued callbacks pin handle slots through forced GC while retaining CallbackBench overhead at ≤20%?"
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Prototype enqueue-time slot pins released after callback completion; rerun Miri, forced-GC traces, and CallbackBench against 19% GC overhead."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Enqueue-time pins eliminated use-after-free across 50,000 forced-GC traces and Miri, but raised CallbackBench GC overhead from 19% to 24%."
+    },
+    {
+      "id": "n16",
+      "type": "decision",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Retain enqueue-time pins for safety, but defer release until GC-path overhead falls from 24% to ≤20%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Use event-loop-local queue-owned retain flags instead of per-callback pins; reclaim slots after lease and queue drain, targeting ≤20% overhead."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can queue-owned retain flags prevent premature reclamation and slot reuse while keeping GC-path callback overhead ≤20%?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Queue-owned retain flags prevent premature slot reclamation across 50,000 forced-GC traces while keeping CallbackBench GC overhead ≤20%."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Implement queue-owned retain flags; rerun Miri, 50,000 forced-GC traces, and Node 22 CallbackBench against pinned and unsafe baselines."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Queue-owned flags passed Miri and 50,000 forced-GC traces without premature reclamation; CallbackBench GC overhead fell to 18% versus unsafe."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Adopt queue-owned retain flags: Miri and 50,000 forced-GC traces passed, with 18% GC callback overhead versus unsafe bindings."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Generate typestate wrappers from a model-checked boundary protocol, restricting borrowed callbacks and enforcing cancellation/GC ownership at runtime."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Can typestate-generated wrappers reject borrows spanning awaits while safely transferring callback, cancellation, and GC ownership?"
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "Typestate wrappers reject all 40 BorrowAcrossAwait compile-fail cases, while ownership transfers remain violation-free across 50,000 GC/cancellation traces."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Model-check the lease protocol, generate typestate wrappers, then run 40 BorrowAcrossAwait compile-fail cases and 50,000 GC/cancellation traces."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "BorrowAcrossAwait rejected 39/40 cases; an async closure captured a mutable lease across await despite typestate generation."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n23",
+      "content": "Run 50,000 seeded GC/cancellation traces with Miri, checking typestate ownership transfers and queue-owned retain flags for double-free."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Miri found zero double-frees or ownership violations across 50,000 seeded GC/cancellation traces with queue-owned retain flags."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "How should generated callback signatures prevent async closures from capturing a mutable lease across await?"
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Preserve Miri-validated ownership transfers; require higher-ranked synchronous lease closures and owned async futures, then rerun BorrowAcrossAwait and GC/cancellation traces."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "lease-ffi v0.2 adds higher-ranked synchronous lease callbacks, owned async futures, and queue-owned retain flags."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 35,
+      "exploration_parent_id": "g1",
+      "content": "Gate lease-ffi v0.2 on borrow compile-fail tests, cancellation/reentry/GC stress, and ≤20% per-path CallbackBench overhead."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p4",
+      "content": "Does lease-ffi v0.2 reject all cross-await borrows, survive reentry/cancellation/GC stress, and meet ≤20% CallbackBench overhead per path?"
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "lease-ffi v0.2 rejects 40/40 BorrowAcrossAwait cases, passes 100,000 reentry/GC/cancellation schedules, and stays ≤20% overhead on every CallbackBench path."
+    },
+    {
+      "id": "n33",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n32",
+      "content": "Run compile-fail, Miri and Node forced-GC stress, then benchmark four CallbackBench paths against handwritten unsafe bindings."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "Execute 40 BorrowAcrossAwait compile-fail cases and 100,000 seeded Node 22 reentry/cancellation/forced-GC schedules against lease-ffi v0.2."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "lease-ffi v0.2 rejected 40/40 cross-await borrows; 100,000 seeded reentry/cancellation/forced-GC schedules found zero alias violations or stale-handle dereferences."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n33",
+      "content": "Run Miri host-shim checks and measure lease-ffi v0.2 CallbackBench median latency across four Node 22 paths versus unsafe bindings."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Miri host-shim checks passed; CallbackBench v0.2 median overhead versus unsafe: sync 13%, Promise 16%, cancellation 18%, GC 19%."
+    },
+    {
+      "id": "n38",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "p4",
+      "content": "Does CallbackBench’s 19% GC-path median overhead remain ≤20% across repeated Node 22 runs with forced GC?"
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Across 30 independent Node 22 CallbackBench runs, the GC-path median overhead stays ≤20% in every run."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Repeat CallbackBench GC-path measurements in 30 isolated Node 22 processes, recording per-run median overhead and forced-GC counts."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "All 30 GC-path medians were ≤20% (maximum 19.9%); run 17 exposed a post-measurement stale-handle dereference during forced GC."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Which queue-drain and forced-GC ordering allowed run 17’s post-measurement stale-handle dereference despite queue-owned retain flags?"
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Capture run 17’s event order, minimize the failing schedule, inspect slot reclamation versus callback dequeue, and rerun Miri."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Replay run 17 against the passing Miri baseline; log GC, queue-drain, and slot-reuse events, then test a minimized schedule."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Minimized replay reproduced run 17: dequeue cleared the retain flag before scheduling callback execution; forced-GC cleanup reclaimed its slot."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Block v0.2 release; retain queue ownership through callback completion, then repeat forced-GC replay, safety stress, and latency checks."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n43",
+      "content": "Extend queue-owned retention through callback completion; replay run 17, rerun Miri and 100,000 reentry/cancellation/forced-GC schedules, then benchmark CallbackBench."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "lease-ffi v0.3 retains queued handles through callback completion and defers GC slot reclamation until ownership releases."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a typed Rust–JavaScript FFI preserving Rust aliasing guarantees across asynchronous callbacks, cancellation, and garbage collection.",
+    "requirements": [
+      "Establish memory safety through explicit boundary semantics covering reentrancy, cancellation, and JavaScript-retained Rust objects.",
+      "Achieve ≤20% callback latency overhead versus equivalent handwritten unsafe bindings on a declared benchmark suite."
+    ]
+  }
+}

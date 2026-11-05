@@ -1,0 +1,84 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "h2",
+        "a2",
+        "e2",
+        "d1"
+      ],
+      "topic": "Acknowledgment-gated epoch tracing across partitions and crash recovery",
+      "boundary_reason": "The acknowledgment and handoff decision closes this approach; the next proposal shifts to reference escrows and trial deletion."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h3",
+        "a3",
+        "e3",
+        "a4",
+        "e4",
+        "h4",
+        "a5",
+        "e5"
+      ],
+      "topic": "Classifying escrowed references and deduplicating migration transfers",
+      "boundary_reason": "Transfer-ID deduplication resolves the duplicate-escrow finding; the next test introduces WAL compaction and delayed replays."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "a6",
+        "e6",
+        "h5",
+        "a7",
+        "e7",
+        "a8",
+        "e8",
+        "h6",
+        "a9",
+        "e9",
+        "d2"
+      ],
+      "topic": "Compaction-safe escrow deduplication and sender-restart collisions",
+      "boundary_reason": "The incarnation-keyed watermark decision closes the escrow investigation; the next proposal shifts to distributed snapshots."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h7",
+        "a10",
+        "e10",
+        "a11",
+        "e11",
+        "h8",
+        "a12",
+        "e12",
+        "d3"
+      ],
+      "topic": "Snapshot forwarding retirement, durable channel bounds, and redirects",
+      "boundary_reason": "The forwarding-retirement decision closes the snapshot investigation; the next nodes integrate the decisions into a prototype."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "pl1",
+        "a13",
+        "ar1"
+      ],
+      "topic": "Implementing the collector prototype from the selected mechanisms",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

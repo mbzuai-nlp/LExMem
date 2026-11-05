@@ -1,0 +1,133 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Develop and initially validate a 20-transition fingerprint gate for gripper-friction shifts",
+      "boundary_reason": "The initial report audit is complete; the next discussion reanalyzes its results by severity and seed."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "Identify poor fingerprint-gate performance on severe friction shifts",
+      "boundary_reason": "The severe-shift finding prompts a new question about slip probes."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Test five slip probes for detecting severe friction shifts",
+      "boundary_reason": "The two evaluations yield differing results, prompting an investigation of seed selection."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Investigate whether slip count explains the differing five-probe results",
+      "boundary_reason": "The decision defers slip-count-specific gating; the next node introduces a different transfer approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Calibrate, benchmark, and reject ensemble advantage gating",
+      "boundary_reason": "The deployment decision closes this approach; the next node proposes gradient-gated imitation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Evaluate gradient-cosine imitation gating across compatible and incompatible shifts",
+      "boundary_reason": "The held-out payload deficit motivates a specific revision to the gate."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Test two-window gradient-cosine gating for incompatible payload shifts",
+      "boundary_reason": "A decision advances the revised gate to further validation; the next node introduces contact-milestone shaping."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Calibrate and validate contact-milestone reward shaping",
+      "boundary_reason": "Held-out geometry results raise a narrower question about extreme finger widths."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Investigate extreme finger-width failures and restrict contact shaping",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

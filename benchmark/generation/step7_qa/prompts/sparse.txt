@@ -1,0 +1,23 @@
+Generate exactly one question about the sampled sparse subgraph, favoring connections across its branches.
+
+{{INPUT_JSON}}
+
+subgraph contains a sampled path whose endpoints connect through the goal. path_node_ids lists this path; endpoint_ids identifies its endpoints. Use full_graph to check context and later updates. The path was sampled without edge directions: connectivity alone does not establish a causal chain.
+
+Ask a question about this subgraph. You are encouraged to connect information from both sides of the goal and draw on relevant context, revisions, or dependencies from intermediate nodes.
+
+- Ask one clear question in English, ending with exactly one question mark. Ask only one substantive question: do not combine multiple requests or stack subquestions, even under a single question mark. Do not reveal the answer or mention node IDs in the question.
+- Each answer item must be one short entity, value, status, or phrase suitable for keyword matching. Separate independently scorable facts and retain necessary units and conditions.
+- Use named_slots for distinct fields or unordered_set for a list of items. answer_keywords must use the same keys as answer; canonical must equal the corresponding answer, and aliases must be equivalent expressions.
+- Cite supporting node IDs for each answer item. The question must be supported by the graph. Return exactly one item in questions, or an empty array if no supported question is possible.
+
+Return JSON only:
+{
+  "questions": [{
+    "question": "... ?",
+    "answer_mode": "named_slots or unordered_set",
+    "answer": {"slot_name": "short value"},
+    "answer_keywords": {"slot_name": {"canonical": "short value", "aliases": []}},
+    "evidence_node_ids": {"slot_name": ["node ID"]}
+  }]
+}

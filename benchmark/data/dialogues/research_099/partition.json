@@ -1,0 +1,143 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Test and select a three-of-five ensemble using CompSplit-1",
+      "boundary_reason": "The initial evaluation ends with a selection decision; the next nodes examine performance by operator pairing."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Investigate pairing-balanced failures and propose paraphrase-stable consensus",
+      "boundary_reason": "The pairing analysis identifies failures and motivates a new approach, introduced next."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Evaluate paraphrase-gated ambiguity alerts with baseline fallback",
+      "boundary_reason": "The gate is adopted; the next stage prepares an independent operator-triple test."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Prepare CompSplit-2 and specify the frozen gate’s replication test",
+      "boundary_reason": "Dataset preparation and the test hypothesis are complete; the next proposal explores counterfactual clustering."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Compare counterfactual execution clustering with the frozen gate",
+      "boundary_reason": "The first clustering result motivates revisions to its world-selection rule."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Test revised world-selection rules and audit one-world errors",
+      "boundary_reason": "The F1 and false-alert analyses lead to a separate check of unambiguous execution."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Check execution preservation with prevalidated discriminative-world selection",
+      "boundary_reason": "The execution check concludes; the next proposal combines the tested methods."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Evaluate a locked paraphrase-gating and one-world cascade",
+      "boundary_reason": "The cascade audit reports its results; the next stage explores distillation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Distill the cascade into SingleSet and compare initial performance",
+      "boundary_reason": "Initial performance is reported; the next discussion tests the auxiliary losses."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Ablate SingleSet losses and assess baseline-output changes",
+      "boundary_reason": "The output changes prompt a decision to defer deployment and develop a preservation fix."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Test baseline-anchored SingleSet v2 and decide whether to retain the cascade",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

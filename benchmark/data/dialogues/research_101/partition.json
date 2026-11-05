@@ -1,0 +1,145 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Identify propagating shear-residual fronts as an early slip cue",
+      "boundary_reason": "The cue is selected; the discussion shifts to implementing and testing a predictor."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Implement and blind-test ShearFront-v1",
+      "boundary_reason": "Blind-test results complete this implementation stage; the discussion turns to another shear feature."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Test shear-residual persistence and fuse it into ShearFront-v2",
+      "boundary_reason": "The fused model is evaluated; the next question concerns calibration under further wear."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Calibrate worn taxels using unlabeled stationary grips",
+      "boundary_reason": "WearCal-v1 testing concludes; a physics-guided creep model becomes the focus."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Evaluate an irreversible-creep model against ShearFront-v2",
+      "boundary_reason": "The initial comparison yields a decision; the next stage investigates performance by stiffness and taxel gain."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Ablate creep features and compare models across stiffness and wear strata",
+      "boundary_reason": "The stratified comparisons end in a primary-model decision; a revised creep hypothesis follows."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Investigate CreepState-v2’s low-stiffness failure and stiffness-estimation error",
+      "boundary_reason": "The diagnostic test answers the immediate question; the discussion shifts to active micro-dither probing."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Blind-test 25-Hz dither phase and decide its role alongside ShearFront-v2",
+      "boundary_reason": "The initial dither comparison yields a decision; the next stage develops uncertainty-gated probing."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Build a ShearFront-v2 uncertainty-gated dither package",
+      "boundary_reason": "The gated package is produced; the discussion shifts to amplitude safety on difficult contacts."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59"
+      ],
+      "topic": "Assess dither safety on low-friction worn contacts and disable probing there",
+      "boundary_reason": "The low-friction exception is decided; the next question tests gated dither outside those contacts."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64"
+      ],
+      "topic": "Validate gated dither for borderline non-low-friction contacts",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

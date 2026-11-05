@@ -1,0 +1,1268 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a shared-control robot that distinguishes human intent changes from reactions to its assistance during collaborative object transport.",
+      "requirements": [
+        "Achieve intent-change F1 ≥0.85 for unseen partners when robot assistance itself induces human corrections.",
+        "Reduce unnecessary control overrides by 30% versus a fixed-assistance baseline without increasing peak interaction forces."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train partner-invariant, robot-action-conditioned human-response forecasts; classify persistent unexplained motion as intent change, then gate peak-force-constrained control overrides."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can robot-action-conditioned motion forecasts separate assistance-induced corrections from genuine intent changes for unseen partners?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "With assistance-induced corrections, action-conditioned residuals will achieve unseen-partner intent-change F1 ≥0.85, at least 0.10 above action-blind residuals."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Randomize assistance pulses during transport, annotate goal changes, train action-conditioned and action-blind forecasters, and compare unseen-partner intent-change F1."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Collect TransportPulse-24: 24 partners carry trays under randomized assistance pulses and cued, annotated destination changes; reserve six unseen partners."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "TransportPulse-24 dataset with synchronized human motion, robot commands, interaction forces, intent-change labels, and an 18-train/6-unseen-partner split."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Audit TransportPulse-24 labels and partner splits, then benchmark action-conditioned versus action-blind forecasters on six unseen partners' intent-change F1."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "TransportPulse-24 audit passed; unseen-partner intent-change F1 was 0.78 action-conditioned versus 0.74 action-blind, below both predicted thresholds."
+    },
+    {
+      "id": "n10",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Defer deploying action-conditioned residual gating; its 0.78 unseen-partner F1 misses 0.85, warranting analysis of assistance-response timing."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Train lag-aware action-conditioned and action-blind forecasters on TransportPulse-24; compare intent-change F1 for six unseen partners after assistance pulses."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Lag-aware action conditioning raised unseen-partner intent-change F1 from 0.78 to 0.87 on TransportPulse-24; action-blind scored 0.74."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "What residual-persistence window suppresses assistance-induced overrides without delaying genuine destination changes or raising peak interaction forces?"
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Sweep 100–500-ms residual-persistence windows across six unseen partners; compare unnecessary overrides, intent latency, and peak forces against fixed assistance."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "At 300 ms, unnecessary overrides fell 34%; peak force was 24 versus 25 N under fixed assistance."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n14",
+      "content": "PersistenceSweep-v1 contains per-window override rates, intent latencies, peak forces, and the 300-ms gating configuration."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Integrate 300-ms residual-persistence gating with lag-aware intent estimates and a 25-N force cap for adaptive transport assistance."
+    },
+    {
+      "id": "n18",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Run held-out-partner trials of lag-aware 300-ms gating versus fixed assistance; measure intent-change F1, unnecessary overrides, and peak forces."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Using PersistenceSweep-v1, run eight-new-partner crossover trials comparing integrated gating with fixed assistance on intent-change F1, unnecessary overrides, and peak forces."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Eight-partner crossover: intent-change F1 0.83; unnecessary overrides fell 24%; peak interaction force reached 29 versus fixed assistance’s 25 N."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Are 29-N interaction-force peaks driven by human counterforces during delayed intent recognition despite the controller’s 25-N cap?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Force peaks above 25 N coincide with human counterforces during the 300-ms gating delay after destination changes."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Align eight-partner crossover force traces to destination-change cues; test whether >25-N peaks coincide with counterforces during 300-ms gating delays."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "In crossover traces, 82% of >25-N peaks coincided with opposing human forces within 300 ms of cued destination changes."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Defer deployment; revise gating with counterforce-triggered assistance release after 0.83 F1, 24% override reduction, and counterforce-linked 29-N peaks."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n18",
+      "content": "Implement counterforce-triggered assistance release; compare >25-N peaks during delayed, counterforce-positive destination changes against prior gating."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "p2",
+      "content": "Lag-aware, action-conditioned forecasts with counterforce-triggered release will yield unseen-partner intent-change F1 ≥0.85 without >25-N force peaks."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Train on TransportPulse-24; test counterforce-release gating with eight new partners under assistance pulses, measuring intent-change F1 and peak force."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Release trials with eight unseen partners achieved intent-change F1 0.86, 32% fewer overrides versus fixed assistance, and 25-N peak force."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Use calibrated dual-hypothesis filtering to distinguish intent changes from assistance reactions and soften robot authority under uncertainty."
+    },
+    {
+      "id": "n31",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "At what dual-hypothesis posterior confidence should robot authority soften during ambiguous counterforces without delaying genuine destination changes?"
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Halving authority at intent-change posteriors 0.35–0.65 will retain F1 ≥0.85, ≥30% fewer overrides versus fixed assistance, and ≤25-N peaks."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Run ten-new-partner crossover trials comparing 0.35–0.65 posterior authority halving against release-only and fixed assistance; measure F1, overrides, peak force."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Ten-partner crossover: authority halving scored F1 0.82, 35% fewer overrides than fixed assistance, and 24-N peaks."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n32",
+      "content": "Use PersistenceSweep-v1 to select low-force windows; compare 0.35–0.65 authority halving with fixed assistance on unseen-partner F1, overrides, and force."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "On six TransportPulse-24 held-out partners, window-selected authority halving reached F1 0.86, 33% fewer overrides than fixed assistance, and 24-N peaks."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Does window selection overfit TransportPulse-24, explaining F1 0.86 on its held-out partners versus 0.82 on ten new partners?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Partner-specific counterforce timing causes the F1 gap: recalibrating posterior windows on early unlabeled interactions will restore new-partner F1 ≥0.85."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Compare fixed and early-interaction-calibrated posterior windows on untouched partners, stratifying intent-change F1 by measured counterforce delay."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Using both prior F1 results, test fixed versus early-interaction-calibrated windows on untouched partners, stratifying F1 by counterforce delay."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "CalibrationAudit-v1 contains untouched-partner fixed-versus-calibrated F1 comparisons, counterforce-delay strata, and a label-free early-interaction calibration protocol."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n39",
+      "content": "Replicate CalibrationAudit-v1’s label-free calibration on twelve additional partners; compare fixed versus calibrated intent-change F1 across counterforce-delay strata."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Across twelve additional partners, calibration raised intent-change F1 from 0.81 to 0.86; long-delay cases improved from 0.76 to 0.85."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Combine label-free partner-calibrated intent filtering with counterforce-triggered assistance release and force-limited authority during ambiguous transport corrections."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Preregister untouched-partner crossover trials comparing calibrated release-and-authority control with fixed assistance on F1, override reduction, and peak force."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Apply CalibrationAudit-v1’s label-free protocol in 16-partner crossover trials; compare combined control against fixed assistance on F1, overrides, peak force."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Sixteen-partner crossover: combined control achieved intent-change F1 0.87, 36% fewer unnecessary overrides than fixed assistance, and 24-N peak force."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n45",
+      "content": "Replicate the 16-partner crossover on 20 untouched partners, comparing intent-change F1, override reduction, and peak force against fixed assistance."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "ReplicationReport-v1 contains 20 untouched partners’ intent-change F1, override rates, and peak-force comparisons against fixed assistance."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p4",
+      "content": "Can partner-calibrated intent posteriors coordinate counterforce release and reduced authority without delaying genuine destination changes?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Partner-calibrated release-and-authority control will achieve F1 ≥0.85, ≥30% fewer overrides, ≤25-N peaks, and ≤200-ms destination-change latency."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Time-stamp destination cues in new-partner crossover trials; compare combined control with fixed assistance on latency, F1, overrides, and force."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Using TransportPulse-24 and ReplicationReport-v1, compare release-only, calibrated combined, and fixed assistance on new partners’ F1, overrides, force, and latency."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "New-partner release-only: F1 0.86, 25-N peak; combined: F1 0.87, overrides down 34% versus fixed, 24-N peak, 260-ms latency."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n52",
+      "content": "Using PersistenceSweep-v1 and ReplicationReport-v1, compare 150–250-ms combined-control gates with fixed assistance on new-partner F1, overrides, force, and latency."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "At 150-ms gating: latency 190 ms, unseen-partner F1 0.83, overrides down 27% versus fixed assistance, peak force 24 N."
+    },
+    {
+      "id": "n57",
+      "type": "question",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Can earlier release preserve release-only’s 32% override reduction while cutting combined-control latency below 200 ms without 150-ms gating’s F1 loss?"
+    },
+    {
+      "id": "n58",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Early counterforce-triggered release with 300-ms intent gating will reach ≤200-ms latency, F1 ≥0.85, ≥30% fewer overrides, and ≤25-N peaks."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Benchmark early-release 300-ms gating against prior combined and 150-ms controllers on unseen-partner latency, F1, overrides, and peak force."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "On 12 unseen partners, early release achieved 185-ms latency, F1 0.86, 32% fewer overrides versus fixed assistance, and 24-N peaks."
+    },
+    {
+      "id": "n61",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n59",
+      "content": "EarlyRelease-v1 controller integrates 300-ms intent gating, early counterforce-triggered release, partner calibration, and force-limited assistance."
+    },
+    {
+      "id": "n62",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n57",
+      "content": "Advance EarlyRelease-v1 to replication: 185-ms latency and 0.86 F1 address prior tradeoffs, with 32% fewer overrides and 24-N peaks."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 63,
+      "exploration_parent_id": "g1",
+      "content": "Extend EarlyRelease-v1 with uncertainty-triggered passive fallback for unfamiliar payload masses and assistance reversals."
+    },
+    {
+      "id": "n64",
+      "type": "question",
+      "order": 64,
+      "exploration_parent_id": "p5",
+      "content": "When payload mass or assistance direction shifts, does posterior uncertainty identify unreliable intent estimates early enough for passive fallback?"
+    },
+    {
+      "id": "n65",
+      "type": "hypothesis",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Under mass shifts or assistance reversals, posterior entropy will flag ≥80% of erroneous overrides ≥100 ms early for passive fallback."
+    },
+    {
+      "id": "n66",
+      "type": "plan",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "Perturb payload mass and reverse assistance during transport; assess entropy warning lead time before erroneous overrides and fallback’s force effect."
+    },
+    {
+      "id": "n67",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Using CalibrationAudit-v1 and EarlyRelease-v1, vary payload mass and reverse assistance; measure entropy-warning lead time, erroneous-override detection, and passive-fallback peak forces."
+    },
+    {
+      "id": "n68",
+      "type": "artifact",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "ShiftStress-v1 contains mass-shift and assistance-reversal traces, entropy warnings, erroneous-override labels, and passive-fallback force measurements."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n66",
+      "content": "Audit ShiftStress-v1 timestamps and override labels; compute ≥100-ms-ahead entropy-warning recall and passive-fallback peak forces across both perturbations."
+    },
+    {
+      "id": "n70",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "ShiftStress-v1 audit passed; entropy warned ≥100 ms before 83% of erroneous overrides; passive-fallback peak force was 24 N."
+    },
+    {
+      "id": "n71",
+      "type": "activity",
+      "order": 71,
+      "exploration_parent_id": "p5",
+      "content": "Using ShiftStress-v1’s validated 100-ms warnings, compare entropy-triggered fallback with calibrated combined control: F1, overrides, peak force."
+    },
+    {
+      "id": "n72",
+      "type": "evidence",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "ShiftStress-v1: fallback achieved F1 0.86, 32% fewer overrides versus fixed assistance, and 24-N peaks; combined control peaked at 28 N."
+    },
+    {
+      "id": "n73",
+      "type": "decision",
+      "order": 73,
+      "exploration_parent_id": "p5",
+      "content": "Advance EarlyRelease-v1 with conditional fallback, requiring preservation of the 16-partner 0.87-F1 benchmark; early warnings limit shifted-condition peaks to 24 N."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 74,
+      "exploration_parent_id": "p5",
+      "content": "Test conditional-fallback EarlyRelease-v1 on 20 new partners under nominal and ShiftStress-v1 perturbations; compare F1, overrides, and forces with fixed assistance."
+    },
+    {
+      "id": "n75",
+      "type": "artifact",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "FallbackReplication-v1 reports nominal and shifted-condition F1, unnecessary-override reductions, and peak forces for 20 untouched partners versus fixed assistance."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n18",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n18",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n27",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n64"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n64"
+    },
+    {
+      "source": "n66",
+      "relation": "decompose",
+      "target": "n67"
+    },
+    {
+      "source": "n66",
+      "relation": "decompose",
+      "target": "n69"
+    },
+    {
+      "source": "n67",
+      "relation": "address",
+      "target": "n64"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n67",
+      "relation": "produce",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n65"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "support",
+      "target": "n65"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n71",
+      "relation": "produce",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n72"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n68"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a shared-control robot that distinguishes human intent changes from reactions to its assistance during collaborative object transport.",
+    "requirements": [
+      "Achieve intent-change F1 ≥0.85 for unseen partners when robot assistance itself induces human corrections.",
+      "Reduce unnecessary control overrides by 30% versus a fixed-assistance baseline without increasing peak interaction forces."
+    ]
+  }
+}

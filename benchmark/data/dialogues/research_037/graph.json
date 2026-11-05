@@ -1,0 +1,839 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Characterize when heterogeneous treatment effects remain partially identifiable with weak instruments and bounded exclusion violations in observational healthcare.",
+      "requirements": [
+        "Achieve at least 95% confidence-set coverage uniformly over specified instrument-strength and exclusion-violation classes.",
+        "Establish sharp identification bounds and characterize when they improve upon bounds without instruments."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Derive sharp stratified-effect LP bounds under bounded exclusion violations; compare no-IV widths and invert uniformly valid 95% weak-IV-robust moment tests."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "At what exclusion-risk slack does a ≤5-point physician-preference first stage stop narrowing comorbidity-specific 30-day readmission bounds versus no-IV?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "With a five-point physician-preference first stage, exclusion slack under one risk point narrows comorbidity-specific bounds; five points eliminates no-IV gains."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Grid 0–5-point first stages and exclusion slack; compare stratified LP bounds against no-IV and invert 95% weak-IV-robust moment tests."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Simulate 10,000 cohorts of 2,000 patients per 0–5-point first-stage/slack cell; compare LP versus no-IV widths and 95% weak-IV coverage."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "At five-point first stage and 0.5-point slack, high-comorbidity LP width matched no-IV (100 points); minimum coverage was 95.1%."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n3",
+      "content": "Re-solve high-comorbidity LPs at 0–1-point slack, compare no-IV widths, and verify extremal witnesses at five-point first stage."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "At 0.1-point slack, high-comorbidity LP width was 96 versus 100 points without instruments; constructed distributions attained both endpoints."
+    },
+    {
+      "id": "n8",
+      "type": "question",
+      "order": 10,
+      "exploration_parent_id": "p1",
+      "content": "Can negative-control-calibrated exclusion slack preserve uniform 95% coverage as the physician-preference first stage approaches zero?"
+    },
+    {
+      "id": "n9",
+      "type": "plan",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Use 0.5-point no-gain and 0.1-point sharpness results to calibrate negative-control slack; invert uncertainty-adjusted 95% tests near zero first stage."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Calibrate slack via negative-control upper bounds, using 0.1-point sharpness and 0.5-point no-gain anchors; simulate worst-cell 95% coverage near zero."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "WeakIV-NC v1 notebook contains negative-control slack calibration and worst-cell confidence-set coverage tables for 0–0.5-point first stages."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Enumerate response types under monotone prescribing and bounded direct effects; derive sharp subgroup bounds and weak-IV-robust confidence sets."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "At a five-point first stage, does monotone prescribing narrow high-comorbidity bounds at 0.5-point slack despite unrestricted LP no-gain?"
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "At five-point first stage and 0.5-point slack, monotone prescribing lowers high-comorbidity width to ≤95 versus 100 points unrestricted."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Enumerate monotone-prescribing response types and solve high-comorbidity LPs at five-point first stage, 0.5-point slack; verify endpoint witnesses."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Monotone-prescribing LP yielded 93-point high-comorbidity width versus 100 unrestricted; feasible response-type mixtures attained both endpoints."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Derive joint two-instrument bounded-exclusion LP bounds using physician preference and formulary access; invert weak-IV-robust tests for 95% coverage."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "p3",
+      "content": "Calibrate both exclusion slacks from negative controls; invert joint weak-IV tests at zero physician first stage, checking worst-case 95% coverage."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n16",
+      "content": "Extend WeakIV-NC v1 with joint physician/formulary weak-IV simulations, negative-control slack calibration, and worst-case 95% coverage at zero physician first stage."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n17",
+      "content": "WeakIV-NC v2 notebook adds joint physician/formulary LP endpoint witnesses and worst-cell coverage tables at zero physician first stage."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n16",
+      "content": "Audit WeakIV-NC v2 endpoint witnesses; simulate 10,000 zero-physician-first-stage cohorts, comparing joint-LP versus no-IV widths and 95% coverage."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n19",
+      "content": "At zero physician first stage, high-comorbidity joint LP width was 94 versus 100 no-IV points; minimum coverage 95.2%, endpoints attained."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n16",
+      "content": "Simulate correlated physician/formulary instruments across 0–5-point first stages and 0–1-point exclusion slacks; audit joint-LP sharpness and worst-cell 95% coverage."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "With instrument correlation 0.8, 0.5-point first stages and slacks yielded 92.9% worst-cell coverage, below 95%."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 27,
+      "exploration_parent_id": "p3",
+      "content": "Can covariance-aware critical values restore 95% coverage at instrument correlation 0.8 while retaining narrower-than-no-IV high-comorbidity bounds?"
+    },
+    {
+      "id": "n24",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Calibrate covariance-aware critical values across first-stage/slack grids at ρ=0.8; resimulate coverage and compare high-comorbidity confidence-set widths against no-IV."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Using the 94-point width and 92.9% coverage results, recalibrate critical values at ρ=0.8; simulate worst-cell coverage and no-IV widths."
+    },
+    {
+      "id": "n26",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "WeakIV-NC v3 records covariance-aware critical values, ρ=0.8 worst-cell coverage, and high-comorbidity width comparisons against no-IV."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Project simultaneous 95% frequency-and-slack regions through sharp response-type LPs; benchmark no-IV widths without first-stage division or independence assumptions."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "p4",
+      "content": "Construct covariance-aware simultaneous frequency/slack regions at ρ=0.8; project through response-type LPs, then test worst-cell coverage and no-IV width."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n27",
+      "content": "Reanalyze WeakIV-NC v3’s ρ=0.8 cohorts with simultaneous-region projection; compare worst-cell coverage, sharp endpoint witnesses, and no-IV widths."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n28",
+      "content": "At ρ=0.8, projected sets achieved 95.3% worst-cell coverage and 98-point median width versus 100 no-IV points; LP endpoints attained."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n27",
+      "content": "Stress-test projected sets across 0–5-point first stages, 0–1-point slacks, and correlations 0–0.8; audit 95% coverage and sharpness."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "At zero first stages, one-point slacks, and ρ=0.6, projected sets covered only 93.8% in sparse high-comorbidity strata."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Project exact multinomial confidence regions and Bonferroni-calibrated exclusion slacks through response-type LPs; benchmark sharp bounds against no-IV."
+    },
+    {
+      "id": "n32",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p5",
+      "content": "Do exact multinomial regions restore ≥95% sparse-stratum coverage without erasing the two-point width gain observed at ρ=0.8?"
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n32",
+      "content": "Exact multinomial projection raises sparse-stratum minimum coverage above 95% while retaining median width below 100 no-IV points at ρ=0.8."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n33",
+      "content": "Invert exact multinomial tests in sparse strata, Bonferroni-adjust slack calibration, and compare projected-set coverage and width against no-IV."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Run 10,000 sparse-stratum exact-multinomial projections at zero first stages, one-point slacks, and ρ=0.6/0.8; compare coverage and no-IV widths."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Exact projection restored minimum sparse-stratum coverage to 95.1% across ρ=0.6/0.8; at ρ=0.8 median width was 99 versus 100 no-IV points."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n34",
+      "content": "Using 95.1% sparse-stratum coverage, audit exact projections across 0–5-point stages, 0–1-point slacks, and ρ≤0.8; verify sharpness and no-IV gains."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n37",
+      "content": "Gridwide minimum coverage was 95.1%; feasible witnesses attained LP endpoints; five-point stage/0.1-point slack yielded 96-point bounds versus 100 no-IV."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n34",
+      "content": "Enumerate LP dual certificates across physician/formulary first-stage and slack pairs to locate sharp no-IV improvement thresholds by comorbidity stratum."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "At 2.7-point physician stage/0.23-point slack, an omitted joint-instrument facet reduced p5’s 98-point LP width to 95, refuting sharpness."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p5",
+      "content": "Which joint-instrument facets tighten p5’s bounds beyond the 2.7-point stage/0.23-point slack example, and preserve exact-projection coverage?"
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "Enumerate omitted joint-instrument facets, add them to exact-projection LPs, verify endpoint witnesses, and rerun gridwide 95% coverage checks."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Add the 2.7-stage/0.23-slack facet to exact-projection LPs; enumerate other joint facets, certify endpoints, and recheck gridwide 95% coverage."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "JointFacet-LP v1 contains enumerated joint-instrument facets, endpoint-witness certificates, and exact-projection coverage tables across the first-stage/slack grid."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n42",
+      "content": "Independently audit JointFacet-LP v1 facets and endpoint witnesses; rerun 10,000-cohort simulations for 95% coverage and no-IV-width comparisons."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Audit confirmed endpoint witnesses and 95-point width versus prior 98 and no-IV 100; minimum simulated gridwide coverage was 95.1%."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "p5",
+      "content": "Adopt facet-complete exact projection over p5’s incomplete LP: audited sharp width 95 versus 100 no-IV; simulated gridwide coverage 95.1%."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n40"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Characterize when heterogeneous treatment effects remain partially identifiable with weak instruments and bounded exclusion violations in observational healthcare.",
+    "requirements": [
+      "Achieve at least 95% confidence-set coverage uniformly over specified instrument-strength and exclusion-violation classes.",
+      "Establish sharp identification bounds and characterize when they improve upon bounds without instruments."
+    ]
+  }
+}

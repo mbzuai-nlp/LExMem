@@ -1,0 +1,147 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Test budget-capped backscatter and select it over the uncapped closure",
+      "boundary_reason": "The cap is selected; the discussion moves to a separate benchmark."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Benchmark and independently audit the capped closure at unseen filter widths",
+      "boundary_reason": "The audit confirms the reported results; attention shifts to a reservoir alternative."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Initial test of reservoir-funded backscatter against clipping",
+      "boundary_reason": "The initial runs exceed the proposed thresholds; a longer follow-up test begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Longer reservoir runs and a plan to resolve conflicting 32η results",
+      "boundary_reason": "The comparison plan is set; the next proposal uses a different closure."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Train and audit the scale-equivariant wavelet-flux closure",
+      "boundary_reason": "Its benchmark is reported; the next proposal changes closure design."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Initial near-bound test of convex projection and P99 backscatter",
+      "boundary_reason": "The initial result challenges the hypothesis; additional seeds are tested next."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Additional-seed results and audit of conflicting projection errors",
+      "boundary_reason": "The audit notebook is produced; discussion shifts to a memory closure."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Select and initially test a filter-scaled memory horizon",
+      "boundary_reason": "The initial three-seed test supports the proposed horizon; held-out seeds follow."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n39",
+        "n40"
+      ],
+      "topic": "Held-out-seed test of memory-closure backscatter and drift",
+      "boundary_reason": "The held-out result challenges the initial finding and prompts a seed-regime investigation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Test forcing-power variability as an explanation for unstable drift",
+      "boundary_reason": "The CV-stratified result challenges the explanation; the analysis turns to forcing persistence."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Analyze persistent-forcing episodes and choose adaptive memory switching",
+      "boundary_reason": "A switching rule is chosen; implementation and full benchmarking follow."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Implement and audit the adaptive memory closure at unseen widths",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

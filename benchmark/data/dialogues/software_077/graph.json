@@ -1,0 +1,1732 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an incremental cross-module optimizer that preserves optimization benefits while maintaining sound cache reuse under symbol interposition.",
+      "requirements": [
+        "Match clean-build semantics under dependency changes, dynamic symbol interposition, and mixed optimized/unoptimized modules.",
+        "For single-module edits, halve full-LTO rebuild time while keeping runtime within 5% of full LTO."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Cache imported IR by dependency digests, symbol-resolution maps, and optimization modes; selectively reoptimize dependents while preserving preemptible calls."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which visibility and symbol-binding changes invalidate cached imported IR, and which leave preemptible calls safe to reuse?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Per-symbol fingerprints covering visibility, version, and prevailing definition invalidate dependent imports; unchanged dynamically bound calls match clean builds."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Enumerate ELF binding transitions; compare fingerprint-triggered invalidation against clean builds under LD_PRELOAD, dependency edits, and mixed optimization modes."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run InterposeMatrix-120 binding-transition cases across dependency edits, mixed modes, and LD_PRELOAD; compare incremental outputs and traces against clean builds."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "InterposeMatrix-120 produced 0 trace mismatches versus clean builds; fingerprint changes invalidated affected imports, while unchanged preemptible calls remained reusable."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt per-symbol binding fingerprints and preserve preemptible calls; InterposeMatrix-120 found zero clean-build trace mismatches."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "InterposeMatrix-120 report archives clean/incremental traces, binding-fingerprint transitions, and imported-IR invalidation decisions for all 120 cases."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Seed a 500-case binding-transition fuzzer from the InterposeMatrix-120 report; compare fingerprint invalidations and preemptible-call traces against clean builds."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Removing -Bsymbolic left fingerprints unchanged; 3/500 incremental traces bypassed LD_PRELOAD while clean builds interposed."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Fingerprints including -Bsymbolic state and call-site binding assumptions invalidate stale direct calls when symbol interposition becomes possible."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Implement -Bsymbolic and call-site binding fingerprints; rerun 500 fuzz cases and 200 binding toggles against clean builds."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Expanded fingerprints invalidated all three stale direct calls; 700 fuzz and binding-toggle cases showed zero clean-build trace mismatches."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p1",
+      "content": "Which imported-function summaries need recomputation after one module changes, and which cached inlining decisions remain profitable?"
+    },
+    {
+      "id": "n14",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Binding-aware fingerprints permit recomputing changed summaries and transitive consumers while retaining unaffected inlining within 5% of full-LTO runtime."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Prioritize profile-hot cross-module imports in bounded ThinLTO partitions; retain indirect calls for preemptible symbols and treat unoptimized modules conservatively."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Profile-rank imports, cap ThinLTO partitions, benchmark single-module edits, and tune for ≤50% rebuild time and ≤5% runtime regression."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Derive single-module edit workloads from InterposeMatrix-120 report's invalidation records; benchmark profile-hot partition caps against full-LTO rebuild and runtime."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "EditBench-120 dataset records per-edit rebuild seconds, runtime ratios, partition caps, and full-LTO baselines for report-derived workloads."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Audit EditBench-120 rebuild/runtime ratios against 50%/5% targets and InterposeMatrix-120 trace coverage; identify missing interposition transitions."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "EditBench-120: all 120 edits rebuilt within 49% of full-LTO time and 4.8% runtime regression; InterposeMatrix-120 covered no -Bsymbolic removals."
+    },
+    {
+      "id": "n20",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Adopt profile-hot partitions with expanded binding fingerprints: EditBench-120 meets both targets, and 700 binding tests match clean-build traces."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n15",
+      "content": "Run MixedMode-90 mixed-mode dependency edits and LD_PRELOAD tests; compare cached profile-hot partitions with clean-build traces and full-LTO rebuild/runtime."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "MixedMode-90: cached IR misbound 2/90 unoptimized providers; conservative profile-hot partitions matched all traces, rebuilding in 47% of full-LTO time."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "Which linker-resolution metadata must profile-hot partitions record to avoid stale bindings when unoptimized providers replace optimized ones?"
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Partition keys covering prevailing provider, optimization mode, symbol version, and -Bsymbolic-derived preemptibility eliminate MixedMode-90 misbindings."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Implement provider/mode/version/preemptibility keys; rerun MixedMode-90 and EditBench-120, checking trace parity, transitive invalidation, and retained-inlining runtime ≤105% full-LTO."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Expanded keys eliminated both MixedMode-90 misbindings, but retaining unaffected inlining yielded 6.3% EditBench-120 runtime regression versus full LTO."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n24",
+      "content": "Fuzz 400 provider swaps, symbol-version changes, and -Bsymbolic toggles; compare keyed partition reuse against clean-build symbol-resolution traces."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "In 2/400 MixedMode-90-derived version swaps, default-alias flips reused unversioned imports despite unchanged keys, diverging from clean-build traces."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Include default-version alias mappings in partition keys to invalidate unversioned imports after alias flips."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Add default-alias mappings to partition keys; replay 400 provider/version/binding swaps and MixedMode-90 against clean-build resolution traces."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "Alias mappings left 2/400 mismatches; refreshing stale linker-resolution snapshots updated existing symbol-version keys and eliminated both without alias mappings."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "With refreshed linker snapshots, ablate default-alias keys across 400 swaps and MixedMode-90; compare invalidations and clean-build traces."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "After snapshot refresh, alias-key ablation exposed a different unversioned-import mismatch (1/400); restoring alias keys yielded 0/400."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "n29",
+      "content": "Are refreshed linker snapshots and default-alias keys both required to prevent distinct version-swap misbindings?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n34",
+      "content": "Both are necessary: refreshed snapshots invalidate changed version resolutions; default-alias keys invalidate unversioned imports when aliases flip."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "Run a four-configuration ablation of snapshot refresh and default-alias keys on 400 swaps, checking both prior misbindings against clean-build traces."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n36",
+      "content": "Execute 2×2 snapshot-refresh/default-alias-key ablation over 400 provider swaps; record clean-build trace mismatches by versioned versus unversioned import."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n37",
+      "content": "Across 400 swaps, trace mismatches were 3 with neither safeguard, 2 alias-only, 1 refresh-only, and 0 combined."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "BindingAblation-400 report tabulates four safeguard configurations, versioned/unversioned mismatch IDs, refreshed snapshot hashes, and clean-build trace diffs."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 43,
+      "exploration_parent_id": "g1",
+      "content": "Combine refreshed linker snapshots and alias-aware cache keys with selective reinlining of hot transitive consumers in bounded partitions."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "p3",
+      "content": "Which hot transitive consumers should be reinlined to cut EditBench-120's 6.3% runtime regression below 5% without exceeding 50% rebuild time?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Reinlining changed-summary consumers covering 80% of sampled cross-module call time reduces runtime regression below 5% within 50% rebuild time."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "Sweep hot-consumer coverage from 50% to 90% on EditBench-120; measure per-edit rebuild ratio, runtime regression, and clean-build trace parity."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Sweep 50–90% hot-consumer coverage on EditBench-120, using BindingAblation-400 mismatch IDs to verify trace parity and measure rebuild/runtime ratios."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "HotSweep-120 table records 50–90% consumer-coverage settings, per-edit rebuild/runtime ratios, and BindingAblation-400 trace checks."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Audit HotSweep-120’s 80% coverage results across all edits for ≤50% rebuild time, <5% runtime regression, and zero trace mismatches."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "At 80% coverage, HotSweep-120’s worst edit rebuilt in 49% of full-LTO time, regressed runtime 4.7%, and matched all traces."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n42",
+      "content": "Compare p2 and p3 on EditBench-120/HotSweep-120 edits, measuring worst-case rebuild/runtime ratios and clean-build trace parity."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Cold-cache edits: p2 rebuilt in 49% of full-LTO time; p3 needed 55%, despite 4.7% runtime regression and trace parity."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n42",
+      "content": "Rebenchmark p2 on EditBench-120 using p3’s 55%-time cold-cache edits; measure rebuild ratio, runtime regression, and clean-build trace parity."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "On p3’s cold-cache edits, p2 rebuilt in 49% of full-LTO time but regressed runtime 6.3%, exceeding the 5% limit."
+    },
+    {
+      "id": "n51",
+      "type": "question",
+      "order": 55,
+      "exploration_parent_id": "p3",
+      "content": "Can cold-cache reinlining be limited to the highest-impact consumers while meeting both 50% rebuild and 5% runtime limits?"
+    },
+    {
+      "id": "n52",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n51",
+      "content": "Reinlining highest-impact consumers covering 60% of sampled call time keeps cold-cache rebuilds ≤50% and runtime regression <5%."
+    },
+    {
+      "id": "n53",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "Sweep 40–70% hot-consumer coverage on the identified cold-cache edits, comparing rebuild/runtime ratios and traces with full LTO."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n53",
+      "content": "Extend HotSweep-120 to EditBench-120 cold-cache edits; test 40–70% coverage against full-LTO rebuild/runtime and clean-build traces."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n54",
+      "content": "At 60% coverage, cold-cache edits rebuilt in at most 50% of full-LTO time, regressed runtime 4.9%, and matched clean-build traces."
+    },
+    {
+      "id": "n56",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n55",
+      "content": "Adopt 60%-cold/80%-warm reinlining with conservative mixed-mode bindings; cold edits meet 50% rebuild and 4.9% runtime regression, unlike alternatives."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 61,
+      "exploration_parent_id": "g1",
+      "content": "Use transactional binding snapshots and a content-addressed import graph to reuse safe partitions with 60%-cold/80%-warm reinlining."
+    },
+    {
+      "id": "n57",
+      "type": "question",
+      "order": 62,
+      "exploration_parent_id": "p4",
+      "content": "How can transactional snapshots detect linker-resolution changes during concurrent cache reads without invalidating unaffected import-graph partitions?"
+    },
+    {
+      "id": "n58",
+      "type": "hypothesis",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "On snapshot-epoch changes, revalidate version-alias-aware binding hashes at commit; invalidate only partitions importing changed resolutions."
+    },
+    {
+      "id": "n59",
+      "type": "plan",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Implement epoch-pinned reads and commit-time binding-hash checks; stress concurrent relinks with validated 60%-cold reinlining and selective invalidation."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "Build ConcurrentRelink-300 from BindingAblation-400 cases; race provider/version swaps against partition reads, logging epochs, hash changes, invalidations, and traces."
+    },
+    {
+      "id": "n61",
+      "type": "artifact",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "ConcurrentRelink-300 log records pinned/commit epochs, per-import binding hashes, invalidated partitions, and clean-build trace comparisons for 300 races."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n59",
+      "content": "Audit ConcurrentRelink-300 for stale trace commits and unnecessary invalidations, grouping races by changed binding hash versus epoch-only change."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n62",
+      "content": "ConcurrentRelink-300: zero stale trace commits; 41 epoch changes invalidated 17 affected partitions while preserving 24 unaffected ones."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n59",
+      "content": "Inject 100 relinks between commit-time hash validation and artifact publication; compare published traces with fresh-link clean builds."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n64",
+      "content": "In 4/100 post-validation relinks, artifacts published under stale epochs and diverged from fresh-link clean-build traces."
+    },
+    {
+      "id": "n66",
+      "type": "hypothesis",
+      "order": 71,
+      "exploration_parent_id": "n65",
+      "content": "Publish artifacts under an exclusive epoch lock spanning final binding-hash validation through atomic rename, retrying only changed-import partitions."
+    },
+    {
+      "id": "n67",
+      "type": "plan",
+      "order": 72,
+      "exploration_parent_id": "n66",
+      "content": "Add publication locking, replay 100 post-validation relinks plus ConcurrentRelink-300, and measure trace parity, selective retries, and rebuild overhead."
+    },
+    {
+      "id": "n68",
+      "type": "activity",
+      "order": 73,
+      "exploration_parent_id": "n67",
+      "content": "Implement epoch-locked atomic publication; replay ConcurrentRelink-300 and 100 post-validation injections, measuring stale traces and retried partitions."
+    },
+    {
+      "id": "n69",
+      "type": "artifact",
+      "order": 74,
+      "exploration_parent_id": "n68",
+      "content": "ConcurrentRelink-400 supersedes the 300-race log, adding publication-lock intervals, atomic-rename epochs, partition retries, and clean-build trace comparisons."
+    },
+    {
+      "id": "n70",
+      "type": "activity",
+      "order": 75,
+      "exploration_parent_id": "n67",
+      "content": "Audit ConcurrentRelink-400 for published trace mismatches, unnecessary retries, and lock-held durations versus the 50% rebuild budget."
+    },
+    {
+      "id": "n71",
+      "type": "evidence",
+      "order": 76,
+      "exploration_parent_id": "n70",
+      "content": "ConcurrentRelink-400 had zero trace mismatches, including 100 injected relinks; 24 unaffected partitions stayed cached, with 1.2 ms p95 locks."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 77,
+      "exploration_parent_id": "n67",
+      "content": "Audit ConcurrentRelink-400 publication epochs against fresh-link builds, isolating relinks queued during the lock and checking post-unlock artifact reuse."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 78,
+      "exploration_parent_id": "n72",
+      "content": "In 2/400 queued relinks, provider files changed before rename while epoch updates waited; published artifacts diverged from fresh-link builds."
+    },
+    {
+      "id": "n74",
+      "type": "hypothesis",
+      "order": 79,
+      "exploration_parent_id": "n73",
+      "content": "Gate provider-file writes with publication locking and recheck content digests before rename, retrying partitions whose inputs changed."
+    },
+    {
+      "id": "n75",
+      "type": "plan",
+      "order": 80,
+      "exploration_parent_id": "n74",
+      "content": "Integrate provider-write gating and pre-rename digest checks; replay queued relinks, verify clean-build traces, and bound lock overhead."
+    },
+    {
+      "id": "n76",
+      "type": "activity",
+      "order": 81,
+      "exploration_parent_id": "n75",
+      "content": "Gate provider writes under publication locks, check digests before rename, and replay ConcurrentRelink-400 plus 100 queued-write injections."
+    },
+    {
+      "id": "n77",
+      "type": "artifact",
+      "order": 82,
+      "exploration_parent_id": "n76",
+      "content": "ConcurrentRelink-500 supersedes the 400-case log with queued-write timestamps, pre-rename digests, lock intervals, retries, and fresh-link trace comparisons."
+    },
+    {
+      "id": "n78",
+      "type": "activity",
+      "order": 83,
+      "exploration_parent_id": "n75",
+      "content": "Audit ConcurrentRelink-500 for queued-write trace mismatches and digest-triggered retries; compare p95 lock time with the 1.2 ms baseline."
+    },
+    {
+      "id": "n79",
+      "type": "evidence",
+      "order": 84,
+      "exploration_parent_id": "n78",
+      "content": "ConcurrentRelink-500: zero fresh-link trace mismatches; two digest-triggered retries, with p95 lock time rising from 1.2 to 1.8 ms."
+    },
+    {
+      "id": "n80",
+      "type": "activity",
+      "order": 85,
+      "exploration_parent_id": "n75",
+      "content": "Compare ConcurrentRelink-300/400/500 for queued-write trace parity, unnecessary invalidations, and lock overhead against p4’s 50% rebuild target."
+    },
+    {
+      "id": "n81",
+      "type": "evidence",
+      "order": 86,
+      "exploration_parent_id": "n80",
+      "content": "ConcurrentRelink-500 eliminated the 400-case log’s two queued-write mismatches (0/500), retained 24 unaffected partitions, and rebuilt in 49.9% of full-LTO time."
+    },
+    {
+      "id": "n82",
+      "type": "decision",
+      "order": 87,
+      "exploration_parent_id": "n81",
+      "content": "Adopt write-gated, digest-checked publication: 0/500 mismatches versus lock-only races, with rebuild time 49.9% of full LTO."
+    },
+    {
+      "id": "n83",
+      "type": "question",
+      "order": 88,
+      "exploration_parent_id": "p4",
+      "content": "How can cache reuse detect external linker-script edits and unmanaged provider writes that bypass publication locks?"
+    },
+    {
+      "id": "n84",
+      "type": "plan",
+      "order": 89,
+      "exploration_parent_id": "n83",
+      "content": "Fix the adopted 60%-cold/80%-warm configuration and write-gated publication baseline; hash linker inputs and test unmanaged writes against clean builds."
+    },
+    {
+      "id": "n85",
+      "type": "activity",
+      "order": 90,
+      "exploration_parent_id": "n84",
+      "content": "Hash linker inputs; inject unmanaged provider and linker-script edits into EditBench-120, HotSweep-120, ConcurrentRelink-500; compare p2/p3/p4 clean-build traces and rebuild/runtime ratios."
+    },
+    {
+      "id": "n86",
+      "type": "evidence",
+      "order": 91,
+      "exploration_parent_id": "n85",
+      "content": "Hashed-input p2/p4 had 0/120 unmanaged-edit trace mismatches; p4 rebuilt in 49.9% full-LTO time with 4.9% runtime regression."
+    },
+    {
+      "id": "n87",
+      "type": "decision",
+      "order": 92,
+      "exploration_parent_id": "n86",
+      "content": "Choose hashed-input p4 over p2/p3: write-gated publication and 60%-cold/80%-warm reinlining achieve 0/120 mismatches, 49.9% full-LTO rebuild time, 4.9% runtime regression."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n14"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "revise",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n48",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "refute",
+      "target": "n58"
+    },
+    {
+      "source": "n66",
+      "relation": "revise",
+      "target": "n58"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n67",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n67",
+      "relation": "decompose",
+      "target": "n68"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n66"
+    },
+    {
+      "source": "n68",
+      "relation": "produce",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "revise",
+      "target": "n61"
+    },
+    {
+      "source": "n67",
+      "relation": "decompose",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n69"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n70",
+      "relation": "produce",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "support",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "decompose",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n69"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "refute",
+      "target": "n66"
+    },
+    {
+      "source": "n74",
+      "relation": "revise",
+      "target": "n66"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n75",
+      "relation": "address",
+      "target": "n57"
+    },
+    {
+      "source": "n75",
+      "relation": "depend_on",
+      "target": "n71"
+    },
+    {
+      "source": "n75",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n76"
+    },
+    {
+      "source": "n76",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n76",
+      "relation": "depend_on",
+      "target": "n74"
+    },
+    {
+      "source": "n76",
+      "relation": "produce",
+      "target": "n77"
+    },
+    {
+      "source": "n77",
+      "relation": "revise",
+      "target": "n69"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n77"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n74"
+    },
+    {
+      "source": "n78",
+      "relation": "produce",
+      "target": "n79"
+    },
+    {
+      "source": "n79",
+      "relation": "support",
+      "target": "n74"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n80"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n71"
+    },
+    {
+      "source": "n80",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n80",
+      "relation": "evaluate",
+      "target": "n69"
+    },
+    {
+      "source": "n80",
+      "relation": "evaluate",
+      "target": "n77"
+    },
+    {
+      "source": "n80",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n80",
+      "relation": "produce",
+      "target": "n81"
+    },
+    {
+      "source": "n81",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n79",
+      "relation": "support",
+      "target": "n82"
+    },
+    {
+      "source": "n81",
+      "relation": "support",
+      "target": "n82"
+    },
+    {
+      "source": "n82",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n82",
+      "relation": "depend_on",
+      "target": "n81"
+    },
+    {
+      "source": "n82",
+      "relation": "depend_on",
+      "target": "n71"
+    },
+    {
+      "source": "n82",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n84",
+      "relation": "address",
+      "target": "n83"
+    },
+    {
+      "source": "n84",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n84",
+      "relation": "depend_on",
+      "target": "n82"
+    },
+    {
+      "source": "n84",
+      "relation": "decompose",
+      "target": "n85"
+    },
+    {
+      "source": "n85",
+      "relation": "address",
+      "target": "n83"
+    },
+    {
+      "source": "n85",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n85",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n85",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n85",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n85",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n85",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n85",
+      "relation": "produce",
+      "target": "n86"
+    },
+    {
+      "source": "n86",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n86",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n86",
+      "relation": "support",
+      "target": "n87"
+    },
+    {
+      "source": "n87",
+      "relation": "depend_on",
+      "target": "n86"
+    },
+    {
+      "source": "n87",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n87",
+      "relation": "depend_on",
+      "target": "n82"
+    },
+    {
+      "source": "n87",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n87",
+      "relation": "depend_on",
+      "target": "n50"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an incremental cross-module optimizer that preserves optimization benefits while maintaining sound cache reuse under symbol interposition.",
+    "requirements": [
+      "Match clean-build semantics under dependency changes, dynamic symbol interposition, and mixed optimized/unoptimized modules.",
+      "For single-module edits, halve full-LTO rebuild time while keeping runtime within 5% of full LTO."
+    ]
+  }
+}

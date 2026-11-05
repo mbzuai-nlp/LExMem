@@ -1,0 +1,141 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial VisBRDF-SDF test on mixed reflective and occluded rays",
+      "boundary_reason": "The initial test finds inadequate reflective coverage and interval narrowing, prompting a revised model."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Specular-ray mixture heads for VisBRDF-SDF",
+      "boundary_reason": "The mixture-head result leads to a decision; the discussion then returns to a separate ablation."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Visibility and specular ablations on mixed versus pure rays",
+      "boundary_reason": "The ablation report and its coverage–width question are followed by a different geometry-prior proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Conformalized diffusion benchmark and comparison with mixture heads",
+      "boundary_reason": "Diffusion is selected; the next discussion tests calibration under unseen conditions."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24",
+        "p3",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Shifted-condition diffusion calibration and initial particle-filter test",
+      "boundary_reason": "The shared evidence resolves the diffusion-shift prediction and identifies particle interval width as a concern."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Unpruned particle-filter coverage on held-out mixed rays",
+      "boundary_reason": "Held-out results refute the unpruned-particle hypothesis, prompting a resampling revision."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Visibility-stratified particles on held-out and shifted scenes",
+      "boundary_reason": "Shifted reflective undercoverage motivates a focused investigation of particle weights."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Roughness marginalization and the particle-filter deferral",
+      "boundary_reason": "Residual intersection undercoverage leads to a distinct multi-bounce explanation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Two-bounce likelihoods at reflective–occluded intersections",
+      "boundary_reason": "The repair improves coverage but does not reverse the particle deferral; a new approach follows."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Ray-causal flow benchmark against diffusion",
+      "boundary_reason": "The flow is selected over diffusion before a separate GP-SDF alternative is examined."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "GP-SDF benchmark and final comparison of approaches",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

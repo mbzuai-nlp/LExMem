@@ -1,0 +1,163 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Force-ramp probing, posterior calibration, and held-out benchmarks",
+      "boundary_reason": "The initial benchmark is complete; the next work tests unseen mud and clay."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "Field performance of entropy ramps on unseen mud and clay",
+      "boundary_reason": "The field result raises a new question about sinkage and hysteresis."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Hysteresis-aware inference and mud–clay retesting",
+      "boundary_reason": "The mixed-terrain and slow-clay results lead to a narrower drainage question."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Drainage-state filtering and controller selection",
+      "boundary_reason": "A decision closes this approach before a different probing proposal begins."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Viability-gated load cycles and unseen-silt evaluation",
+      "boundary_reason": "The load-cycle evaluation ends before the variable-area sole proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Variable-area preloads on layered gravel-over-mud",
+      "boundary_reason": "The poor traversal result shifts attention to detecting unrecoverable slips."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Slip-aware capture forecasts in replay and live wet crossings",
+      "boundary_reason": "The live result prompts a specific question about moisture-dependent friction."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Friction-adaptive slip alerts and layered-terrain decision",
+      "boundary_reason": "The decision closes the variable-area approach before a new sensing proposal."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Shear-imaged chirps, dataset creation, and held-out evaluation",
+      "boundary_reason": "The held-out benchmark ends before field testing on unseen waterlogged silt."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n54",
+        "n55"
+      ],
+      "topic": "Shear-chirp field performance on waterlogged silt",
+      "boundary_reason": "The field result motivates a new pore-pressure and reachability investigation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Pore-pressure adaptation on unseen and variable-drainage silt",
+      "boundary_reason": "The variable-drainage result raises a more specific within-stance transition question."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70"
+      ],
+      "topic": "Change-point filtering for drainage transitions and conditional selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

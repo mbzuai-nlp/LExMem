@@ -1,0 +1,132 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Initial gap-tainted watermark design and trace replay",
+      "boundary_reason": "The replay supports adopting the initial verdict logic; the discussion moves to controller integration."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2",
+        "a4",
+        "e3",
+        "d2"
+      ],
+      "topic": "Controller timing audit and hardware discovery of false violations",
+      "boundary_reason": "The current watermark verdict logic is rejected, prompting a different completeness mechanism."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h2",
+        "a5",
+        "e4",
+        "l2",
+        "a6",
+        "r2"
+      ],
+      "topic": "Guarded producer seals and sealed-ring verification",
+      "boundary_reason": "The sealed-ring model is produced; the discussion shifts to a DMA-backed alternative."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h3",
+        "a7",
+        "e5",
+        "a8",
+        "e6",
+        "d3"
+      ],
+      "topic": "DMA certificates and the stale-fence overwrite finding",
+      "boundary_reason": "Current DMA certificates are rejected; a generation-tagged revision follows."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "h4",
+        "a9",
+        "e7",
+        "l3",
+        "a10",
+        "r3"
+      ],
+      "topic": "Generation-tagged DMA fences and comparison with sealed rings",
+      "boundary_reason": "The comparison report is produced; the discussion shifts to shared-SRAM obligation slots."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h5",
+        "a11",
+        "e8",
+        "a12",
+        "e9",
+        "d4"
+      ],
+      "topic": "Unversioned obligation slots and stale-seal failure",
+      "boundary_reason": "Unversioned slots are rejected, leading to a generation-tagged revision."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "h6",
+        "a13",
+        "e10",
+        "a14",
+        "e11",
+        "d5"
+      ],
+      "topic": "Generation-tagged slots and forced-reuse overhead",
+      "boundary_reason": "The forced-reuse overhead exceeds the limit; asynchronous reclamation is considered next."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "h7",
+        "a15",
+        "e12",
+        "a16",
+        "e13",
+        "a17",
+        "e14",
+        "d6"
+      ],
+      "topic": "Asynchronous slot reclamation and forced-reuse verdict failure",
+      "boundary_reason": "Asynchronous reclamation is rejected; work returns to finalizing sealed rings."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "l4",
+        "a18",
+        "r4",
+        "a19",
+        "e15",
+        "d7"
+      ],
+      "topic": "Final sealed-ring replay, independent audit, and adoption",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,1110 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build an incremental Java taint analyzer preserving interprocedural soundness when edits change heap aliasing and virtual dispatch.",
+      "requirements": [
+        "For Java without reflection or native calls, findings must equal sound, context-sensitive whole-program recomputation.",
+        "Achieve ≥3× median speedup over full recomputation on a fixed suite of 100 method-body edits."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Maintain provenance-indexed, context-sensitive heap points-to, virtual-call targets, and taint facts; retract and recompute affected dependency SCCs."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can newly introduced aliases and virtual targets trigger complete taint updates without recomputing unaffected contexts?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Provenance-indexed alias and dispatch edges with affected-SCC closure should match recomputed findings while revisiting under 40% of facts."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Track provenance-backed alias and dispatch deltas, recompute transitive dependent context-sensitive SCCs, validate findings and speedup on 100 edits."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run AliasDispatch-100 method-body edits against context-sensitive whole-program recomputation, measuring finding equality, median speedup, and revisited-fact fraction."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On AliasDispatch-100, all 100 edits matched whole-program findings; median speedup was 3.7×, with 28% of facts revisited."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt provenance-indexed affected-SCC recomputation as the implementation baseline; AliasDispatch-100 met finding equality and the 3× speedup target."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Implement the adopted affected-SCC engine with provenance invalidation for heap-store deletions and virtual-target changes, plus AliasDispatch-100 regression gates."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "IncrementalTaintEngine.java and AliasDispatch-100 tests implement provenance-backed alias/dispatch invalidation and gate exact findings and ≥3× median speedup."
+    },
+    {
+      "id": "n9",
+      "type": "hypothesis",
+      "order": 11,
+      "exploration_parent_id": "n1",
+      "content": "Heap-object and receiver-type subscriptions should preserve exact findings on alias-heavy edits while revisiting under 25% of context facts."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Extend IncrementalTaintEngine.java with heap-object and receiver-type subscriptions; benchmark alias-heavy edits against whole-program findings and baseline revisited-fact fraction."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "On AliasHeavy-30, subscriptions missed two sink findings after receiver-type widening, despite revisiting only 19% of context facts."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Fall back to whole-program recomputation on receiver widening, repair subscriptions, then rerun AliasHeavy-30 and AliasDispatch-100 correctness and speedup gates."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Patch IncrementalTaintEngine.java with receiver-widening fallback and new-target subscriptions; rerun AliasHeavy-30 and AliasDispatch-100 against whole-program recomputation."
+    },
+    {
+      "id": "n14",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "IncrementalTaintEngine.java now falls back on receiver widening and subscribes to new targets; regression tests cover AliasHeavy-30 and AliasDispatch-100."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n12",
+      "content": "Benchmark patched IncrementalTaintEngine.java on AliasHeavy-30 and AliasDispatch-100, comparing findings, affected-SCC coverage, and median speedup against recomputation."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Patched engine matched whole-program findings on all 130 edits; affected-SCC coverage was 100%, with 3.3× median speedup on AliasDispatch-100."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Use differential Datalog with delete/rederive to incrementally maintain context-sensitive points-to, virtual-call, and taint relations from edited method facts."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Can delete/rederive handle cyclic heap aliases and newly reachable virtual targets without stale taint facts or excessive recomputation?"
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Benchmark differential Datalog against patched IncrementalTaintEngine.java and whole-program recomputation on CyclicAliasDispatch-40, measuring finding parity and median latency."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "On CyclicAliasDispatch-40, affected-SCC missed four sink findings after cyclic alias deletions; differential Datalog matched all 40 whole-program outputs."
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Differential Datalog delete/rederive should preserve whole-program finding parity under cyclic alias deletions and virtual-target changes."
+    },
+    {
+      "id": "n21",
+      "type": "plan",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Implement differential delete/rederive for cyclic aliases and dispatch; verify finding parity on CyclicAliasDispatch-40 and ≥3× speedup on AliasDispatch-100."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Integrate differential delete/rederive into IncrementalTaintEngine.java; compare CyclicAliasDispatch-40 findings and AliasDispatch-100 median speedup against whole-program recomputation."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Integrated delete/rederive produced two spurious sink findings on CyclicAliasDispatch-40 because context-memoized virtual targets survived alias-cycle deletion."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Context-keyed overdelete-and-rederive of memoized dispatch targets alongside cyclic points-to facts should eliminate spurious findings without losing parity."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Patch IncrementalTaintEngine.java with context-keyed dispatch overdelete/rederive; check CyclicAliasDispatch-40 finding parity and AliasDispatch-100 median speedup."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "On CyclicAliasDispatch-40, context-keyed rederivation removed spurious findings but missed one sink when shared heap taint crossed contexts."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Tracking shared-heap taint dependencies across contexts during dispatch rederivation should restore finding parity on CyclicAliasDispatch-40."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Add cross-context shared-heap taint dependencies to IncrementalTaintEngine.java; rerun CyclicAliasDispatch-40 for finding parity and AliasDispatch-100 for median speedup."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Cross-context heap dependencies restored all 40 CyclicAliasDispatch findings; AliasDispatch-100 median speedup was 3.1× versus recomputation."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Adopt differential delete/rederive with context-keyed dispatch and cross-context heap dependencies; cyclic-edit parity holds while median speedup remains 3.1×."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "Harden IncrementalTaintEngine.java’s adopted differential maintenance with seeded alias/dispatch edits and whole-program finding-parity assertions."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "IncrementalTaintEngine.java now uses context-keyed dispatch delete/rederive and cross-context heap dependencies; seeded alias/dispatch tests assert whole-program finding parity."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "Which differential-rule indexes propagate newly instantiated receiver types into virtual calls and heap taint without scanning every context?"
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Profile IncrementalTaintEngine.java on DispatchGrowth-50; test receiver-type call and allocation-site/field heap indexes for finding parity and latency."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n34",
+      "content": "On DispatchGrowth-50, receiver-type/call and allocation-site/field indexes preserved 50/50 whole-program finding parity, reducing median latency from 92 to 41 ms."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "Integrate receiver-type/call and allocation-site/field indexes, then verify parity and ≥3× median speedup on AliasDispatch-100."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n36",
+      "content": "Integrate validated receiver-type/call and allocation-site/field indexes into IncrementalTaintEngine.java; rerun AliasDispatch-100 for finding parity and median speedup."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n37",
+      "content": "IncrementalTaintEngine.java now indexes virtual calls by receiver type and heap dependencies by allocation-site/field, updating the differential-maintenance implementation."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Benchmark indexed versus unindexed differential maintenance on AliasDispatch-100, checking whole-program finding parity, median speedup, and dispatch/heap-context scans."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n39",
+      "content": "On AliasDispatch-100, indexed differential maintenance matched all recomputed findings, scanned 61% fewer contexts, and achieved 3.8× median speedup."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 44,
+      "exploration_parent_id": "n40",
+      "content": "Retain indexed differential maintenance: AliasDispatch-100 achieved exact recomputation parity and 3.8× median speedup while scanning fewer contexts."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Use versioned context-sensitive summaries and demand-driven sink slices, invalidating callers and shared-heap readers on alias or dispatch changes."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p3",
+      "content": "How can demand-driven slices discover newly reachable sinks when edits create alias or dispatch edges outside cached slices?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Versioned reachability frontiers at call sites and heap fields should expose newly reachable sinks with exact finding parity."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Prototype versioned call-site and heap-field frontiers atop indexed IncrementalTaintEngine.java; test new-sink recall and finding parity on DispatchGrowth-50."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "On DispatchGrowth-50, frontier slicing missed three newly reachable sinks when an edit introduced an unseen receiver allocation site."
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n42",
+      "content": "Global allocation-site insertion events should refresh type-matched call-site and heap-field frontiers, restoring DispatchGrowth-50 finding parity."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Subscribe indexed demand-driven call-site and heap-field frontiers to allocation-site insertions; compare DispatchGrowth-50 findings and AliasDispatch-100 speedup against recomputation."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Allocation-site subscriptions recovered all 50 DispatchGrowth findings; demand-driven slicing achieved 4.2× median speedup on AliasDispatch-100 with exact finding parity."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "Adopt demand-driven slicing only with global allocation-site subscriptions; unsubscribed frontiers missed sinks, while subscribed frontiers achieved parity and 4.2× speedup."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 54,
+      "exploration_parent_id": "g1",
+      "content": "Pair indexed differential Datalog with allocation-site-subscribed sink slices, propagating every edit delta before selectively updating findings."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 55,
+      "exploration_parent_id": "p4",
+      "content": "Can global delta propagation preserve ≥3× median speedup when allocation-site edits activate many virtual targets and sink slices?"
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Integrate global delta propagation with subscribed slices; benchmark allocation-burst edits and AliasDispatch-100 for finding parity and median speedup."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Benchmark hybrid propagation on AllocationBurst-25 and AliasDispatch-100 against recomputation, recording finding parity, activated slices, and median speedup."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "AllocationBurst-25/ AliasDispatch-100 benchmark report records whole-program finding comparisons, activated-slice counts, and median hybrid-versus-recomputation latency."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n51",
+      "content": "Analyze benchmark report against indexed IncrementalTaintEngine.java, attributing allocation-burst slice costs and verifying finding parity and 3× speedup."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Hybrid propagation matched recomputed findings but achieved only 2.4× median speedup on AliasDispatch-100; allocation bursts activated 78% of slices."
+    },
+    {
+      "id": "n56",
+      "type": "question",
+      "order": 61,
+      "exploration_parent_id": "p4",
+      "content": "Can delta-triggered slice activation reduce AllocationBurst-25’s 78% fanout and restore ≥3× median speedup without missing sinks?"
+    },
+    {
+      "id": "n57",
+      "type": "hypothesis",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Type-and-field-keyed frontier subscriptions should lower activated slices below 35% while preserving exact findings and ≥3× AliasDispatch-100 speedup."
+    },
+    {
+      "id": "n58",
+      "type": "plan",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "Replace broad allocation-site subscriptions with type-and-field-keyed frontier indexes; rerun AllocationBurst-25 and AliasDispatch-100 for activation, parity, and speedup."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Implement type/field frontier indexes in IncrementalTaintEngine.java; benchmark AllocationBurst-25 and AliasDispatch-100 parity, slice activation, and speedup against baseline report."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "Type/field indexing matched recomputed findings on both suites; AllocationBurst-25 activated 29% of slices, and AliasDispatch-100 median speedup reached 3.4×."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "Use type/field-keyed frontier subscriptions: broad subscriptions achieved 2.4×, whereas indexed activation preserved parity and reached 3.4×."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n21",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "revise",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "revise",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "revise",
+      "target": "n14"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n49"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n58",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build an incremental Java taint analyzer preserving interprocedural soundness when edits change heap aliasing and virtual dispatch.",
+    "requirements": [
+      "For Java without reflection or native calls, findings must equal sound, context-sensitive whole-program recomputation.",
+      "Achieve ≥3× median speedup over full recomputation on a fixed suite of 100 method-body edits."
+    ]
+  }
+}

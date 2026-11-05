@@ -1,0 +1,162 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Test and retain transmissibility-weighted flux projection",
+      "boundary_reason": "The initial projection test reaches a decision; the next nodes begin training and independent validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Train and validate ChannelFlow-v1 on independent topologies",
+      "boundary_reason": "Validation is complete; the next discussion tests a different projection weighting."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Ablate uniform versus transmissibility-weighted projection",
+      "boundary_reason": "The ablation result closes this comparison before a new surrogate approach begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Develop ClosureFV-v1 and compare it with ChannelFlow-v1",
+      "boundary_reason": "The comparison reaches a selection decision; the next nodes test a local-only closure."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Test whether a local-only closure handles branching channels",
+      "boundary_reason": "The local-only ablation concludes before the graph-adaptive pressure-basis proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Sweep graph-adaptive pressure modes on unseen branching channels",
+      "boundary_reason": "The mode sweep identifies a breakthrough shortfall, prompting localized-mode revisions."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Add bottleneck-localized modes and select the 32+16 configuration",
+      "boundary_reason": "The revised mode configuration reaches a decision before a new streamline-based approach begins."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Evaluate a streamline travel-time surrogate on unseen channels",
+      "boundary_reason": "Branching-channel failure motivates the next discussion of alternate-path travel times."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Compare alternate-path and baseline travel times at two timesteps",
+      "boundary_reason": "The timestep-specific model choice concludes before the pressure-operator proposal."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Test two-sweep pressure-residual correction on unseen topologies",
+      "boundary_reason": "The broader benchmark misses the breakthrough limit, prompting a four-sweep revision."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67",
+        "n68"
+      ],
+      "topic": "Evaluate four correction sweeps across two topology benchmarks",
+      "boundary_reason": "The mixed benchmark results lead to a decision and a separate retraining plan."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74"
+      ],
+      "topic": "Retrain, reproduce, and adopt JunctionPressure-v2",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

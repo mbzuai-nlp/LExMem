@@ -1,0 +1,160 @@
+RULE-MATCHED GRAPH CONTINUATION PROMPTS
+
+USAGE AND CONTROLLER
+Send the SHARED PROMPT plus one selected template. Fill all placeholders.
+Match conditions and checks below are controller instructions, not model prompts.
+
+Scan nodes in order. An edge becomes available when both endpoints have appeared.
+Consider a matched edge only at its first available order; do not resample old
+edges at every later node. Check conditions against the prefix, not the future.
+Apply a configurable trigger probability to each eligible match; if triggered,
+select one eligible template and make at most one continuation call at this
+position. Keep the prefix through the cutoff and let the
+model regenerate the complete future. After validation, resume at cutoff + 1.
+Stop when scanning reaches the current graph's end without another trigger.
+No maximum rounds or separate stopping probability are specified.
+
+SHARED PROMPT
+=============
+Continue this content-free graph with the selected development and return the
+complete graph, including its unchanged history.
+
+Original seeds (one goal and 3-5 proposals):
+{{SEED_INPUT_JSON}}
+
+Immutable prefix through order {{CUTOFF_ORDER}}:
+{{PREFIX_JSON}}
+
+Requirements:
+- Preserve every prefix node and edge. Add no edges between two prefix nodes.
+  Regenerate the future; the discarded suffix need not be reconstructed.
+- Include exactly the supplied goal and proposals, including those not yet in
+  the prefix. Add no descriptions, domain text, status/history fields, dialogue,
+  QA, or extra metadata.
+- Encourage multiple branches, depth, and broad exploration without padding.
+  Place the requested development naturally, possibly after other exploration,
+  then continue its consequences and complete the remaining graph.
+- Templates specify outcomes, not fixed node chains. Choose the intervening
+  structure, node count, and connections freely within the schema.
+- New nodes have unique neutral IDs and consecutive orders after the cutoff.
+  Order is dialogue chronology. Activities precede their new outputs; evaluated
+  targets precede their new evaluating activities. Revisions/revivals follow
+  their targets.
+- Keep a single exploration tree rooted at g1 and left-to-right DFS preorder.
+  The root has a null parent; every other node has one earlier existing parent.
+  Proposals are direct children of g1 in seed order, each linked from g1 by
+  decompose. Continue from the traversal frontier without reopening closed
+  subtrees; use semantic edges to refer to earlier topics across branches.
+  Exploration parents specify traversal only, not semantic relationships.
+- Preserve old findings. New evidence does not automatically invalidate related
+  nodes or settle conflicting evidence. Account for explicit prerequisites
+  without silently rewriting historical dependencies.
+- revise does not imply adoption or abandonment. refute alone does not justify
+  revive, which requires a previously rejected, deferred, or inactive target.
+  Evidence supporting a decision does not specify what that decision selected.
+
+Node types:
+goal, proposal, question, hypothesis, plan, activity, evidence, decision, artifact.
+
+Allowed relations (source -> target):
+- address: proposal/hypothesis/plan/activity -> question/goal; addresses the target.
+- produce: activity -> evidence/artifact; generates an output.
+- depend_on: dependent -> actual prerequisite, not generic association.
+- evaluate: activity -> hypothesis/proposal/artifact; assesses the target.
+- support: evidence -> hypothesis/proposal/decision; provides grounds for it.
+- refute: evidence -> hypothesis/proposal; contradicts the target.
+- decompose: goal -> proposal; proposal -> proposal; plan -> activity.
+- revise: revised version -> earlier version; substantively modifies it.
+- revive: evidence/decision -> proposal/hypothesis; reopens consideration.
+
+Return only JSON with nodes and edges. Each node has exactly id, type, order,
+exploration_parent_id; each edge has exactly source, relation, target.
+Check prefix preservation, seed coverage, valid references and relation directions,
+DFS/chronological order, and completion of the selected task. No self-edges,
+duplicate edges, circular prerequisites, Markdown fences, or explanations.
+
+RULE S: SUPPORTED TARGET
+=======================
+Match: {{SUPPORT_EVIDENCE_ID}} support {{TARGET_ID}}; evidence -> hypothesis or
+proposal; no refute edge to the target in the prefix. Exclude decision targets.
+
+S1 — Later counterevidence
+Prompt:
+{{SUPPORT_EVIDENCE_ID}} supports {{TARGET_ID}}. In the continuation, refute
+{{TARGET_ID}} while preserving its earlier support, and complete the graph.
+Check: a new evidence node refutes the target.
+
+RULE F: REFUTED TARGET
+=====================
+Match: {{REFUTING_EVIDENCE_ID}} refute {{TARGET_ID}}; evidence -> hypothesis or
+proposal; no support edge to the target in the prefix.
+
+F1 — Later support
+Prompt:
+{{REFUTING_EVIDENCE_ID}} refutes {{TARGET_ID}}. In the continuation, provide
+support for {{TARGET_ID}} while preserving the earlier refutation, and complete
+the graph. This need not resolve the conflicting findings.
+Check: a new evidence node supports the target.
+
+RULE RH: REVISED HYPOTHESIS
+==========================
+Match: {{REVISED_HYPOTHESIS_ID}} revise {{EARLIER_HYPOTHESIS_ID}}; both are
+hypotheses; revised node is later.
+
+RH1 — Further revision
+Prompt:
+{{REVISED_HYPOTHESIS_ID}} revises {{EARLIER_HYPOTHESIS_ID}}. Let subsequent
+developments lead to a further revision of {{REVISED_HYPOTHESIS_ID}}, and complete
+the graph while preserving the earlier versions and their relationships.
+Check: a new hypothesis revises the matched revised hypothesis.
+
+RH2 — Later findings favor the earlier version
+Eligibility: no refute edge to the revised hypothesis is present in the prefix.
+Prompt:
+{{REVISED_HYPOTHESIS_ID}} revises {{EARLIER_HYPOTHESIS_ID}}. Let later findings
+support {{EARLIER_HYPOTHESIS_ID}} and refute {{REVISED_HYPOTHESIS_ID}}, and complete
+the graph. This does not imply automatic rollback, revival, or adoption.
+Check: new evidence supports the earlier hypothesis and new evidence refutes the
+revised hypothesis; these may be the same or different evidence nodes.
+
+RULE RA: REVISED ARTIFACT
+========================
+Match: {{REVISED_ARTIFACT_ID}} revise {{EARLIER_ARTIFACT_ID}}; both are artifacts;
+the revised node is later.
+
+RA1 — Another artifact version
+Prompt:
+{{REVISED_ARTIFACT_ID}} revises {{EARLIER_ARTIFACT_ID}}. Let subsequent
+developments lead to a further revision of {{REVISED_ARTIFACT_ID}}, and complete
+the graph. Preserve earlier versions; revision does not imply deployment.
+Check: a new artifact revises the matched revised artifact.
+
+RULE V: REOPENED TARGET
+======================
+Match: {{REVIVAL_SOURCE_ID}} revive {{TARGET_ID}}; evidence/decision ->
+hypothesis/proposal. No evidence appearing after the revival source already
+supports or refutes the target in the prefix.
+Use an existing validated revival annotation. refute/revise alone cannot establish
+prior inactivity; these templates do not fill that gap in the source graph.
+
+V1 — Support after reopening
+Prompt:
+{{REVIVAL_SOURCE_ID}} reopens {{TARGET_ID}}. Let the continuation provide support
+for {{TARGET_ID}}, and complete the graph. Preserve earlier findings without
+assuming all previous objections have been resolved.
+Check: a new evidence node supports the reopened target.
+
+V2 — Refutation after reopening
+Prompt:
+{{REVIVAL_SOURCE_ID}} reopens {{TARGET_ID}}. Let the continuation refute
+{{TARGET_ID}}, and complete the graph. Preserve the reopening as part of history.
+Check: a new evidence node refutes the reopened target.
+
+ACCEPTANCE
+==========
+The requested outcome must occur after the cutoff; old findings cannot satisfy
+it. Check shared structural constraints and the selected outcome, then review
+whether the surrounding continuation makes it plausible. Do not require a fixed
+activity/evidence/decision chain or a fixed number of intermediate nodes.
+Outcome presence alone does not guarantee coherence or valid future domain text.
+Accept only a complete graph; failed candidates do not replace the current graph.

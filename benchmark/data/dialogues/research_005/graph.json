@@ -1,0 +1,747 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a stochastic subgrid closure that preserves energy budgets and transfers extreme-precipitation statistics across warming climates.",
+      "requirements": [
+        "Under held-out 4 K warming, reduce absolute 99th-percentile precipitation bias 20% versus a deterministic closure.",
+        "Keep global energy-budget residual below 0.5 W/m² without climate-specific retuning."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use a CAPE–humidity-conditioned, heavy-tailed stochastic convection closure, projecting sampled tendencies onto column energy and water budgets."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can sampled convective extremes reflect CAPE and humidity while satisfying column energy and water conservation?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "CAPE–humidity-conditioned Pareto draws with projection will reduce 4 K P99 bias ≥20% versus deterministic, maintaining global energy residual <0.5 W/m²."
+    },
+    {
+      "id": "pl1",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Fit Pareto parameters on 0/2 K data; project tendencies; compare held-out 4 K P99 against deterministic and audit energy residual."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "pl1",
+      "content": "Run ten-member held-out 4 K ensembles with frozen parameters; compare projected Pareto and deterministic P99 bias and global energy-budget residual."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "a1",
+      "content": "Held-out 4 K: projected P99 absolute bias was 7.8 versus deterministic 10.5 mm/day (26% reduction); energy residual 0.31 W/m²."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "pl1",
+      "content": "Ablate CAPE–humidity conditioning and budget projection separately in frozen-parameter 4 K ensembles; assess P99 bias and energy residual."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "a2",
+      "content": "Ablation controls exposed wet-year vulnerability: full closure’s global energy residual reached 0.62 W/m², despite its 0.31 W/m² ensemble mean."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "q1",
+      "content": "Globally coupled projection of CAPE–humidity Pareto heating and cloud-radiative tendencies should maintain ≥20% P99 gains and wet-year residuals <0.5 W/m²."
+    },
+    {
+      "id": "pl2",
+      "type": "plan",
+      "order": 11,
+      "exploration_parent_id": "h2",
+      "content": "Implement global heating–radiation projection calibrated at 0/2 K; rerun frozen-parameter 4 K ensembles, checking wet-year residuals and P99 bias."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "pl2",
+      "content": "Run ten-member frozen-parameter 4 K ensembles with globally coupled heating–radiation projection; score wet-year peak residual and absolute P99 bias."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "a3",
+      "content": "Globally coupled 4 K ensembles: absolute P99 bias was 8.0 versus deterministic 10.5 mm/day; peak wet-year residual was 0.38 W/m²."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "Adopt globally coupled projection: it retains P99 gains while resolving the original closure’s wet-year energy-budget breach without climate-specific retuning."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Train a Clausius–Clapeyron-normalized conditional flow for joint precipitation–radiation anomalies, enforcing energy and water conservation through flux-form sampling."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Can Clausius–Clapeyron normalization stabilize the conditional flow’s 4 K precipitation tail while flux-form sampling preserves energy and water budgets?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 17,
+      "exploration_parent_id": "q2",
+      "content": "Frozen 0/2 K Clausius–Clapeyron-normalized flux-form flow will cut 4 K P99 bias ≥20% versus deterministic; energy residual <0.5 W/m²."
+    },
+    {
+      "id": "pl3",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "h3",
+      "content": "Train the normalized flux-form flow at 0/2 K; freeze weights, then evaluate ten-member 4 K P99 bias and energy residual."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "pl3",
+      "content": "Run ten-member held-out 4 K ensembles using frozen normalized flux-form flow; compare P99 bias against deterministic and audit energy residual."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "a4",
+      "content": "Held-out 4 K: flow P99 bias 7.2 versus deterministic 10.5 mm/day (31% lower); global energy-budget residual 0.42 W/m²."
+    },
+    {
+      "id": "ar1",
+      "type": "artifact",
+      "order": 21,
+      "exploration_parent_id": "a4",
+      "content": "4K-FlowEval-v1 bundle contains ten-member P99 scores, deterministic baseline comparisons, global energy-budget audits, and reproducible run seeds."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 22,
+      "exploration_parent_id": "g1",
+      "content": "Use Markov-switching entraining plumes with saturation-humidity-scaled moisture supply and explicit column energy–water flux constraints."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p3",
+      "content": "Do Markov-switching plume regimes reproduce warming-sensitive P99 rainfall without violating column energy–water flux constraints?"
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "q3",
+      "content": "Fit switching plumes at 0/2 K; test frozen 4 K P99 bias versus deterministic, global energy and column water residuals."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "a5",
+      "content": "Frozen 4 K switching plumes yielded P99 bias 9.4 versus deterministic 10.5 mm/day; global energy residual reached 0.57 W/m²."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "q3",
+      "content": "Humidity-scaled transitions and global radiative projection should yield 4 K P99 bias ≤8.4 mm/day and energy residual <0.5 W/m²."
+    },
+    {
+      "id": "pl4",
+      "type": "plan",
+      "order": 27,
+      "exploration_parent_id": "h4",
+      "content": "Fit humidity-scaled transitions at 0/2 K, apply global radiative projection, then evaluate frozen 4 K P99 bias and energy residual."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "pl4",
+      "content": "Run frozen 4 K humidity-scaled switching plumes with global radiative projection; measure P99 bias and global energy residual."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "a6",
+      "content": "Revised switching plumes achieved 4 K P99 bias 8.2 versus deterministic 10.5 mm/day; global energy residual 0.44 W/m²."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 30,
+      "exploration_parent_id": "q3",
+      "content": "Retain humidity-scaled, radiatively projected plumes as an interpretable benchmark: revised runs meet both thresholds; original plumes failed both."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Sample humidity-conditioned Student-t-copula rain subcolumns, conservatively exchange enthalpy and water, and constrain radiative fluxes."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p4",
+      "content": "Can humidity-conditioned Student-t-copula subcolumns transfer 4 K P99 rainfall while conservative exchanges keep energy residual below 0.5 W/m²?"
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "q4",
+      "content": "Frozen 0/2 K Student-t-copula subcolumns will achieve 4 K P99 bias ≤8.4 mm/day and global energy residual <0.5 W/m²."
+    },
+    {
+      "id": "pl5",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "h5",
+      "content": "Fit humidity-conditioned copula on 0/2 K data; freeze parameters, then evaluate 4 K P99 bias, energy residual and radiative-flux closure."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "pl5",
+      "content": "Using 4K-FlowEval-v1 seeds and scoring, run frozen copula 4 K ensembles; measure P99 bias, energy residual, and radiative closure."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "a7",
+      "content": "Frozen copula at 4 K: P99 bias 8.1 versus deterministic 10.5 mm/day; global energy residual 0.46 W/m²."
+    },
+    {
+      "id": "ar2",
+      "type": "artifact",
+      "order": 37,
+      "exploration_parent_id": "a7",
+      "content": "Copula-4K-v1 report records seed-matched P99 scores, subcolumn enthalpy–water exchanges, and global radiative-flux closure diagnostics."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "pl5",
+      "content": "Audit Copula-4K-v1 flux logs; rerun wet-year 4 K seeds to check P99 bias and energy residual against reported values."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "a8",
+      "content": "Wet-year 4 K reruns showed P99 bias 8.3 mm/day and peak global energy residual 0.48 W/m²; subcolumn exchanges balanced."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "q4",
+      "content": "Retain copula subcolumns as a viable benchmark: seed-matched 4 K and wet-year audits meet P99 and energy thresholds."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Sample saturation-scaled gamma autoconversion rates and ice fall speeds, conserving column water and enthalpy with global radiative projection."
+    },
+    {
+      "id": "q5",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "p5",
+      "content": "Can saturation-scaled stochastic autoconversion and ice settling capture 4 K P99 rainfall without destabilizing energy and water budgets?"
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "q5",
+      "content": "Frozen 0/2 K gamma microphysics will yield 4 K P99 bias ≤8.4 mm/day and global energy residual <0.5 W/m²."
+    },
+    {
+      "id": "pl6",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "h6",
+      "content": "Calibrate gamma microphysics at 0/2 K; freeze parameters, then audit held-out 4 K P99 bias and energy–water budgets."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "pl6",
+      "content": "Using Copula-4K-v1 scores and flux diagnostics, run frozen gamma-microphysics 4 K ensembles; benchmark P99 bias and energy–water closure."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a9",
+      "content": "Frozen gamma microphysics at 4 K: P99 bias 8.0 versus deterministic 10.5 mm/day; energy residual 0.39 W/m²."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "q5",
+      "content": "Retain gamma microphysics as a viable candidate: held-out 4 K P99 and global energy residual both meet thresholds."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "pl1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "a2",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "refute",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "revise",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "pl2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "pl2",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "h2"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "pl3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "pl3",
+      "relation": "decompose",
+      "target": "a4"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "ar1"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "pl4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "pl4",
+      "relation": "decompose",
+      "target": "a6"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "pl5",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "pl5",
+      "relation": "decompose",
+      "target": "a7"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "ar1"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "ar2"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "pl5",
+      "relation": "decompose",
+      "target": "a8"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "pl6",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "pl6",
+      "relation": "decompose",
+      "target": "a9"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e9"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a stochastic subgrid closure that preserves energy budgets and transfers extreme-precipitation statistics across warming climates.",
+    "requirements": [
+      "Under held-out 4 K warming, reduce absolute 99th-percentile precipitation bias 20% versus a deterministic closure.",
+      "Keep global energy-budget residual below 0.5 W/m² without climate-specific retuning."
+    ]
+  }
+}

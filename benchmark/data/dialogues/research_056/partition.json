@@ -1,0 +1,116 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Test whether importance-weighted safety bounds remain useful under observation uncertainty, then examine hazard-invariant actions",
+      "boundary_reason": "The matched-ESS test supports hazard invariance; the next stage turns to benchmark returns and certificates."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Prepare Tiger-20 and SafeGrid-20 benchmark measurements and a policy-selection rule",
+      "boundary_reason": "The benchmark report and selection rule are specified; a separate confidence-set optimization approach follows."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Compare robust confidence-set optimization with hazard-invariant weighting on both benchmarks",
+      "boundary_reason": "The comparison ends in a selection decision; the next question seeks to remedy robust optimization’s return shortfall."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "p3",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Test occupancy-weighted ambiguity and assess whether baseline-risk slack permits reward-improving mixtures",
+      "boundary_reason": "Initial results support occupancy weighting but show that the proposed unsafe-candidate mixtures require larger fractions than their risk caps allow."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Test mixture feasibility on held-out and fresh seeds, including proposed component thresholds",
+      "boundary_reason": "Fresh trials expose a joint-confidence obstacle, prompting a revised certification condition."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Apply joint-95% gates to 30% candidate mixtures and make retention conditional on an audit",
+      "boundary_reason": "A conditional decision closes the mixture work; a distinct hazard-shield approach follows."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Evaluate belief-state hazard shields against the selected hazard-invariant weighting approach",
+      "boundary_reason": "Both approaches pass the benchmarks, and the comparison ends with a decision to retain weighting."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Evaluate localized action substitutions and select the resulting certified policies",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

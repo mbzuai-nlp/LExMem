@@ -1,0 +1,967 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn reward-improving policies in partially observed environments while certifying trajectory-level safety from finite offline data.",
+      "requirements": [
+        "Certify trajectory violation probability below 1% with 95% confidence under bounded observation-model uncertainty.",
+        "Exceed a supplied safe baseline’s positive expected return by 10% on specified benchmarks."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Optimize belief-state policies under observation-model ambiguity; require finite-sample 95%-confidence trajectory-risk upper bound <1% and return lower bound >1.1× baseline."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "At 0.05 total-variation observation ambiguity, do any belief-state policies satisfy both the risk and return certificates?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "On SafeTiger-POMDP, 100,000 episodes enable belief policies certified at 95% confidence for <1% risk and >1.1× baseline return under TV≤0.05."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Fit ambiguity-aware belief models on 100,000 SafeTiger-POMDP episodes, optimize covered policies, then compute simultaneous 95% risk and return bounds."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Evaluate SafeTiger-POMDP policies on 100,000 offline episodes; check TV≤0.05 worst-case 95% risk bounds <1% and return lower bounds >1.1× baseline."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "SafeTiger-POMDP, 100,000 offline episodes, TV≤0.05: simultaneous 95% trajectory-risk upper bound 0.82%; return lower bound 12.4 versus baseline 10.0."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Advance the ambiguity-aware belief policy to cross-benchmark validation: SafeTiger certificates clear both thresholds, but single-benchmark evidence cannot establish generality."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Validate RockSample-7×7 and SafeGrid-POMDP using 100,000 offline episodes each; require simultaneous 95%-confidence TV≤0.05 risk <1% and return >1.1× baseline."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Fit belief policies on 100,000 RockSample-7×7 and SafeGrid-POMDP episodes each; compute simultaneous 95% TV≤0.05 risk and return bounds."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "CrossBench-Cert v1 contains fitted RockSample-7×7 and SafeGrid-POMDP policies, dataset provenance, and simultaneous 95%-confidence TV≤0.05 risk/return bounds."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Audit CrossBench-Cert v1 provenance and simultaneous 95%-confidence bounds; verify TV≤0.05 risk <1% and return >1.1× baseline."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "CrossBench-Cert v1, simultaneous 95% TV≤0.05 bounds: RockSample risk≤0.76%, return≥11.3 versus 10; SafeGrid risk≤0.91%, return≥13.8 versus 12."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n1",
+      "content": "On SafeTiger-POMDP, clipped importance weighting retains simultaneous 95%-confidence certificates with 50,000 episodes: risk <1%, return >1.1× baseline under TV≤0.05."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Subsample 50,000 SafeTiger-POMDP episodes; compute clipping-bias-corrected, simultaneous 95% TV≤0.05 risk and return bounds using importance weights capped at 20."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "SafeTiger-POMDP, 50,000 episodes: capped-weight simultaneous 95% TV≤0.05 risk bound 1.24%; return lower bound 11.5 versus baseline 10."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p1",
+      "content": "Can coverage-constrained belief optimization lower SafeTiger’s 50,000-episode, 95%-confidence TV≤0.05 risk bound below 1% while retaining return >11.0?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Use CrossBench-Cert v1’s provenance to enforce cross-benchmark no-regression while optimizing 50,000-episode SafeTiger coverage; audit 95% TV≤0.05 risk/return bounds."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Mix offline candidates with the safe baseline; certify 95%-confidence worst-case trajectory risk under TV≤0.05 and cross-fitted return gains."
+    },
+    {
+      "id": "n17",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Cross-fit baseline mixtures on offline SafeTiger, RockSample-7×7, and SafeGrid-POMDP episodes; certify simultaneous 95% TV≤0.05 risk<1% and return>1.1×baseline."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Using CrossBench-Cert v1 policies and provenance, cross-fit safe-baseline mixture weights on RockSample and SafeGrid; calculate 95% TV≤0.05 certificates."
+    },
+    {
+      "id": "n19",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "MixtureCert v1 records cross-fitted RockSample-7×7 and SafeGrid-POMDP mixture weights, fold provenance, and simultaneous 95%-confidence TV≤0.05 risk/return bounds."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Do MixtureCert v1 mixtures lower RockSample/SafeGrid risk bounds below 0.76%/0.91% while preserving >10% certified return gains?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "MixtureCert v1 will achieve RockSample/SafeGrid 95%-confidence TV≤0.05 risk bounds <0.76%/<0.91% and return lower bounds >11/>13.2, respectively."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Audit MixtureCert v1 folds; compare simultaneous 95% TV≤0.05 bounds against RockSample/SafeGrid risk <0.76%/<0.91% and return >11/>13.2."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "MixtureCert v1 simultaneous 95% TV≤0.05 bounds: RockSample risk≤0.68%, return≥11.2; SafeGrid risk≤0.83%, return≥13.5 (baselines 10/12)."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Retain MixtureCert v1 for RockSample/SafeGrid: both risk bounds improve and return gains exceed 10%; test SafeTiger separately."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n17",
+      "content": "After MixtureCert retention, cross-fit SafeTiger mixtures on 50,000 episodes; compare with belief policies using simultaneous 95% TV≤0.05 certificates."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "SafeTiger mixtures (50,000 episodes): 95% TV≤0.05 risk≤0.88%, return≥11.2; selection-corrected p1 100,000-episode risk bound 1.17%, overturning 0.82%."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Across five independent SafeTiger 50,000-episode splits, coverage-constrained baseline–belief mixtures retain simultaneous 95%-confidence TV≤0.05 risk <1% and return >11.0."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Using MixtureCert v1’s fold protocol, refit SafeTiger mixtures across five independent 50,000-episode splits; verify simultaneous 95% TV≤0.05 risk<1%, return>11."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Across five SafeTiger 50,000-episode splits, simultaneous 95% TV≤0.05 certificates give worst risk≤0.96% and minimum return≥11.1 (baseline 10)."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p2",
+      "content": "Can SafeTiger baseline mixtures retain risk<1% and return>11 with 95% confidence when observation-model TV ambiguity increases to 0.06?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "With TV≤0.06 ambiguity, SafeTiger mixtures trained on 50,000 episodes still certify 95%-confidence trajectory risk<1% and return>11."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Recalculate SafeTiger baseline-mixture bounds using MixtureCert v1 folds and n29’s five splits at TV≤0.06; test simultaneous 95% risk<1%, return>11."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "SafeTiger: corrected TV≤0.06 mixtures certify risk≤0.97%, return≥11.1; p2’s original cross-fit bounds show only 91% calibration coverage."
+    },
+    {
+      "id": "n34",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Retain SafeTiger mixtures provisionally, but replace undercovered original intervals with corrected bounds and require independent 95%-coverage validation."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Use nested holdouts to calibrate selection-adjusted, bounded-weight off-policy risk/return bounds for baseline-anchored policies under TV≤0.06 observation ambiguity."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "Can nested holdouts restore ≥95% empirical certificate coverage while SafeTiger mixtures retain risk<1% and return>11 under TV≤0.06?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Across 200 SafeTiger 50,000-episode replicates, nested holdouts achieve ≥95% joint coverage; ≥80% certify TV≤0.06 risk<1%, return>11."
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "After provisional retention, run 200 SafeTiger 50,000-episode replicates; test nested-holdout joint coverage≥95% and risk/return certification≥80% at TV≤0.06."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Reuse MixtureCert v1’s fold protocol across 200 independent SafeTiger 50,000-episode replicates; measure nested-holdout joint coverage and TV≤0.06 certification rates."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "MixtureCert v2 replaces v1’s undercovered intervals with nested-holdout certificates and records 200-replicate joint coverage and certification rates."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n37",
+      "content": "Audit MixtureCert v2 on 200 SafeTiger replicates: verify ≥95% simulator-truth coverage and ≥80% TV≤0.06 risk<1%, return>11 certification."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "MixtureCert v2: 192/200 SafeTiger replicates achieved joint coverage; 164/200 certified TV≤0.06 risk<1% and return>11."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p3",
+      "content": "Will MixtureCert v2 maintain ≥95% joint coverage and certify risk<1%, return>1.1×baseline on RockSample-7×7 and SafeGrid-POMDP at TV≤0.06?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Across 200 replicates per benchmark, MixtureCert v2 achieves ≥95% joint coverage and ≥80% certification on RockSample/SafeGrid at TV≤0.06."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Run 200 independent 100,000-episode replicates each for RockSample and SafeGrid; audit v2 joint coverage and TV≤0.06 certification rates."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Test MixtureCert v2 on 200 independent 100,000-episode RockSample/SafeGrid replicates each; measure joint coverage and TV≤0.06 risk<1%, return>1.1×baseline certification."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "RockSample/SafeGrid joint coverage 192/200, 191/200; certification 166/200, 164/200; SafeGrid TV=0.06 boundary coverage 26/30 exposes nonuniform calibration."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Withhold TV≤0.06 cross-benchmark certification: aggregate coverage passes, but SafeGrid boundary coverage (26/30) requires targeted recalibration."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Recalibrate SafeGrid at TV=0.06 using boundary-stratified holdouts; independently test 200 replicates per benchmark for coverage≥95%, risk<1%, return>1.1×baseline."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "Modify MixtureCert v2 with SafeGrid TV=0.06 boundary-stratified holdouts; evaluate joint coverage and risk/return certificates on 200 new replicates."
+    },
+    {
+      "id": "n50",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "MixtureCert v3 replaces v2’s SafeGrid calibration with TV=0.06 boundary-stratified holdouts and records 200-replicate coverage and certificates."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Independently audit MixtureCert v3 on 200 new replicates per benchmark; check ≥95% joint and boundary coverage, risk<1%, return>1.1×baseline at TV≤0.06."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n51",
+      "content": "MixtureCert v3: RockSample/SafeGrid joint coverage 192/200, 193/200; risk/return certification 162/200, 161/200; SafeGrid TV=0.06 boundary coverage 39/40."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "Lift the TV≤0.06 hold for v3-certified policies: SafeGrid boundary coverage reaches 39/40, and both benchmarks exceed 80% certification."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n17",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n17",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n51"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "revise",
+      "target": "n39"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn reward-improving policies in partially observed environments while certifying trajectory-level safety from finite offline data.",
+    "requirements": [
+      "Certify trajectory violation probability below 1% with 95% confidence under bounded observation-model uncertainty.",
+      "Exceed a supplied safe baseline’s positive expected return by 10% on specified benchmarks."
+    ]
+  }
+}

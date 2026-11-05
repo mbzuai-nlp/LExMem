@@ -1,0 +1,944 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Generate synchronized audio from silent video while distinguishing visually determined sound events from acoustically ambiguous alternatives.",
+      "requirements": [
+        "Reduce visible-event audio onset error by 20% versus an equally sized deterministic video-to-audio baseline.",
+        "Cover 90% of reference-supported sound alternatives across samples, with visually contradicted events below 5%."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train event-anchored audio diffusion with frame-level onset supervision and uncertainty-conditioned sampling gated against visually contradicted events."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can sampling preserve frame-accurate visible-event onsets while exploring plausible sounds without generating visually contradicted events?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Event-anchored, uncertainty-sampled, visually gated diffusion yields ≥20% lower onset MAE than deterministic audio, ≥90% alternative recall, and <5% visual contradictions."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Annotate multi-reference clips; train uncertainty-conditioned, event-anchored diffusion with visual gating; compare onset MAE, alternative recall, contradiction rate against matched baseline."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Annotate 1,200 SilentSound-MR clips with visible-event onset frames, reference-supported sound alternatives, and visually contradicted event labels."
+    },
+    {
+      "id": "n5",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "SilentSound-MR v1: 1,200 clips with frame-indexed event onsets, reference-supported sound alternatives, and visually contradicted event labels."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Audit SilentSound-MR v1 labels; train matched-size diffusion and deterministic models; measure held-out onset MAE, alternative recall, and contradiction rate."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "On SilentSound-MR v1, onset MAE improved 24% versus the deterministic baseline, but alternative recall was 78% and contradictions 8%."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Onset-locked event stems with stratified sound sampling and visual-consistency reranking should reach ≥90% alternative recall and <5% contradictions."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On held-out SilentSound-MR v1, ablate onset-locked stems, stratified sampling, and visual reranking; measure onset MAE, alternative recall, and contradictions."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "On SilentSound-MR v1, revised sampling achieved 92% alternative recall, 3.8% contradictions, and 23% lower onset MAE than the deterministic baseline."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Adopt revised sampling: 92% recall and 3.8% contradictions correct the initial 78%/8% failures while preserving 23% onset-MAE improvement."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n3",
+      "content": "Evaluate leave-one-event-category-out SilentSound-MR v1 splits, comparing revised event-anchored diffusion against matched deterministic baseline on onset MAE, alternative recall, contradiction rate."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Across leave-one-category-out splits, event-anchored diffusion lowered onset MAE 21% versus baseline, with 90% alternative recall and 4.6% contradictions."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Can visual gating reject implausible impacts without suppressing reference-supported off-screen sounds in occluded SilentSound-MR clips?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Use optical-contact tracks for onset-constrained audio retrieval, sampling multiple sound libraries while rejecting candidates contradicted by visible motion."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Extract optical-contact tracks, retrieve diverse library sounds, align candidate transients, filter visual contradictions, and benchmark against deterministic baseline on SilentSound-MR."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Benchmark optical-contact retrieval against event-anchored diffusion and the deterministic baseline on SilentSound-MR v1, measuring onset MAE, alternative recall, and contradictions."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On SilentSound-MR v1, optical-contact retrieval cut onset MAE 22% versus baseline, but achieved 74% alternative recall and 6.2% contradictions."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Are limited sound-library coverage and motion-only filtering responsible for retrieval’s 74% alternative recall and 6.2% visual contradictions?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Library expansion should raise alternative recall from 74% to ≥90%; semantic visual filtering should lower contradictions from 6.2% to <5%."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Ablate library expansion and semantic filtering on SilentSound-MR v1, measuring alternative recall, contradictions, and off-screen retention in occluded clips."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "On SilentSound-MR v1, expanded-library retrieval with semantic filtering achieved 91% alternative recall, 4.2% contradictions, and 88% off-screen retention."
+    },
+    {
+      "id": "n22",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Reconsider optical-contact retrieval after its failed initial benchmark: library expansion and semantic filtering now achieve 91% recall and 4.2% contradictions."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n15",
+      "content": "Run leave-one-category-out tests of revived retrieval against diffusion and deterministic baseline, including occluded events; report onset MAE and coverage errors."
+    },
+    {
+      "id": "n24",
+      "type": "artifact",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "SilentSound-MR benchmark report: leave-one-category-out and occlusion results comparing revived retrieval, diffusion, and deterministic baseline across onset MAE, recall, and contradictions."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Recompute the benchmark report’s category and occlusion metrics from archived predictions, auditing split leakage and baseline parameter parity."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Leakage-free category splits: revived retrieval reduced onset MAE 21% versus matched baseline, with 90% alternative recall and 4.7% contradictions."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Select diffusion over revived retrieval: both meet targets, but diffusion has fewer contradictions (4.6% versus 4.7%)."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Use a causal event graph to lock visible onsets, branch over ambiguous sound sources, and synthesize visually consistent audio."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Can causal event edges reject incompatible sound-source combinations without pruning supported alternatives or shifting locked impact onsets?"
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "On SilentSound-MR v1, compare causal graph synthesis, edgeless branching, and deterministic baseline using alternative recall, contradiction rate, onset MAE."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "On SilentSound-MR v1, causal graph synthesis achieved 89% alternative recall, 3.5% contradictions, and 22% lower onset MAE versus baseline."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Softening low-confidence causal edges should raise alternative recall from 89% to ≥90% while retaining <5% contradictions and ≥20% onset-MAE reduction."
+    },
+    {
+      "id": "n32",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Calibrate causal-edge confidence on SilentSound-MR v1 training clips; soften uncertain exclusions, then benchmark held-out recall, contradictions, and onset MAE."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Use benchmark report category failures to prioritize soft-edge calibration on training clips; test held-out recall, contradictions, and onset MAE."
+    },
+    {
+      "id": "n34",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "SoftEdgeGraph v1: calibrated causal-edge weights, category-specific exclusion thresholds, and held-out recall, contradiction, and onset-MAE evaluation logs."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Re-run SoftEdgeGraph v1 held-out evaluation against hard-edge graph and deterministic baseline; audit thresholds, alternative recall, contradictions, and onset MAE."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Held-out SoftEdgeGraph v1 achieved 91% alternative recall, 4.1% contradictions, and 21% lower onset MAE than deterministic baseline."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Prioritize SoftEdgeGraph for matched-split comparison: it reports 91% recall and 4.1% contradictions versus retrieval’s 90% and 4.7%."
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n28",
+      "content": "Occlusion-aware causal edges should halve incompatible source pairings versus edgeless branching while maintaining ≥90% alternative recall and ≥20% onset-MAE reduction."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Benchmark occlusion-aware SoftEdgeGraph, edgeless branching, revised diffusion, and deterministic baseline on occluded clips: incompatible pairings, recall, contradictions, onset MAE."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Occluded clips: graph recall fell to 86%; diffusion achieved 91% recall, 3.9% contradictions, and 22% lower onset MAE versus baseline."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 45,
+      "exploration_parent_id": "g1",
+      "content": "Train a frame-aligned audio-token transformer with event-boundary heads and diverse nucleus decoding, rejecting visually incompatible token sequences."
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Boundary-supervised audio tokens with diverse decoding should achieve ≥20% lower onset MAE, ≥90% alternative recall, and <5% contradictions."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Using SoftEdgeGraph v1 exclusion thresholds, benchmark the boundary-supervised token transformer against the deterministic baseline: onset MAE, alternative recall, contradictions."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "On SilentSound-MR v1, the token transformer reduced onset MAE 20% versus baseline, with 90% alternative recall and 4.9% contradictions."
+    },
+    {
+      "id": "n44",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Keep diffusion primary; prefer SoftEdgeGraph over token transformer: recall 91% versus 90%, contradictions 4.1% versus 4.9%."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Validate diffusion against SoftEdgeGraph on independent occluded clips; release only if onset MAE, alternative recall, and contradiction targets hold."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Evaluate frozen diffusion and SoftEdgeGraph on 300 independent occluded clips against a matched deterministic baseline, scoring onset MAE, recall, contradictions."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "SoftEdgeGraph v2 replaces v1’s held-out-only logs with 300-clip independent occlusion onset-MAE, recall, and contradiction comparisons against frozen diffusion."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n45",
+      "content": "Audit SoftEdgeGraph v2’s 300 occluded clips; rerun causal-graph and token-transformer predictions against diffusion on onset MAE, recall, contradictions."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "On 300 independent occluded clips, token transformer achieved 90% alternative recall, 4.8% contradictions, and 21% lower onset MAE versus baseline."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Retain diffusion as primary; reopen the SoftEdgeGraph-versus-transformer choice for occlusions, since independent transformer results meet all targets."
+    },
+    {
+      "id": "n51",
+      "type": "question",
+      "order": 56,
+      "exploration_parent_id": "p4",
+      "content": "Do event-boundary heads prevent onset drift during overlapping occluded impacts while nucleus decoding preserves supported sound alternatives?"
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Identify overlapping impacts in SoftEdgeGraph v2’s 300 clips; ablate boundary heads and nucleus decoding; measure onset drift and alternative recall."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Ablations exposed per-event macro-averages across 300 clips: the full transformer improved onset MAE 17% versus baseline; alternative recall was 87%."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "revive",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "revise",
+      "target": "n34"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "refute",
+      "target": "n41"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Generate synchronized audio from silent video while distinguishing visually determined sound events from acoustically ambiguous alternatives.",
+    "requirements": [
+      "Reduce visible-event audio onset error by 20% versus an equally sized deterministic video-to-audio baseline.",
+      "Cover 90% of reference-supported sound alternatives across samples, with visually contradicted events below 5%."
+    ]
+  }
+}

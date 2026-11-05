@@ -1,0 +1,28 @@
+Generate ONE concise, technically challenging seed task for sustained exploration and discussion.
+
+INPUT
+Task type: {task_type}
+Topic hint: {topic}
+
+SCENARIOS
+- research_idea_exploration: choose a specific research problem in NLP, computer vision, computational biology, machine learning, multimodal learning, speech, robotics, or a related field.
+- software_development: choose a difficult software design problem in distributed systems, databases, compilers, programming languages, storage, networking, security, developer tools, or ML infrastructure.
+
+Use the supplied task type. Treat the topic as a domain hint, not a ready-made task. If it is "auto", choose a field freely from the relevant scenario. The field lists are illustrative, not exhaustive.
+
+DIFFICULTY AND EXPLORATION
+Choose a problem with substantial technical depth; avoid shallow tasks and routine implementation exercises.
+
+Choose a concrete problem with meaningful unresolved questions, providing enough depth for sustained exploration and refinement. Avoid tasks readily resolved by a single factual answer, a standard recipe, or routine implementation. The exploration should come from substantive technical questions, not repeated explanation of the same issue. For research, center the task on a specific capability gap, unresolved technical question, or tension between desirable properties. For software design, center it on interacting architectural requirements or competing system guarantees that require careful design and validation.
+
+Make the difficulty apparent in the objective itself. Avoid generic application goals, routine feature implementation, and difficulty created only by larger workloads, stricter numerical targets, or longer descriptions. Keep the task focused rather than combining unrelated problems. Do not claim that a synthetic task is an established open problem.
+
+State the objective and success criteria only. Leave solutions, experiments, discoveries, revisions, and eventual outcomes to later graph nodes. Do not prescribe an evolution trajectory.
+
+OUTPUT
+Return only valid JSON with exactly these fields:
+- "task_type": copy the supplied type; use only research_idea_exploration or software_development.
+- "task_description": one sentence stating the concrete objective, at most 20 English words.
+- "requirements": 1–2 meaningful, jointly plausible acceptance conditions, each at most 15 English words.
+
+Include at least one numerical target with a clear metric and a brief comparator when needed. Numerical targets evaluate success; they must not be the task's sole source of difficulty. Write in English. Invented details are synthetic assumptions. No solutions, results, extra fields, or Markdown.

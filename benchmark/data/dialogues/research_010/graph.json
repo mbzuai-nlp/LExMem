@@ -1,0 +1,779 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop domain-generalization methods that distinguish transferable predictive features from spurious features without source-domain annotations or target-domain data.",
+      "requirements": [
+        "Achieve ≥5 percentage points higher worst-domain accuracy than ERM under unseen combinations of spurious correlations.",
+        "Keep average source-domain accuracy within one percentage point of ERM while preserving genuinely predictive features."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train SwapAnchor by exchanging inferred nuisance codes across labels, enforcing counterfactual consistency, and distilling ERM on original examples."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can SwapAnchor infer exchangeable nuisance codes without stripping predictive structure when spurious cues co-occur with genuine features?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Within-class residual clustering after supervised bottlenecking isolates exchangeable nuisance codes; ERM distillation limits source-accuracy loss to ≤1 point."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Fit a supervised bottleneck, cluster within-class residuals, swap codes across labels, then audit causal-feature retention and source accuracy on ColorShape-Mix."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Train SwapAnchor using four within-class residual clusters, cross-label nuisance swaps, and ERM distillation; score source and unseen ColorShape-Mix combinations."
+    },
+    {
+      "id": "n5",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ColorShape-Mix v1 report contains SwapAnchor and ERM checkpoints, inferred nuisance-cluster assignments, causal-feature probes, and source/unseen accuracy tables."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Using ColorShape-Mix v1 checkpoints, ablate residual clustering and distillation; measure nuisance-code purity, causal-probe retention, and source-accuracy gap versus ERM."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "On ColorShape-Mix v1, distilled SwapAnchor lost 2.8 source-accuracy points versus ERM; without distillation, it lost 5.1."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n6",
+      "content": "Using ColorShape-Mix v1 checkpoints, swap individual residual clusters across labels to identify shape-information leakage and causal-probe failures."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Two residual clusters had 91% color purity and ≤0.5-point shape-probe loss under swaps; the others leaked shape."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "n6",
+      "content": "Can source-only intervention tests identify safe residual clusters without shape labels and reduce SwapAnchor’s 2.8-point source-accuracy deficit?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 13,
+      "exploration_parent_id": "g1",
+      "content": "GateSwap filters residual swaps by self-supervised instance-neighbor stability, retaining ERM distillation and targeting ≤1-point source-accuracy loss versus ERM."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "p2",
+      "content": "Rank residual clusters by source-only instance-neighbor stability under swaps; gate interventions, then compare GateSwap source accuracy against SwapAnchor and ERM."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n11",
+      "content": "Sweep source-only GateSwap stability thresholds; compare selected clusters with ColorShape-Mix leakage audit and source-accuracy loss with SwapAnchor’s 2.8-point deficit."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "On ColorShape-Mix v1, GateSwap’s 0.9 stability gate isolated color-pure clusters, reducing source-accuracy loss from 2.8 to 0.7 points."
+    },
+    {
+      "id": "n14",
+      "type": "decision",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Advance GateSwap’s 0.9 stability gate to unseen-correlation testing because it selected color-pure clusters with only 0.7-point source-accuracy loss."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "CrossRisk clusters class-conditional residual gradients into pseudo-domains, optimizes worst-cluster risk, and anchors source predictions to ERM."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "p3",
+      "content": "Do residual-gradient pseudo-domains capture distinct spurious-correlation combinations, or merely partition examples by difficulty?"
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n15",
+      "content": "Residual-gradient clusters will recover evaluation-only color–background combinations (AMI ≥0.30), outperforming loss-matched difficulty bins (AMI ≤0.10) on ColorShape-Mix v1."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n16",
+      "content": "Fit class-conditional residual-gradient clusters and loss-matched difficulty bins on ColorShape-Mix v1; compare evaluation-only color–background AMI."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n17",
+      "content": "On ColorShape-Mix v1, residual-gradient clusters achieved color–background AMI 0.08, nearly matching difficulty bins at 0.06."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 23,
+      "exploration_parent_id": "n16",
+      "content": "Audit gradient-cluster loss distributions, residualize gradients against difficulty, then compare color–background AMI with loss-matched bins."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n19",
+      "content": "Given 0.08 AMI baseline, regress gradient vectors on per-example loss, recluster residuals, and recompute color–background AMI against difficulty bins."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n20",
+      "content": "Original clusters’ class-conditional AMI was 0.34 versus difficulty bins’ 0.07, resolving n18’s pooled-label artifact; loss-residualized clusters scored 0.36."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "n19",
+      "content": "Does worst-cluster training on loss-residualized pseudo-domains improve unseen-combination accuracy without erasing shape features or exceeding one-point source loss?"
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "CrossRisk-Guard minimizes worst loss-residualized cluster risk subject to ≤1-point ERM source-accuracy loss and ≥95% instance-neighbor retention."
+    },
+    {
+      "id": "n23",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "p4",
+      "content": "Train CrossRisk-Guard with source-only constraints, then report unseen-combination worst-domain accuracy, source gap, and shape-probe retention versus ERM."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n23",
+      "content": "Given pooled AMI 0.08 and residualized class-conditional AMI 0.36, train CrossRisk-Guard; measure unseen worst-domain accuracy, source gap, shape retention."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n24",
+      "content": "On ColorShape-Mix v1, CrossRisk-Guard raised unseen worst-domain accuracy 61.8%→68.1%, with 0.8-point source loss, 96% neighbor and 97% shape-probe retention."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "n24",
+      "content": "Does CrossRisk-Guard’s worst-cluster objective overfit pseudo-domains containing fewer than 5% of source examples?"
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n26",
+      "content": "Excluding pseudo-domains below 5% source prevalence improves unseen worst-domain accuracy by ≥2 points without exceeding one-point source loss."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "n27",
+      "content": "Sweep CrossRisk-Guard pseudo-domain minimum prevalence from 0% to 10%; compare unseen worst-domain accuracy and source gap across seeds."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n28",
+      "content": "Against CrossRisk-Guard’s 68.1% baseline, sweep 0%, 2%, 5%, 10% prevalence floors over five seeds; assess worst-domain accuracy and source loss."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "Five-seed reruns: 5% floor raised worst-domain accuracy 68.1%→70.4%, with 0.9-point source loss; baseline CrossRisk-Guard lost 1.3 points."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n28",
+      "content": "Pair seeds across baseline and 5%-floor reruns, reconciling 0.8/1.3-point source gaps and testing ≥2-point worst-domain gains and ≤1-point source loss."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "Seed-paired analysis found only a 1.4-point worst-domain gain, versus 2.3 unpaired; the 5% floor retained 0.9-point source loss."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "n28",
+      "content": "Which rare pseudo-domains carry transferable shape cues that a fixed prevalence floor would discard?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n33",
+      "content": "Sub-5% clusters with ≥95% neighbor stability preserve shape cues; reliability-weighted risk improves worst-domain accuracy ≥2 points over 5% filtering."
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Audit sub-5% clusters with shape probes; weight risks using source-only neighbor stability, then compare paired-seed accuracy against 5% filtering."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "Audit sub-5% clusters’ shape-probe retention; compare stability-weighted risk, 5%-floor, and CrossRisk-Guard across paired seeds on worst-domain accuracy and source loss."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "On ColorShape-Mix v2, paired 5%-floor gained 2.2 worst-domain points versus unfiltered at 0.9-point source loss; stability-weighting trailed filtering."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n35",
+      "content": "Reconcile v1 unpaired/paired and v2 paired results by probing sub-5% cluster stability, shape retention, and weighted-versus-filtered worst-domain accuracy."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "On v1, ≥95%-stable sub-5% clusters retained 98% shape-probe accuracy; stability-weighted risk beat 5%-floor by 2.1 worst-domain points, unlike v2."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "n34",
+      "content": "Why does stability-weighted risk outperform 5% filtering on ColorShape-Mix v1 but trail it on v2?"
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Compare v1/v2 sub-5% cluster composition, neighbor stability, shape-probe retention, and per-cluster contributions to worst-domain errors."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Ablate ≥95%-stable sub-5% clusters separately on v1/v2, comparing shape-probe retention and worst-domain errors against 5%-floor baselines."
+    },
+    {
+      "id": "n43",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "v1/v2 cluster-ablation ledger records sub-5% prevalence, neighbor stability, shape-probe retention, and worst-domain error changes versus 5%-floor baselines."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n14"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop domain-generalization methods that distinguish transferable predictive features from spurious features without source-domain annotations or target-domain data.",
+    "requirements": [
+      "Achieve ≥5 percentage points higher worst-domain accuracy than ERM under unseen combinations of spurious correlations.",
+      "Keep average source-domain accuracy within one percentage point of ERM while preserving genuinely predictive features."
+    ]
+  }
+}

@@ -1,0 +1,796 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a learned large-eddy closure reconciling local energy backscatter with long-horizon stability across unseen Reynolds numbers.",
+      "requirements": [
+        "Reduce kinetic-energy spectrum error by 20% versus dynamic Smagorinsky on held-out Reynolds numbers.",
+        "Maintain bounded kinetic energy for 100 eddy-turnover times without suppressing all local backscatter."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a Galilean-invariant neural SGS stress with spectrum and rollout losses, plus energy-dependent net-dissipation projection preserving local backscatter."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can the net-dissipation projection bound kinetic energy for 100 eddy-turnover times at unseen Reynolds numbers while retaining local backscatter?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Enforcing net SGS dissipation ≥ forcing power above 1.5× training-set mean energy bounds 100-turnover energy while preserving local backscatter."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Train projected/unprojected closures at Reλ=80,120; test Reλ=160,200 over 100 turnovers, comparing energy maxima, backscatter frequency, and spectral error."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run 100-turnover LES at Reλ=160,200 with projected and unprojected closures; measure energy exceedances, local backscatter frequency, and spectral error."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "At Reλ=160,200, projected energy stayed below 1.5× training mean for 100 turnovers; 12% of cells backscattered."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Ablate the 1.5× energy trigger and forcing-power dissipation floor at Reλ=160,200; compare 100-turnover energy peaks and backscatter fractions."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "At Reλ=200, projected backscatter fell to 0% during the final 30 turnovers; removing the floor retained 15%."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Restricting dissipation corrections to forward-transfer cells should sustain ≥10% backscatter while keeping energy ≤1.5× training mean for 100 turnovers."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Implement forward-transfer-only projection; rerun Reλ=160,200 for 100 turnovers, tracking energy, backscatter frequency, and spectra versus dynamic Smagorinsky."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Implement forward-transfer-only projection; run Reλ=160,200 LES for 100 turnovers, logging peak energy, backscatter fraction, and Smagorinsky-relative spectral error."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "At Reλ=160,200, 100-turnover peak energy stayed ≤1.47× training mean, backscatter ≥11%, and log-spectrum RMSE fell 25% versus dynamic Smagorinsky."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Stress-test forward-transfer-only projection across five forcing seeds at Reλ=200, recording 100-turnover peak energy and minimum 10-turnover backscatter fraction."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "At Reλ=200, forcing seed 4 reached 1.68× training-mean energy by turnover 86, despite 12% backscatter."
+    },
+    {
+      "id": "n16",
+      "type": "decision",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Keep forward-transfer-only projection as a candidate for its 25% spectral gain, but defer acceptance after seed-4's 1.68× energy excursion."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Train a neural SGS stress that budgets local backscatter using stored dissipation credits and adapts payouts to forcing."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Can dissipation-credit accounting prevent seed-dependent energy excursions without throttling backscatter enough to erase spectral gains at held-out Reynolds numbers?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "A 5-turnover dissipation-credit window with forcing-adjusted payouts will cap energy at 1.5× training mean while preserving ≥10% backscatter."
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Test five-turnover credit closure across five Reλ=160,200 seeds for 100 turnovers; measure peak energy, backscatter, Smagorinsky-relative spectral RMSE."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Implement forcing-adjusted, five-turnover credit payouts; run five Reλ=160,200 seeds for 100 turnovers, recording energy peaks, backscatter, spectral RMSE."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Across five Reλ=160,200 seeds over 100 turnovers: peak energy ≤1.42× training mean; backscatter ≥11%; spectral RMSE 23% below dynamic Smagorinsky."
+    },
+    {
+      "id": "n23",
+      "type": "artifact",
+      "order": 23,
+      "exploration_parent_id": "n21",
+      "content": "CreditLES-v1 release: trained SGS weights, five-turnover credit ledger implementation, Reλ=160/200 rollout logs, and spectral-RMSE evaluation scripts."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Adopt CreditLES-v1, with released weights and scripts, for 23% lower spectral RMSE, bounded 100-turnover energy, and ≥11% backscatter."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Train a shell-conditioned, globally energy-neutral SGS transfer stress atop positive eddy viscosity to permit local backscatter without net injection."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Can energy-neutral shell transfers correct inertial-range spectral bias at held-out Reynolds numbers while retaining local backscatter?"
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Train energy-neutral shell transfers at Reλ=80,120; evaluate 100-turnover Reλ=160,200 spectra, energy, backscatter against dynamic Smagorinsky and CreditLES-v1."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Train energy-neutral shell-transfer stress at Reλ=80,120; run 100-turnover Reλ=160,200 LES, measuring spectral RMSE, energy peaks, and backscatter."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "At Reλ=160,200, shell transfers reduced log-spectrum RMSE only 9% versus dynamic Smagorinsky, despite 11% local backscatter."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n27",
+      "content": "Compute shell-resolved SGS flux and spectral-error contributions at Reλ=160,200 versus filtered DNS and CreditLES-v1."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "At Reλ=160,200, inertial-shell log-spectrum RMSE fell 24% versus dynamic Smagorinsky; near-cutoff errors limited the overall gain."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Defer shell-transfer closure as standalone: 24% inertial-shell improvement cannot offset near-cutoff errors, leaving only 9% overall spectral gain."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Augment CreditLES-v1 with energy-neutral inertial-shell transfers while retaining its dissipation-credit ledger to control long-horizon energy."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p4",
+      "content": "Do inertial-shell transfers improve CreditLES-v1 spectral RMSE without disrupting its credit ledger or reducing local backscatter?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Adding energy-neutral inertial-shell transfers to CreditLES-v1 reduces held-out spectral RMSE ≥5% while preserving ≤1.5× energy and ≥10% backscatter."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Integrate shell transfers into CreditLES-v1; compare five-seed Reλ=160,200 100-turnover spectra, peak energy, and backscatter against unmodified CreditLES-v1."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Run five-seed Reλ=160,200 100-turnover LES with shell-augmented CreditLES-v1; compare spectral RMSE, peak energy, backscatter to baseline."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Across five Reλ=160,200 seeds, shell augmentation lowered log-spectrum RMSE 7% versus CreditLES-v1; 100-turnover peak energy was 1.44× mean, backscatter ≥11%."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 39,
+      "exploration_parent_id": "n37",
+      "content": "CreditLES-Shell-v2 package: augmented weights, energy-neutral shell-transfer module, five-seed Reλ=160/200 rollouts, and spectral-RMSE comparison scripts."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n36",
+      "content": "Reproduce CreditLES-Shell-v2 package rollouts at Reλ=160,200; audit 100-turnover shell neutrality, ledger balance, backscatter, and CreditLES-v1-relative spectral RMSE."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Reλ=160,200 replay confirmed neutral transfers, nonnegative credits, ≤1.44× peak energy, ≥11% backscatter, and 7% lower RMSE versus CreditLES-v1."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "p4",
+      "content": "Under abrupt forcing changes, can CreditLES-Shell-v2 preserve nonnegative credits and bounded energy without losing local backscatter?"
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "At Reλ=200, double forcing for turnovers 40–50 across five seeds; track 100-turnover peak energy, minimum credits, and backscatter."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Run packaged CreditLES-Shell-v2 across five Reλ=200 seeds, doubling forcing during turnovers 40–50; log 100-turnover energy peaks, credit minima, backscatter."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Under doubled forcing, Reλ=200 seed 3 peaked at 1.73× training-mean energy; credits hit zero despite 11% backscatter."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n43",
+      "content": "Re-run depleted-credit Reλ=200 seed 3 with both closures under doubled forcing; compare spectral RMSE, peak energy, and backscatter."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Before the forcing pulse, seed 3 showed 7% lower spectral RMSE versus CreditLES-v1, ≤1.44× energy, and 11% backscatter."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "p4",
+      "content": "Conditionally adopt CreditLES-Shell-v2 for steady forcing after replicated 7% spectral gains and 11% backscatter; defer pulse deployment after 1.73× excursion."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Select CreditLES-v1 for tested steady forcing; conditionally use Shell-v2 there, shelving standalone shells and seed-unstable projection."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a learned large-eddy closure reconciling local energy backscatter with long-horizon stability across unseen Reynolds numbers.",
+    "requirements": [
+      "Reduce kinetic-energy spectrum error by 20% versus dynamic Smagorinsky on held-out Reynolds numbers.",
+      "Maintain bounded kinetic energy for 100 eddy-turnover times without suppressing all local backscatter."
+    ]
+  }
+}

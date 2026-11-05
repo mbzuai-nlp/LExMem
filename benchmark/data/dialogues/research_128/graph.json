@@ -1,0 +1,1139 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop visual question answering that responds to causally relevant image changes while remaining invariant to distractors under compositional shift.",
+      "requirements": [
+        "Answer both original and answer-changing counterfactual images correctly on at least 80% of fixed-question pairs.",
+        "Limit answer changes under irrelevant visual edits to 5% on unseen object–attribute combinations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train question-grounded object-slot VQA with paired counterfactual losses enforcing answer flips for relevant edits and invariance for distractor edits."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can paired counterfactual training keep object-slot attention on the queried object when unfamiliar attribute combinations make distractors salient?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Paired counterfactual losses will maintain ≥75% attention on the queried-object slot and ≤5% distractor-induced answer flips on unseen object–attribute combinations."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Build CompoCF splits with unseen object–attribute pairings; train slot VQA, then measure queried-slot attention, pair accuracy, and distractor-flip rate."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Train paired-loss slot VQA on CompoCF, then score queried-slot attention, distractor-flip rate, and pair accuracy on held-out combinations."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On CompoCF held-out combinations, paired-loss slot VQA achieved 79% queried-slot attention, 3.8% distractor flips, and 83% counterfactual-pair accuracy."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Retain paired-loss slot VQA as the lead method: 83% counterfactual-pair accuracy and 3.8% distractor flips clear both targets."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Freeze retained paired-loss slot VQA; run blinded CompoCF-v2 evaluation of answer-changing pairs and irrelevant edits on new combinations."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "CompoCF-v2 evaluation package containing the frozen checkpoint, held-out split manifests, pairwise correctness, and distractor-flip tables."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 11,
+      "exploration_parent_id": "p1",
+      "content": "Can paired counterfactual losses prevent reliance on edit-generator artifacts that correlate with answer changes?"
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Test frozen paired-loss slot VQA on CompoCF-v2 cross-generator edits and artifact-only shams; measure pair accuracy and sham-flip rate."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "On CompoCF-v2 cross-generator edits, frozen paired-loss slot VQA reached 68% pair accuracy and 12% artifact-only sham flips."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Train artifact-balanced slot VQA with multi-generator edits, matched artifact-only shams, and object-mask consistency to suppress edit shortcuts."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Balance CompoCF-v2 edits against artifact-only shams, retrain with object-mask consistency, then test cross-generator pair accuracy and distractor flips."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Using n10’s checkpoint and split manifests, retrain slot VQA on balanced multi-generator edits and artifact-only shams with object-mask consistency."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "ArtifactBalanced-SlotVQA v2 checkpoint with multi-generator edit/sham training manifests and object-mask consistency settings."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Evaluate ArtifactBalanced-SlotVQA v2 on untouched CompoCF-v2 cross-generator pairs and irrelevant edits; report pair accuracy, distractor flips, sham flips."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "On untouched CompoCF-v2 cross-generator splits, ArtifactBalanced-SlotVQA v2 achieved 82% pair accuracy, 4.1% distractor flips, and 2.7% sham flips."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Does ArtifactBalanced-SlotVQA v2 maintain ≥80% pair accuracy on answer-changing occlusions that alter queried-object masks?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Object-mask consistency will preserve ≥80% pair accuracy when answer-changing occlusions partially hide queried objects on held-out CompoCF-v2 pairs."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Construct human-validated, answer-changing CompoCF-v2 partial-occlusion pairs altering queried-object masks; measure frozen ArtifactBalanced-SlotVQA v2 fixed-question pair accuracy."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "On human-validated CompoCF-v2 partial-occlusion pairs, frozen ArtifactBalanced-SlotVQA v2 achieved 71% pair accuracy, below the hypothesized 80%."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n21",
+      "content": "Retrain v2 without object-mask consistency; compare CompoCF-v2 occlusion-pair accuracy by queried-object visibility and mask overlap."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "On ≥70%-visible partial occlusions, mask consistency yielded 84% pair accuracy versus 75% without, despite failing the overall threshold."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Retain mask consistency for ≥70%-visible objects, but prioritize occlusion-aware training; overall occlusion-pair accuracy remains 71%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Extend ArtifactBalanced-SlotVQA v2 with visibility-gated mask consistency and occlusion counterfactual training to recover partially hidden queried objects."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "Train visibility-gated v3 on occlusion counterfactuals plus balanced shams; evaluate pair accuracy and irrelevant-edit flips on unseen combinations."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Annotate queried-object visibility, gate mask consistency at ≥70%, and retrain v3 on paired occlusions and matched shams."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "VisibilityGated-SlotVQA v3 checkpoint with ≥70%-visibility mask gating, paired-occlusion training manifests, and matched-sham annotations."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Benchmark v3 on held-out CompoCF-v2 partial occlusions and unseen object–attribute edits; measure pair accuracy and irrelevant-edit flip rate."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "On CompoCF-v2 unseen combinations, v3 achieved 78% occlusion-pair accuracy and 6.2% irrelevant-edit flips, missing both targets."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "Can visibility gating and matched shams prevent occlusion training from making irrelevant occluder textures trigger answer changes?"
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Run texture-swapped occluder shams on frozen v3 and v2, stratified by queried-object visibility; measure texture-induced answer-flip rates."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "On ≥70%-visible texture-swapped occluder shams, v3 flipped 3.4% of answers versus v2’s 8.1%."
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "n33",
+      "content": "Below 70% visibility, v3 will exceed 5% texture-induced flips because mask consistency is disabled, unlike 3.4% above threshold."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Match texture-swapped occluder shams by object, occlusion geometry, and generator; compare v3 answer-flip rates below versus above 70% visibility."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Matched texture-swapped shams produced 9.0% v3 answer flips below 70% visibility versus 3.5% above."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n36",
+      "content": "Ablate v3’s 70% gate by enabling mask consistency below threshold; compare low-visibility texture-sham flips and occlusion-pair accuracy."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Enabling below-threshold mask consistency left sham flips at 9.1% versus 9.0% gated; occlusion-pair accuracy fell from 78% to 75%."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Keep the 70% gate; address low-visibility texture shortcuts separately, since ungating leaves sham flips near 9% and reduces pair accuracy."
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n33",
+      "content": "Low-visibility texture flips reflect shortcut learning rather than disabled mask consistency; texture-balanced sham training should reduce them below 5%."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Retain v3’s gate; train v4 with texture-matched low-visibility edits and shams, then compare sham flips and pair accuracy."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Retrain gated v4 with texture-matched low-visibility edits and shams; test held-out texture-swap flip rate against v3’s 9.0%."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "On held-out low-visibility texture-swap shams, texture-balanced gated v4 cut answer flips from v3’s 9.0% to 4.6%."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n42",
+      "content": "Retrain gated v4 without texture balancing; compare unseen-generator low-visibility sham flips and occlusion-pair accuracy against balanced v4."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "On unseen-generator low-visibility shams, balanced v4 flipped 8.2% versus unbalanced v4’s 8.0%; occlusion-pair accuracy was 77% versus 78%."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Defer texture-balanced v4: held-out sham flips fell to 4.6%, but unseen-generator flips reached 8.2% without accuracy gains."
+    },
+    {
+      "id": "n49",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Generator-specific occluder cues, not texture imbalance alone, drive low-visibility flips; cross-generator style randomization should cut unseen-generator sham flips below 5%."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Run a texture-balancing × mask-consistency ablation on unseen-generator low-visibility shams; measure answer-flip rates and occlusion-pair accuracy."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "On unseen-generator shams, texture balancing with below-threshold mask consistency cut flips from 10.3% unbalanced to 4.8% balanced."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n49",
+      "content": "Train gated v5 with cross-generator occluder-style randomization; compare unseen-generator low-visibility sham flips and pair accuracy against balanced v4."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "On unseen-generator low-visibility shams, style-randomized v5 flipped 7.6% versus balanced v4’s 8.2%; occlusion-pair accuracy reached 78%."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "Defer v4/v5 despite 4.6% held-out flips: unseen-generator flips remain 8.2%/7.6%; test joint balancing and low-visibility consistency (4.8%), pending pair accuracy."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 55,
+      "exploration_parent_id": "g1",
+      "content": "Train v6 with texture-balanced cross-generator shams and confidence-weighted low-visibility mask consistency to curb flips without sacrificing occlusion-pair accuracy."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p4",
+      "content": "Train v6 with texture-balanced cross-generator shams and confidence-weighted mask consistency; evaluate occlusion-pair accuracy and irrelevant-edit flips on unseen combinations."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Using n10’s split manifests to exclude held-out pairs, fine-tune v3 with texture-balanced cross-generator shams and confidence-weighted low-visibility consistency."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "ArtifactBalanced-SlotVQA v6 checkpoint with cross-generator sham manifests, texture-balance weights, and confidence-weighted low-visibility consistency configuration."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Evaluate frozen v6 on untouched CompoCF-v2 unseen-generator occlusion pairs and irrelevant edits; stratify accuracy and flips by queried-object visibility."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "On untouched CompoCF-v2 unseen-generator splits, v6 achieved 81% occlusion-pair accuracy, 4.3% irrelevant-edit flips, and 4.7% low-visibility sham flips."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Select v6 as the lead method: 81% occlusion-pair accuracy and 4.3% irrelevant-edit flips meet both targets on unseen-generator splits."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 62,
+      "exploration_parent_id": "g1",
+      "content": "Train question-conditioned causal scene-graph VQA with graph interventions for relevant edits and nuisance-node dropout for distractor invariance."
+    },
+    {
+      "id": "n63",
+      "type": "question",
+      "order": 63,
+      "exploration_parent_id": "p5",
+      "content": "Can graph interventions preserve queried spatial relations while nuisance-node dropout suppresses distractor attributes on unseen object–attribute combinations?"
+    },
+    {
+      "id": "n64",
+      "type": "hypothesis",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Causal scene-graph VQA will reach ≥80% spatial-relation pair accuracy with ≤5% distractor flips on unseen object–attribute combinations."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Initialize scene-graph nodes from v6 checkpoint slots; test spatial-relation pair accuracy and distractor flips on unseen CompoCF-v2 combinations."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "On unseen CompoCF-v2 combinations, causal scene-graph VQA achieved 83% spatial-relation pair accuracy and 4.2% distractor flips."
+    },
+    {
+      "id": "n67",
+      "type": "decision",
+      "order": 67,
+      "exploration_parent_id": "n63",
+      "content": "Retain causal scene-graph VQA as a spatial-relation specialist; 83% pair accuracy and 4.2% distractor flips satisfy both targets."
+    },
+    {
+      "id": "n68",
+      "type": "plan",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "Route spatial-relation questions to the retained scene-graph specialist and others to v6; validate aggregate pair accuracy and irrelevant-edit flips."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Train spatial-question router using v2 manifests and v6 embeddings; score routed pair accuracy and irrelevant-edit flips on held-out CompoCF-v2."
+    },
+    {
+      "id": "n70",
+      "type": "artifact",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "CompoCF-v2 routed-VQA package with spatial-question router, v6 and scene-graph checkpoints, held-out predictions, and pair/flip scoring scripts."
+    },
+    {
+      "id": "n71",
+      "type": "activity",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Evaluate routed-VQA against v6-only and scene-graph-only on untouched CompoCF-v2; report spatial and overall pair accuracy and distractor-flip rates."
+    },
+    {
+      "id": "n72",
+      "type": "evidence",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "On untouched CompoCF-v2, routed-VQA achieved 84% overall pair accuracy, 85% spatial-pair accuracy, and 4.0% distractor flips."
+    },
+    {
+      "id": "n73",
+      "type": "decision",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "Release routed-VQA (84% pair accuracy, 4.0% flips); retain v6 as its default model and v2 as a regression baseline."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "refute",
+      "target": "n49"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n66",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n68",
+      "relation": "decompose",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n69",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "n70"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n71",
+      "relation": "produce",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "n73"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n73"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n73"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop visual question answering that responds to causally relevant image changes while remaining invariant to distractors under compositional shift.",
+    "requirements": [
+      "Answer both original and answer-changing counterfactual images correctly on at least 80% of fixed-question pairs.",
+      "Limit answer changes under irrelevant visual edits to 5% on unseen object–attribute combinations."
+    ]
+  }
+}

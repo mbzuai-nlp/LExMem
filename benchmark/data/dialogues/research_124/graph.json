@@ -1,0 +1,1182 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Characterize sharp policy-value bounds for clinical decision policies with selectively observed outcomes and bounded unmeasured confounding.",
+      "requirements": [
+        "Specify sensitivity assumptions and characterize when bounds certify improvement over the historical policy.",
+        "Achieve at least 95% confidence-set coverage uniformly over the stated sensitivity model."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Optimize policy-minus-historical value over latent-outcome tables with Γ-bounded assignment and recording odds ratios; project exact 95% multinomial confidence regions."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Does optimizing policy and historical values separately destroy sharpness of improvement bounds under shared latent confounding?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Joint optimization gives sharp improvement bounds, sometimes strictly tighter than subtracting separate marginal intervals under shared latent confounding."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Derive joint Γ-constrained latent-table extrema, compare marginal subtraction, and certify improvement when the projected exact-95% lower bound exceeds zero."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Implement and benchmark joint versus marginal Γ-constrained extrema with exact-95% projection on two-stratum treatment-outcome-recording tables."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ΓTable v0.1 packages a two-stratum latent-table solver, marginal-subtraction comparator, and exact-95% multinomial confidence-region projection scripts."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Use ΓTable v0.1 on two-stratum Γ=2 scenarios to compare joint and marginal bound widths and audit exact-95% coverage."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Across 400 Γ=2 tables, mean joint width was 0.12 versus 0.19 marginally; minimum simulated coverage was 95.1%."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n8",
+      "content": "Using ΓTable v0.1, search 500 Γ=2 two-stratum tables for attainable joint extrema and strictly loose marginal-subtraction bounds."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "In 7/500 Γ=2 tables, joint lower bounds undershot certified attainable extrema by 0.03, exposing incompatible assignment-recording confounder mixtures."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n10",
+      "content": "Enforcing a shared confounder mixture across assignment and recording closes the 0.03 unattainability gap and restores sharp joint bounds."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Replace separate odds-ratio relaxations with shared-mixture latent cells, prove attainable extrema, and retest exact-95% projection against marginal subtraction."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Implement shared-mixture latent-cell constraints in ΓTable v0.2 and rerun the seven Γ=2 counterexamples with attainable-extremum certificates."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "ΓTable v0.2 contains shared-confounder mixture constraints, attainable-extremum certificate generation, and exact-95% confidence-region projection."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Use ΓTable v0.2 to certify extrema for seven counterexamples and verify uniform 95% coverage via multinomial test inversion."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "ΓTable v0.2 closed all seven Γ=2 unattainability gaps below 10⁻⁶; exact multinomial inversion guarantees at least 95% coverage uniformly."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n16",
+      "content": "Stress-test ΓTable v0.2 across Γ∈{1,2,3} continuous-confounder models, comparing certified bounds with independently discretized attainable-value searches."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "At Γ=3, certified continuous-confounder optimization gave a sharp lower bound of −0.05; ΓTable v0.2 returned −0.08."
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n18",
+      "content": "Extremal continuous confounder distributions admit finite atomic representations with coupled assignment-recording moments, closing the Γ=3 gap."
+    },
+    {
+      "id": "n21",
+      "type": "plan",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Derive finite-atomic extrema under coupled Γ-odds constraints; compare joint improvement bounds with marginal subtraction using exact-95% projection."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Extend ΓTable v0.2 with finite-atomic coupled-moment optimization and retest the Γ=3 lower bound against −0.05."
+    },
+    {
+      "id": "n23",
+      "type": "artifact",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "ΓTable v0.3 replaces v0.2’s fixed latent cells with adaptive finite-atomic optimization enforcing coupled assignment-recording moments."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Check whether ΓTable v0.3 closes the Γ=3 −0.08-to−0.05 gap using continuous-confounder dual certificates and exact-95% projection."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "ΓTable v0.3’s six-atom solution attained −0.0500 at Γ=3, matching the continuous-confounder dual bound within 10⁻⁶."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n20",
+      "content": "Adopt v0.3’s joint bounds for exact-95% improvement certification above zero; v0.2 passed discrete checks but missed continuous-confounder extrema."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Use binary-outcome linear-fractional programming with Γ treatment and Λ recording odds; invert exact multinomial tests to certify positive policy gains."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p2",
+      "content": "Can linear-fractional extrema remain sharp when treatment and recording share an unrestricted confounder under separate Γ and Λ bounds?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Finite atomic support plus coupled treatment-recording constraints makes Γ–Λ linear-fractional improvement extrema attainable for binary outcomes."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Benchmark coupled Γ–Λ finite-atom bounds against continuous-confounder dual certificates across 300 binary-outcome tables; verify exact-95% test inversion."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "At Γ=2, Λ=3, 11/300 finite-atom lower bounds exceeded attainable minima by 0.02; worst-case empirical coverage was 93.7%."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "p2",
+      "content": "Reject the Γ–Λ linear-fractional proposal: 0.02 sharpness failures and 93.7% worst-case coverage violate both requirements."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Use infinite-dimensional moment optimization under coupled Γ/Λ odds constraints; project exact multinomial confidence regions onto sharp improvement bounds."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Can coupled Γ/Λ moment duals certify attainable extrema without the finite-atom approximation that caused 0.02 sharpness errors?"
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Prove coupled Γ/Λ moment duality, construct attaining extremizers, and retest eleven failures with exact-95% multinomial inversion."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Implement adaptive column generation with Γ/Λ moment dual certificates; rerun eleven failed tables and audit exact multinomial inversion."
+    },
+    {
+      "id": "n37",
+      "type": "artifact",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "MomentPolicy v1.0 contains a coupled Γ/Λ column-generation solver, primal-dual sharpness certificates, and exact multinomial inversion scripts."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Run MomentPolicy v1.0 primal-dual certificates on eleven Γ=2, Λ=3 failures; audit exact-95% inversion across 300 tables."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "MomentPolicy v1.0 closed all eleven primal-dual gaps below 10⁻⁶; exact test inversion guarantees at least 95% uniform coverage."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Use conditional total-variation budgets for treatment confounding and selective recording; optimize joint binary response types with exact multinomial inversion."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p4",
+      "content": "Do separate conditional total-variation budgets permit sharp policy-gain bounds when treatment assignment and outcome recording share latent response types?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "A single response-type distribution satisfying both conditional TV budgets yields attainable joint gain extrema, unlike independently optimized margins."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Extend MomentPolicy v1.0 with TV-constrained response-type optimization; benchmark primal-dual sharpness against independent margins and exact-95% coverage."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Across 200 binary tables at TV budgets 0.10/0.15, joint gains had certified 10⁻⁶ dual gaps and 18% narrower intervals."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n42",
+      "content": "Use ΓTable v0.3 to audit TV-budget response-type bounds against continuous-confounder extrema and exact-95% coverage across 500 tables."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "At TV budgets 0.10/0.15, 9/500 TV-compliant continuous-confounder tables breached joint lower bounds by 0.015; minimum coverage was 94.2%."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Audit nine TV-budget breaches using ΓTable v0.3 and MomentPolicy v1.0, testing whether conditioning on recording breaks shared-type feasibility."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Correcting recording-conditioned TV implementation eliminated nine breaches, matched extrema within 10⁻⁶, and restored exact-test 95% coverage."
+    },
+    {
+      "id": "n49",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "p4",
+      "content": "Retain corrected TV bounds: 18% narrower, nine breaches resolved; certify improvement when the projected exact-95% gain lower bound exceeds zero."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Optimize joint policy-gain bounds under shared-latent KL budgets of 0.05 nats for assignment and recording; certify positive exact-95% lower bounds."
+    },
+    {
+      "id": "n51",
+      "type": "question",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Can shared-latent KL constraints yield attainable gain extrema when outcome recording depends on unobserved potential outcomes?"
+    },
+    {
+      "id": "n52",
+      "type": "hypothesis",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "A shared response-type distribution satisfying both 0.05-nat KL budgets attains gain extrema despite outcome-dependent recording."
+    },
+    {
+      "id": "n53",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Derive shared-latent KL primal-dual bounds, construct attaining response-type distributions, and project exact-95% multinomial confidence regions."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Implement KL-constrained shared-type optimization at 0.05 nats; compare primal-dual certificates with exact-95% projections on 200 outcome-dependent-recording tables."
+    },
+    {
+      "id": "n55",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "KLPolicy v0.1 includes a shared-response-type KL optimizer, primal-dual certificates, and exact-95% multinomial projection scripts."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Run KLPolicy v0.1 on 200 outcome-dependent-recording tables at 0.05 nats, auditing primal-dual attainability and exact-95% projection coverage."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Across 200 tables, feasible KLPolicy v0.1 extremizers matched duals within 10⁻⁶; exact inversion guarantees ≥95% uniform coverage."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n56",
+      "content": "Stress-test KLPolicy v0.1 on continuous-confounder models with 1% outcome recording, checking extremal attainability and exact-95% coverage."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "At 1% recording, feasible shared-type gains approached −0.12 but never attained it; extremizing sequences had vanishing recording propensities."
+    },
+    {
+      "id": "n60",
+      "type": "hypothesis",
+      "order": 60,
+      "exploration_parent_id": "n58",
+      "content": "At 0.05 nats, sharp gain infima need not be attained; requiring recording propensity ≥0.005 restores attainment."
+    },
+    {
+      "id": "n61",
+      "type": "plan",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Add recording-propensity floor 0.005, prove compactness and extremizer existence, then rerun sparse-recording coverage tests."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Modify KLPolicy v0.1 to enforce recording propensities ≥0.005; test extremizer attainment and exact-95% coverage on 1%-recording tables."
+    },
+    {
+      "id": "n63",
+      "type": "artifact",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "KLPolicy v0.2 adds a 0.005 recording-propensity floor and compactness-based extremizer certificates to v0.1’s KL optimization."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Test KLPolicy v0.2 on 1%-recording models for attained extrema, primal-dual gaps below 10⁻⁶, and exact-95% coverage."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "In 120/200 sparse-recording tables, floor-inactive extremizers matched unrestricted KL duals within 10⁻⁶; exact-test coverage remained ≥95%."
+    },
+    {
+      "id": "n66",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n63",
+      "content": "Stress-test KLPolicy v0.2 on floor-active 1%-recording tables, checking extremizer certificates and exact-95% coverage under the 0.005 floor."
+    },
+    {
+      "id": "n67",
+      "type": "evidence",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "In 4/80 tables, certified −0.11 gain infima were unattained as treatment propensities vanished despite the 0.005 recording floor."
+    },
+    {
+      "id": "n68",
+      "type": "activity",
+      "order": 68,
+      "exploration_parent_id": "n63",
+      "content": "Add a 0.005 treatment-propensity floor to KLPolicy v0.2; retest four unattained −0.11 infima for attainment and exact-95% coverage."
+    },
+    {
+      "id": "n69",
+      "type": "evidence",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Rechecking four −0.11 cases revealed faulty vanishing-treatment certificates: recording floor alone attained extrema; added 0.005 treatment floor was inactive."
+    },
+    {
+      "id": "n70",
+      "type": "decision",
+      "order": 70,
+      "exploration_parent_id": "n60",
+      "content": "Adopt KLPolicy v0.2’s recording floor; reject the unnecessary treatment floor after corrected certificates restore attainment and exact-95% coverage."
+    },
+    {
+      "id": "n71",
+      "type": "decision",
+      "order": 71,
+      "exploration_parent_id": "p5",
+      "content": "Retain KLPolicy v0.2 with the 0.005 recording floor: it restores attainable sharp bounds and exact-95% improvement certification."
+    },
+    {
+      "id": "n72",
+      "type": "decision",
+      "order": 72,
+      "exploration_parent_id": "g1",
+      "content": "Select ΓTable v0.3, MomentPolicy v1.0, corrected TV, and KLPolicy v0.2; reject finite-atom shortcuts; certify positive exact-95% lower bounds."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "revise",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n21",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "refute",
+      "target": "n52"
+    },
+    {
+      "source": "n60",
+      "relation": "revise",
+      "target": "n52"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n61",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "revise",
+      "target": "n55"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "support",
+      "target": "n52"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n66",
+      "relation": "evaluate",
+      "target": "n60"
+    },
+    {
+      "source": "n66",
+      "relation": "produce",
+      "target": "n67"
+    },
+    {
+      "source": "n67",
+      "relation": "refute",
+      "target": "n60"
+    },
+    {
+      "source": "n68",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n68",
+      "relation": "evaluate",
+      "target": "n60"
+    },
+    {
+      "source": "n68",
+      "relation": "produce",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n71",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n71"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Characterize sharp policy-value bounds for clinical decision policies with selectively observed outcomes and bounded unmeasured confounding.",
+    "requirements": [
+      "Specify sensitivity assumptions and characterize when bounds certify improvement over the historical policy.",
+      "Achieve at least 95% confidence-set coverage uniformly over the stated sensitivity model."
+    ]
+  }
+}

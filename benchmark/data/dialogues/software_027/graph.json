@@ -1,0 +1,981 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build an incremental interprocedural alias analysis that preserves soundness across pointer escapes, indirect calls, and changing function summaries.",
+      "requirements": [
+        "Soundly handle heap objects, pointer casts, recursion, and opaque external calls under documented IR semantics.",
+        "After single-function edits, match full recomputation’s alias answers while reducing median analysis latency by 50%."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use SCC-fixed-point, versioned points-to summaries with escape-aware heap abstractions, conservative cast/unknown-call effects, and reverse-dependency invalidation for summary/indirect-target changes."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How are callers invalidated when an edit adds a previously absent indirect callee through an escaped heap function pointer?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Watching heap locations feeding indirect callsites, even with empty target sets, preserves full-recomputation alias answers after new targets appear."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Test watched-location invalidation on escaped-pointer edits, then implement SCC summaries; benchmark alias equivalence and ≥50% median-latency reduction."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run EscapedCallback-64 edits adding escaped-heap function-pointer stores to targetless callsites; compare watched-invalidation and full-recomputation alias matrices."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "EscapedCallback-64 showed 3/64 alias-matrix mismatches: newly cast-reachable feeder locations lacked watches, leaving indirect callees stale."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Version cast-reachability dependencies and re-register feeder watches before propagating indirect targets; predict 64/64 EscapedCallback-64 alias-matrix matches."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Implement versioned cast-reachability watches and rerun EscapedCallback-64, comparing post-edit indirect-target sets and alias matrices against full recomputation."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "EscapedCallback-64 achieved 64/64 matching alias matrices and indirect-target sets after versioned cast-reachability watches replaced stale dependencies."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Replace location-only watches after three mismatches with versioned cast-reachability watches; EscapedCallback-64 now matches 64/64 alias matrices."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Implement versioned SCC points-to summaries with reverse dependencies for caller and indirect-target changes, plus conservative heap, cast, and opaque-call effects."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "IncrementalAlias v0.1 implements versioned SCC summaries, reverse invalidation, cast-reachability watches, and conservative escaped-heap and opaque-call effects."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How do newly introduced recursive call edges trigger SCC rebuilding and caller invalidation without retaining stale points-to facts?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use differential points-to propagation with provenance-tracked retractions and affected-SCC rebuilding when edits alter recursive or indirect call edges."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "First establish sound retraction-provenance and SCC-rebuilding invariants; only then enable differential propagation and benchmark alias equivalence and latency."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Instrument IncrementalAlias v0.1 with provenance and affected-SCC rebuild checks; test recursive-edge edits against full recomputation on RecursionEdit-80."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "RecursionEdit-80 harness instruments IncrementalAlias v0.1 to log retraction provenance, SCC rebuild boundaries, and alias differences against full recomputation."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Prototype differential retractions in IncrementalAlias v0.1; run RecursionEdit-80 against versioned-summary baseline and full recomputation, auditing harness traces."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "RecursionEdit-80: differential retractions matched 80/80 full-recomputation alias matrices; median latency was 38 ms versus 82 ms baseline, 105 ms full."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Adopt differential retractions alongside cast-reachability watches: RecursionEdit-80 matched 80/80 at 38 ms median versus 105 ms full recomputation."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n13",
+      "content": "Implement call-edge change detection, rebuild affected SCCs, retract obsolete points-to facts by provenance, and invalidate transitive callers."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "RecursionEdit-80: versioned summaries retained stale aliases on 6/80 cycle-breaking edits; provenance retraction matched full recomputation."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "How can retractions preserve points-to facts supported by another recursive path when an edited call edge splits an SCC?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Recompute rebuilt SCCs from surviving base constraints, then propagate fact deltas; predict 48/48 alias-matrix matches on SplitCycle-48."
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "Track base-rooted derivation witnesses per fact; after SCC splits, retract only facts lacking surviving witnesses, predicting 48/48 SplitCycle-48 matches."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Use demand-driven, dependency-tracked alias queries with conservative unknown-call effects, recomputing only dirty query slices after edits."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "How can cached query slices detect newly reachable opaque calls whose effects were absent when the slices were built?"
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Instrument call-reachability watches in cached slices; run SplitCycle-48 with newly reachable opaque calls, comparing SCC-rebuild and witness-based retractions."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "SplitCycle-48: SCC rebuilding matched 48/48 alias matrices, including newly reachable opaque calls; witness retraction retained cycle-supported aliases in 4/48."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n24",
+      "content": "Run OpaqueFrontier-40 edits exposing external callees through casts; compare cached-slice invalidation and witness retractions against full recomputation."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "OpaqueFrontier-40: rooted-witness retractions matched 12/12 SCC splits exposing cast-reachable opaque calls; watched query slices matched 40/40."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "At what queried-pointer coverage do dirty query slices become slower than differential SCC propagation after single-function edits?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "On QueryCoverage-120, dirty slices will exceed differential SCC median latency once queried-pointer coverage reaches 40%."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Using validated SCC rebuilding and watched slices, compare QueryCoverage-120 median edit latencies against differential propagation at 20%, 40%, 60% coverage."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "QueryCoverage-120 median latency: dirty slices took 24/47/66 ms at 20/40/60% coverage, versus differential SCC’s 39/40/41 ms."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Use watched query slices below 40% coverage; switch to SCC rebuilding otherwise, preserving opaque-call invalidation and cycle-split correctness."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Use epoch-stamped IR-effect dependencies to invalidate cast, escape, indirect-target, and opaque-call effects atomically before rebuilding affected SCCs."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "p4",
+      "content": "Integrate epoch-stamped effects with the coverage switch, validate alias equivalence across mixed edits, then benchmark median latency against full recomputation."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n34",
+      "content": "Extend the RecursionEdit-80 harness with epoch-stamped effect logs; test mixed cast, escape, indirect-call, and SCC-split edits against full recomputation."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "MixedEffect-96 revises the RecursionEdit-80 harness with epoch-effect logs and full-recomputation comparisons for cast, escape, indirect-call, and SCC-split edits."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Run both harnesses on RecursionEdit-80, checking identical alias-difference reports; exercise MixedEffect-96 epoch logs against full recomputation."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Both harnesses agreed on 80/80 RecursionEdit-80 reports; MixedEffect-96 matched full-recomputation alias matrices on 96/96 edits."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n34",
+      "content": "Benchmark epoch-stamped analysis with the coverage switch on MixedEffect-96, recording alias-matrix equivalence and median edit latency versus full recomputation."
+    },
+    {
+      "id": "n40",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "MixedEffect-96 benchmark harness adds coverage-switch decisions, per-edit latency traces, and alias-matrix comparisons to the epoch-effect logs."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Cross-check revised and original MixedEffect-96 alias reports; audit coverage-switch traces and benchmark median edit latency against full recomputation."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "MixedEffect-96: both harnesses matched 96/96 alias matrices; coverage-switch latency was 42 ms median versus 105 ms full recomputation."
+    },
+    {
+      "id": "n43",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n40",
+      "content": "Adopt epoch-stamped coverage switching after validated MixedEffect-96 equivalence: 96/96 alias matches, 42 ms versus 105 ms median."
+    },
+    {
+      "id": "n44",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p4",
+      "content": "How can alias queries avoid observing mixed epochs when one edit changes cast reachability and indirect-call targets together?"
+    },
+    {
+      "id": "n45",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Pin queries to committed immutable summary epochs; atomically publish cast and indirect-target updates, predicting zero mixed-epoch answers in ConcurrentEdit-128."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Extend MixedEffect-96 into ConcurrentEdit-128; interleave paired cast/indirect edits with queries, comparing pinned answers against committed full-recomputation snapshots."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "ConcurrentEdit-128 recorded zero mixed-epoch answers across 128 interleavings; every pinned query matched its committed full-recomputation snapshot."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 53,
+      "exploration_parent_id": "g1",
+      "content": "Specify executable IR semantics for allocation-site heaps, pointer casts, escapes, and opaque-call havoc; validate with generated differential tests."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "p5",
+      "content": "Using validated coverage switching and pinned epochs, formalize heap/cast/escape/opaque-call rules; generate oracle-checked edits and benchmark alias equivalence and latency."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Codify heap, cast, escape, and opaque-call rules in IncrementalAlias; extend MixedEffect-96 with bounded-interpreter differential tests."
+    },
+    {
+      "id": "n50",
+      "type": "artifact",
+      "order": 56,
+      "exploration_parent_id": "n49",
+      "content": "IRSemantics v0.2 specifies allocation-site heaps, address-preserving casts, unknown-cast top, transitive escapes, and opaque-call reachable-memory havoc, with a bounded-interpreter oracle."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Run SemanticsFuzz-256 generated edits with pinned epochs; compare incremental and full alias answers against bounded-interpreter may-alias witnesses."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "SemanticsFuzz-256: incremental matched full alias matrices on 256/256 edits; neither missed any of 1,842 bounded-interpreter alias witnesses."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "p5",
+      "content": "Adopt IRSemantics v0.2 with differential SCC retractions and epoch-stamped coverage switching; SemanticsFuzz-256 matched 256/256 edits without missed witnesses."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "depend_on",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n33"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build an incremental interprocedural alias analysis that preserves soundness across pointer escapes, indirect calls, and changing function summaries.",
+    "requirements": [
+      "Soundly handle heap objects, pointer casts, recursion, and opaque external calls under documented IR semantics.",
+      "After single-function edits, match full recomputation’s alias answers while reducing median analysis latency by 50%."
+    ]
+  }
+}

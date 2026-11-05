@@ -1,0 +1,133 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Test and revise cyclic-reservation admission bounds for control deadlines and inference service",
+      "boundary_reason": "The revised two-reservation admission check is adopted; discussion shifts to implementation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Implement FrameGuard v0.1 and identify the need to enforce kernel and memory bounds",
+      "boundary_reason": "Discussion shifts to a separate-engine isolation proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Probe dual-engine isolation and compare it with FrameGuard reservations",
+      "boundary_reason": "The isolation preference is stated; discussion turns to fault injection and dispatch overhead."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Fault-test kernel and DRAM limits and frame competing dispatch-progress hypotheses",
+      "boundary_reason": "A debt-capped inference server is proposed to address inference service under dispatch overhead."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Test debt-capped inference service and discover shared-lock inference gaps",
+      "boundary_reason": "The observed lock waits prompt a revised service bound."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Validate 40-µs lock caps and 252-µs inference reservations",
+      "boundary_reason": "The revised reservation is adopted; discussion shifts to persistent dispatch."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Certify tiles, bank isolation, and dispatch bounds for persistent dispatch",
+      "boundary_reason": "Certification is audited; discussion moves to comparative TileStorm results."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Compare certified persistent dispatch with 252-µs reservations",
+      "boundary_reason": "A preference for persistent dispatch is stated; discussion turns to mandatory inference turns."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Test two-turn admission under adversarial control arrivals",
+      "boundary_reason": "The two-turn test reports deadlines and inference gaps; discussion shifts to guarded launches."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Integrate and evaluate release-aware FrameGuard v0.2",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

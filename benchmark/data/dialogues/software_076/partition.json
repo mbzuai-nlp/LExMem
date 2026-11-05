@@ -1,0 +1,148 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Resolution-aware partition caching and the transitive-dependency flaw",
+      "boundary_reason": "DependencySweep-64 finds stale inline bodies, prompting a revised cache-key design."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Adding transitive inline-body Merkle dependencies",
+      "boundary_reason": "The v0.2 artifact is ready; the discussion turns to measured rebuild time and runtime."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "EditBench performance and resolution-summary caching",
+      "boundary_reason": "Summary caching is retained, but high-churn resolution work remains a separate optimization target."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Per-symbol invalidation and canonical weak-alias dependencies",
+      "boundary_reason": "The corrected resolution graph is integrated into v0.3; the next proposal changes partition scheduling."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Eight-worker scheduling and concurrent-churn trace failures",
+      "boundary_reason": "Concurrent-churn mismatches overturn the initial eight-worker result and motivate snapshot pinning."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Epoch-pinned snapshots and an unoptimized weak-winner publication gap",
+      "boundary_reason": "Snapshot pinning is retained, but release is blocked pending epoch updates for unoptimized weak winners."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66"
+      ],
+      "topic": "Weak-winner epoching and fresh-seed rebuild performance",
+      "boundary_reason": "Atomic epoch commits produce a v0.4 artifact; the next proposal addresses reuse across retried links."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79",
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Snapshot-validated retry reuse, versioned alias keys, and the v0.5 release candidate",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

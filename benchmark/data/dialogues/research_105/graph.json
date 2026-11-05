@@ -1,0 +1,1058 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Characterize bounds for dynamic treatment-regime effects under simultaneous unmeasured time-varying confounding and informative dropout.",
+      "requirements": [
+        "Establish sharp identification bounds under explicit, separately interpretable confounding and dropout sensitivity constraints.",
+        "Construct confidence regions with at least 95% asymptotic coverage uniformly over the specified sensitivity class."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Optimize finite-history response-type linear programs under separate treatment Γ and dropout Λ ratio caps; project uniform 95% moment bands."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can response-type linear programs yield sharp regime-effect bounds when Γ-constrained treatment selection and Λ-constrained dropout coexist?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "For binary two-stage histories, every feasible Γ/Λ-constrained response-type extremum is realizable by a full-data law."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Enumerate binary two-stage response types, encode separate Γ/Λ ratio caps, construct extremal-law witnesses, and project uniformly valid 95% moment bands."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Enumerate binary two-stage response types; solve Γ=1.5, Λ=2 programs and check extremal full-data witnesses against observed margins."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "At Γ=1.5, Λ=2, the LP's regime-effect upper bound was 0.74, but compatible full-data laws capped it at 0.68."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Cross-history consistency constraints reduce the Γ=1.5, Λ=2 upper bound from 0.74 to an attainable 0.68."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Add cross-history response-type coupling constraints, then globally optimize the Γ=1.5, Λ=2 upper bound and construct attaining laws."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "With cross-history coupling, the certified upper bound was 0.68, matched by an admissible law within 10⁻⁶ at Γ=1.5, Λ=2."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Replace the uncoupled LP with cross-history coupling: its 0.74 endpoint is unattainable, while 0.68 has an admissible witness."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Project simultaneous 95% multinomial bands through the coupled program; simulate 2,000 datasets across Γ,Λ grids to assess worst-case coverage."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "RegimeBounds v0.1 contains a coupled sharp-bound solver, projected 95% multinomial confidence regions, and Γ/Λ-grid coverage diagnostics."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Do projected multinomial bands maintain at least 95% coverage uniformly across Γ/Λ values and sparse treatment-dropout histories?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Profile full-data laws under separate treatment and dropout odds-ratio caps; invert least-favorable tests for uniform regime-effect inference."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Profile coupled full-data laws under separate Γ/Λ caps, certify sharp extrema, then calibrate least-favorable 95% tests uniformly."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Extend RegimeBounds v0.1 to profile coupled laws and benchmark least-favorable test inversion over 2,000 sparse-history simulations."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "RegimeBounds v0.2 adds coupled-law profiling, least-favorable test inversion, and sparse-history coverage tables for Γ/Λ sensitivity grids."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Compare RegimeBounds v0.1 and v0.2 across 2,000 sparse-history replicates, recording minimum Γ/Λ-grid coverage and median region width."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Across 2,000 sparse-history replicates, minimum Γ/Λ-grid coverage was 95.8% for v0.2 versus 93.1% for v0.1."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Advance v0.2, pending uniform-coverage proof: coupled laws attain 0.68, and minimum simulated coverage reaches 95.8%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Audit 95% uniform-coverage arguments for projected bands versus profiled tests over Γ∈[1,2], Λ∈[1,3], including sparse-cell boundaries."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Under 1/n rare-cell probabilities, asymptotically calibrated profiled tests cover 91%; exact multinomial-band projection covers ≥95% across Γ/Λ."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Can least-favorable test inversion handle 1/n rare-cell probabilities while preserving 95% uniform coverage and sharp coupled-law bounds?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Exact multinomial least-favorable test inversion over coupled laws preserves ≥95% coverage with 1/n cells without widening sharp identification bounds."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Implement exact least-favorable multinomial inversion after rare-cell failures; audit 1/n-cell coverage and preservation of coupled-law bounds."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Exact inversion attained 95.4% minimum simulated coverage with 1/n cells while preserving the coupled-law 0.68 identification endpoint."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Formulate shared-latent-history polynomial optimization with separate Γ/Λ odds caps and project exact multinomial bands onto regime effects."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Can sparse sum-of-squares relaxations certify globally sharp Γ/Λ bounds for three-stage regimes with shared latent histories?"
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Extend RegimeBounds v0.1 to three-stage histories; test degree-4 sparse SOS certificate gaps against feasible-law witnesses at Γ=1.5, Λ=2."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "At Γ=1.5, Λ=2, degree-4 sparse SOS left a 0.02 certificate gap: upper bound 0.61 versus feasible 0.59."
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "The degree-4 gap reflects missing shared-history moment consistency; degree-6 sparse SOS with those constraints yields ≤0.001 certificate gaps."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Run degree-6 shared-history SOS and exact least-favorable inversion on three-stage Γ=1.5, Λ=2 simulations, recording certificate gaps and 1/n-cell coverage."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Degree-6 SOS narrowed the gap to 0.0008, but three-stage exact-inversion coverage was 93.6% with 1/n cells."
+    },
+    {
+      "id": "n35",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Restrict exact inversion to validated two-stage settings; use exact-band projection for three-stage inference pending calibration and SOS certification."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Certify SOS convergence and Γ/Λ-constrained extremal laws for three-stage bounds; project exact multinomial bands for uniform 95% coverage."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Run adaptive SOS until certificate gaps ≤10⁻⁴; project exact multinomial bands over three-stage Γ/Λ grids including 1/n cells."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "RegimeBounds v0.3 records three-stage SOS certificates, flags gaps exceeding 10⁻⁴, and exports exact-band projected Γ/Λ confidence regions."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n30",
+      "content": "At Γ=1.5, Λ=2, three-stage shared-latent witnesses attained effect 0.59 and matched observed margins within 10⁻⁶."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Globally optimize history-consistent full-data laws by spatial branch-and-bound under separate Γ/Λ caps; project exact multinomial bands."
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "p4",
+      "content": "Outward-certified branch-and-bound projection of exact multinomial bands attains ≥95% uniform coverage for Γ∈[1,2], Λ∈[1,3], including 1/n cells."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Extend RegimeBounds v0.3 with outward-rounded branch-and-bound; verify exact-band containment and certify three-stage extrema across Γ/Λ grids, including 1/n cells."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Direct outward-certified projection covered only 94.1% of 2,000 three-stage 1/n-cell replicates; per-history exact bands lacked simultaneous calibration."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n41",
+      "content": "Replace v0.3's per-history bands with Bonferroni-calibrated exact bands; rerun certified projections over Γ/Λ grids with 1/n cells."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Across 2,000 three-stage 1/n-cell replicates, Bonferroni-calibrated projections reached 95.8% minimum Γ/Λ-grid coverage; simultaneous exact bands guarantee ≥95%."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Can outward-rounded branch-and-bound certify sharp three-stage regime-effect bounds where degree-6 SOS leaves a 0.0008 gap?"
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Outward-rounded branch-and-bound closes the Γ=1.5, Λ=2 three-stage certificate gap below 10⁻⁴ with admissible extremal-law witnesses."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "After 94.1% undercoverage, use Bonferroni-calibrated bands and outward-rounded branch-and-bound to certify Γ=1.5, Λ=2 three-stage bounds within 10⁻⁴ of witnesses."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "At Γ=1.5, Λ=2, outward-rounded branch-and-bound certified 0.59007 against an admissible 0.59000 witness, closing the gap to 7×10⁻⁵."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Adopt Bonferroni-calibrated branch-and-bound: uncalibrated coverage was 94.1%, calibrated coverage reached 95.8%, and the certification gap was 7×10⁻⁵."
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Using calibrated simultaneous bands, prove outward-rounded branch-and-bound convergence to sharp three-stage extrema and certify Γ/Λ-grid witness gaps ≤10⁻⁴."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Initialize branch-and-bound from RegimeBounds v0.3 SOS certificates; test convergence and ≤10⁻⁴ witness gaps under Bonferroni-calibrated Γ/Λ projections."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "RegimeBounds v0.4 contains outward-rounded Γ/Λ certificates, extremal-law witnesses, Bonferroni-calibrated 95% projections, and ≤10⁻⁴ gap flags."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 54,
+      "exploration_parent_id": "g1",
+      "content": "Combine shared-latent trajectory optimization under separate Γ/Λ caps with 95% anytime-valid multinomial confidence sequences for adaptive monitoring."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 55,
+      "exploration_parent_id": "p5",
+      "content": "Derive sharp coupled-law extrema with witnesses; prove 95% simultaneous multinomial sequences yield uniform Γ/Λ coverage under optional stopping."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Implement anytime multinomial sequences atop v0.4; benchmark stopped-time Γ/Λ coverage and width against v0.4 and v0.2 on 2,000 two-stage replicates."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Across 2,000 optionally stopped two-stage replicates, minimum Γ/Λ-grid coverage was 96.0% for anytime sequences versus 91.7% for v0.4."
+    },
+    {
+      "id": "n58",
+      "type": "question",
+      "order": 58,
+      "exploration_parent_id": "p5",
+      "content": "Can trajectory-level Γ/Λ caps remain separately interpretable when treatment and dropout share latent causes across three stages?"
+    },
+    {
+      "id": "n59",
+      "type": "hypothesis",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Conditioning on shared latent histories keeps stagewise treatment-odds cap Γ and dropout-odds cap Λ separately adjustable without relaxing full-data consistency."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Using two-stage anytime coverage, vary three-stage shared-latent Γ/Λ caps independently; audit witness consistency, cap compliance, and stopped-time coverage."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Three-stage Γ-only and Λ-only perturbations each preserved shared-latent witnesses; cap violations were zero across 400 audited fits."
+    },
+    {
+      "id": "n62",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Provisionally extend calibrated branch-and-bound with anytime sequences: 96.0% two-stage stopped-time coverage; zero cap violations in 400 three-stage audits."
+    },
+    {
+      "id": "n63",
+      "type": "plan",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Prove branch-and-bound convergence to sharp shared-latent Γ/Λ bounds and uniform 95% anytime-sequence coverage under optional stopping."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Audit v0.4 certificates against v0.2 coupled-law profiles; prove convergence to sharp Γ/Λ bounds and uniform 95% anytime coverage."
+    },
+    {
+      "id": "n65",
+      "type": "artifact",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "RegimeBounds v0.5 documents sharp shared-latent Γ/Λ certificates, v0.2 cross-checks, and uniform 95% anytime confidence sequences."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "refute",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n58"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n59"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n63",
+      "relation": "decompose",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Characterize bounds for dynamic treatment-regime effects under simultaneous unmeasured time-varying confounding and informative dropout.",
+    "requirements": [
+      "Establish sharp identification bounds under explicit, separately interpretable confounding and dropout sensitivity constraints.",
+      "Construct confidence regions with at least 95% asymptotic coverage uniformly over the specified sensitivity class."
+    ]
+  }
+}

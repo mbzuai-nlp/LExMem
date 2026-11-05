@@ -1,0 +1,127 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Establish reproducible criteria for background-dependent epistasis sign reversals",
+      "boundary_reason": "Reversal-label criteria and an independent assay audit are complete; the discussion shifts to background representation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Select pathway-burden embeddings for held-out backgrounds and plan prospective testing",
+      "boundary_reason": "A representation is selected and prospective testing is planned; a different transfer approach begins."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Test response-profile neighbor transfer and the effect of masking constituent singles",
+      "boundary_reason": "Masking undermines the initial result, prompting a revised neighbor method."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Test pathway-constrained neighbors and sensitivity to donor availability",
+      "boundary_reason": "Withholding nearest donors exposes a limitation and motivates gated transfer."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Evaluate and select cosine-gated transfer with pathway-burden fallback",
+      "boundary_reason": "The revised transfer method is selected; the next stage tests it prospectively."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Prospectively validate gated transfer in four new backgrounds",
+      "boundary_reason": "Prospective results support a selection decision; a transcriptome-based approach begins."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Test wild-type transcriptome gating and batch correction on Prospective-150",
+      "boundary_reason": "Corrected gating is adopted for further testing; the next stage uses blinded combinations."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Blindly test transcriptome gating and assess whether parental RNA drives predictions",
+      "boundary_reason": "RNA shuffling prompts a decision to defer deployment and revise the validation plan."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Reassess gating with independent-culture parental RNA and shuffled controls",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

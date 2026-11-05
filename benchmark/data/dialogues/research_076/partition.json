@@ -1,0 +1,140 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Distinguishing unfamiliar anatomy from low-contrast boundaries using shape-latent novelty",
+      "boundary_reason": "The ShiftHeart comparison supports a detector choice; the next discussion turns to calibration."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Calibrating boundary entropy against multi-rater disagreement on ShiftHeart",
+      "boundary_reason": "The calibration audit reports its results; work next moves to external scanners."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "a4",
+        "r2",
+        "q2",
+        "h2",
+        "a5",
+        "e3"
+      ],
+      "topic": "Testing novelty–ambiguity gating on low-contrast CardioMRI-X variants",
+      "boundary_reason": "The gating test refutes the calibration hypothesis, motivating a different architecture."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "a6",
+        "e4"
+      ],
+      "topic": "Comparing independent stop-gradient heads with the gated model",
+      "boundary_reason": "The architecture comparison is complete; the next question examines what drives its novelty score."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "q3",
+        "h3",
+        "a7",
+        "e5",
+        "h4",
+        "a8",
+        "e6",
+        "d2"
+      ],
+      "topic": "Testing scanner-style contamination and adopting scanner-adversarial independent heads",
+      "boundary_reason": "The scanner-adversarial test leads to an architecture decision; untouched-scanner validation follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "l2",
+        "a9",
+        "r3"
+      ],
+      "topic": "Preparing untouched-scanner validation of scanner-adversarial independent heads",
+      "boundary_reason": "The validation dossier is produced; the next discussion proposes an alternative novelty method."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "q4",
+        "a10",
+        "e7",
+        "d3"
+      ],
+      "topic": "Comparing anatomical prototypes with shape-latent novelty on OpenHeart-3",
+      "boundary_reason": "The comparison leads to a prototype selection; pairwise validation is the next stage."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "l3",
+        "a11",
+        "r4",
+        "a12",
+        "e8"
+      ],
+      "topic": "Validating prototype novelty across held-out scanner–variant pairs",
+      "boundary_reason": "The pairwise audit reports its results; attention next shifts to low-contrast variants."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "h5",
+        "a13",
+        "e9"
+      ],
+      "topic": "Testing ungated prototypes and contour ensembles on low-contrast variants",
+      "boundary_reason": "Core metrics meet targets, but disputed-contour false positives motivate threshold calibration."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "l4",
+        "a14",
+        "r5",
+        "a15",
+        "e10",
+        "d4"
+      ],
+      "topic": "Calibrating contrast-stratified thresholds and provisionally adopting them",
+      "boundary_reason": "Calibration supports provisional adoption; the next stage tests untouched scanners."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "a16",
+        "e11",
+        "q5",
+        "h6",
+        "a17",
+        "e12",
+        "d5"
+      ],
+      "topic": "Investigating OpenHeart-4 threshold failures and prototype-score drift",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,971 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop an image segmentation model that distinguishes genuine boundary ambiguity from unfamiliar anatomy under acquisition-domain shift.",
+      "requirements": [
+        "Achieve unfamiliar-anatomy detection AUROC ≥0.85 on held-out acquisition domains.",
+        "Achieve boundary-uncertainty Spearman correlation ≥0.6 with inter-annotator disagreement while matching a supervised baseline’s Dice."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train acquisition-augmented segmentation using Dice supervision, annotator-calibrated boundary entropy, and acquisition-invariant shape-latent novelty scoring."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Does shape-latent novelty remain anatomy-specific when low-contrast edges inflate boundary entropy on unseen scanners?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "On held-out scanners, shape-latent novelty distinguishes unfamiliar anatomy from low-contrast normal boundaries with AUROC ≥0.85."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "On held-out ShiftHeart scanners, compare shape-latent novelty and boundary-entropy AUROC for congenital variants versus low-contrast normal hearts."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "On held-out ShiftHeart scanners, shape-latent novelty achieved AUROC 0.88 versus boundary entropy’s 0.62 for congenital variants versus low-contrast normals."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Select shape-latent novelty over boundary entropy for unfamiliar-anatomy detection, based on ShiftHeart AUROC of 0.88 versus 0.62."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Retain shape-latent novelty; calibrate boundary entropy using multi-rater masks, then evaluate independent-domain AUROC, disagreement Spearman ρ, and baseline-relative Dice."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "l1",
+      "content": "Calibrate boundary entropy with ShiftHeart multi-rater masks; measure disagreement Spearman ρ and baseline-relative Dice on unseen scanners."
+    },
+    {
+      "id": "r1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "ShiftHeart boundary-calibration report containing multi-rater disagreement maps, unseen-scanner Spearman ρ, and Dice comparisons against the supervised baseline."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "r1",
+      "content": "Audit the ShiftHeart report’s scanner-stratified disagreement maps and verify Spearman ρ≥0.6 without Dice loss versus the supervised baseline."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "ShiftHeart unseen scanners yielded boundary-entropy disagreement Spearman ρ=0.66 and Dice 0.89, matching the supervised baseline’s 0.89."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "l1",
+      "content": "Using ShiftHeart-validated boundary calibration, test novelty–ambiguity gating on external CardioMRI-X scanners for anatomy AUROC, disagreement ρ, and Dice."
+    },
+    {
+      "id": "r2",
+      "type": "artifact",
+      "order": 14,
+      "exploration_parent_id": "a4",
+      "content": "CardioMRI-X evaluation bundle with scanner-stratified anatomy AUROC, boundary-disagreement Spearman ρ, Dice, and novelty–ambiguity gating outputs."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p1",
+      "content": "Does novelty–ambiguity gating preserve boundary-disagreement calibration when unfamiliar anatomy has low-contrast contours on CardioMRI-X?"
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "q2",
+      "content": "On low-contrast CardioMRI-X variants, novelty–ambiguity gating preserves disagreement Spearman ρ≥0.6 and matches the supervised baseline’s Dice."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "h2",
+      "content": "Evaluate gated versus ungated predictions on low-contrast CardioMRI-X variants using multi-rater boundary-disagreement Spearman ρ and baseline-relative Dice."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "a5",
+      "content": "On low-contrast CardioMRI-X variants, gating reduced disagreement Spearman ρ from 0.63 to 0.44 and Dice to 0.86 versus baseline 0.88."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Replace novelty–ambiguity gating with independent, stop-gradient shape-novelty and annotator-calibrated boundary heads, reporting both scores without suppressing either."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Using the CardioMRI-X bundle, compare p1’s acquisition-augmented entropy/novelty model with p2’s independent stop-gradient heads on AUROC, disagreement ρ, and Dice."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "a6",
+      "content": "CardioMRI-X: gated p1 versus p2 achieved AUROC 0.86/0.88, disagreement ρ 0.44/0.65, Dice 0.86/0.88 (baseline 0.88)."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "e4",
+      "content": "Is p2’s 0.88 AUROC driven by congenital-anatomy morphology rather than scanner-specific intensity signatures in CardioMRI-X?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "q3",
+      "content": "Under scanner-style swaps, p2 retains anatomy AUROC ≥0.85, while morphology-shuffled controls fall below 0.70."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "h3",
+      "content": "Following p2’s CardioMRI-X AUROC 0.88, measure AUROC after structure-preserving scanner-style swaps and morphology-code shuffling with scanner intensities preserved."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "a7",
+      "content": "CardioMRI-X p2 AUROC fell from 0.88 to 0.77 after scanner-style swaps; morphology-code shuffling yielded 0.59."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "e5",
+      "content": "Scanner intensity partly contaminates p2’s shape latent; scanner-adversarial training will restore style-swap AUROC ≥0.85 while morphology-shuffled AUROC remains <0.70."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "h4",
+      "content": "Retrain p2’s shape latent with gradient-reversal scanner classification; compare CardioMRI-X style-swap and morphology-shuffle AUROCs against original p2."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "a8",
+      "content": "Scanner-adversarial p2 raised CardioMRI-X style-swap AUROC from 0.77 to 0.86; morphology-shuffled AUROC remained 0.60."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "e6",
+      "content": "Adopt scanner-adversarial independent heads without novelty–ambiguity gating: style-swap AUROC reached 0.86, whereas gating reduced boundary ρ to 0.44."
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Validate adopted scanner-adversarial independent heads on untouched scanners using multi-rater masks: anatomy AUROC ≥0.85, disagreement ρ≥0.6, baseline-matched Dice."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "l2",
+      "content": "Use ShiftHeart calibration maps to freeze boundary-head temperature; assess anatomy AUROC, disagreement ρ, and Dice on untouched OpenHeart-3 scanners."
+    },
+    {
+      "id": "r3",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "a9",
+      "content": "OpenHeart-3 validation dossier with frozen boundary temperature, scanner-stratified anatomy AUROC, multi-rater disagreement ρ, and baseline-relative Dice."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Use scanner-normalized anatomical prototype distances for novelty and a multi-rater contour ensemble for boundary uncertainty, preserving Dice-supervised segmentation."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Can scanner-normalized anatomical prototypes detect congenital variants absent from training without labeling disputed normal contours as unfamiliar?"
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "q4",
+      "content": "Using OpenHeart-3 dossier labels, compare p3 prototype versus p1 shape-latent novelty on congenital-variant AUROC and disputed-normal-contour false-positive rates."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "a10",
+      "content": "OpenHeart-3: p3 prototypes achieved AUROC 0.87, disputed-contour FPR 6%; p1’s ungated shape latent achieved AUROC 0.90, FPR 15%."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "e7",
+      "content": "Select p3 novelty over p1’s higher-AUROC latent for its 6% versus 15% disputed-contour FPR; retain p2’s independent boundary head."
+    },
+    {
+      "id": "l3",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "d3",
+      "content": "Validate selected prototypes on held-out scanner–variant pairs, targeting congenital-variant AUROC ≥0.85 and disputed-contour false-positive rate ≤10%."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "l3",
+      "content": "Run leave-one-scanner–variant-pair-out validation on OpenHeart-3, measuring prototype novelty AUROC and disputed-contour FPR at a prespecified threshold."
+    },
+    {
+      "id": "r4",
+      "type": "artifact",
+      "order": 40,
+      "exploration_parent_id": "a11",
+      "content": "Revised OpenHeart-3 dossier adds leave-one-scanner–variant-pair-out prototype AUROC and prespecified-threshold disputed-contour FPR to prior validation metrics."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "l3",
+      "content": "Audit revised OpenHeart-3 dossier for per-pair prototype AUROC ≥0.85 and disputed-contour FPR ≤10% at the prespecified threshold."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "a12",
+      "content": "OpenHeart-3 leave-one-scanner–variant-pair-out validation yielded minimum prototype AUROC 0.85 and maximum disputed-contour FPR 9%."
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "p3",
+      "content": "On low-contrast CardioMRI-X variants, ungated prototypes and contour ensembles retain disagreement ρ≥0.6, anatomy AUROC≥0.85, and baseline-matched Dice≥0.88."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "h5",
+      "content": "Test ungated p3 on low-contrast CardioMRI-X variants, measuring anatomy AUROC, contour-disagreement Spearman ρ, and Dice against baseline."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "a13",
+      "content": "Low-contrast CardioMRI-X: AUROC 0.86, disagreement ρ=0.62, Dice 0.88 (baseline 0.88), but disputed-normal-contour FPR reached 24%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Apply contrast-stratified conformal thresholds to p3 prototype novelty, calibrated on disputed normal contours while keeping boundary ensembles independent."
+    },
+    {
+      "id": "l4",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Calibrate p4 thresholds on separate low-contrast normal contours, then validate FPR ≤10%, AUROC ≥0.85, ρ≥0.6, and baseline-matched Dice."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "l4",
+      "content": "Using CardioMRI-X bundle scanner labels, fit contrast-stratified conformal prototype thresholds on a separate disputed-normal calibration split."
+    },
+    {
+      "id": "r5",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "a14",
+      "content": "CardioMRI-X contrast-stratified conformal threshold file with calibration split identifiers, prototype-score quantiles, and scanner-independent threshold settings."
+    },
+    {
+      "id": "a15",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "r5",
+      "content": "Audit r5’s CardioMRI-X calibration split against r4’s OpenHeart-3 pairs; measure frozen-threshold disputed-contour FPR and variant sensitivity."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "a15",
+      "content": "On held-out low-contrast CardioMRI-X, conformal thresholds reduced disputed-contour FPR from 24% to 8% at 83% variant sensitivity."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "e10",
+      "content": "Adopt contrast-stratified thresholds provisionally: CardioMRI-X FPR fell to 8% at 83% sensitivity, complementing OpenHeart-3’s ≤9% pairwise FPR."
+    },
+    {
+      "id": "a16",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "l4",
+      "content": "With provisionally adopted thresholds frozen, evaluate p4 on untouched OpenHeart-4 scanners: novelty AUROC, disputed-contour FPR, boundary ρ, and baseline-relative Dice."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "a16",
+      "content": "On untouched OpenHeart-4, p4 yielded anatomy AUROC 0.82 and disputed-contour FPR 18%; disagreement ρ=0.63, Dice 0.88."
+    },
+    {
+      "id": "q5",
+      "type": "question",
+      "order": 55,
+      "exploration_parent_id": "p4",
+      "content": "Did prototype-score drift or contrast-bin misassignment drive OpenHeart-4’s 18% disputed-contour FPR and 0.82 AUROC?"
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "q5",
+      "content": "Normal-contour prototype scores shift upward on OpenHeart-4; oracle contrast bins leave disputed-contour FPR >10% and anatomy AUROC <0.85."
+    },
+    {
+      "id": "a17",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "h6",
+      "content": "Investigate OpenHeart-4 failures by comparing normal-score distributions with calibration and recomputing p4 FPR/AUROC under oracle contrast bins."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "a17",
+      "content": "OpenHeart-4 normal prototype-score median rose from calibration’s 0.31 to 0.49; oracle contrast bins left FPR 16% and AUROC 0.83."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "e12",
+      "content": "Revoke frozen-threshold adoption; revive drift-aware p4: CardioMRI-X AUROC 0.86/ρ=0.62 persisted despite OpenHeart-4 normal-score median shifting 0.31→0.49."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "l1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a4"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "a4",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "r2"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a6",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "revise",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "l2",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a9"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "r3"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a10",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "a10",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "e7",
+      "relation": "revive",
+      "target": "p1"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "e4",
+      "relation": "support",
+      "target": "d3"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e4"
+    },
+    {
+      "source": "l3",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "l3",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a11"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a12"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "r4"
+    },
+    {
+      "source": "r4",
+      "relation": "revise",
+      "target": "r3"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "r4"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "r4"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "h5",
+      "relation": "revise",
+      "target": "h2"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e9",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "l4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a14"
+    },
+    {
+      "source": "l4",
+      "relation": "decompose",
+      "target": "a16"
+    },
+    {
+      "source": "a14",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "r5"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "r5"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "r4"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r5"
+    },
+    {
+      "source": "a15",
+      "relation": "depend_on",
+      "target": "r4"
+    },
+    {
+      "source": "a15",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "d4"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "a16",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a16",
+      "relation": "depend_on",
+      "target": "d4"
+    },
+    {
+      "source": "a16",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "e11",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q5"
+    },
+    {
+      "source": "a17",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a17",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a17",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "a17",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "d5"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e12"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "d5",
+      "relation": "revise",
+      "target": "d4"
+    },
+    {
+      "source": "d5",
+      "relation": "revive",
+      "target": "p4"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop an image segmentation model that distinguishes genuine boundary ambiguity from unfamiliar anatomy under acquisition-domain shift.",
+    "requirements": [
+      "Achieve unfamiliar-anatomy detection AUROC ≥0.85 on held-out acquisition domains.",
+      "Achieve boundary-uncertainty Spearman correlation ≥0.6 with inter-annotator disagreement while matching a supervised baseline’s Dice."
+    ]
+  }
+}

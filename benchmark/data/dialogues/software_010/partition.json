@@ -1,0 +1,110 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Durable worker epoch fencing for safe quota-escrow transfers",
+      "boundary_reason": "The fault schedules support a decision to require durable fence acknowledgments; the next nodes implement and assess that decision."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10"
+      ],
+      "topic": "Migration test of fenced escrows and unaffected-tenant latency",
+      "boundary_reason": "PartitionMove finds no escrow overlap but p99 latency above the isolation target; the next discussion considers a different quota-safety mechanism."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Worker-enforced leases as an alternative partition-safety mechanism",
+      "boundary_reason": "The lease model check concludes; the next proposal turns to migration admission and latency."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Capped migration admission and audited unaffected-tenant latency",
+      "boundary_reason": "The audit supports adopting worker-local reservations and a 20% migration cap; the next plan begins adversarial soak testing."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Adversarial partition soak of the adopted migration cap",
+      "boundary_reason": "The soak report is produced; the next proposal shifts to lease renewal behavior during partition recovery."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Partition-recovery latency with synchronized and staggered lease renewals",
+      "boundary_reason": "Staggered renewals improve latency without quota overlap; the next proposal tests them alongside capped migrations."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Combined recovery with capped migrations, staggered renewals, and fenced escrows",
+      "boundary_reason": "The combined-recovery audit supports an adoption decision; the next proposal investigates a reserved renewal lane."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Reserved renewal lane for synchronized quota-sublease refreshes",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

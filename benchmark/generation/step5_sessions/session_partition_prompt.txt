@@ -1,0 +1,31 @@
+Divide the supplied instantiated graph into conversational sessions.
+A session is one coherent discussion about a local issue or stage of the task.
+
+INPUT
+{{INPUT_JSON}}
+
+The graph contains nodes with id, order, type, and content, plus directed relations.
+
+PARTITION
+Read nodes in ascending order. Move through this sequence from beginning to end, deciding where one discussion ends and the next begins.
+- Each session must contain a contiguous segment of the sequence. Include every node exactly once, including the goal in the first session. Never reorder nodes or regroup them by branch or topic.
+- Keep closely connected discussion together, such as a finding and its immediate interpretation or decision.
+- Prefer boundaries at a natural pause, a shift in discussion focus, or a transition from agreed work to a later report of its execution or results. Use content and relations together; no node type or relation automatically requires a boundary.
+- Later nodes may revisit, revise, refute, or revive earlier material. Keep them at their original positions. Relations may cross session boundaries; do not merge distant discussions merely because they concern the same object. Immediate corrections may stay within a session.
+- Let session lengths and the number of sessions follow the discussion. Avoid both unnecessary fragmentation and combining distinct discussions into one session; do not use a fixed node quota.
+
+Use only the supplied content. Do not invent elapsed time, events, or dialogue, or rewrite nodes. Describe each session using only information available by its end; do not reveal later outcomes in its topic.
+
+OUTPUT
+Return only JSON with this structure:
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": ["<node id>", "<next node id>"],
+      "topic": "<brief English discussion topic>",
+      "boundary_reason": "<brief reason for ending here, or End of graph>"
+    }
+  ]
+}
+Number sessions consecutively. Before returning, verify that concatenating all node_ids exactly reproduces the full node sequence sorted by order.

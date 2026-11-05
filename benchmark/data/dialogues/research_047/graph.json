@@ -1,0 +1,871 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a learned turbulence closure that captures bidirectional energy transfer and remains stable across unseen coarse-graining scales.",
+      "requirements": [
+        "Achieve below 10% energy-spectrum error against filtered direct numerical simulations at two unseen filter widths.",
+        "Maintain bounded kinetic energy and correct mean subgrid dissipation while reproducing intermittent backscatter."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a log-filter-width-conditioned equivariant closure combining mean-dissipation-calibrated eddy viscosity with energy-budget-capped stochastic backscatter."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should the backscatter energy cap scale with filter width to preserve extreme transfer events without destabilizing coarse-grid integration?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Δ²|S|³-scaled backscatter caps achieve ≥90% DNS top-decile event recall while keeping kinetic energy within 20% of DNS at unseen widths."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Fit on isotropic DNS at Δ=8η,12η; compare strain-scaled and fixed caps at held-out 10η,16η for backscatter recall and energy drift."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run a posteriori LES at 10η and 16η comparing Δ²|S|³ versus fixed caps; measure top-decile backscatter recall and kinetic-energy drift."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "At 10η/16η, strain-scaled recall was 74%/63% versus fixed-cap 69%/57%, missing 90% despite <12% energy drift."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "A vorticity-alignment multiplier on Δ²|S|³, constrained by global energy budget, yields ≥80% backscatter recall and <15% energy drift at 16η."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Ablate the vorticity-alignment multiplier in held-out 10η/16η LES; measure top-decile backscatter recall, kinetic-energy drift, and mean subgrid dissipation."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "At 10η/16η, alignment raised recall to 88%/82% (from 74%/63%), with 8%/11% energy drift and mean dissipation within 5% of DNS."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Replace recall-deficient strain-only caps with vorticity-aligned caps: held-out recall reaches ≥82% with ≤11% energy drift."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Benchmark adopted alignment against strain-only and fixed caps at 10η/16η; report backscatter recall, energy drift, and spectrum error."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Held-out LES benchmark report tabulates 10η/16η spectrum error, backscatter recall, and kinetic-energy drift for aligned, strain-only, and fixed caps."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Does vorticity alignment achieve <10% spectrum error at both unseen widths without sacrificing energy stability or backscatter recall?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use filter-width-conditioned differentiable deconvolution to reconstruct signed stresses, paired with Germano-calibrated viscosity and global kinetic-energy control."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Train deconvolution on 8η/12η DNS; benchmark 10η/16η LES against aligned caps for spectrum error, energy bounds, mean dissipation, and backscatter."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Using the benchmark report’s matched 10η/16η protocol, run deconvolution LES and compare spectra, energy drift, dissipation, and backscatter recall."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Matched-width LES comparison table records deconvolution versus aligned-cap spectrum error, energy drift, mean dissipation, and backscatter recall at 10η/16η."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Audit the matched-width LES table, comparing both closures’ 10η/16η spectrum errors against 10%, alongside energy drift, dissipation, and backscatter recall."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "At 10η/16η, deconvolution yielded 7%/8% spectrum error versus aligned-cap 11%/14%, ≤12% energy drift, ≤5% dissipation bias, ≥82% backscatter recall."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n13",
+      "content": "Stress-test deconvolution under 20% higher forcing at 10η/16η; check energy bounds, spectrum error, dissipation bias, and backscatter recall."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Under 20% stronger forcing, deconvolution’s 16η spectrum error rose to 19%, energy drift to 28%, dissipation bias to 22%."
+    },
+    {
+      "id": "n20",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Retain deconvolution for nominal forcing, but defer deployment until adaptive dissipation corrects 16η high-forcing energy drift and spectrum error."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 24,
+      "exploration_parent_id": "g1",
+      "content": "Blend deconvolution stresses with vorticity-aligned capped backscatter using a forcing-aware gate and enforce a discrete kinetic-energy inequality."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p3",
+      "content": "What forcing-normalized energy-budget threshold should activate aligned-cap blending at 16η without suppressing top-decile backscatter?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "Gate blending when domain-integrated backscatter exceeds 15% of running-mean forcing power; expect ≤15% energy drift and ≥80% recall at 16η."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "Sweep 10%–20% gate thresholds in 10η/16η high-forcing LES; measure energy drift, backscatter recall, and spectrum error."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "At 16η under 20% stronger forcing, the 15% gate held energy drift to 13% but backscatter recall fell to 72%."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Raise the gate to 20% of mean forcing power with selective eddy-viscosity compensation; predict ≤15% drift, ≥80% recall at 16η."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Run 10η/16η LES under 20% stronger forcing with 20% gate and selective viscosity; measure energy drift, top-decile recall, spectrum error."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Under 20% stronger forcing, the 20% gate yielded 10η/16η spectrum errors 7%/9%, energy drift 9%/14%, recall 86%/81%, dissipation bias 4%/6%."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Train a scale-equivariant wavelet flux network with signed interband transfers and mean-calibrated, budget-projected dissipation."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "p4",
+      "content": "Train on 8η/12η DNS; benchmark 10η/16η LES against gated blending under nominal and 20%-stronger forcing for spectra, stability, dissipation, backscatter."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n28",
+      "content": "Train the wavelet flux network on 8η/12η DNS and run 10η/16η LES under nominal and 20%-stronger forcing."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "WaveletFlux-v1 checkpoint and matched LES logs contain 10η/16η spectra, kinetic-energy traces, dissipation rates, and signed-transfer events for both forcings."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n28",
+      "content": "Compare WaveletFlux-v1 logs against gated blending at 10η/16η under both forcings: spectrum error, energy drift, dissipation bias, backscatter recall."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "At 16η under stronger forcing, WaveletFlux-v1 had 16% spectrum error versus gated blending’s 9%, despite 12% energy drift."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Couple scale-conditioned neural stress to a nonnegative subgrid-energy reservoir; fund backscatter from stored energy and calibrate mean dissipation."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p5",
+      "content": "Which filter-width-dependent reservoir turnover time preserves 16η high-forcing backscatter bursts without biasing mean subgrid dissipation?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n33",
+      "content": "A reservoir turnover time τ=0.6Δ/√k_sgs yields ≥80% backscatter recall, ≤5% dissipation bias, and ≤15% energy drift at high-forcing 16η."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Run 16η LES under 20%-stronger forcing with τ coefficients 0.3, 0.6, 1.0; measure backscatter recall, dissipation bias, energy drift."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "At high-forcing 16η, τ=0.6Δ/√k_sgs achieved 84% recall, 4% dissipation bias, and 11% energy drift."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "p5",
+      "content": "Benchmark reservoir, gated blending, and deconvolution at 10η/16η under both forcings; compare spectrum error, energy drift, dissipation bias, backscatter recall."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n37",
+      "content": "At high-forcing 16η, deconvolution/gated/reservoir spectrum errors were 19%/9%/8% and energy drifts 28%/14%/11%; gated/reservoir backscatter recall reached 81%/84%."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "n38",
+      "content": "Does the reservoir’s 16η advantage persist at 10η and nominal forcing, or does limited stored energy suppress backscatter?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "At nominal forcing, the reservoir achieves <10% spectrum error and ≥80% backscatter recall at 10η/16η, with <5% reservoir-empty cells."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n40",
+      "content": "Compare reservoir and gated blending in nominal 10η/16η LES; measure spectrum error, backscatter recall, reservoir-empty fraction, and energy drift."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "Nominal 10η/16η: reservoir spectrum error 7%/8%, recall 86%/82%, empty cells 3%/4%; gated blending error 11%/12%."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "p5",
+      "content": "Advance the reservoir closure to independent-seed validation at 10η/16η under both forcings; check spectra, energy bounds, dissipation, backscatter."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "Run three independent-seed reservoir LES at 10η/16η under both forcings; compare DNS spectra, energy bounds, mean dissipation, and backscatter recall."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n44",
+      "content": "Three-seed 10η/16η LES: spectrum error 7–9% under both forcings, energy drift ≤13%, dissipation bias ≤5%, backscatter recall ≥81%."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Select reservoir over gated blending and deconvolution: three-seed spectrum error ≤9%, energy drift ≤13%, dissipation bias ≤5%, recall ≥81%."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n43",
+      "content": "Using the selected reservoir and benchmark report, run long-horizon 10η/16η LES assessing spectrum error, energy bounds, dissipation, and backscatter."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Reservoir long-horizon validation package contains 10η/16η LES trajectories, filtered-DNS spectra, kinetic-energy bounds, dissipation statistics, and backscatter-event counts."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "revise",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a learned turbulence closure that captures bidirectional energy transfer and remains stable across unseen coarse-graining scales.",
+    "requirements": [
+      "Achieve below 10% energy-spectrum error against filtered direct numerical simulations at two unseen filter widths.",
+      "Maintain bounded kinetic energy and correct mean subgrid dissipation while reproducing intermittent backscatter."
+    ]
+  }
+}

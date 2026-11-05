@@ -1,0 +1,135 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Initial driver isolation approach, FaultBench-1 results, and implementation plan",
+      "boundary_reason": "The approach is adopted for implementation, pending worst-case response-time certification."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "DomainGuard v1 implementation and shared-fabric blocking",
+      "boundary_reason": "Measured blocking and deadline misses challenge the initial timing hypothesis."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "DomainGuard v2 revocation and concurrent-recovery testing",
+      "boundary_reason": "Four concurrent restarts exceed certified invalidation slack despite successful DMA quarantine."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Serialized invalidations and quarantine exhaustion in DomainGuard v3",
+      "boundary_reason": "Delayed-PCIe stress exposes allocator contention and deadline misses."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Quarantine-pool isolation and remaining PCIe drain interference",
+      "boundary_reason": "The decision retains successful safeguards but withholds v4 certification pending a PCIe interference bound."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p2",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "PCIe-root partitioning and initial cross-root blocking tests",
+      "boundary_reason": "RootSplit-4 supports the proposed reservations, leading to an integration stage."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "DomainGuard–RootSplit integration and saturation stress",
+      "boundary_reason": "Saturation stress reveals deadline misses despite the integrated test’s favorable result."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Controller service slots, queued resets, and DRAM-refresh interference",
+      "boundary_reason": "The decision defers certification until refresh blocking is bounded."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p3",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Separate DRAM controllers and isolation of coherence snoops",
+      "boundary_reason": "Tests support adopting isolated snoops and noncoherent DMA for the subsequent integration."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "SplitGuard integration, four-crash verification, and adoption",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

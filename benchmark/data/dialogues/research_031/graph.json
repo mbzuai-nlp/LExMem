@@ -1,0 +1,892 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Characterize when staggered policy effects remain partially identifiable under network spillovers and bounded unmeasured adoption confounding.",
+      "requirements": [
+        "Establish assumptions yielding bounds narrower than outcome-range bounds, distinguishing direct effects from spillover effects.",
+        "Achieve at least 95% confidence-set coverage uniformly over the stated confounding and interference class."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use exposure-mapped linear programs under overlap and Γ-bounded adoption odds to separate direct/spillover bounds; invert uniformly calibrated 95% tests."
+    },
+    {
+      "id": "n1",
+      "type": "hypothesis",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "With Y∈[0,1], four-cell exposure overlap ≥0.1 and Γ≤1.5, direct and neighbor-spillover bounds each narrow [−1,1]."
+    },
+    {
+      "id": "n2",
+      "type": "activity",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Simulate 10,000 staggered-network panels (Γ≤1.5, overlap≥0.1); compare direct/spillover bound widths against 2 and record minimum confidence-set coverage."
+    },
+    {
+      "id": "n3",
+      "type": "evidence",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Across 10,000 panels, median direct/spillover bound widths were 1.31/1.57 versus 2; lowest grid-specific empirical coverage was 95.2%."
+    },
+    {
+      "id": "n4",
+      "type": "question",
+      "order": 6,
+      "exploration_parent_id": "n1",
+      "content": "How can test inversion guarantee 95% coverage across continuous Γ≤1.5 adoption mechanisms, beyond the simulated parameter grid?"
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Use n3’s worst-covered cells to seed adaptive partitions; derive cellwise worst-case critical values and off-grid corrections for uniform 95% coverage."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Implement interval-arithmetic branch-and-bound to upper-bound rejection probabilities over continuous Γ≤1.5 adoption laws, allocating 0.025 error per effect."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "UniformCert v1 exports interval-certified 0.025 per-effect rejection bounds across continuous Γ≤1.5 adoption laws and specified exposure-mapped networks."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Audit UniformCert v1 via exact small-network enumeration and off-grid laws, checking 0.025 rejection certificates and 95% joint coverage."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On 6–10-node networks, exact enumeration corroborated UniformCert v1’s worst-case rejection bounds of ≤0.025 per effect, implying ≥95% joint coverage."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "p1",
+      "content": "Benchmark clustered and hub-dominated networks at overlap 0.05–0.3, recording separate direct/spillover bound widths and confidence-set coverage."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "In 100-node hub networks (overlap 0.1, Γ=1.5), correlated adoption yielded 91.4% joint coverage despite certified 95%."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Which restrictions on correlated adoption restore ≥95% joint coverage in hub networks without widening direct and spillover bounds to [−1,1]?"
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Extend n9’s certificates given n11’s failure: assume independent hub-block shocks, Γ-bounded adoption; certify 95% joint coverage and sub-2 direct/spillover widths."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Implement block-factorized worst-case calibration; benchmark 100-node hub panels under independent versus shared block shocks, measuring joint coverage and direct/spillover widths."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "HubBlockCert v2 contains block-factorized calibration, independent-block shock specifications, and reproducible direct/spillover width and joint-coverage benchmarks."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Combine Γ-sensitive difference-in-differences and bounded trend violations with independent-block test inversion for joint 95% direct/spillover bounds."
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Under independent hub-block shocks, Γ≤1.5, and ≤0.1 trend drift, sensitivity-DiD yields ≥95% joint coverage and sub-2 direct/spillover widths."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Using HubBlockCert v2, simulate 10,000 independent-block hub panels and certify worst-case joint coverage and direct/spillover widths across Γ≤1.5, drift≤0.1."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "HubBlockCert v2 certified ≥95% joint coverage uniformly over Γ≤1.5, drift≤0.1; 10,000 independent-block panels had maximal direct/spillover widths 1.82/1.91."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Using HubBlockCert v2, vary cross-block shock correlation (ρ=0–0.2) at Γ=1.5, drift=0.1; measure joint coverage and direct/spillover widths."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "At ρ=0, within-block correlated adoption (Γ=1.5, drift=0.1) yielded 93.8% joint coverage despite independent block shocks."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Does HubBlockCert v2 bound within-block joint adoption dependence or only individual odds, explaining the 93.8% coverage failure?"
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Reconcile n18’s certificate with n20’s failure by auditing within-block adoption likelihoods, then impose a joint Γ-block cap and recertify."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Reproduce n18/n20 at ρ=0; enumerate within-block adoption laws under marginal versus joint Γ≤1.5 caps, recalculating worst-case joint coverage."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Exact enumeration at ρ=0: marginal Γ≤1.5 permits within-block adoption dependence and 93.8% coverage; a joint cap restores ≥95%."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n21",
+      "content": "With joint block-adoption likelihood ratios ≤1.5, independent blocks, overlap≥0.1, and drift≤0.1, sensitivity-DiD attains ≥95% joint coverage and sub-2 direct/spillover widths."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Extend n24’s enumeration to certify ≥95% joint coverage and sub-2 direct/spillover widths uniformly under joint Γ≤1.5, independent blocks, overlap≥0.1, drift≤0.1."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Certified ≥95% joint coverage and maximal direct/spillover widths of 1.88/1.95 uniformly over independent blocks, joint Γ≤1.5, overlap≥0.1, drift≤0.1."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "p2",
+      "content": "Adopt joint Γ≤1.5 block caps: marginal calibration yielded 93.8% coverage despite initial certification; revised bounds certify ≥95%, widths 1.88/1.95."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Use relevant randomized rollout instruments for direct/spillover effects; bound exclusion violations and invert Bonferroni tests for joint 95% coverage."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "Randomized own/neighbor instruments (singular value ≥0.2, exclusion bias ≤0.05) yield sub-2 direct/spillover bounds and ≥95% joint coverage despite correlated adoption."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Invert randomization tests in 10,000 hub-network rollouts; evaluate joint coverage and direct/spillover widths under correlated adoption, strength≥0.2, bias≤0.05."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Across 10,000 correlated-adoption hub rollouts, minimum scenario joint coverage was 95.3%; median direct/spillover widths were 1.42/1.68 versus 2."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "p3",
+      "content": "Enumerate 8-node randomized rollouts near instrument strength 0.2; maximize joint rejection over correlated adoption and exclusion bias ≤0.05."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "At strength 0.2 and bias 0.05, exact enumeration found 92.4% joint coverage; point-null inversion ignored composite exposure uncertainty."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Can composite-null randomization tests account for exposure uncertainty while retaining ≥95% joint coverage and sub-2 bounds at instrument strength 0.2?"
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Reconcile n31/n33: maximize composite-null randomization p-values over exposures and bias≤0.05; Bonferroni-invert, certify 95% coverage, assess widths at strength≥0.2."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Reanalyze n31/n33 with composite-null exposure and bias≤0.05 maximization; measure direct/spillover widths and certify joint coverage at strength≥0.2."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "At strength 0.2, composite-null inversion certified ≥95% joint coverage, but direct/spillover widths reached 1.76/2.00, losing spillover identification."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "p3",
+      "content": "Defer rollout-IV at strength 0.2: simulated 95.3% coverage masked 92.4% exact coverage; corrected spillover width equals 2."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 43,
+      "exploration_parent_id": "g1",
+      "content": "Require rollout-IV strength≥0.35 and exclusion bias≤0.05; invert worst-case composite-null randomization tests for separate direct/spillover bounds with uniform 95% coverage."
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "p4",
+      "content": "At strength≥0.35 and exclusion bias≤0.05, composite-null inversion yields sub-2 direct/spillover widths and uniform ≥95% joint coverage under correlated adoption."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Certify worst-case joint rejection and maximal direct/spillover widths via composite-null enumeration over correlated adoption and exposure mappings, strength≥0.35, bias≤0.05."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Composite-null enumeration certified ≤5% joint rejection and maximal direct/spillover widths 1.72/1.94 under correlated adoption, strength≥0.35, bias≤0.05."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Extend n41’s certificates cohortwise; report direct/spillover bounds only where instrument strength≥0.35 and worst-case joint rejection≤5%."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Implement cohort-stratified composite-null inversion with 0.05/(2K) tests across K rollout cohorts, auditing strength≥0.35 and direct/spillover widths."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "CohortIVCert v1 outputs cohort-specific direct/spillover intervals, ≥0.35 strength flags, width diagnostics, and Bonferroni 95% joint-coverage certificates."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Audit CohortIVCert v1 across four staggered cohorts: enumerate correlated-adoption laws, verify joint coverage certificates, strength flags, and direct/spillover widths."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Four-cohort enumeration certified ≥95% joint coverage under admissible correlated adoption; maximal direct/spillover widths were 1.89/1.98, with strengths≥0.35."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "Adopt strength≥0.35 cohortwise rollout-IV: n41/n46 certify ≥95% joint coverage and sub-2 direct/spillover widths despite correlated adoption."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "evaluate",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "produce",
+      "target": "n3"
+    },
+    {
+      "source": "n3",
+      "relation": "support",
+      "target": "n1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "depend_on",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "revise",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Characterize when staggered policy effects remain partially identifiable under network spillovers and bounded unmeasured adoption confounding.",
+    "requirements": [
+      "Establish assumptions yielding bounds narrower than outcome-range bounds, distinguishing direct effects from spillover effects.",
+      "Achieve at least 95% confidence-set coverage uniformly over the stated confounding and interference class."
+    ]
+  }
+}

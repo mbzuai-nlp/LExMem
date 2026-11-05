@@ -1,0 +1,1001 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a persistent-memory transactional index combining serializable concurrency, crash-safe memory reclamation, and recovery independent of total index size.",
+      "requirements": [
+        "Recover after every injected persistence-boundary crash without losing acknowledged commits or resurrecting reclaimed records.",
+        "Recovery reads at most 64 MiB per 100 GiB index, independent of completed transaction count."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use serializable optimistic validation, copy-on-write roots, dual 8 MiB commit manifests, and lazily loaded generation-tagged free maps."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can manifest publication atomically link committed roots to free-map generations across crashes without scanning historical transactions?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Flushing root/free-map generations before publishing a checksummed inactive manifest preserves acknowledged commits without resurrection, using ≤16 MiB recovery reads."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Run BoundaryCrash-1 on 100 GiB images, crashing after each root, free-map, and manifest flush; verify commits, reclamation, recovery bytes."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "BoundaryCrash-1: 12,480 crashes caused zero lost acknowledged commits or resurrected records; recovery read at most 16 MiB per 100 GiB."
+    },
+    {
+      "id": "n7",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Adopt ordered root/free-map flushes and checksummed inactive-manifest publication; BoundaryCrash-1 verified crash safety with 16 MiB recovery reads."
+    },
+    {
+      "id": "n8",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Implement adopted manifest publication with predicate-version validation and epoch-gated reclamation; crash-test 10 million transactions against the 64 MiB recovery cap."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Build IndexProto-1 with dual-manifest publication, predicate-version validation, and epoch-gated reclamation; inject crashes during 10 million transactions."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "IndexProto-1 contains predicate-versioned transactions, copy-on-write roots, epoch-gated free maps, dual-manifest commits, and a 10-million-transaction crash-injection harness."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Fault IndexProto-1 at every flush across 10 million transactions; check serializability, acknowledged commits, freed-record absence, and recovery reads."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "IndexProto-1’s 10-million-transaction fault run found zero serializability violations, lost acknowledged commits, or resurrected records; recovery read ≤16 MiB/100 GiB."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n3",
+      "content": "An aligned 8-byte durable selector to an immutable root/free-map capsule permits ≤8 KiB recovery reads without history scans."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Test selector publication in SelectorCrash-1, crashing at each flush across 10 million transactions; measure recovery bytes and reclamation safety."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "SelectorCrash-1 found two stale-pointer resurrections without generation scans; preventing them required 24 MiB recovery reads, exceeding 8 KiB."
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "A durable selector plus generation-stamped pointers and free-map summaries prevents resurrection without history scans, reading ≤32 MiB."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Rerun SelectorCrash-1 with generation-stamped pointers and free-map summaries, checking stale-pointer resurrection and recovery reads against 32 MiB."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "SelectorCrash-1 retest found zero resurrected records or lost acknowledged commits across 10 million transactions; summary-only recovery read 28 MiB/100 GiB."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "p1",
+      "content": "How does optimistic validation detect range-scan phantoms across copy-on-write leaf splits without scanning the entire index?"
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Add fence-interval version stamps to scans, validate under the commit latch, then test concurrent inserts and splits for phantoms."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Run PhantomSplit-1 with 32 concurrent scanners and inserters, forcing leaf splits; compare committed histories against a serializability oracle."
+    },
+    {
+      "id": "n22",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "PhantomSplit-1 bundle contains 32-worker leaf-split schedules, fence-version validation traces, committed histories, and serializability-oracle reports."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n21",
+      "content": "PhantomSplit-1 checked 2 million committed transactions under 32 workers: zero serializability violations; validation read no unrelated leaves."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 24,
+      "exploration_parent_id": "g1",
+      "content": "Use strict two-phase predicate locks, shadow-paged roots, and a 16 MiB double-buffered allocation directory with epoch-quarantined reuse."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "How can the bounded allocation directory track epoch-quarantined reuse through sustained churn without replaying completed transactions?"
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Publishing quarantine-ring checkpoints with shadow roots before slot reuse should keep recovery ≤32 MiB/100 GiB after 100 million transactions."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Extend PhantomSplit-1 schedules to 100 million split/delete/reuse transactions; crash at checkpoint and reuse flushes, checking resurrection and ≤32 MiB recovery."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Extended PhantomSplit-1: 100 million transactions yielded zero resurrections or lost acknowledged commits; worst-case recovery read 32 MiB/100 GiB."
+    },
+    {
+      "id": "n29",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Choose checkpointed quarantine-ring reclamation for high churn: 100-million-transaction coverage at 32 MiB outweighs selector’s 28 MiB over 10 million."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Implement chosen quarantine-ring checkpoint rollover in the 16 MiB directory; test billion-transaction churn for safe reuse and ≤32 MiB recovery."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Run RingChurn-1 for one billion delete/reuse transactions, crashing at rollover flushes and measuring resurrection count and recovery bytes."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "RingChurn-1 bundle records billion-transaction delete/reuse histories, rollover crash images, reclaimed-slot checks, and recovery-read measurements."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Audit RingChurn-1 crash images and replay its histories on IndexProto-1; compare commit loss, resurrections, serializability, and recovery reads."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Billion-transaction RingChurn-1: both designs had zero lost commits, resurrections, or serializability failures; p2 read 32 MiB/100 GiB."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Replay PhantomSplit-1’s 32-worker schedules through billion-transaction churn, comparing p2 checkpoint rollover with p1 reclamation for reuse safety and recovery reads."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Combined PhantomSplit-1/churn replay exposed 17 p2 phantom commits during leaf splits despite predicate locks; p1 had zero."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Select p1: p2 passed churn recovery but produced 17 split phantoms; p1 had zero violations and 16 MiB/100 GiB recovery."
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "p2",
+      "content": "Per-extent epoch-stamped quarantine bitmaps checkpointed with shadow roots prevent resurrection through one billion reuses with ≤32 MiB recovery reads."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Run BitmapCrash-1 across one billion reuse operations, injecting crashes at bitmap and root checkpoints; measure resurrections and recovery reads."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "BitmapCrash-1’s billion-reuse run found three reclaimed-slot resurrections; bitmap replay prevented them but raised recovery reads to 48 MiB/100 GiB."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Which bitmap checkpoint ordering prevents the three reclaimed-slot resurrections without requiring 48 MiB of replay?"
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Test bitmap-before-root persistence and post-checkpoint reuse on BitmapCrash-1’s three failing schedules; measure resurrections and ≤32 MiB recovery."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Bitmap-before-root flushes and post-checkpoint reuse eliminated all three resurrections; recovery read 30 MiB/100 GiB on those schedules."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Combine fence-version validation with bitmap-before-root checkpoints, post-checkpoint reuse, and dual 24 MiB extent directories."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p3",
+      "content": "Implement p3; crash-test billion-transaction split/reuse workloads at every flush, checking serializability, acknowledged commits, resurrection, and ≤64 MiB/100 GiB recovery."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Integrate PhantomSplit-1 schedules into P3Crash-1; crash billion-transaction split/reuse runs at every bitmap, root, and directory flush."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "P3Crash-1 contains billion-transaction split/reuse histories, persistence-boundary crash images, serializability traces, reclaimed-slot checks, and recovery-byte logs."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Audit P3Crash-1 for lost commits, serializability violations, and resurrections; verify ≤64 MiB/100 GiB recovery after million and billion transactions."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "P3Crash-1: zero acknowledged-commit losses, resurrections, or serializability violations over one billion transactions; recovery read ≤48 MiB/100 GiB at both scales."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Adopt p3: fence-version validation avoids split phantoms, while billion-transaction crash tests show zero failures and ≤48 MiB/100 GiB recovery."
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Replace exploratory testing with release hardening: enforce root-publication acknowledgement barriers, verify directory rollover, and document 48 MiB recovery bound."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Run ReleaseGate-1 across acknowledgement and directory-rollover flushes; audit published-root barriers, reclaimed slots, and recovery-read limits."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "ReleaseGate-1 extends P3Crash-1 with acknowledgement-barrier and directory-rollover crash images, reclaimed-slot audits, and recovery-byte logs."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n45",
+      "content": "Run ScaleCrash-1 on 100 GiB and 1 TiB p3 indexes; crash rollovers after million/billion commits, measuring recovery reads."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "ScaleCrash-1: 1 TiB recovery rose from 480 to 768 MiB across million/billion commits, exceeding 64 MiB/100 GiB."
+    },
+    {
+      "id": "n56",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Checkpoint rollover deltas into per-extent directories before root publication, keeping 1 TiB recovery ≤480 MiB after billion commits."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Extend ReleaseGate-1 with prepublication rollover-delta checkpoints; crash 1 TiB indexes after billion commits, checking reclamation and ≤480 MiB recovery."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Extended ReleaseGate-1: zero lost commits or resurrections after billion commits; 1 TiB recovery read 472 MiB with prepublication checkpoints."
+    },
+    {
+      "id": "n59",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Reinstate p3 with prepublication rollover checkpoints: billion-commit recovery read 472 MiB/1 TiB without lost commits or resurrections."
+    },
+    {
+      "id": "n60",
+      "type": "question",
+      "order": 60,
+      "exploration_parent_id": "p3",
+      "content": "How do dual extent directories identify the latest complete bitmap checkpoint after a crash interrupts rollover?"
+    },
+    {
+      "id": "n61",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "CRC-protected generation headers and an atomic root epoch select the newest complete directory, discarding interrupted rollover checkpoints."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Extend ReleaseGate-1 with crashes at CRC-header and root-epoch flushes; verify complete-directory selection, acknowledged commits, and reclaimed-slot absence."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "ReleaseGate-1 CRC/epoch crashes selected the latest complete directory in 8,192 cases, with zero lost commits or resurrections."
+    },
+    {
+      "id": "n64",
+      "type": "decision",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Finalize reinstated p3 with CRC/epoch directory selection: 8,192 rollover crashes passed, 472 MiB/1 TiB recovery, versus p2’s 17 phantoms."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "revive",
+      "target": "n38"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n45"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "revise",
+      "target": "n47"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "revive",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n59"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a persistent-memory transactional index combining serializable concurrency, crash-safe memory reclamation, and recovery independent of total index size.",
+    "requirements": [
+      "Recover after every injected persistence-boundary crash without losing acknowledged commits or resurrecting reclaimed records.",
+      "Recovery reads at most 64 MiB per 100 GiB index, independent of completed transaction count."
+    ]
+  }
+}

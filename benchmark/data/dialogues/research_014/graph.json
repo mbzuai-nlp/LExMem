@@ -1,0 +1,796 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop streaming speaker diarization that preserves speaker identities through overlap and long absences without revising committed labels.",
+      "requirements": [
+        "Achieve 15% lower overlap-inclusive diarization error than an equally latency-constrained baseline on held-out conversational audio.",
+        "Commit labels within 500 milliseconds while handling unseen speakers without a known speaker count."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use causal multi-label embeddings, persistent speaker prototypes, and novelty-gated slots; commit overlap-aware assignments every 400 ms without revision."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can novelty-gated persistent prototypes distinguish returning speakers after 20-minute absences from unseen speakers during overlap within 400 ms?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "On held-out 20-minute-gap overlap segments, novelty-gated prototypes achieve ≥85% returning-speaker recall and ≤10% unseen-speaker false matches within 400 ms."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Build held-out GapOverlap-20 with 20-minute absences and unseen arrivals during overlap; measure return recall and false matches at 400 ms."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "On GapOverlap-20, 400-ms assignments reached 87% returning-speaker recall and 8% unseen-speaker false matches during overlap after 20-minute absences."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Retain novelty-gated persistent prototypes for streaming trials; GapOverlap-20 meets both identity thresholds at 400 ms."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Integrate retained prototypes with causal overlap decoding; compare held-out overlap-inclusive DER against a 400-ms baseline, auditing irreversible unseen-speaker assignments."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Benchmark the prototype decoder and 400-ms baseline on held-out CallMix-Overlap; log overlap-inclusive DER, commit latency, revisions, and unseen-speaker assignments."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "CallMix-Overlap report records prototype versus baseline overlap-inclusive DER of 20.0% versus 24.0%, 400-ms commits, zero revisions, and unseen-speaker assignment logs."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "On GapOverlap-20, simultaneous-onset overlap reduced returning-speaker recall to 79% versus 87% overall at 400 ms."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "Novelty-gated prototypes retain ≥85% returning-speaker recall during simultaneous-onset overlap after 20-minute absences with 400-ms assignments."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Derive coarrival error strata from CallMix-Overlap report logs; measure 400-ms returning-speaker recall across GapOverlap-20 simultaneous-onset strata."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "CallMix-Overlap-guided GapOverlap-20 analysis found 74% returning-speaker recall for onset gaps under 100 ms at 400-ms commits, below 85%."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p1",
+      "content": "Train a causal two-source separator for sub-100-ms coarrivals; gate prototype updates and retest 400-ms recall and overlap-inclusive DER."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Train a causal two-source separator on sub-100-ms coarrivals; test gated-prototype recall on GapOverlap-20 and DER on CallMix-Overlap at 400 ms."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Gated Separator-v2 checkpoint and report record 86% sub-100-ms return recall and 19.2% CallMix-Overlap overlap-inclusive DER at 400 ms."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Audit Separator-v2 on GapOverlap-20 sub-100-ms coarrivals after 20-minute absences; measure return recall and unseen-speaker false matches at 400 ms."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Use a causal Bayesian speaker-state filter with dormant identity priors, open-set birth moves, and multi-speaker likelihoods for irreversible 450-ms labeling."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "How should the filter calibrate dormant-speaker versus new-speaker posterior odds during overlap without inflating false births at 450 ms?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Duration-conditioned dormant-to-birth odds yield ≥85% returning-speaker recall and ≤5% false births on GapOverlap-20 overlaps at 450 ms."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Fit duration-conditioned odds from CallMix-Overlap report logs; measure 450-ms returning-speaker recall and false births on GapOverlap-20 overlaps."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On GapOverlap-20 overlaps, duration-conditioned odds achieved 88% returning-speaker recall and 4% false births with 450-ms commits."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Using GapOverlap-20-validated odds and CallMix-Overlap baseline logs, test 450-ms return recall and false births across withheld overlap sessions."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "On withheld GapOverlap-20 overlap sessions, 450-ms commits yielded 81% returning-speaker recall and 7% false births, missing both thresholds."
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n17",
+      "content": "Adding separation-confidence calibration to dormant-birth odds yields ≥85% return recall and ≤5% false births on withheld GapOverlap-20 at 450 ms."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Combine CallMix-Overlap baseline logs, original GapOverlap-20 odds, and withheld-session errors; test confidence-calibrated recall and false births on fresh 450-ms overlaps."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "On fresh GapOverlap-20 overlap sessions, confidence-calibrated odds achieved 86% returning-speaker recall and 4.5% false births at 450 ms."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Advance calibrated odds to DER trials: duration-only odds passed initial validation but failed withheld sessions; calibration passed fresh sessions."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Compare calibrated filter with a 450-ms baseline on held-out CallMix-Overlap; require ≥15% lower overlap-inclusive DER, zero revisions, unrestricted speaker births."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Run calibrated filter and equal-latency baseline on held-out CallMix-Overlap; log overlap-inclusive DER, birth counts, 450-ms commits, and label revisions."
+    },
+    {
+      "id": "n29",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "CallMix-Overlap benchmark report records 19.6% versus 23.5% overlap-inclusive DER, 450-ms commits, zero revisions, and unrestricted speaker births."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Train a recurrent speaker-slot transformer with gap-replay contrastive loss and open-set slot spawning, committing multi-label frames after 480 ms."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Can gap-replay contrastive training prevent dormant slot swaps when returning and unseen speakers overlap at 480-ms commits?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Gap-replay training reduces dormant slot swaps by ≥30% versus standard slot training on GapOverlap-20 return-and-unseen overlaps at 480 ms."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Reuse the filter’s CallMix-Overlap scoring protocol; compare gap-replay against standard slots for GapOverlap-20 swaps at 480 ms."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "On GapOverlap-20 return-and-unseen overlaps, gap-replay cut dormant slot-swap rate from 12.0% to 7.8% at 480 ms."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Replicate the GapOverlap-20 slot-swap comparison on withheld sessions at 480 ms, using gap-replay training and the CallMix-Overlap scoring protocol."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "On withheld GapOverlap-20 sessions, gap-replay reduced slot swaps from 11.5% to 9.2% at 480 ms, only 20% lower."
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n30",
+      "content": "Coarrival-focused hard-negative gap replay reduces dormant slot swaps by ≥30% versus standard training on withheld GapOverlap-20 at 480 ms."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Use CallMix-Overlap scoring and swap analyses to train coarrival negatives; compare fresh GapOverlap-20 swaps against standard slots at 480 ms."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "On fresh GapOverlap-20 sessions, hard-negative replay reduced dormant slot swaps from 11.0% to 7.1% at 480 ms, a 35% reduction."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Advance hard-negative replay to DER testing: ordinary replay’s initial 35% gain fell to 20% withheld; hard negatives achieved 35% fresh."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "p3",
+      "content": "Benchmark hard-negative slots against an equal-latency baseline on held-out CallMix-Overlap; require ≥15% lower overlap-inclusive DER and revision-free 480-ms commits."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Reuse the CallMix-Overlap report’s scoring protocol; run hard-negative slots and a 480-ms baseline, recording overlap-inclusive DER, revisions, and speaker births."
+    },
+    {
+      "id": "n42",
+      "type": "artifact",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "CallMix-Overlap report records 19.4% versus 23.3% overlap-inclusive DER, 480-ms commits, zero revisions, and open-set speaker births."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Using initial, withheld, and hard-negative swap findings, stratify CallMix-Overlap report errors by return–unseen overlap; recompute DER and slot-swap rates."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "On CallMix-Overlap return–unseen overlaps, hard-negative slots yielded 25.1% versus 31.8% overlap-inclusive DER and 7.3% versus 11.4% slot swaps."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Keep hard-negative slots as the deployment candidate: return–unseen overlap DER fell 21%, corroborating the earlier swap-based decision."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "revise",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n39"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop streaming speaker diarization that preserves speaker identities through overlap and long absences without revising committed labels.",
+    "requirements": [
+      "Achieve 15% lower overlap-inclusive diarization error than an equally latency-constrained baseline on held-out conversational audio.",
+      "Commit labels within 500 milliseconds while handling unseen speakers without a known speaker count."
+    ]
+  }
+}

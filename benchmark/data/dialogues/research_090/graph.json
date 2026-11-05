@@ -1,0 +1,975 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop offline policy improvement certificates that remain valid under bounded hidden confounding without requiring full action coverage.",
+      "requirements": [
+        "Certificates attain at least 95% coverage of true policy gains under the stated confounding bound.",
+        "Certify strictly positive gains over the behavior policy in a nontrivial, explicitly characterized regime."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Develop overlap-gated contextual-bandit policies with Γ-constrained propensity-weight gain bounds and 95% holdout intervals; certify only positive lower bounds."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Under Γ=1.5, how large must overlap-region reward margins be for a 95% lower gain bound to exceed zero?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "At Γ=1.5, targeted-action propensity ≥0.1 and sensitivity-adjusted margin ≥0.15 yield positive certificates in ≥80% of 5,000-sample trials."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Simulate 1,000 confounded 5,000-sample bandits at Γ=1.5; vary overlap and margins, measuring gain coverage and positive-certificate rates."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run 1,000 5,000-sample Γ=1.5 bandit replicates with unavailable actions; sweep propensities and margins, measuring gain coverage and certification rates."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "In 1,000 Γ=1.5 5,000-sample replicates, true-gain coverage reached 96.2%; propensity ≥0.1 and adjusted margin ≥0.15 yielded 84% positive certificates."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Advance overlap-gated Γ=1.5 certificates to benchmark validation; simulated 96.2% coverage and 84% high-margin certification justify progression."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "ConfoundBandit-v1: reproducible 1,000-replicate simulation suite with Γ=1.5 sensitivity settings, coverage tables, and propensity-margin certification curves."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Using ConfoundBandit-v1, simulate 1,000 held-out 5,000-sample Γ=1.5 bandits near propensity 0.1/margin 0.15; test ≥95% coverage and ≥80% certification."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Across 1,000 held-out replicates, coverage was 95.8%, but propensity ≥0.1 and adjusted margin ≥0.15 yielded only 63% positive certificates."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "At Γ=1.5, propensity ≥0.2 and adjusted margin ≥0.20 yield ≥80% positive certificates at 5,000 samples, retaining ≥95% coverage."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Run 1,000 independent ConfoundBandit-v1 trials (n=5,000; Γ=1.5) with unavailable actions; test ≥95% coverage and ≥80% certification at revised thresholds."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Independent Γ=1.5 trials achieved 95.6% true-gain coverage and 87% positive certificates at propensity ≥0.2, adjusted margin ≥0.20."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Develop Γ-robust Bellman advantage certificates with simultaneous 95% intervals; switch only at supported state–action pairs, otherwise retain behavior."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "What occupancy-shift bound lets locally positive Γ-robust Bellman advantages certify global improvement despite unsupported state–action pairs?"
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Derive Γ-robust performance-difference bounds under state-occupancy ratio caps; test 95% coverage and positive certification on sparse-action MDPs."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Extend ConfoundBandit-v1 to sparse-action MDPs; compare overlap-gated and occupancy-capped Bellman certificates at Γ=1.5 for coverage and positive-certification rates."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "At Γ=1.5, overlap-gated coverage was 91% on sparse-action bandits; occupancy-capped Bellman coverage was 96% on sparse-action MDPs, certifying 73%."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n14",
+      "content": "Reanalyze n16's sparse-action MDP trials; sweep occupancy-ratio caps 1.2–3.0 and measure Bellman-certificate coverage and positive-certification rates."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "OccupancyCap-v1: reproducible cap 1.2–3.0 sweep tables and Γ=1.5 Bellman-certificate coverage and positive-certification curves."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Audit OccupancyCap-v1 on 1,000 held-out Γ=1.5 sparse-action MDPs, checking occupancy-cap validity, gain coverage, and positive-certification rates."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "At Γ=1.5 and occupancy cap 2.0, 1,000 held-out MDPs showed 95.8% gain coverage, 71% positive certification, and 99% cap validity."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Retain overlap-gated certificates for high-margin bandits; prioritize occupancy-capped Bellman certificates for sparse MDPs, conditional on verified caps."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Use randomized encouragement to certify Γ-robust policy gains in supported strata, retaining behavior elsewhere and requiring no action coverage."
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "At n=5,000, valid encouragement with ≥20% compliance yields ≥95% gain coverage and certifies positive gains for Γ=1.5-adjusted margins ≥0.2."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "When does an encouragement-based complier effect lower-bound policy gain across all patients in supported strata?"
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Extend ConfoundBandit-v1 with randomized encouragement; vary compliance and noncomplier effects, testing Γ=1.5 complier-based gain coverage and positive certification."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "At Γ=1.5, 20% compliance and adjusted complier margins of 0.2 yielded only 82% policy-gain coverage with adverse noncomplier effects."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "n23",
+      "content": "Derive Γ=1.5 complier-weighted bounds with explicit noncomplier-harm limits; simulate compliance and harm sweeps to test 95% policy-gain coverage."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Simulate 1,000 ConfoundBandit-v1 trials (n=5,000; Γ=1.5; margin ≥0.2), sweeping compliance and noncomplier-harm caps; measure gain coverage and certification."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "With compliance ≥20%, noncomplier harm ≤0.02, and adjusted margins ≥0.2, harm-capped bounds achieved 96.1% coverage and 76% positive certification."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "How can the noncomplier-harm cap of 0.02 be justified when encouragement data do not identify noncomplier treatment effects?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "A randomized audit of 6,000 identified noncompliers yields 95% harm bounds ≤0.02 in ≥85% of trials when true harm ≤0.005."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Extend n25 adverse-effect and n28 harm-capped simulations with 1,000 randomized audits of 6,000 preidentified noncompliers; test 95%-coverage and ≤0.02-attainment."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Across 1,000 randomized audits of 6,000 preidentified noncompliers, harm-bound coverage was 96%; 88% attained ≤0.02 when true harm ≤0.005."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n26",
+      "content": "Integrate adverse-effect scenarios, harm-capped bounds, and randomized-audit limits; test jointly calibrated 95% policy-gain coverage across 1,000 trials."
+    },
+    {
+      "id": "n34",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "EncouragementAudit-v1: jointly calibrated 95% Γ=1.5 gain-bound code integrating noncomplier-harm audits, adverse-effect scenarios, and 1,000-trial validation tables."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Develop Γ-sensitive matched-set linear programs for 95% lower gain bounds; retain behavior outside matched, action-supported strata."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p4",
+      "content": "How can Γ-sensitive matched-set bounds cover whole-population policy gains when unmatched strata retain behavior but matching distorts stratum weights?"
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n35",
+      "content": "Estimate population stratum weights independently; aggregate Γ-sensitive matched-set bounds, assign zero gains to unmatched strata, and calibrate 95% intervals."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Adapt EncouragementAudit-v1’s joint calibration to matched-set LPs with independent population weights; test Γ=1.5 sparse-action gain coverage and certification."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "Across 1,000 Γ=1.5 sparse-action trials, matched-set LPs covered 91% of true gains; matching-induced dependence invalidated interval calibration."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "n38",
+      "content": "Can sample-split matching and weight estimation restore 95% gain coverage without eliminating positive certificates in supported strata?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Three-way splitting of matching, LP evaluation, and population-weight estimation restores ≥95% gain coverage and ≥60% positive certification at Γ=1.5."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Using EncouragementAudit-v1 calibration, run 1,000 Γ=1.5 sparse-action trials with disjoint matching, LP, and weight folds; assess coverage and certification."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Three-way-split matched-set LPs achieved 95.7% gain coverage and 64% positive certificates across 1,000 Γ=1.5 sparse-action trials."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n36",
+      "content": "Using EncouragementAudit-v1 calibration, compare dependent versus three-way-split matched LPs; test population-weighted coverage and positive certification with unmatched gains zero."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Population-weighted split LPs covered 95.5% of whole-population gains and certified 62% positive; dependent matching covered 90.8%."
+    },
+    {
+      "id": "n45",
+      "type": "artifact",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "MatchedGain-v1: three-way-split Γ=1.5 LP implementation, independent population-weight estimator, and zero-gain handling for unmatched strata."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Develop negative-control proxy-assisted Γ-robust gain bounds with split-calibrated 95% intervals; change actions only in supported strata."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p5",
+      "content": "What proxy-strength and negative-control validity conditions permit narrower Γ=1.5 gain bounds without sacrificing 95% coverage?"
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Bound negative-control violations and proxy bridge error, then jointly calibrate Γ=1.5 gain intervals across proxy-strength sweeps and sparse-action strata."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Use OccupancyCap-v1 and MatchedGain-v1 to benchmark Γ=1.5 negative-control bounds; sweep proxy strength and violations, measuring coverage, width, certification."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "With proxy correlation ≥0.7 and negative-control bias ≤0.01, Γ=1.5 intervals covered 95.8% of gains and narrowed 22% versus MatchedGain-v1."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n47",
+      "content": "Adapt EncouragementAudit-v1’s calibration to n49’s strong-proxy regime; sweep control violations 0–0.03, checking ≥95% gain coverage and positive-certification rates."
+    },
+    {
+      "id": "n51",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "ProxyGain-v1: jointly calibrated Γ=1.5 gain intervals, proxy-strength and negative-control-bias sweeps, and sparse-action certification tables."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Audit ProxyGain-v1 against occupancy-capped, dependent-match, and split-match baselines on 1,000 Γ=1.5 strong-proxy sparse-action trials; test ≥95% coverage and positive certification."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "Across 1,000 strong-proxy Γ=1.5 trials, ProxyGain-v1 covered 95.9% of true gains and certified 78% positive, versus split-match 62%."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "Prioritize ProxyGain-v1 with proxy correlation ≥0.7 and control bias ≤0.01; otherwise use split-match, rejecting under-covering dependent matching."
+    },
+    {
+      "id": "n55",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n52",
+      "content": "ProxyGain-Audit-v1: reproducible 1,000-trial Γ=1.5 benchmark report documenting 95.9% gain coverage, 78% positive certification, and split-match comparisons."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n54"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop offline policy improvement certificates that remain valid under bounded hidden confounding without requiring full action coverage.",
+    "requirements": [
+      "Certificates attain at least 95% coverage of true policy gains under the stated confounding bound.",
+      "Certify strictly positive gains over the behavior policy in a nontrivial, explicitly characterized regime."
+    ]
+  }
+}

@@ -1,0 +1,950 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design asynchronous distributed checkpointing that preserves recoverable training-state consistency across worker failures and changes in model parallelism.",
+      "requirements": [
+        "Recover a committed, globally consistent model, optimizer, and RNG state after any single-worker crash.",
+        "Support restores across tensor-parallel layouts while limiting checkpoint-induced throughput loss to 5% versus checkpoint-free training."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use step-aligned copy-on-write model, optimizer, and logical RNG snapshots; asynchronously upload globally indexed shards before atomic manifest commit."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can step-boundary copy-on-write capture align optimizer and RNG versions across ranks without exceeding 5% throughput loss?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "At 1,000-step intervals, a post-update rank barrier plus copy-on-write capture preserves identical state step IDs with ≤5% throughput loss."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Benchmark 8-rank training for 20,000 steps, checkpointing every 1,000 steps; compare state step IDs and tokens/second against checkpoint-free training."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Across 20 snapshots, all eight ranks matched model, optimizer, and RNG step IDs; throughput fell 3.4% versus checkpoint-free training."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 7,
+      "exploration_parent_id": "n2",
+      "content": "Inject 250-ms rank jitter and 2-second upload stalls; verify snapshot step IDs and throughput loss against checkpoint-free training."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "With 250-ms rank jitter and 2-second upload stalls, state step IDs matched, but throughput dropped 8.2% versus checkpoint-free training."
+    },
+    {
+      "id": "n7",
+      "type": "hypothesis",
+      "order": 9,
+      "exploration_parent_id": "n1",
+      "content": "Capture post-sync state without checkpoint barriers; staged uploads maintain matching step IDs and ≤5% loss under jitter and stalls."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Repeat the 20,000-step jitter-and-stall benchmark, comparing barrier snapshots with barrier-free staged uploads on step-ID agreement and throughput loss."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Without upload stalls, barriers matched step IDs at 4.4% loss; under stalls, barrier-free uploads mixed step IDs in 4/20 snapshots."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "n7",
+      "content": "How can barrier-free uploads reject mixed-step shards before manifest commit without stalling training?"
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "A coordinator committing only complete, matching step-tagged shard sets prevents mixed snapshots without exceeding 5% throughput loss under upload stalls."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Replay n9's four mixed-step snapshots through coordinator validation, then benchmark 20,000 stalled steps for mixed commits and throughput."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Coordinator rejected all four replayed mixed snapshots; stalled benchmark committed 16/20 matched snapshots with 4.8% throughput loss."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Restore committed manifests, reshard globally indexed model and optimizer tensors across tensor-parallel degrees, and remap logical RNG streams."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "How should globally indexed Adam moments and logical RNG streams map from TP=8 to TP=4 without changing resumed updates?"
+    },
+    {
+      "id": "n15",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Global-offset resharding of weights and Adam moments plus sample-indexed Philox yields bitwise RNG matches and ≤1e-5 TP=8→4 update error."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Restore a committed TP=8 checkpoint at TP=4; compare next-step Adam updates against TP=8 and per-sample Philox draws bitwise."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Weights and Adam moments resharded exactly; shard-dependent Philox consumption changed 7% of dropout draws, yielding 2.3e-4 update error."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n15",
+      "content": "Repeat TP=8→4 restore with dropout disabled, then trace sample-indexed Philox counters and Adam update errors with dropout enabled."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Sample-and-global-offset Philox counter replay matched dropout draws bitwise and reduced TP=8→4 dropout-enabled update error to 6e-6."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "n15",
+      "content": "Can fused-attention dropout preserve global-offset Philox replay when restoring TP=8 checkpoints at TP=2 with different attention tile sizes?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Element-indexed Philox counters for fused-attention dropout preserve bitwise masks across TP=8→2 tile changes and ≤1e-5 update error."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Reproduce n17’s TP=8→4 dropout mismatch as negative control; replay n19’s corrected counters through TP=8→2 fused-attention tiles, checking masks and updates."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Negative control reproduced 7% mismatched draws; TP=8→2 element-indexed replay matched fused-attention masks bitwise, with 8e-6 update error."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n21",
+      "content": "Replay n17’s mismatched and n19’s corrected counters across ragged 64/128-token attention tiles; compare TP=8→2 masks and update errors."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Ragged 64/128-token tiles caused 1.1% mask mismatches with corrected counters, yielding 4e-5 TP=8→2 update error."
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n20",
+      "content": "Absolute sample/layer/head/query/key Philox counters, independent of tile padding, yield bitwise ragged masks and ≤1e-5 TP=8→2 update error."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Run TP=8→2 fused-attention restore on n23’s dense and n25’s ragged tiles using absolute-coordinate Philox; compare masks and update errors."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Absolute-coordinate counters matched dense and ragged attention masks bitwise; TP=8→2 next-step update error was 7e-6."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Persist checksum-verified shards in durable object storage; fence stale worker epochs and restore only complete, atomically committed manifests."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "If a worker crashes during upload, can epoch fencing prevent its delayed shards from entering a replacement worker’s committed manifest?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Epoch-scoped shard keys plus compare-and-swap manifest commits reject late uploads after worker replacement and preserve the previous recoverable checkpoint."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Crash one uploader mid-checkpoint, replace its epoch, release delayed uploads, and verify manifest fencing and previous-checkpoint restore."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "In 3/100 crash races, delayed epoch-7 shards completed stale manifests after epoch-8 replacement; unchanged-head CAS accepted them."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Pause epoch-7 manifest CAS, advance membership to epoch 8 without changing HEAD, then resume CAS and test restore."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Epoch-7 CAS succeeded against unchanged HEAD, but epoch-scoped keys isolated its shards; epoch-filtered restore recovered the previous checkpoint."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "n30",
+      "content": "How can manifest commits atomically validate membership epochs when HEAD remains unchanged across worker replacement?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "A linearizable transaction checking membership epoch and HEAD version rejects stale commits while retaining the latest valid checkpoint after crashes."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Replay n32’s crash races and n34’s unchanged-HEAD schedule with transactional epoch-plus-HEAD validation; verify stale-commit rejection and latest-valid-checkpoint restore."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Across 100 replayed crash races and unchanged-HEAD replacement, transactions rejected every stale commit and restored the latest valid checkpoint."
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n29",
+      "content": "Epoch-scoped keys and transactional epoch-plus-HEAD validation reject stale manifests, preserving the latest complete checkpoint after worker replacement."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Run 500 worker-replacement races comparing HEAD-only CAS against transactional epoch-plus-HEAD validation; measure stale commits and recoverable checkpoint age."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "HEAD-only CAS blocked 480/480 stale commits after HEAD advanced; epoch reuse let transactional validation accept 2/20 stale manifests."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "How can worker incarnation IDs prevent epoch reuse from admitting stale manifests despite transactional membership checks?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Transactionally validating nonreusable worker-incarnation UUIDs and HEAD rejects stale manifests even when numeric epochs are reused."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Replay epoch-reuse, delayed-upload, and unchanged-HEAD races with transactional incarnation UUID validation; measure stale commits and latest-checkpoint restore."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Across 500 replayed races, incarnation UUID validation rejected every stale manifest; all restores selected the latest complete checkpoint."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "p3",
+      "content": "Benchmark 20,000-step incarnation-fenced TP=8→2 restores with crashes, corrupt shards, ragged attention, and upload stalls; measure state consistency and throughput loss."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Across 100 single-worker crashes, TP=8→2 restores recovered consistent model/optimizer/RNG states; corrupt shards were rejected; throughput dropped 4.9% versus checkpoint-free training."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "p3",
+      "content": "From n47’s recovered states, crash the coordinator before and after HEAD commit; compare visible manifest completeness and model/optimizer/RNG hashes."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "After HEAD commit, 2/100 coordinator crashes exposed unpromoted optimizer shards; committed restores failed despite matching model/RNG hashes."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 54,
+      "exploration_parent_id": "p3",
+      "content": "How can HEAD publication guarantee optimizer shards are durable and readable before coordinator crashes expose a committed checkpoint?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n50",
+      "content": "Durable-read verification of immutable final-key model, optimizer, and RNG shards before transactional HEAD publication prevents coordinator-crash restore failures."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n51",
+      "content": "Replay n49’s 100 coordinator crashes against n47’s states, durable-read all final-key shards before HEAD, then verify committed restores."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "All 100 coordinator-crash replays restored complete model/optimizer/RNG states; no committed manifest referenced an unreadable shard."
+    },
+    {
+      "id": "n54",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "p3",
+      "content": "Adopt durable-read checks of all final-key shards before incarnation-fenced HEAD commits; crash restores passed, but revalidate 4.9% overhead."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 59,
+      "exploration_parent_id": "n54",
+      "content": "Implement durable-read gating; rerun 20,000-step worker/coordinator crash and TP=8→2 restores, validating model/optimizer/RNG consistency and ≤5% throughput loss."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n55",
+      "content": "Implement final-key durable-read gating; inject 100 worker/coordinator crashes during 20,000-step TP=8→2 training and measure restore consistency and throughput."
+    },
+    {
+      "id": "n57",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n56",
+      "content": "CrashRestore-20K report records 100 injected failures, TP=8→2 model/optimizer/RNG restore checks, shard-read validation, and checkpoint-free throughput comparison."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n7",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n7"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design asynchronous distributed checkpointing that preserves recoverable training-state consistency across worker failures and changes in model parallelism.",
+    "requirements": [
+      "Recover a committed, globally consistent model, optimizer, and RNG state after any single-worker crash.",
+      "Support restores across tensor-parallel layouts while limiting checkpoint-induced throughput loss to 5% versus checkpoint-free training."
+    ]
+  }
+}

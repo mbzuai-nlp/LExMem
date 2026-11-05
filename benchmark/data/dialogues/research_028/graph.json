@@ -1,0 +1,857 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Characterize bounds for dynamic treatment-regime effects under simultaneous unmeasured time-varying confounding and informative dropout.",
+      "requirements": [
+        "Establish sharp identification bounds under explicit, separately interpretable confounding and dropout sensitivity constraints.",
+        "Construct confidence regions with at least 95% asymptotic coverage uniformly over the specified sensitivity class."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Optimize regime values over finite-history latent-response-type polytopes with separate confounding and dropout odds-ratio limits; project 95% multinomial confidence sets."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can confounding and dropout odds-ratio limits handle zero-probability histories without sacrificing sharpness or uniform coverage?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Closed cross-product constraints and exact-binomial Bonferroni projection yield sharp bounds and at least 95% uniform coverage, including zero-probability histories."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Enumerate two-stage response types; encode separate zero-safe confounding and dropout constraints; prove sharpness and uniform 95% Bonferroni coverage."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Enumerate two-stage binary response types under separate zero-safe confounding and dropout constraints; assess 95% coverage in 10,000 structural-zero replicates."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "TwoStageZeroSafe repository containing enumerated response types, constrained optimizers, and coverage summaries from 10,000 structural-zero replicates."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Audit TwoStageZeroSafe against exhaustive response-type bounds and estimate minimum 95% interval coverage across its 10,000 structural-zero replicates."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Across eight structural-zero scenarios, exhaustive bounds matched within 10⁻⁸; minimum empirical coverage was 96.1% over 10,000 replicates."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n5",
+      "content": "Use TwoStageZeroSafe to verify latent-law attainability at structural-zero optima and derive a finite-sample Bonferroni coverage proof."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "A ninth structural-zero scenario exposed undefined 0/0 dropout odds: cross-product optimization returned an unattainable regime upper bound of 0.82."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "n4",
+      "content": "What zero-cell dropout-odds semantics exclude the unattainable 0.82 bound while preserving sharpness and uniform 95% coverage?"
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Restricting dropout odds to positive-mass histories with positive denominators eliminates 0/0 optima without sacrificing sharpness or uniform 95% coverage."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Partition positive-mass histories by dropout-denominator support; optimize feasible latent laws and prove sharpness with uniform 95% Bonferroni coverage."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Reoptimize eight validated scenarios and the 0.82 counterexample using support partitions; test bound attainability and 95% coverage."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Eight scenarios retained their bounds; the ninth upper bound fell from 0.82 to attainable 0.76; minimum empirical coverage was 95.7%."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Using TwoStageZeroSafe, audit support-stratum boundary attainability and prove finite-sample 95% Bonferroni coverage for projected regime-value regions."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "A positive-mass, all-dropout history violated denominator positivity; excluding its valid latent laws reduced 95% coverage to 91.3% across 10,000 replicates."
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n13",
+      "content": "Explicit zero-retention strata retain all-dropout histories, exclude unsupported 0/0 completions, and yield sharp bounds with uniform 95% coverage."
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Enumerate zero-retention strata, constrain positive-denominator odds, recheck the 0.82 and 91.3% counterexamples, then prove sharpness and uniform 95% coverage."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Reoptimize the ninth scenario with explicit zero-retention strata; test attainability and coverage against the prior 0.76 bound and 91.3% coverage."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Explicit zero-retention strata yielded an attainable 0.79 upper bound, versus 0.76, and raised empirical coverage from 91.3% to 95.8%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 23,
+      "exploration_parent_id": "g1",
+      "content": "Optimize support-stratified full-data transport couplings under separate confounding and dropout odds constraints; invert exact multinomial tests for regime effects."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Do pairwise transport constraints admit globally consistent three-stage latent laws, including zero-retention histories?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Pairwise transport constraints can admit incompatible three-stage marginals; a shared latent coupling eliminates spurious bounds, including at zero-retention histories."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Enumerate three-stage binary laws; compare pairwise/shared bounds and exact-test coverage across zero-retention strata at confounding ΓC=2, dropout ΓD=3."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "At ΓC=2, ΓD=3, pairwise bound 0.86 was unattainable; shared-coupling bound 0.81 was attainable, with 95.6% empirical coverage."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Bound latent treatment and retention propensity deviations separately via total variation; optimize compatible full-data laws and invert exact multinomial tests."
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Specify separate treatment and dropout total-variation budgets; enumerate compatible full-data laws, certify sharp extrema, and invert 95% exact multinomial tests."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Implement TV-Regime v0.1 for two-stage binary laws with treatment TV≤0.10 and dropout TV≤0.15; audit extrema and exact-test coverage."
+    },
+    {
+      "id": "n31",
+      "type": "artifact",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "TV-Regime v0.1 repository with full-data law enumerator, separate 0.10/0.15 TV constraints, extrema certificates, and exact-test inversion scripts."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n29",
+      "content": "Audit TV-Regime v0.1 extrema against exhaustive laws and exact-test coverage across 10,000 structural-zero replicates at TV budgets 0.10/0.15."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "In 2,140 structural-zero replicates, absent-treatment histories lacked retention-propensity baselines, leaving dropout TV constraints undefined and sharp bounds uncertifiable."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Extend TV-Regime v0.1 with joint-mass dropout TV constraints for absent-treatment histories; compare sharpness certificates and exact-test coverage against conditional TV."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Joint-mass TV certified all 2,140 previously undefined cases; extrema matched within 10⁻⁸ and 10,000-replicate coverage reached 95.4%."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p3",
+      "content": "Does dropout joint-mass TV≤0.15 permit unrestricted informative dropout within histories occurring with probability below 0.15?"
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "For a history with probability 0.08, joint-mass dropout TV≤0.15 permits complete conditional dropout deviation when other histories contribute zero."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Reanalyze the 2,140 absent-treatment cases with undefined retention baselines using certified joint-mass TV; test unrestricted dropout deviation at 0.08-mass histories."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "At history mass 0.08, joint-mass TV≤0.15 admitted conditional dropout TV=1; worst-case regime-effect bounds widened by 0.08."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Use support-stratified additive-bias caps for treatment and dropout, optimizing shared full-data laws and projecting exact multinomial confidence sets."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p4",
+      "content": "How can additive dropout-bias caps handle all-dropout histories when retained outcome means are undefined?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Cap dropout outcome-mean differences only when both retention strata occur; leave all-dropout outcomes unrestricted for sharp, uniformly valid inference."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Partition retention supports, impose conditional mean-difference caps where defined, optimize shared latent laws, and prove sharpness plus uniform 95% coverage."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Enumerate two-stage binary laws with treatment bias≤0.10 and dropout bias≤0.15; audit all-dropout bound attainability and 10,000-replicate coverage."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Unrestricted all-dropout laws attained 0.76 with 95.5% coverage; support-stratified additive-cap projection excluded them, yielding 0.70 and 92.4% coverage."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Use support-stratified, history-normalized joint-mass selection caps for treatment and dropout; optimize shared latent laws and invert exact tests."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p5",
+      "content": "Formalize history-normalized treatment and dropout selection caps, enumerate zero-support latent laws, verify sharp extrema, and prove uniform 95% exact-test inversion."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Implement history-normalized joint-mass treatment/dropout caps (0.10/0.15); audit zero-support sharpness and 95% coverage in 10,000 replicates."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "NormSelect v0.1 repository with history-normalized 0.10/0.15 selection caps, zero-support latent-law enumerator, sharpness certificates, and exact-test scripts."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n47",
+      "content": "Stress-test NormSelect v0.1 on all-dropout and 0.08-mass histories; certify attainable extrema and minimum coverage across 10,000 replicates."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "At 0.08-mass histories, dropout remained constrained; all-dropout extrema matched exhaustive bounds within 10⁻⁸; minimum coverage was 95.3%."
+    },
+    {
+      "id": "n52",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "g1",
+      "content": "Choose NormSelect: 0.79 zero-retention/0.81 shared-coupling findings demand safeguards; certification and 95.3% empirical coverage avoid undefined baselines, rare-history leakage, additive undercoverage."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Characterize bounds for dynamic treatment-regime effects under simultaneous unmeasured time-varying confounding and informative dropout.",
+    "requirements": [
+      "Establish sharp identification bounds under explicit, separately interpretable confounding and dropout sensitivity constraints.",
+      "Construct confidence regions with at least 95% asymptotic coverage uniformly over the specified sensitivity class."
+    ]
+  }
+}

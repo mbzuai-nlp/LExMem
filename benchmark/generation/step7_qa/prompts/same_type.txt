@@ -1,0 +1,24 @@
+Generate exactly one question about nodes of target_type.
+
+{{INPUT_JSON}}
+
+focus_nodes contains all nodes of this type. Prefer questions where the answer depends on distinguishing among several same-type nodes, especially when they represent alternatives, revisions, competing measurements, condition changes, or later corrections. Avoid asking the respondent to explain, elaborate on, or justify an answer. Use full_graph to check context and later updates; avoid questions already answered by a single node.
+
+- Ask exactly one substantive question in English. Parallel subquestions are forbidden, even on the same topic or under one question mark: do not ask "which method and what score" or "what failed and under what conditions was it fixed". Multiple conditions may constrain one requested result. Keep wording natural, end with one question mark, and reveal neither the answer nor node IDs.
+- Preserve relevant time, versions, conditions, and units. Keep the reference answer aligned with what the question asks; include needed qualifiers without adding background facts.
+- Express each answer item as a short entity, value, status, or phrase. Separate independently scorable facts without expanding them into explanations.
+- Use named_slots for distinct fields or unordered_set for list items. answer, answer_keywords, and evidence_node_ids must share keys; canonical must equal the answer, and aliases must be equivalent.
+- Cite each answer item's necessary evidence, including the premises needed to establish the distinction, revision, condition, or result. Together, citations should cover multiple selected focus nodes when the question draws on them.
+
+If no supported question meets these rules, return {"questions": []}.
+
+Return JSON only:
+{
+  "questions": [{
+    "question": "... ?",
+    "answer_mode": "named_slots or unordered_set",
+    "answer": {"slot_name": "short value"},
+    "answer_keywords": {"slot_name": {"canonical": "short value", "aliases": []}},
+    "evidence_node_ids": {"slot_name": ["node ID"]}
+  }]
+}

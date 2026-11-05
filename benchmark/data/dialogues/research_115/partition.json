@@ -1,0 +1,140 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Initial source-only shortcut-penalized valuation and its adoption",
+      "boundary_reason": "The initial comparison supports adoption; the next nodes begin a separate seeded audit."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Seeded audit of frozen shortcut-penalized selections",
+      "boundary_reason": "The audit finds that the third shift misses the required gain; the next proposal changes the valuation method."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Source-only shortcut swaps and an initial label-preservation failure",
+      "boundary_reason": "The initial swaps fall short of the preservation threshold, prompting a filtering revision."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Filtering and independently verifying swaps for subcluster coverage and shiftwise gains",
+      "boundary_reason": "The verified-swap test completes; the next proposal explores a different scoring method."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Lower-tail gradient alignment across source-environment mixtures",
+      "boundary_reason": "The comparison does not meet all hypothesized margins; the next proposal changes approach."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Adversarial margin-stability selection, audit, and ablation",
+      "boundary_reason": "The ablation leads to a decision to drop adversarial training; the next proposal investigates prototypes."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Verified-swap prototypes and the case for subcluster quotas",
+      "boundary_reason": "The quota comparison leads to a decision; the next nodes begin frozen-index validation."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "ProtoQuota-v1 validation and failure on new seeds",
+      "boundary_reason": "New-seed results miss the shift-three target, motivating revised quotas."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Source-bootstrap consensus quotas and their initial test",
+      "boundary_reason": "The comparison supports replacing fixed quotas; the next nodes implement and audit the replacement."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "ProtoQuota-v2 frozen selections, audit, and adoption",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

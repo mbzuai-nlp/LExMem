@@ -1,0 +1,1001 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Predict yeast growth effects of unseen mutation combinations across genetic backgrounds while distinguishing transferable epistasis from background-specific interactions.",
+      "requirements": [
+        "Reduce combination-level RMSE by 10% versus background-aware additive models on unseen genetic backgrounds.",
+        "Exceed 75% accuracy identifying epistasis sign changes across backgrounds for independently measurable nonadditive effects."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fit a hierarchical growth model with shared mutation-pair epistasis and background-genotype-conditioned deviations to predict held-out backgrounds and interaction sign flips."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can sparse mutation-combination measurements separate transferable epistasis from genotype-conditioned sign reversals in unseen yeast backgrounds?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Marker-conditioned shrinkage toward shared pair effects will cut held-out-background RMSE ≥10% versus additive models and achieve >75% sign-flip accuracy."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Collect replicated single/double-mutant growth across sequenced backgrounds; fit marker-conditioned hierarchical effects, then evaluate held-out-background RMSE and independently measured sign flips."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run leave-one-background-out validation across 12 strains, comparing RMSE with background-aware additivity and sign-flip accuracy on independently measured pair effects."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Across 12 held-out strains, normalized-growth RMSE improved 5% (0.114 versus 0.120); independent sign-flip accuracy reached 68%."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adding basal transcriptomes to marker-conditioned effects should raise RMSE gains from 5% to ≥10% and sign-flip accuracy beyond 75%."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Profile basal RNA-seq in 12 strains; rerun leave-one-background-out validation using pathway scores, measuring RMSE and independent sign-flip accuracy."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Transcriptome-conditioned RMSE was 0.106 versus 0.120 additive (11.7% lower); independent sign-flip accuracy reached 78% across held-out strains."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "After n8 passes benchmarks, blindly assay wild-type, single-, and double-mutant growth for 60 predicted sign-flipping pairs in four new backgrounds."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "A blinded validation dataset containing triplicate wild-type, single-mutant, and double-mutant growth measurements for 60 pairs across four new backgrounds."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Select the transcriptome-conditioned model to analyze the blinded dataset, given 11.7% lower RMSE and 78% sign-flip accuracy."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Train pathway-informed graph networks on yeast interaction maps and strain variants to predict unseen-background pair effects and sign reversals."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Train an interaction-map graph network on 12 discovery strains; benchmark RMSE versus additivity and sign-flip accuracy on n10’s blinded dataset."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Train PathGNN on 12 discovery strains; preregister n10 predictions, then compare additive-baseline RMSE and independently measured sign-flip accuracy."
+    },
+    {
+      "id": "n14",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "PathGNN v1 bundle: frozen graph weights, preregistered predictions for 60 pairs across four backgrounds, and blinded-benchmark evaluation scripts."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Do PathGNN’s frozen predictions outperform the transcriptome-conditioned model on blinded n10 pairs, particularly for cross-background epistasis sign reversals?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Unblind n10, audit triplicates, and compare frozen PathGNN, transcriptome, and additive predictions by RMSE and independently measured sign-flip accuracy."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On n10, PathGNN RMSE was 0.098 versus 0.116 additive and 0.105 transcriptome; sign-flip accuracy was 81% versus 76% transcriptome."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Replace the selected transcriptome model with PathGNN: blinded RMSE was 0.098 versus 0.105, and sign-flip accuracy 81% versus 76%."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n12",
+      "content": "Stratify n10 by pathway proximity and training-pair frequency; bootstrap RMSE and sign-flip accuracy for transcriptome-conditioned and frozen PathGNN models."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Across n10’s four unseen backgrounds, transcriptome-hierarchical RMSE improved 9.5% (<10% target); PathGNN improved 15.5%, leading both pathway strata."
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "The interaction map supports variant-conditioned inputs that distinguish mutation pairs and backgrounds without using held-out growth labels."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Audit n10 features for label leakage; retrain PathGNN without interaction edges or strain variants; compare n10 RMSE and sign-flip accuracy."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Audit found 18 n10-label-derived edges; removing them raised PathGNN RMSE to 0.119 and dropped sign-flip accuracy to 69%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Use strain-constrained flux balance with discovery-only residual calibration to forecast growth and epistasis sign changes without held-out-derived interaction edges."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "Can strain-specific metabolic constraints recover unseen-background growth and epistasis sign flips when residual calibration excludes all validation labels?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Strain-constrained iMM904 with discovery-only calibration will achieve n10 RMSE ≤0.104 versus 0.116 additive and >75% sign-flip accuracy."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Fit strain-constrained iMM904 using discovery-only calibration; score frozen predictions against n10 growth measurements and independently determined sign flips."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "On n10, calibrated iMM904 achieved RMSE 0.102 versus 0.116 additive (12.1% lower) and 77% independent sign-flip accuracy."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Retire leakage-affected PathGNN and select calibrated iMM904: leakage-free n10 predictions meet both RMSE and sign-flip targets."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n24",
+      "content": "Ablating strain-specific reaction bounds from calibrated iMM904 will reduce n10 sign-flip accuracy below 75%."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Ablate strain-specific iMM904 reaction bounds, recalibrate on discovery strains only, and compare n10 sign-flip accuracy and RMSE against full iMM904."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "After selecting calibrated iMM904, impose shared reaction bounds, refit discovery-only residuals, and compare n10 sign-flip accuracy and RMSE."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "On n10, shared-bound iMM904 raised RMSE from 0.102 to 0.112 and lowered sign-flip accuracy from 77% to 70%."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Following n32, ablate only strain-specific transporter bounds, recalibrate on discovery strains, and compare n10 RMSE and sign-flip accuracy."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Reauditing n10 exposed a scoring bug: shared-bound sign-flip accuracy was 77%, not 70%; transporter-only ablation achieved 79%."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "With shared-bound accuracy corrected from 70% to 77%, which reaction bounds, if any, actually drive sign-flip prediction?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "No individual strain-specific bound class drives sign flips; ablating each should retain ≥75% accuracy, while shared bounds worsen RMSE."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Ablate enzyme-capacity and nutrient-uptake bounds separately; recalibrate on discovery strains and compare corrected n10 sign-flip accuracy and RMSE."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "On n10, enzyme-capacity and nutrient-uptake ablations achieved 76%/78% sign-flip accuracy and 0.108/0.107 RMSE; shared-bound RMSE was 0.112."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n35",
+      "content": "Retain full iMM904 for its 0.102 RMSE; corrected ablation accuracies of 76–79% do not implicate any single bound class."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Use allele-specific protein-complex embeddings in a multitask Gaussian process to transfer pair effects and flag background-specific sign reversals."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "After retaining iMM904, train a complex-embedding multitask GP on discovery strains; compare held-out-background RMSE and sign-flip accuracy against iMM904."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Use n14’s scripts with corrected scoring to compare complex-GP/iMM904 n10 RMSE and sign-flip accuracy, including bound-class/shared-bound ablations."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "On n10, discovery-only complex-GP achieved RMSE 0.096 versus iMM904’s 0.102; independently scored sign-flip accuracy rose from 77% to 82%."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n40",
+      "content": "Following n42, preregister complex-GP predictions and assay replicated wild-type, single-, and double-mutant growth for 80 pairs across six unseen strains."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Blinded validation panel: preregistered complex-GP predictions and triplicate wild-type, single-, and double-mutant growth for 80 pairs across six unseen strains."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "p4",
+      "content": "Retain iMM904 as fallback and benchmark complex-GP on n44 before adoption, despite n10 RMSE 0.096 and 82% sign-flip accuracy."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Train a discovery-only mixture of complex-GP and iMM904, gated by metabolic involvement and protein-complex membership, for unseen backgrounds."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p5",
+      "content": "On n44’s unseen strains, can a discovery-trained gate improve combination RMSE without sacrificing complex-GP sign-flip accuracy?"
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "Discovery-trained metabolic/complex gating will lower n44 RMSE by ≥5% versus complex-GP while retaining ≥80% independent sign-flip accuracy."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Train a discovery-only gate, freeze mixture predictions for n44, then compare against complex-GP on RMSE and independently measured sign-flip accuracy."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "On n44, gated RMSE was 0.098 versus 0.104 complex-GP and 0.118 additive; independent sign-flip accuracy was 82%."
+    },
+    {
+      "id": "n50",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p5",
+      "content": "Audit n44’s per-strain RMSE against additive and iMM904 baselines and sign-flip accuracy, then preregister prospective gated-model validation."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Audit n44 by strain: compare gated, additive, and discovery-only iMM904 RMSE; bootstrap independently measured sign-flip accuracy."
+    },
+    {
+      "id": "n52",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "n44 audit report with per-strain gated/additive/iMM904 RMSE, bootstrap sign-flip accuracy intervals, assay exclusions, and leakage checks."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "p5",
+      "content": "Select gated model for prospective validation over complex-GP after n44 audit; retain iMM904 fallback given gated RMSE 0.098 versus 0.104."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n50",
+      "relation": "decompose",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n53"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Predict yeast growth effects of unseen mutation combinations across genetic backgrounds while distinguishing transferable epistasis from background-specific interactions.",
+    "requirements": [
+      "Reduce combination-level RMSE by 10% versus background-aware additive models on unseen genetic backgrounds.",
+      "Exceed 75% accuracy identifying epistasis sign changes across backgrounds for independently measurable nonadditive effects."
+    ]
+  }
+}

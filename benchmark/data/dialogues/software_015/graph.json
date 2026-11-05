@@ -1,0 +1,842 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design recoverable distributed snapshots for migrating stream operators with reordered messages and concurrent worker failures.",
+      "requirements": [
+        "Recovery preserves a consistent cut and exactly-once outputs after any single worker crash.",
+        "Maintain at least 85% of snapshot-disabled throughput without globally pausing processing."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use asynchronous epoch snapshots with per-channel sequence fences, durable in-flight logs, fenced migration handoffs, and transactional sink commits."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can per-channel cuts remain consistent when reordered records cross migration handoffs and a worker crashes mid-commit?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Durable contiguous-sequence fences and ownership epochs should preserve consistent cuts and exactly-once sink commits despite reordering and mid-handoff crashes."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Specify contiguous-sequence cuts and durable ownership epochs; crash-inject reordered handoffs, then audit recovered cuts and sink duplicates."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run HandoffCrash-1k with reordered channels and single-worker crashes at ownership and commit boundaries; audit recovered cuts and sink IDs."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "HandoffCrash-1k recovered 1,000/1,000 consistent cuts with zero missing or duplicate sink IDs under reordered single-worker crashes."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Given HandoffCrash-1k’s zero violations, adopt fenced epoch handoffs for correctness; defer deployment until throughput reaches 85% of baseline."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Benchmark asynchronous fenced handoffs on MigStream-16; batch channel-log fsyncs to target 85% baseline throughput, then rerun HandoffCrash-1k."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Implement 5-ms group-commit channel logs with durability-gated acknowledgments; measure MigStream-16 throughput and rerun HandoffCrash-1k."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Snapshot prototype v0.3 bundles 5-ms group-committed channel logs, durability-gated acknowledgments, fenced handoffs, and MigStream-16/HandoffCrash-1k reports."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "p1",
+      "content": "Unaligned snapshots persisting out-of-order buffers and atomically fenced ownership should preserve cuts and exactly-once commits without waiting for gaps."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Extend prototype v0.3 with unaligned buffer persistence; run HandoffCrash-1k gap crashes, auditing cuts, sink IDs, and MigStream-16 throughput."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "HandoffCrash-1k found 6/1,000 inconsistent cuts: unaligned buffer capture omitted pre-handoff in-flight records despite fenced ownership."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use durable sender outboxes and migration-scoped replay barriers; atomically transfer ownership, then replay sequence-deduplicated records into transactional sinks."
+    },
+    {
+      "id": "n13",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "How can recovery identify pre-handoff records missing from the receiver when reordered messages arrive after ownership transfer?"
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Instrument prototype v0.3 against sender-outbox replay; inject reordered pre-handoff records and owner crashes, comparing missing-sequence detection and sink IDs."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Outbox replay detected six pre-handoff gaps; HandoffCrash-1k showed zero inconsistent cuts and zero duplicate sink IDs."
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Sender frontiers and receiver bitmaps should expose pre-handoff gaps, enabling replay with consistent cuts and duplicate-free sink commits."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Crash-inject 10,000 reordered handoffs; compare sender frontiers with receiver bitmaps, auditing replayed gaps, recovered cuts, and sink IDs."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "GapReplay-10k recovered 10,000/10,000 consistent cuts; frontier–bitmap comparison replayed every missing record with zero duplicate sink IDs."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Integrate sender outboxes and frontier–bitmap replay into prototype v0.3; benchmark MigStream-16 throughput against snapshot-disabled baseline and audit crash-recovered cuts."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "MigStream-16 delivered 82% baseline throughput; 4/2,000 crash recoveries found bitmap gaps with pruned outbox entries, producing inconsistent cuts."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Which durable acknowledgment safely gates outbox pruning while raising MigStream-16 throughput from 82% to at least 85% of baseline?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Prune outboxes only after durable checkpoint acknowledgment of receiver bitmaps and committed sink epochs; batch acknowledgments for ≥85% throughput."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Modify prototype v0.3 to batch checkpoint-durable bitmap/sink-epoch acknowledgments before outbox pruning; compare GapReplay-10k cuts and MigStream-16 throughput."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "With durable acknowledgment gating, GapReplay-10k recovered 10,000/10,000 consistent cuts and zero duplicate sink IDs; MigStream-16 reached 87% baseline throughput."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n22",
+      "content": "Fault-inject checkpoint acknowledgment and outbox GC in modified prototype v0.3; audit single-crash cuts, sink IDs, and MigStream-16 throughput."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "GC-fault runs found 3/2,000 inconsistent cuts: durable bitmap acknowledgments triggered pruning before checkpoint-manifest publication, losing fallback replay records."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n22",
+      "content": "Patch prototype v0.3 to prune only after published manifests reference durable bitmaps and sink epochs; rerun GC-fault and MigStream-16."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Manifest-gated GC recovered 2,000/2,000 consistent cuts with zero duplicate sink IDs; MigStream-16 sustained 86% baseline throughput."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "n22",
+      "content": "How should overlapping migrations retain outbox records if a worker crash forces recovery from an older published checkpoint?"
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Pin outbox ranges per recoverable manifest and migration epoch, then crash-test overlapping handoffs with older-checkpoint fallback and MigStream-16 throughput."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "Implement manifest-scoped outbox pins and publication-gated GC; crash-test overlapping handoffs with older-checkpoint fallback, auditing cuts, duplicates, and MigStream-16 throughput."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Snapshot prototype v0.4 adds manifest-scoped outbox pins, publication-gated GC, and older-checkpoint fallback tests for overlapping handoffs."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 36,
+      "exploration_parent_id": "g1",
+      "content": "Shadow-migrate via replicated input logs and received-sequence bitmaps; atomically fence ownership and sink epochs before switching replicas."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "p3",
+      "content": "Can shadow migration safely fence outputs when delayed records reach the old owner after the replica switches ownership?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Replicated log offsets and sink-epoch fencing should make late old-owner records replayable without duplicate outputs after a shadow switch."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Extend prototype v0.4 with shadow replicas; inject delayed old-owner records and crashes, auditing replicated offsets, cuts, and sink duplicates."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "ShadowSwitch-2k found 5 inconsistent cuts: late old-owner records arrived after replica log truncation, defeating offset replay despite sink fencing."
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "n33",
+      "content": "Pin sender outboxes and replica logs until published checkpoint bitmaps cover pre-switch frontiers; replay gaps under fenced sink epochs."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Extend prototype v0.4 to pin replica logs and outboxes until published bitmaps cover pre-switch frontiers; rerun ShadowSwitch-2k."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "ShadowSwitch-2k recovered 2,000/2,000 consistent cuts after log pinning, with zero duplicate sink IDs under late-record crashes."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Use barrier-aligned per-key snapshots with migration leases and deduplicated sink transactions; pause only migrating keys, never all workers."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Can per-key barriers cover reordered in-flight records during lease transfer without stalling hot keys below 85% baseline throughput?"
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Prototype key-local barrier alignment with sequence watermarks; crash-test lease transfers and measure hot-key throughput on MigStream-16."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Using v0.4 and ShadowSwitch-2k’s pinned-log baseline, crash-test reordered lease transfers; compare key-barrier cuts, sink duplicates, and MigStream-16 hot-key throughput."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "KeyBarrier-2k recovered 2,000/2,000 consistent cuts with zero missing or duplicate sink IDs; MigStream-16 hot-key throughput reached 86% baseline."
+    },
+    {
+      "id": "n44",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Adopt key-local barriers for migrating hot keys: KeyBarrier-2k preserved every cut and reached 86% baseline throughput."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Integrate key-local barriers with v0.4 pinned replay and fenced sinks; crash-test reordered handoffs, audit cuts, and verify ≥85% MigStream-16 throughput."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Add key-local barriers to prototype v0.4; run KeyBarrier-10k crash/reordering trials and MigStream-16 throughput with pinned replay and fenced sinks."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Snapshot prototype v0.5 integrates key-local barriers, manifest-pinned replay, fenced sink epochs, and KeyBarrier-10k/MigStream-16 test reports."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design recoverable distributed snapshots for migrating stream operators with reordered messages and concurrent worker failures.",
+    "requirements": [
+      "Recovery preserves a consistent cut and exactly-once outputs after any single worker crash.",
+      "Maintain at least 85% of snapshot-disabled throughput without globally pausing processing."
+    ]
+  }
+}

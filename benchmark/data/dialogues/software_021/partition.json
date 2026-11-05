@@ -1,0 +1,110 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Detecting newly feasible indirect-call targets during incremental invalidation",
+      "boundary_reason": "The corrected dependency indexing is adopted after alias-equivalence and latency tests; discussion shifts to integration."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Integrating dependency indexing and checking retraction after deletions",
+      "boundary_reason": "Deletion tests confirm stale points-to facts are cleared; focus shifts to IR semantics."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "IR fixtures expose and resolve missing cast-mediated aliases",
+      "boundary_reason": "The cast-to-unknown rule is adopted; the next discussion tests broader edit sequences."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Mixed-edit validation reveals missing opaque-call aliases",
+      "boundary_reason": "Soundness sign-off is blocked pending an opaque-call transfer-rule fix."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Transitive escape-closure havoc for opaque calls",
+      "boundary_reason": "The object-level and escaped-field havoc rules are retained; focus shifts to selective invalidation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Fixing escape-closure fingerprints to detect field rewires",
+      "boundary_reason": "Field-labeled fingerprints are adopted; the next stage validates the revised approach across full suites."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Full-suite alias, equivalence, and latency validation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Calibrate noisy-input bypass to protect whispered stops from unseen impulses",
+      "boundary_reason": "The calibration result supports a decision to retain the bypass; the next segment begins broader benchmarking."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Benchmark and audit the retained bypass across unseen noise families",
+      "boundary_reason": "The replay audit completes the planned benchmark; the next segment tests a different threshold strategy."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Test spectral-flux-stratified bypass thresholds",
+      "boundary_reason": "The thresholds reduce insertions but exceed the input deletion baseline; the discussion shifts to phonetic penalties."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "a5",
+        "e4"
+      ],
+      "topic": "Test /s/-weighted phonetic loss for wind-whisper deletions",
+      "boundary_reason": "The measured /s/ deletion rate remains above input; the next segment introduces a residual-based approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "l2",
+        "a6",
+        "r2",
+        "a7",
+        "e5",
+        "d2",
+        "a8",
+        "e6"
+      ],
+      "topic": "Develop and evaluate a causal sibilance-protection residual",
+      "boundary_reason": "Wind and cross-noise evaluations are complete; the next segment challenges the model with unseen hiss bursts."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "h3",
+        "q3",
+        "a9",
+        "e7",
+        "h4",
+        "a10",
+        "e8"
+      ],
+      "topic": "Identify hiss-burst /s/ insertions and test persistence and vowel-context checks",
+      "boundary_reason": "The revised gate meets the measured hiss-burst error baselines; the next segment examines word-initial /s/."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "q4",
+        "h5",
+        "a11",
+        "e9",
+        "a12",
+        "e10"
+      ],
+      "topic": "Assess word-initial /s/ under hiss and ablate the uncertain-frame bypass",
+      "boundary_reason": "The overlap analysis exposes deletions above input despite the aggregate result, prompting a revised exemption."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "h6",
+        "a13",
+        "e11",
+        "a14",
+        "e12",
+        "a15",
+        "e13",
+        "e14"
+      ],
+      "topic": "Tune and validate a word-initial /s/ exemption on overlapping hiss",
+      "boundary_reason": "Disjoint-speaker overlap results show deletions above input; the next segment proposes event-level bypass."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "q5",
+        "h7",
+        "a16",
+        "e15"
+      ],
+      "topic": "Test a 10-ms causal onset detector for event-level bypass",
+      "boundary_reason": "The initial hiss-overlap test meets its SI-SDR and /s/ error targets; the next segment benchmarks across noises."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "l3",
+        "a17",
+        "r3",
+        "a18",
+        "e16",
+        "d3"
+      ],
+      "topic": "Benchmark, audit, and select OnsetBypass-v1",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

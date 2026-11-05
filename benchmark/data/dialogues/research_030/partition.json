@@ -1,0 +1,112 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Occluded wrench probes for distinguishing jams from recoverable offsets",
+      "boundary_reason": "The probe classifier is evaluated and advanced to guarded insertion trials."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Wrench-guided insertion performance and unmet targets",
+      "boundary_reason": "Insertion results fall short of both targets, leaving jam-recovery performance in question."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Shear-based friction estimation and barrier-controlled realignment",
+      "boundary_reason": "The first held-out insertion evaluation reports success and force compliance."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Reducing friction-estimator latency during stick–slip recovery",
+      "boundary_reason": "The latency comparison supports selection of the faster ShearGuard-v1 policy."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Pressure-map jam detection in high-friction insertions",
+      "boundary_reason": "Mixed lead-time results lead to a limited integration decision."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Audio–slip-triggered retract-and-rotate recovery",
+      "boundary_reason": "Held-out evaluation supports adopting AudioSlip-v1."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Torsional dither classification and its insertion trade-offs",
+      "boundary_reason": "Poor insertion success and high-friction classification results lead to rejection for deployment."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Reassessing dithers as a moderate-friction diagnostic",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

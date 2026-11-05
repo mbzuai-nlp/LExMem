@@ -1,0 +1,1286 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a multi-tenant service load balancer that maintains fairness without retry-driven overload under delayed feedback and partial failures.",
+      "requirements": [
+        "Under feasible demand, each tenant receives at least 90% of its weighted fair throughput.",
+        "During backend failures and five-second telemetry delays, retry amplification stays below 1.2 attempts per request."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Combine weighted deficit scheduling, local backend admission limits, failure-triggered circuit breakers, and 10% tenant retry budgets."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should admission limits redistribute tenant capacity when a backend fails before five-second telemetry updates arrive?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Local error-triggered caps redirect traffic to healthy backends, preserving ≥90% weighted-fair throughput despite five-second telemetry lag when capacity suffices."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Specify 200-ms error-triggered caps and healthy-backend slot redistribution; simulate five-second telemetry lag, checking weighted throughput and attempts/request."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run FairFailSim v1: one-of-four backend failure, 200-ms caps, feasible demand, five-second telemetry lag; measure fair-share attainment and attempts/request."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "FairFailSim v1: minimum tenant fair-share attainment was 93%; retry amplification peaked at 1.12 attempts/request under five-second telemetry lag."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Compare 200-ms caps against telemetry-only caps in FairFailSim v2 with intermittent failures and five-second lag; measure fair-share attainment and attempts/request."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "FairFailSim v2: intermittent failures yielded 84% minimum local-cap fair-share attainment despite spare capacity; telemetry-only achieved 91% but 1.31 attempts/request."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 10,
+      "exploration_parent_id": "n4",
+      "content": "Do 200-ms cap resets strand healthy-backend slots during intermittent failures, explaining FairFailSim v2’s 84% fair-share attainment?"
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "One-second local-cap hysteresis prevents stranded healthy slots during intermittent failures, restoring ≥90% fair-share attainment and <1.2 attempts/request."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Instrument healthy-slot occupancy and cap-reset events in FairFailSim v3; compare 200-ms resets with one-second hysteresis under intermittent failures."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Run FairFailSim v3 with five-second telemetry lag, comparing 200-ms resets and one-second hysteresis; log slot occupancy, fair-share attainment, attempts/request."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "FairFailSim v3: 200-ms caps achieved 94% single-failure attainment; intermittent-failure hysteresis achieved 92%, 96% healthy-slot occupancy, and 1.14 attempts/request."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Replay BurstFail-48 traces; compare 200-ms resets and one-second hysteresis on healthy-slot occupancy, minimum fair-share attainment, and attempts/request."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "BurstFail-48: hysteresis raised healthy-slot occupancy from 81% to 96%, but minimum fair-share attainment reached only 86%; attempts/request was 1.16."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n12",
+      "content": "Instrument BurstFail-48 per-tenant deficit balances and slot assignments under one-second hysteresis; identify why 96% occupancy yields only 86% fair-share attainment."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "BurstFail-48: stale deficits caused transient 86% attainment; after one-second settling, all 48 failure traces sustained ≥92% fair-share and 1.16 attempts/request."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 19,
+      "exploration_parent_id": "n11",
+      "content": "Keep one-second hysteresis; add deficit rebasing on slot changes to address transient 86% fairness despite 96% occupancy."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Rebase tenant deficits on healthy-slot changes, retain one-second admission hysteresis, and enforce 10% retry-token budgets behind circuit breakers."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can deficit rebasing eliminate BurstFail-48’s transient 86% fair-share dip without exceeding 1.2 attempts/request during concurrent failures?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "On BurstFail-48 concurrent failures, rebasing deficits on slot changes keeps minimum fair-share attainment ≥90% and attempts/request <1.2."
+    },
+    {
+      "id": "n23",
+      "type": "plan",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Replay concurrent-failure BurstFail-48 traces with and without deficit rebasing; compare minimum tenant fair-share attainment and attempts/request."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Run BurstFail-48 concurrent-failure replays with rebasing enabled versus disabled, logging per-tenant minimum fair-share attainment and peak attempts/request."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "BurstFail-48 concurrent failures: rebasing raised minimum fair-share attainment from 86% to 91%; peak retry amplification remained 1.16 attempts/request."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n23",
+      "content": "Sweep feasible-load BurstFail-48 traces across tenant weights and two-backend flaps with five-second lag; measure rebased fair-share attainment and attempts/request."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "BurstFail-48 two-backend flaps at 1:8 tenant weights: rebasing yielded 87% minimum fair-share attainment despite feasible capacity; peak attempts/request was 1.17."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "n22",
+      "content": "Why does deficit rebasing still leave the 1:8-weight tenant at 87% fair-share attainment during two-backend flaps?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Rebasing erases low-weight tenants’ accrued deficit during flaps; preserving normalized credit should restore their fair-share attainment above 90%."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Log tenant deficit credit before each flap; compare zero-reset rebasing with weight-normalized credit preservation in 1:8 BurstFail-48 replays."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Replay 1:8 BurstFail-48 flaps with zero-reset versus normalized-credit rebasing; record lost low-weight credit, fair-share attainment, and attempts/request."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "BurstFail-48: normalized-credit rebasing improved low-weight attainment only from 87% to 88%; lost credit was <1% of entitlement."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n30",
+      "content": "Trace denied low-weight requests during BurstFail-48 flaps, comparing normalized-credit preservation with and without per-tenant admission caps."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Capped BurstFail-48 replays: preserving normalized credit raised low-weight attainment from 87% to 92%; uncapped preservation reached 88%."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "Why does normalized-credit preservation reach 92% low-weight attainment only when per-tenant admission caps are enabled?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Uncapped high-weight in-flight requests monopolize recovered slots; tenant caps unlock preserved credit, raising low-weight attainment to 92%."
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Measure per-tenant in-flight occupancy and recovered-slot assignments across capped and uncapped BurstFail-48 replays with normalized-credit preservation."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Instrument BurstFail-48 slot handoffs: compare capped versus uncapped high-weight in-flight occupancy and low-weight assignments during two-backend recovery."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "BurstFail-48: uncapped high-weight traffic took 95% of recovered slots versus 88% capped; low-weight assignments rose from 5% to 12%."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n37",
+      "content": "Sweep high-weight in-flight caps at 90%, 95%, and uncapped in BurstFail-48; measure recovered-slot shares, low-weight attainment, and attempts/request."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "BurstFail-48: 90% cap yielded 12% low-weight recovered slots yet 88% attainment; 95% cap yielded 5% slots yet 92%."
+    },
+    {
+      "id": "n42",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "n36",
+      "content": "Provisionally select the 95% high-weight cap for 92% low-weight attainment; investigate completion timing because slot share mispredicts fairness."
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n36",
+      "content": "A 95% cap preserves fast-backend access for low-weight requests; 90% diverts more assignments to slower backends, reducing completions."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Compare low-weight fast-backend access, assignment latency, and completion rates under 90% versus 95% caps in BurstFail-48."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Replay BurstFail-48 at 90% and 95% caps; tag low-weight assignments by backend speed and record latency and completed throughput."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "BurstFail-48: 95% cap sent 78% of low-weight assignments to fast backends versus 49% at 90%; completion latency fell 34%."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n43",
+      "content": "Adopt the 95% high-weight cap over 90%: low-weight fair-share attainment reaches 92%, aided by faster backend access."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 48,
+      "exploration_parent_id": "g1",
+      "content": "Preserve normalized deficits, cap high-weight occupancy at 95%, retain one-second hysteresis, and enforce per-tenant 10% retry budgets."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p3",
+      "content": "Can replica-local 10% retry budgets keep aggregate attempts/request below 1.2 when failovers shift tenants between balancer replicas?"
+    },
+    {
+      "id": "n50",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Replica-local retry budgets double-spend migrated requests across balancers, pushing aggregate attempts/request above 1.2 during failover."
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Simulate three-balancer tenant migrations with five-second telemetry lag; compare replica-local versus request-scoped retry tokens by attempts per original request."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Run MigFail-3 with three balancers, backend failures, tenant migrations, and five-second lag; compare local versus request-scoped retry tokens."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "MigFail-3: local budgets reached 1.27 attempts/original request after migrations; request-scoped tokens held 1.09 under identical failures."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n51",
+      "content": "Select MigFail-3’s 1.27-attempt local-budget case; trace migrated token grants and replay request-scoped suppression under synchronized migration."
+    },
+    {
+      "id": "n55",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "MigFail-3 migration audit containing per-request token-grant timelines, duplicate-grant flags, and synchronized request-scoped replay traces."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n51",
+      "content": "Cross-check MigFail-3 audit against raw grants, then replay audited migrations to test p3’s ≥90% fairness and <1.2 attempts/request."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Audited MigFail-3 request-scoped replay achieved 91% minimum tenant fair-share attainment and 1.09 attempts/original request; no duplicate grants."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n50",
+      "content": "Replace replica-local retry budgets with migration-safe request-scoped tokens: local accounting reached 1.27 attempts/request; audited tokens yielded 1.09 and 91% fairness."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 59,
+      "exploration_parent_id": "g1",
+      "content": "Use weighted deficit scheduling with normalized credit, 95% occupancy caps, one-second failure hysteresis, and migration-safe request-scoped retry tokens."
+    },
+    {
+      "id": "n60",
+      "type": "question",
+      "order": 60,
+      "exploration_parent_id": "p4",
+      "content": "Can request-scoped tokens prevent duplicate retries when balancer replicas partition and receive the same request during five-second telemetry lag?"
+    },
+    {
+      "id": "n61",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Partitioned replicas can each redeem request-scoped tokens without shared state, raising attempts/original request above 1.2 despite token limits."
+    },
+    {
+      "id": "n62",
+      "type": "plan",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Partition MigFail-3 balancers for five seconds; replay duplicate request IDs and compare independent token redemption against single-writer leases."
+    },
+    {
+      "id": "n63",
+      "type": "activity",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Run PartitionMig-5: duplicate request IDs across partitioned balancers with five-second lag; record token redemptions and attempts/original request."
+    },
+    {
+      "id": "n64",
+      "type": "evidence",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "PartitionMig-5: independent redemption duplicated 4% of retry tokens, but attempts/request stayed 1.17; minimum tenant fair-share attainment fell to 85%."
+    },
+    {
+      "id": "n65",
+      "type": "decision",
+      "order": 65,
+      "exploration_parent_id": "n61",
+      "content": "Defer p4: retain request-scoped tokens, but diagnose and correct PartitionMig-5’s 85% tenant fair-share attainment."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 66,
+      "exploration_parent_id": "g1",
+      "content": "Use partition-stable tenant capacity reservations with local borrowing, normalized deficit accounting, and deterministic request-owner retry fencing."
+    },
+    {
+      "id": "n67",
+      "type": "question",
+      "order": 67,
+      "exploration_parent_id": "p5",
+      "content": "Can partition-stable reservations maintain ≥90% tenant fair-share attainment when tenant demand shifts unevenly across isolated balancers?"
+    },
+    {
+      "id": "n68",
+      "type": "hypothesis",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "With skewed arrivals, local borrowing cannot reclaim idle reservations across partitions, dropping minimum tenant fair-share attainment below 90%."
+    },
+    {
+      "id": "n69",
+      "type": "plan",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Extend PartitionMig-5 with 80:20 arrival skew; track stranded tenant reservations, minimum fair-share attainment, and attempts/original request."
+    },
+    {
+      "id": "n70",
+      "type": "activity",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "Run PartitionMig-5 80:20 skew with local borrowing; log idle remote reservations, tenant completions, and attempts/request during five-second partitions."
+    },
+    {
+      "id": "n71",
+      "type": "evidence",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "PartitionMig-5 80:20 skew stranded 18% of reserved slots; minimum tenant fair-share attainment fell to 82%, with 1.15 attempts/request."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n69",
+      "content": "Replay MigFail-3 migration-audit requests with 80:20 partition skew; evaluate p5 fencing and reservations against 82% fairness and attempts/request."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 73,
+      "exploration_parent_id": "n72",
+      "content": "Skewed audit replay: owner fencing reduced duplicate grants from 4% to zero and attempts/request to 1.10; fairness remained 82%."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 74,
+      "exploration_parent_id": "n69",
+      "content": "Replay MigFail-3 audit with balanced partition arrivals; assess p5 owner fencing, reservation utilization, tenant fairness, and attempts/request."
+    },
+    {
+      "id": "n75",
+      "type": "evidence",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "Balanced-partition audit: owner fencing avoided duplicate retries, yet p5 minimum tenant fair-share attainment was 88% despite 97% reservation utilization."
+    },
+    {
+      "id": "n76",
+      "type": "activity",
+      "order": 76,
+      "exploration_parent_id": "n69",
+      "content": "Compare p5’s skewed and balanced audit replays, tracing per-tenant reservation ownership and completions behind 82% and 88% fairness."
+    },
+    {
+      "id": "n77",
+      "type": "evidence",
+      "order": 77,
+      "exploration_parent_id": "n76",
+      "content": "Reservation traces: 22% of skewed versus 9% of balanced low-weight requests reached balancers lacking their reserved slots."
+    },
+    {
+      "id": "n78",
+      "type": "decision",
+      "order": 78,
+      "exploration_parent_id": "n68",
+      "content": "Reject fixed per-balancer tenant reservations for fairness; retain owner fencing, which removed duplicate retry grants without resolving misplaced-slot underdelivery."
+    },
+    {
+      "id": "n79",
+      "type": "decision",
+      "order": 79,
+      "exploration_parent_id": "g1",
+      "content": "Retain one-second hysteresis, normalized deficits, 95% caps, and owner-fenced request-scoped retries; reject fixed reservations pending partition-safe routing."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "revise",
+      "target": "n22"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n43",
+      "relation": "revise",
+      "target": "n36"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "decompose",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n63",
+      "relation": "produce",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "refute",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n70",
+      "relation": "produce",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "support",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n72",
+      "relation": "depend_on",
+      "target": "n71"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n74"
+    },
+    {
+      "source": "n74",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n76"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n76",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n76",
+      "relation": "depend_on",
+      "target": "n75"
+    },
+    {
+      "source": "n76",
+      "relation": "produce",
+      "target": "n77"
+    },
+    {
+      "source": "n77",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n75"
+    },
+    {
+      "source": "n78",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n79",
+      "relation": "depend_on",
+      "target": "n78"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a multi-tenant service load balancer that maintains fairness without retry-driven overload under delayed feedback and partial failures.",
+    "requirements": [
+      "Under feasible demand, each tenant receives at least 90% of its weighted fair throughput.",
+      "During backend failures and five-second telemetry delays, retry amplification stays below 1.2 attempts per request."
+    ]
+  }
+}

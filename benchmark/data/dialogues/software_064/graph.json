@@ -1,0 +1,1128 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an incremental compiler that soundly reuses cross-module typechecking results despite edits changing overload and trait resolution.",
+      "requirements": [
+        "Match clean-build diagnostics and executable behavior across edits, including newly applicable candidates and ambiguities.",
+        "Reuse at least 95% of typechecking results for declarations whose resolution dependencies remain semantically unchanged."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Cache declaration typechecks against indexed positive and negative resolution queries; revalidate affected queries and invalidate only changed semantic outcomes."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should negative resolution queries represent visibility and applicability so new overloads or trait implementations invalidate affected declarations?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Scope-qualified candidate-set queries keyed by overload name or canonical trait goal will catch newly applicable candidates after index changes."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Index scoped name and unification-compatible trait-goal queries, including empty sets; recheck resolutions after visibility or implementation edits."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run ResolutionFlip-1000 overload and blanket-impl edits; compare cached diagnostics and behavior against clean builds and measure unchanged-declaration reuse."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ResolutionFlip-1000 matched clean-build diagnostics and executable behavior across 1,000 edits, including ambiguities; unchanged-dependency reuse was 97.2%."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt scoped positive and negative candidate-set dependencies, supported by ResolutionFlip-1000 parity and 97.2% unchanged-dependency reuse."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Implement chosen candidate-set dependencies with signature/visibility fingerprints and selective rechecks; require clean-build diagnostic/execution parity and ≥95% reuse."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Implement TypeCache v2 with reverse-indexed scoped candidate queries, empty-set records, and selective rechecks after signature, visibility, or impl edits."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "TypeCache v2 records scoped positive and negative candidate queries and selectively rechecks declarations when indexed resolution outcomes change."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Test TypeCache v2 on WorkspaceEdit-500 visibility/overload/impl edits; compare diagnostics and behavior to clean builds, recording unchanged-dependency reuse."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "WorkspaceEdit-500 matched clean-build diagnostics on 500/500 edits and behavior on 312/312 runnable cases; unchanged-dependency reuse averaged 96.8%."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How should cached trait proofs track transitive where-clause obligations when candidate heads remain unchanged across modules?"
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Run TransitiveWhere-200 edits changing imported where-clause proofs without changing impl heads; compare TypeCache v2 diagnostics and behavior against clean builds."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "TransitiveWhere-200 found 17/200 stale diagnostics and 6 behavioral mismatches: unchanged candidate sets concealed altered imported where-clause proofs."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Extend TypeCache v2 with transitive trait-obligation dependencies, including failed proofs; recheck cached declarations when proof outcomes change."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "How can transitive proof dependencies capture failed and cyclic obligations without invalidating declarations for irrelevant impl edits?"
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Canonical obligation proof DAGs with SCC and failed-goal dependencies should eliminate TransitiveWhere-200 mismatches while preserving ≥95% unchanged-dependency reuse."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Add canonical proof DAG/SCC and failed-goal indexes to TypeCache v2; test TransitiveWhere-200 parity and unchanged-dependency reuse."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "TransitiveWhere-200 had zero diagnostic or behavioral mismatches, but SCC-wide invalidation reduced unchanged-dependency reuse to 91.6%, below 95%."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Keep transitive proof tracking to fix stale results, but replace SCC-wide invalidation: 91.6% reuse misses the 95% target."
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n15",
+      "content": "Per-goal fixed-point proof fingerprints within SCCs, including failed goals, should preserve parity and raise unchanged-dependency reuse above 95%."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Implement per-goal fixed-point fingerprints; rerun TransitiveWhere-200 and WorkspaceEdit-500, comparing clean-build parity and unchanged-dependency reuse."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Both suites matched clean-build diagnostics across 700 edits and behavior in 438 runnable cases; reuse rose from 91.6% to 96.3%."
+    },
+    {
+      "id": "n23",
+      "type": "plan",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "Implement TypeCache v3 with per-goal proof fingerprints and candidate-set indexes; gate release on clean-build parity and ≥95% reuse."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Integrate TypeCache v3 candidate queries and per-goal proof fingerprints into cross-module invalidation; add clean-build parity and reuse gates."
+    },
+    {
+      "id": "n25",
+      "type": "artifact",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "TypeCache v3 stores scoped candidate queries and per-goal fixed-point proof fingerprints, selectively invalidating cross-module declaration typechecks."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Store per-declaration constraint snapshots; replay overload and trait solving against edited interfaces, retaining typechecks only when semantic outcomes match."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "Index constraint snapshots by scope, name, and trait goal; replay affected constraints against edited interfaces before reusing unchanged typechecks."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Extend TypeCache v2 with indexed constraint snapshots; replay affected overload and trait goals across WorkspaceEdit-500 edits."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "ReplayCache prototype stores indexed declaration constraint snapshots and re-solves affected overload and trait goals before retaining cached typechecks."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Benchmark ReplayCache against TypeCache v3 on WorkspaceEdit-500 and TransitiveWhere-200 for clean-build parity, reuse, and replay cost."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "ReplayCache matched clean-build diagnostics (700/700) and behavior (438/438); reuse reached 95.8%, at 1.2× TypeCache v3 latency."
+    },
+    {
+      "id": "n31",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Choose TypeCache v3: both match clean builds, but its 96.3% reuse exceeds ReplayCache’s 95.8% at lower latency."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "CacheBench report records 700-edit parity, 438 behavioral matches, and TypeCache v3’s 96.3% reuse versus ReplayCache’s 95.8%."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n26",
+      "content": "Using CacheBench baselines, fuzz 2,000 cross-module coherence and cyclic-trait edits; compare TypeCache v3 and ReplayCache parity, reuse, latency."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "CoherenceFuzz-2000 found nine TypeCache v3 stale ambiguities after coherence edits; ReplayCache matched diagnostics (2,000/2,000), behavior (1,214/1,214), with 95.4% reuse."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "How should ReplayCache detect upstream type-alias or associated-type edits that change a constraint’s indexed trait goal?"
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Using CacheBench baselines, test AliasShift-300 cross-module alias and associated-type edits for missed ReplayCache goal reindexing, parity, and reuse."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "AliasShift-300 exposed 11 stale diagnostics and 4 behavioral mismatches: alias edits changed canonical goals without triggering snapshot replay."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Prefer ReplayCache’s ≥95% reuse and coherence parity over TypeCache v3, contingent on alias-normalization invalidation fixing AliasShift-300."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Record alias and associated-type normalization dependencies per snapshot; on edits, renormalize and reindex affected goals before replay."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Patch ReplayCache to track normalization dependencies and reindex goals after alias edits; rerun AliasShift-300 against clean builds."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "ReplayCache v2 extends the prototype with normalization-dependency indexes, renormalizing and reindexing affected trait goals before constraint replay."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Maintain differential resolver fixed points for aliases, candidates, proofs, and coherence; invalidate declarations when their resolution outcomes change."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "How can differential fixed points handle cyclic trait proofs and coherence ambiguities without invalidating declarations whose outcomes remain unchanged?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Per-goal SCC fixed points with coherence-set fingerprints should preserve clean-build parity while reusing ≥95% of unchanged-dependency typechecks."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Prototype differential SCC and coherence fingerprints atop ReplayCache v2; test CoherenceFuzz-2000 and AliasShift-300 for parity and reuse."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "CoherenceFuzz-2000 and AliasShift-300 matched clean-build diagnostics (2,300/2,300) and runnable behavior (1,350/1,350); unchanged-dependency reuse reached 95.6%."
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "p4",
+      "content": "Ship differential resolution atop ReplayCache v2, tracking alias, candidate, proof, and coherence fixed points; gate on parity and ≥95% reuse."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Integrate differential SCC and coherence fingerprints into ReplayCache v2; add clean-build parity and ≥95% reuse release checks."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "DiffResolve v1 adds differential alias, candidate, proof, and coherence updates to ReplayCache v2, with parity and reuse gates."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n46",
+      "content": "Run EditChain-1200 sequential alias, import, overload, and impl edits through DiffResolve v1; compare clean-build diagnostics, behavior, and reuse."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "EditChain-1200 matched clean-build diagnostics (1,200/1,200) and runnable behavior (710/710); unchanged-dependency reuse averaged 95.9%."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 56,
+      "exploration_parent_id": "g1",
+      "content": "Validate per-declaration resolution certificates against edited interface summaries, including candidate absence, alias normalization, and coherence witnesses."
+    },
+    {
+      "id": "n51",
+      "type": "question",
+      "order": 57,
+      "exploration_parent_id": "p5",
+      "content": "How can resolution certificates prove candidate absence across wildcard reexports without rescanning every imported module after an edit?"
+    },
+    {
+      "id": "n52",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Name-partitioned transitive export summaries with scope-filtered fingerprints should validate wildcard candidate absence without rescanning unrelated modules."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "Implement name-partitioned export summaries atop DiffResolve v1; test WildcardExport-400 for clean-build parity and unrelated-module rescans."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "WildcardExport-400 found 8 stale ambiguities: cyclic wildcard reexports changed visibility paths that name-partitioned summaries failed to track."
+    },
+    {
+      "id": "n55",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n51",
+      "content": "SCC-aware, name-partitioned export fixed points with visibility-path witnesses should validate cyclic wildcard absence without rescanning unrelated modules."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n55",
+      "content": "Add SCC-aware export fixed points and visibility-path certificates to DiffResolve v1; rerun WildcardExport-400 for clean-build parity, rescans, and reuse."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n56",
+      "content": "WildcardExport-400 matched diagnostics (400/400) and behavior (248/248); unrelated-module rescans fell to zero, with 95.5% unchanged-dependency reuse."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 64,
+      "exploration_parent_id": "p5",
+      "content": "Adopt SCC-aware visibility certificates atop ReplayCache-based DiffResolve: fixes cyclic-reexport ambiguities while preserving clean-build parity and 95.5% reuse."
+    },
+    {
+      "id": "n59",
+      "type": "plan",
+      "order": 65,
+      "exploration_parent_id": "n58",
+      "content": "Integrate SCC-aware export certificates into DiffResolve and release-gate cross-module edits on clean-build parity and ≥95% unchanged-dependency reuse."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n59",
+      "content": "Merge validated SCC-aware export certificates into DiffResolve v1 and add WildcardExport-400 to parity and reuse CI gates."
+    },
+    {
+      "id": "n61",
+      "type": "artifact",
+      "order": 67,
+      "exploration_parent_id": "n60",
+      "content": "DiffResolve v2 includes SCC-aware export certificates, differential resolution updates, and CI gates for clean-build parity and ≥95% reuse."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 68,
+      "exploration_parent_id": "n59",
+      "content": "Run MixedScope-1000 interleaved reexport, alias, overload, and impl edits against DiffResolve v2; compare clean-build parity and reuse."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 69,
+      "exploration_parent_id": "n62",
+      "content": "MixedScope-1000 matched clean-build diagnostics (1,000/1,000) and runnable behavior (603/603); unchanged-dependency reuse averaged 95.7%."
+    },
+    {
+      "id": "n64",
+      "type": "decision",
+      "order": 70,
+      "exploration_parent_id": "n63",
+      "content": "Release DiffResolve v2 with SCC-aware visibility certificates: MixedScope-1000 met clean-build parity and 95.7% unchanged-dependency reuse."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "revise",
+      "target": "n52"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n58"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an incremental compiler that soundly reuses cross-module typechecking results despite edits changing overload and trait resolution.",
+    "requirements": [
+      "Match clean-build diagnostics and executable behavior across edits, including newly applicable candidates and ambiguities.",
+      "Reuse at least 95% of typechecking results for declarations whose resolution dependencies remain semantically unchanged."
+    ]
+  }
+}

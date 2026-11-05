@@ -1,0 +1,123 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "OverlapGuard identifiability and ShiftMix-v1 results",
+      "boundary_reason": "The synthetic evaluation supports advancing OverlapGuard; the next discussion turns to real-data screening."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Real-data residual audits and overlap gating for OverlapGuard",
+      "boundary_reason": "The Waterbirds leakage audit concludes before the discussion shifts to PairSwap."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "PairSwap eligibility and initial Waterbirds failure",
+      "boundary_reason": "The initial audit finds predictor corruption and misses both accuracy targets, prompting a revised filter."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Margin-filtered PairSwap recovery and comparative benchmark",
+      "boundary_reason": "PairSwap is revived and a broader benchmark is initiated before the discussion shifts to temporal drift."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "DriftProbe overlap conditions and Waterbirds-Time audits",
+      "boundary_reason": "Revised eligibility conditions and the Waterbirds-Time package conclude the DriftProbe investigation at this stage."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "CueSurgery’s initial Waterbirds-Time benchmark",
+      "boundary_reason": "The initial result leads to an advance decision and a separate held-out evaluation plan."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Held-out CueSurgery and gated DriftProbe evaluation",
+      "boundary_reason": "The independent audit reports eligible-shift accuracy and margin retention before focus turns to edit-level gate failures."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "p5",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Minority-feature changes missed by CueSurgery’s margin gate",
+      "boundary_reason": "The annotation audit exposes missed changes and leads to a revised prioritization."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Cross-fitted EditGuard gating and comparative accuracy audit",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

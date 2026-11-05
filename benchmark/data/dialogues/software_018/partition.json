@@ -1,0 +1,121 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Crash-consistent optimizer and cursor commits using epoch-fenced quorum manifests",
+      "boundary_reason": "Manifest commits are adopted; the next discussion tests throughput."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Stable-membership throughput comparison with fixed-membership FSDP",
+      "boundary_reason": "The benchmark audit is complete; focus shifts to shard reconstruction after consecutive resizes."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Optimizer corruption when stale checkpoints are replayed after back-to-back resizes",
+      "boundary_reason": "The failure finding motivates a revised replay design."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Epoch-map-aware replay and validation across resize failures",
+      "boundary_reason": "Replay is adopted; the next stage integrates it into the runtime and examines map retention."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Runtime v0.3 map retention and its throughput cost",
+      "boundary_reason": "Synchronous map-expiry cleanup misses the throughput target, prompting a new collector design."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Background reference-counted epoch-map collection and recovery validation",
+      "boundary_reason": "Recovery and throughput checks support the collector; focus moves to the release gate."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Initial runtime v0.4 release-gate failure and throughput report",
+      "boundary_reason": "The release-gate report is produced; the next discussion addresses sample-lease handoffs."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Manifest-resolution-gated sample-lease reassignment during resizes",
+      "boundary_reason": "Gated reassignment is adopted, pending combined release and throughput retesting."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Combined gated-lease release audit and runtime v0.4 approval",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

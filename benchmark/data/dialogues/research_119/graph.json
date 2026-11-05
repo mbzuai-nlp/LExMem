@@ -1,0 +1,1128 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Identify causally responsible actions in partially observed reinforcement learning despite delayed rewards and correlated, reward-irrelevant actions.",
+      "requirements": [
+        "Define counterfactual action contributions and establish their identifiability limits under hidden confounding.",
+        "Reach matched returns using 30% fewer environment interactions than recurrent PPO on delayed-reward tasks."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Develop CounterTrace: randomized probes estimate history-conditioned delayed-return contrasts, sensitivity bounds quantify hidden confounding, and contrast-weighted advantages train recurrent PPO."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can sparse randomized probes identify delayed-return action contributions, and what can be bounded in unprobed histories with hidden confounding?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "CounterTrace identifies probed-history contrasts; unprobed histories require observational overlap, with Γ≤2 sensitivity bounds excluding zero for ≥80% high-impact actions."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Randomize 5% of actions; test overlap, estimate delayed-return contrasts, derive Γ≤2 sensitivity bounds, benchmark CounterTrace against recurrent PPO."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run 20-seed ProbeMaze-Delayed with 5% probes; compare oracle contrasts and Γ≤2 bound coverage across hidden-confounding strata."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ProbeMaze-Delayed: probed contrasts had 0.06 MAE; Γ≤2 bounds covered 94% of oracle effects, excluding zero for 83% high-impact actions."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Retain 5% randomized probes and Γ≤2 bounds for attribution; 0.06 MAE and 94% coverage justify sample-efficiency testing."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "With retained 5% probes and Γ≤2 bounds, compare CounterTrace against recurrent PPO on interactions-to-matched-return across delayed tasks, targeting ≥30% savings."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Benchmark CounterTrace against recurrent PPO over 20 seeds on ProbeMaze-Delayed, KeyDoor-Delay, and DistractorChain; record interactions to 80%-oracle return."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "CounterTrace Benchmark v1: 20-seed learning curves and paired-bootstrap intervals for interactions to 80%-oracle return across three delayed tasks."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Audit CounterTrace Benchmark v1 curves and confidence intervals; calculate per-task interaction savings versus recurrent PPO and test the 30% target."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "CounterTrace reached 80%-oracle return with 36% fewer interactions than recurrent PPO across three tasks (20 seeds; 95% CI: 31–41%)."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Does CounterTrace avoid attributing delayed rewards to correlated distractor actions that have no causal effect on return?"
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Inject reward-correlated, causally inert toggle actions into DistractorChain; measure false-attribution rate against oracle interventions over 20 seeds."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "On DistractorChain, CounterTrace labeled 38% of inert toggles high-impact (|contrast|≥0.1 return units), versus 0% by oracle intervention."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Develop SwitchPair: stratified randomized action swaps identify probed effects; inert-toggle controls and Γ-bounded credit gate policy updates elsewhere."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Can SwitchPair suppress false credit for inert toggles while retaining 30% interaction savings with a 5% swap budget?"
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "At 5% swaps, SwitchPair cuts inert-toggle false-attribution below 10% and reaches 80%-oracle return using ≥30% fewer interactions than recurrent PPO."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Using Benchmark v1 baselines, run 20-seed SwitchPair with 5% swaps across three tasks; measure inert-toggle misattribution and interaction savings."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "SwitchPair cut DistractorChain inert-toggle false-attribution from 38% to 7%, but saved only 22% interactions versus recurrent PPO."
+    },
+    {
+      "id": "n19",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Retain SwitchPair’s inert-toggle controls, but revise swap allocation: false-attribution fell from 38% to 7%, while savings missed 30%."
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n15",
+      "content": "Uncertainty-weighted 5% swaps, calibrated against inert-toggle controls, retain ≤10% false-attribution and restore ≥30% interaction savings."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Run 20-seed, 5%-swap uncertainty-weighted versus uniform SwitchPair trials across three tasks; measure inert-toggle false-attribution and recurrent-PPO-relative interaction savings."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Uncertainty-weighted SwitchPair achieved 8% inert-toggle false-attribution and 33% fewer interactions than recurrent PPO across three tasks (20 seeds)."
+    },
+    {
+      "id": "n23",
+      "type": "plan",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "Formalize swap identification and hidden-confounding bounds; verify uncertainty-weighted SwitchPair’s ≥30% savings and ≤10% inert-toggle misattribution on held-out tasks."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Derive identification of history-conditioned swap contrasts under randomization and positivity; construct observationally equivalent hidden-confounder models and Γ≤2 bounds."
+    },
+    {
+      "id": "n25",
+      "type": "artifact",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "SwitchPair Theorem v1 defines counterfactual return contrasts, proves randomized-swap identification under overlap, and supplies hidden-confounding counterexamples and Γ≤2 bounds."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Develop DelayKnockoff: conditional-history knockoffs filter correlated distractors, randomized audits identify action contrasts, and sensitivity-gated advantages train recurrent PPO."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "p3",
+      "content": "Derive randomized-audit identification and confounding bounds; test DelayKnockoff’s ≥30% interaction savings and ≤10% inert-toggle false-attribution on held-out tasks."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Using Benchmark v1’s metrics, run 20-seed DelayKnockoff versus recurrent-PPO trials on held-out DelayVault; measure misattribution and interactions-to-80%-oracle."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "DelayVault Benchmark v1 contains 20-seed learning curves, inert-toggle attribution labels, and interactions-to-80%-oracle comparisons with recurrent PPO."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Audit DelayVault Benchmark v1’s interaction savings and false-attribution; check SwitchPair Theorem v1’s Γ≤2 bounds against oracle effects."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "On DelayVault, DelayKnockoff saved 34% interactions versus recurrent PPO, misattributed 6% inert toggles; Γ≤2 bounds covered 93% oracle effects."
+    },
+    {
+      "id": "n31",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Advance DelayKnockoff and SwitchPair to cross-task validation: both exceeded 30% interaction savings with ≤8% inert-toggle misattribution."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "DelayVault Audit Report v1 provides verified learning curves, inert-toggle confusion counts, and Γ≤2 bound-coverage checks for cross-task validation."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n26",
+      "content": "Using DelayVault Audit Report v1 to freeze calibration, cross-evaluate SwitchPair and DelayKnockoff on EchoMaze-Delay: savings, misattribution, Γ≤2 coverage."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "EchoMaze-Delay: SwitchPair saved 18% interactions versus recurrent PPO, misattributing 16% inert toggles; DelayKnockoff saved 32%, misattributing 7%."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "Does DelayKnockoff’s 7% EchoMaze misattribution persist when hidden-state shifts break conditional-history knockoff exchangeability?"
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Using DelayVault Audit Report v1, shift hidden-state mixtures within identical histories; compare DelayKnockoff misattribution and savings against DelayVault Benchmark v1."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Shifted DelayVault raised DelayKnockoff inert-toggle misattribution from 6% to 24% and cut recurrent-PPO-relative interaction savings from 34% to 19%."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Defer DelayKnockoff deployment pending hidden-state-shift safeguards: unshifted tasks saved 32–34% interactions, but shifted DelayVault misattributed 24% inert toggles."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Build probe-calibrated shift alarms and audit-gated knockoff credit; retest shifted DelayVault for ≤10% misattribution and ≥30% interaction savings."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Calibrate probe-drift alarms against DelayVault Benchmark v1 and 24% shift failure; rerun 20-seed shifted gated-credit trials, measuring misattribution and savings."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "DelayVault Benchmark v2 extends v1 with probe-drift alarms, shifted-mixture gated-credit learning curves, inert-toggle misattribution, and recurrent-PPO interaction comparisons."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Develop SentinelCredit: randomized probes identify action contrasts; shift-robust sensitivity bounds suppress unsupported distractor credit and gate recurrent-PPO advantages."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Can SentinelCredit keep inert-toggle misattribution below 10% under hidden-state shifts while preserving 30% interaction savings?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "With 5% probes and Γ≤2 credit gating, SentinelCredit yields ≤10% inert-toggle misattribution and ≥30% interaction savings on shifted DelayVault."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Using DelayVault Benchmark v2, run 20-seed shifted SentinelCredit trials with 5% probes and Γ≤2 gates; measure misattribution and recurrent-PPO-relative savings."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Shifted DelayVault: SentinelCredit misattributed 8% inert toggles and saved 31% interactions versus recurrent PPO across 20 seeds."
+    },
+    {
+      "id": "n46",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "p4",
+      "content": "Formalize SentinelCredit’s probe-identified contrasts and hidden-confounding limits; replicate ≥30% savings and ≤10% misattribution on shifted EchoMaze-Delay."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Transfer DelayVault Benchmark v2 alarm thresholds to shifted EchoMaze-Delay; run 20-seed SentinelCredit trials measuring interaction savings and inert-toggle misattribution."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Shifted EchoMaze Replication v1 records 20-seed SentinelCredit learning curves, inert-toggle labels, frozen alarm thresholds, and recurrent-PPO interaction baselines."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n46",
+      "content": "Audit Shifted EchoMaze Replication v1: compute paired-bootstrap interaction savings, inert-toggle misattribution, and probe-contrast coverage against oracle interventions."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Shifted EchoMaze-Delay: SentinelCredit saved 32% interactions versus recurrent PPO, misattributed 9% inert toggles; Γ≤2 bounds covered 94% oracle contrasts."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 56,
+      "exploration_parent_id": "g1",
+      "content": "Develop LatentBridge: estimate proximal action contrasts using negative-control proxies and randomized probes, then train recurrent PPO on uncertainty-gated advantages."
+    },
+    {
+      "id": "n51",
+      "type": "question",
+      "order": 57,
+      "exploration_parent_id": "p5",
+      "content": "When do negative-control proxies identify unprobed action contrasts under hidden confounding, and can LatentBridge retain ≥30% interaction savings?"
+    },
+    {
+      "id": "n52",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "Under proxy exclusion, completeness, and overlap, LatentBridge identifies unprobed contrasts and saves ≥30% interactions versus recurrent PPO."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n52",
+      "content": "Using Shifted EchoMaze Replication v1, simulate valid negative-control proxies; test overlap, bridge rank, oracle-contrast error, and recurrent-PPO-relative interaction savings."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n53",
+      "content": "With valid, full-rank EchoMaze proxies, LatentBridge achieved 0.05 oracle-contrast MAE but saved only 24% interactions versus recurrent PPO."
+    },
+    {
+      "id": "n55",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n51",
+      "content": "With valid, full-rank proxies, uncertainty-targeted probes preserve ≤0.06 oracle-contrast MAE and raise LatentBridge’s interaction savings from 24% to ≥30%."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n55",
+      "content": "Using Shifted EchoMaze Replication v1, run 20-seed LatentBridge with 5% uncertainty-targeted probes; measure oracle-contrast MAE and recurrent-PPO-relative interaction savings."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n56",
+      "content": "Uncertainty-targeted LatentBridge achieved 0.05 oracle-contrast MAE and 31% fewer interactions than recurrent PPO on shifted EchoMaze (20 seeds)."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 64,
+      "exploration_parent_id": "p5",
+      "content": "Prioritize SentinelCredit’s 32% savings; conditionally advance LatentBridge’s 31% with validated proxies, avoiding DelayKnockoff’s shift failure and untargeted 24%."
+    },
+    {
+      "id": "n59",
+      "type": "plan",
+      "order": 65,
+      "exploration_parent_id": "n58",
+      "content": "Define SentinelCredit’s counterfactual contrasts and hidden-confounding bounds; validate LatentBridge proxies; replicate ≥30% savings and ≤10% misattribution on shifted tasks."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n59",
+      "content": "Using Shifted EchoMaze Replication v1 and LatentBridge’s 0.05-MAE benchmark, derive SentinelCredit contrasts and test proxy rank and Γ≤2 coverage."
+    },
+    {
+      "id": "n61",
+      "type": "artifact",
+      "order": 67,
+      "exploration_parent_id": "n60",
+      "content": "SentinelCredit Theory v1 defines policy-following contrasts, proves randomized-probe identification under overlap, and documents hidden-confounding counterexamples, proxy-rank diagnostics, and Γ≤2 bounds."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 68,
+      "exploration_parent_id": "n59",
+      "content": "On held-out shifted KeyDoor-Delay, test SentinelCredit Theory v1’s Γ≤2 bound coverage and proxy-rank diagnostics; benchmark LatentBridge’s savings and misattribution."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 69,
+      "exploration_parent_id": "n62",
+      "content": "Shifted KeyDoor-Delay: full-rank proxies yielded LatentBridge 31% interaction savings and 8% inert-toggle misattribution; SentinelCredit Γ≤2 bounds covered 93% oracle contrasts."
+    },
+    {
+      "id": "n64",
+      "type": "decision",
+      "order": 70,
+      "exploration_parent_id": "n63",
+      "content": "Keep SentinelCredit primary; advance LatentBridge only with full-rank proxies, given shifted KeyDoor’s 31% savings and 8% misattribution."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n23",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "revise",
+      "target": "n52"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "support",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n58"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Identify causally responsible actions in partially observed reinforcement learning despite delayed rewards and correlated, reward-irrelevant actions.",
+    "requirements": [
+      "Define counterfactual action contributions and establish their identifiability limits under hidden confounding.",
+      "Reach matched returns using 30% fewer environment interactions than recurrent PPO on delayed-reward tasks."
+    ]
+  }
+}

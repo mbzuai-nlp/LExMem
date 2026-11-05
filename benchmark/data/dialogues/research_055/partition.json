@@ -1,0 +1,144 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "SpatialIV identifiability assumptions and initial synthetic-tissue benchmark",
+      "boundary_reason": "The initial benchmark leads to a decision; the next nodes stress-test a different environmental setting."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10"
+      ],
+      "topic": "SpatialIV failure at discontinuous niche boundaries",
+      "boundary_reason": "The stress test exposes a limitation, followed by a new proposal to model niche boundaries."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "BoundaryIV design and comparison with SpatialIV",
+      "boundary_reason": "The benchmark result leads to a narrower question about bias from niche markers."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Testing collider bias from signaling-responsive niche markers",
+      "boundary_reason": "The marker test prompts a revised hypothesis; the next work shifts to abstention calibration."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n19",
+        "n20"
+      ],
+      "topic": "BoundaryIV abstention calibration and release",
+      "boundary_reason": "The BoundaryIV release concludes this stage before receptor contrasts are proposed."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "ReceptorContrast evaluation and DualGate integration",
+      "boundary_reason": "DualGate implementation is reported; the next nodes test more specific identifiability assumptions."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Receptor–environment interactions and responsive-marker sensitivity",
+      "boundary_reason": "The simulation results conclude the assumption test before a placebo-control approach begins."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Initial SpatialPlacebo test and local-gradient false positives",
+      "boundary_reason": "The initial placebo hypothesis is refuted, prompting a revised matching strategy."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Gradient-matched SpatialPlacebo and matched-niche SpatialIV",
+      "boundary_reason": "The comparison yields a method decision; the next nodes implement and audit it."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n39",
+        "n40"
+      ],
+      "topic": "Implementation of matched controls and ConfoundTissue-1 v2",
+      "boundary_reason": "The updated dataset is produced before the discussion turns to mosaic perturbations."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "MosaicPerturb under niche remodeling and comparison with ReceptorContrast",
+      "boundary_reason": "The simulation supports a routing decision; the next stage extends the dataset and tests that routing."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "ConfoundTissue-1 v3 validation and final perturbation-versus-observational routing",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

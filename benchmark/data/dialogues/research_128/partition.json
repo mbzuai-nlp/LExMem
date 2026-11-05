@@ -1,0 +1,154 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Paired-loss slot VQA on unseen object–attribute combinations",
+      "boundary_reason": "The initial evaluation supports retaining the method; the next segment tests the frozen model further."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Frozen-model evaluation and edit-generator artifact shortcuts",
+      "boundary_reason": "Cross-generator and sham results expose a new failure, motivating a different training approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Training and evaluating artifact-balanced slot VQA",
+      "boundary_reason": "The cross-generator evaluation is complete; attention shifts to partial occlusions."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Partial-occlusion failure and the value of mask consistency",
+      "boundary_reason": "The decision retains mask consistency for sufficiently visible objects while identifying occlusion-aware training as the next priority."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Visibility-gated occlusion training and v3 evaluation",
+      "boundary_reason": "v3 misses both evaluation targets; the next discussion investigates occluder-texture shortcuts."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Diagnosing texture-induced flips across the visibility gate",
+      "boundary_reason": "The gate is retained after the ablation; the next segment tests a separate texture-balancing remedy."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Texture-balanced v4 and its unseen-generator limitation",
+      "boundary_reason": "v4 is deferred after unseen-generator testing, prompting a revised explanation of the shortcuts."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Testing generator-specific cues and style-randomized v5",
+      "boundary_reason": "The decision defers v4 and v5 and identifies joint balancing and low-visibility consistency for further testing."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Training and selecting confidence-weighted v6",
+      "boundary_reason": "v6 meets both targets and is selected; the next segment explores a scene-graph approach."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Causal scene-graph VQA for spatial-relation questions",
+      "boundary_reason": "The scene-graph model is retained as a specialist; the next segment combines it with v6."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "Routing between the scene-graph specialist and v6",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

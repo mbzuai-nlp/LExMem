@@ -1,0 +1,165 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "CounterTrace probe identification and hidden-confounding bounds",
+      "boundary_reason": "The attribution results support retaining the probes and bounds; the next discussion turns to sample efficiency."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "CounterTrace interaction-savings benchmark",
+      "boundary_reason": "The benchmark establishes interaction savings; the next discussion tests false credit for distractor actions."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "CounterTrace false attribution to inert toggles",
+      "boundary_reason": "The inert-toggle result exposes a distinct attribution failure and motivates a new proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Initial SwitchPair swap test and allocation decision",
+      "boundary_reason": "SwitchPair reduces false attribution but misses the interaction-savings target; the next discussion revises swap allocation."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Uncertainty-weighted SwitchPair and its identification limits",
+      "boundary_reason": "The revised swap results and formal identification artifact complete this stage; the next proposal explores knockoffs."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "DelayKnockoff’s held-out DelayVault evaluation",
+      "boundary_reason": "The audited DelayVault results lead to a cross-task validation decision."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n33",
+        "n34"
+      ],
+      "topic": "SwitchPair and DelayKnockoff cross-evaluation on EchoMaze-Delay",
+      "boundary_reason": "The cross-evaluation is complete; the next discussion probes a hidden-state-shift risk."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "DelayKnockoff hidden-state-shift failure and gated-credit safeguards",
+      "boundary_reason": "The shift failure prompts safeguards and an updated benchmark; the next discussion introduces a separate shift-robust method."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "SentinelCredit on shifted DelayVault",
+      "boundary_reason": "The initial shifted-task result meets both targets; the next discussion tests replication on another task."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "SentinelCredit replication on shifted EchoMaze-Delay",
+      "boundary_reason": "The replication audit is complete; the next proposal investigates proxy-based identification."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "LatentBridge identification with valid proxies and its initial efficiency shortfall",
+      "boundary_reason": "The initial test meets the contrast-error goal but misses the savings target, prompting a revised probe strategy."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Uncertainty-targeted LatentBridge probes",
+      "boundary_reason": "The targeted-probe test meets the savings target; the next discussion weighs methods and formalizes validation."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64"
+      ],
+      "topic": "SentinelCredit theory, LatentBridge proxy validation, and method prioritization",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Calibrating CLIP prototypes to distinguish novel classes from weather-shifted known classes",
+      "boundary_reason": "The novelty detector is adopted; discussion turns to learning classes without forgetting."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Ten-addition adapter baseline and replay–distillation sweep",
+      "boundary_reason": "The best replay setting falls short of the known-class retention target, prompting a different approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Class-specific LoRA modules and frozen known-class logits on WeatherShift-10",
+      "boundary_reason": "WeatherShift-10 evaluation is complete; attention shifts to unseen sensor shifts."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "CameraShift-10 rejection and recall without recalibration",
+      "boundary_reason": "Sensor-balanced analysis leads to a decision to defer CameraShift-10 deployment."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Artifact-augmented prototypes and sensor-balanced calibration",
+      "boundary_reason": "SensorCal-v1 improves rejection but misses the novel-recall target, motivating an augmentation ablation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Bayer and JPEG ablations and their effect on novel-class recall",
+      "boundary_reason": "The JPEG investigation reaches a decision; discussion turns to Bayer coverage."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Testing whether Bayer augmentation improves held-out-sensor coverage and recall",
+      "boundary_reason": "Withholding a Bayer pattern exposes a deployment limitation, prompting a closer test of pattern matching."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Matched versus mismatched Bayer patterns across sensors",
+      "boundary_reason": "Conflicting sensor-wise results lead to a decision to use diverse prototypes with sensor-wise validation."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Sensor-conditioned prototype weighting for CameraShift-10",
+      "boundary_reason": "SensorGate-v1 meets the CameraShift-10 targets and is adopted."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p5",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Uncertainty-gated sensor embeddings for unseen cameras",
+      "boundary_reason": "The embeddings meet per-camera novelty targets; discussion moves to ten-addition integration."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "Integrating and auditing unseen-camera detection with ten-addition LoRA",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

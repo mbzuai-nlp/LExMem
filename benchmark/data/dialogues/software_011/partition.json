@@ -1,0 +1,125 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "pl1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Epoch-fenced replay and crash-recovery correctness",
+      "boundary_reason": "The crash tests support a correctness decision; the next discussion measures deployment overhead."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "pl2",
+        "a2",
+        "ar1",
+        "a3",
+        "e2"
+      ],
+      "topic": "Benchmarking watermark-tagged replay against the overhead limit",
+      "boundary_reason": "The matched-run overhead audit concludes before a different copy-manifest approach is tested."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "h2",
+        "a4",
+        "e3"
+      ],
+      "topic": "Testing quorum-certified copy manifests",
+      "boundary_reason": "Mixed-step manifests reveal a failure that leads to a new snapshot-consistency question."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "q2",
+        "a5",
+        "ar2",
+        "e4"
+      ],
+      "topic": "Step-pinned bundles for consistent Adam snapshots",
+      "boundary_reason": "The bundle fix is tested; the next discussion compares it with gradient-log replay."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "pl3",
+        "a6",
+        "e5"
+      ],
+      "topic": "Comparing gradient-log replay with StepBundle resharding",
+      "boundary_reason": "The comparison establishes a performance difference and raises a separate log-truncation issue."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "q3",
+        "h3",
+        "a7",
+        "e6",
+        "h4",
+        "a8",
+        "e7",
+        "d2"
+      ],
+      "topic": "Safe gradient-log truncation during migration",
+      "boundary_reason": "Crash tests support the revised truncation rule and an adoption decision."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "a9",
+        "ar3"
+      ],
+      "topic": "Implementing ElasticAdam v1 with durable-location-gated truncation",
+      "boundary_reason": "The implementation artifact is recorded before discussion turns to gradient sequencing and recomputation."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "q4",
+        "h5",
+        "p3",
+        "q5",
+        "pl4",
+        "a10",
+        "e8",
+        "d3"
+      ],
+      "topic": "Gradient ordering and conditions for seed-based recomputation",
+      "boundary_reason": "The comparison leads to a recovery-default decision and a plan for final verification."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "pl5",
+        "a11",
+        "ar4",
+        "a12",
+        "e9",
+        "d4"
+      ],
+      "topic": "ElasticAdam v1.1 verification and approval",
+      "boundary_reason": "The audit supports approval; a later test revisits seed-only recomputation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "a13",
+        "e10",
+        "d5"
+      ],
+      "topic": "Seed-only mismatch findings and fallback revision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

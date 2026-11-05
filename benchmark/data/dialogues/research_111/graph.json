@@ -1,0 +1,1045 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Learn reduced models of partially observed Kuramoto–Sivashinsky dynamics preserving stationary energy distributions and responses to unseen forcing.",
+      "requirements": [
+        "Stationary energy-distribution Wasserstein-1 error stays below 5% of the full-system distribution’s standard deviation.",
+        "Predict nonzero mean-energy responses to unseen weak forcing within 10% relative error against full-system simulations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fit a history-encoded stochastic latent SDE conditioned on forcing projections, regularized by energy-distribution Wasserstein loss and weak-force response kernels."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Are 16 observation snapshots sufficient for the latent SDE to capture hidden-mode memory driving mean-energy responses?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Sixteen snapshots at 0.25-time-unit spacing capture hidden-mode memory, yielding <10% relative mean-energy response error under held-out weak forcing."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Train matched latent SDEs using 4, 16, or 64 snapshots; compare held-out forcing response errors and stationary-energy Wasserstein distances."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Fit 4/16/64-snapshot latent SDEs on eight observed KS Fourier modes; measure normalized energy W1 and held-out forcing-response errors."
+    },
+    {
+      "id": "n5",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "KS-MemoryBench v1 contains 4/16/64-snapshot SDE checkpoints, held-out forcing trajectories, and normalized energy-W1 and mean-response error tables."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Audit KS-MemoryBench v1: compare 4/16/64-snapshot held-out response errors against 10% and normalized energy W1 against 0.05."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "KS-MemoryBench v1: 16 snapshots achieved 7.8% held-out response error and 0.039 normalized energy W1; four snapshots yielded 15.1%."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n5",
+      "content": "Stratify KS-MemoryBench v1 held-out forcing trajectories by spatial mode and sign; bootstrap 16-snapshot mean-energy response errors."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Mode-3 negative forcing yielded 18.2% mean-energy response error (95% bootstrap CI 13.4–23.1%) despite 7.8% pooled error."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Does the mode-3 negative-forcing error reflect inadequate sign-resolved response training rather than insufficient 16-snapshot memory?"
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Sixteen snapshots suffice with sign-resolved response regularization, rather than longer histories, to reduce held-out mode-3 negative-forcing error below 10%."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Train 16/64-snapshot SDEs with or without sign-resolved response losses on separate perturbations; compare held-out mode-3 negative-forcing errors."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Using KS-MemoryBench v1 splits, retrain 16/64-snapshot SDEs with/without sign-resolved loss; measure held-out mode-3 negative-forcing response errors."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "With sign-resolved loss, held-out mode-3 negative-forcing error was 12.6% at 16 snapshots versus 8.1% at 64."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n12",
+      "content": "Estimate conditional mutual information between 4–16-unit-old observations and held-out mode-3 negative-forcing energy responses, given 16 recent KS-MemoryBench v1 snapshots."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "For mode-3 negative forcing, older observations added 0.006 bits of conditional information, versus 0.11 bits from recent snapshots."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Does the 64-snapshot model improve mode-3 forcing responses by denoising observations rather than exploiting longer memory?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "A noise-aware 16-snapshot encoder will match 64-snapshot mode-3 response accuracy (<10%), implying extra frames primarily improve denoising."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "With matched sign-resolved losses, compare noise-aware 16-snapshot and baseline 64-snapshot encoders on clean/noisy held-out mode-3 responses."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n19",
+      "content": "Using KS-MemoryBench v1, train a noise-aware 16-snapshot encoder with sign-resolved loss; compare mode-3 response errors against 64-snapshot baselines."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n20",
+      "content": "Noise-aware 16-snapshot encoding reduced held-out mode-3 negative-forcing error to 8.4% from 12.6%; the 64-snapshot baseline achieved 8.1%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n19",
+      "content": "Inject 0%, 5%, and 10% observation noise into KS-MemoryBench v1; compare matched-loss 16/64-snapshot mode-3 response errors."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n22",
+      "content": "At 10% observation noise, noise-aware 16-snapshot mode-3 response error rose to 14.3%, versus 8.7% for 64 snapshots."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n19",
+      "content": "On KS-MemoryBench v1, restore clean observations after 10% noise injection and compare 16/64-snapshot mode-3 response errors."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n24",
+      "content": "With clean observations restored, mode-3 negative-forcing error was 8.4% for noise-aware 16 snapshots versus 8.1% for 64."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n25",
+      "content": "Use noise-aware 16-snapshot encoders for clean data, switching to 64 snapshots at 10% observation noise to retain sub-10% responses."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Build a Mori–Zwanzig reduced model for observed Fourier modes with learned memory, energy-matched colored noise, and forcing-affine drift."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Can a forcing-independent memory kernel reproduce unseen mode-3 negative-forcing responses while preserving the stationary energy distribution?"
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Fit matched fixed-kernel and forcing-conditioned Mori–Zwanzig models; compare stationary energy W1 and held-out mode-3 negative-forcing response errors."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Fit fixed and forcing-conditioned memory kernels on KS-MemoryBench v1 training splits; evaluate held-out mode-3 response error and normalized energy W1."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "MZ-KS v1 contains fixed/forcing-conditioned kernel checkpoints and held-out mode-3 response-error and normalized energy-W1 tables."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n28",
+      "content": "Audit MZ-KS v1 checkpoints against 0.05 normalized energy-W1 and 10% held-out response thresholds, including mode-3 negative forcing."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "MZ-KS v1 fixed/conditioned kernels achieved energy W1 of 0.043/0.041, but held-out mode-3 response errors were 17.6%/12.8%."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "Defer MZ-KS v1: both kernels match stationary energy, but 12.8% best mode-3 response error exceeds the 10% target."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Learn a history-aware, energy-stratified Markov operator with forcing-controlled transitions, calibrated to stationary energy distributions and response susceptibilities."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Do 32 history-conditioned energy strata resolve mode-3 negative-forcing susceptibility without introducing sparse-transition bias?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "A 32-stratum operator with shrinkage-smoothed transitions achieves <0.05 normalized energy W1 and <10% held-out mode-3 response error."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Fit history-conditioned, forcing-controlled 32-stratum operators with shrinkage; measure held-out mode-3 response error, normalized energy W1, and transition sparsity."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "The 32-stratum operator achieved 0.037 normalized energy W1 and 8.9% held-out mode-3 response error, versus 12.8% for MZ-KS."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Bootstrap rare-stratum transitions; compare smoothed versus unsmoothed 32-stratum operators on held-out mode-3 response error and normalized energy W1."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Rare-transition bootstraps raised smoothed operators’ overall held-out mode-3 response error from 8.9% to 11.3% median (unsmoothed: 15.0%)."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Can pooling neighboring energy strata stabilize rare transitions without erasing mode-3 negative-forcing susceptibility?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Pooling adjacent sparse strata preserves mode-3 susceptibility while keeping bootstrapped response error below 10% and normalized energy W1 below 0.05."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "Pool adjacent strata with fewer than 100 training transitions; bootstrap held-out mode-3 response errors and normalized energy W1."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Merge adjacent strata below 100 transitions in the 32-stratum operator; run 500 bootstraps of mode-3 response error and energy W1."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Pooled strata yielded 9.2% median bootstrapped mode-3 response error (95th percentile 9.8%) and 0.042 normalized energy W1."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Adopt pooled-stratum operator: pooling reverses bootstrap degradation (11.3% to 9.2% median response error) while retaining 0.042 normalized energy W1."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Fit a forcing-affine stochastic Koopman generator on delay coordinates, calibrating its invariant energy law and mode-specific linear susceptibilities."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 51,
+      "exploration_parent_id": "p4",
+      "content": "Can a 16-delay Koopman generator infer unseen negative mode-3 susceptibility from positive-forcing data without sacrificing invariant energy accuracy?"
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Fit 16-delay Koopman generators on unforced and positive mode-3 trajectories; test unseen negative responses and normalized stationary-energy W1."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Train forcing-affine 16-delay Koopman generators on unforced/positive mode-3 KS trajectories; evaluate negative-forcing response error and energy W1."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Koopman-KS v1 contains 16-delay generator checkpoints, negative-mode-3 response predictions, and normalized stationary-energy W1 scores."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n47",
+      "content": "Audit Koopman-KS v1: compare unseen negative-mode-3 response error with 10% and normalized invariant-energy W1 with 0.05."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Koopman-KS v1 attained 0.034 normalized energy W1 and 9.1% unseen negative-mode-3 response error."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n47",
+      "content": "Using Koopman-KS v1, sweep held-out negative mode-3 forcing amplitudes 0.01–0.05 and measure relative mean-energy response errors."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Across forcing amplitudes 0.01–0.05, Koopman-KS v1 predicted nonzero mean-energy responses with 7.8–9.7% relative error."
+    },
+    {
+      "id": "n54",
+      "type": "question",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Does Koopman-KS v1 retain sub-10% mean-energy response error for unseen time-varying negative mode-3 forcing?"
+    },
+    {
+      "id": "n55",
+      "type": "hypothesis",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Koopman-KS v1 predicts nonzero mean-energy shifts under unseen sinusoidal mode-3 forcing with <10% relative error up to frequency 0.2."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "Simulate held-out negative mode-3 sinusoidal forcing at frequencies 0.05–0.2; compare Koopman-KS mean-energy shifts with full KS."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Simulate Koopman-KS v1 and full KS under unseen mode-3 forcing −0.03+0.01sin(ωt), ω=0.05–0.2; compare mean-energy shifts."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "Sinusoidal mean-energy shift errors stayed at 8.0–9.6%, but unforced-control stationary energy W1 reached 0.061 on longer rollouts."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n56",
+      "content": "Extend Koopman-KS v1 sinusoidal and unforced-control rollouts to 10,000 time units; track energy W1 and mean-response error by horizon."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "At 10,000 time units, Koopman-KS unforced energy W1 rose to 0.074, while sinusoidal mean-response error remained 9.4%."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "Retain Koopman-KS for response prediction, but defer adoption: long-horizon energy W1 reaches 0.074 despite sub-10% forcing errors."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n58",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Learn reduced models of partially observed Kuramoto–Sivashinsky dynamics preserving stationary energy distributions and responses to unseen forcing.",
+    "requirements": [
+      "Stationary energy-distribution Wasserstein-1 error stays below 5% of the full-system distribution’s standard deviation.",
+      "Predict nonzero mean-energy responses to unseen weak forcing within 10% relative error against full-system simulations."
+    ]
+  }
+}

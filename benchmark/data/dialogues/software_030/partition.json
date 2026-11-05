@@ -1,0 +1,140 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "topic": "Initial alias-analysis design and versioned SCC dependency plan",
+      "boundary_reason": "The discussion moves from the plan to testing its invalidation behavior."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "EditSCC-200 mismatch, global-escape watchers, and SCC invalidation results",
+      "boundary_reason": "The watcher decision closes this test-and-fix cycle; the next work addresses IR semantics."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Heap, cast, opaque-call, and recursive-summary implementation",
+      "boundary_reason": "The discussion shifts to a generated-edit oracle and latency testing proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Generated-edit oracle, alias parity, and latency gates",
+      "boundary_reason": "The CI-gate decision closes this evaluation; the next tests examine semantic soundness."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Opaque-return soundness failure and hypotheses for staged edits",
+      "boundary_reason": "The discussion moves from identifying omissions and edit combinations to an opaque-return closure proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Opaque-return closure tests and nested-return invalidation failures",
+      "boundary_reason": "The nested-return failures motivate a focused dependency repair."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Nested opaque-return heap-slot dependencies and their adoption",
+      "boundary_reason": "The repair is adopted; the next proposal extends closure propagation to wildcard cast slots."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Wildcard-slot oracle expansion and discovered soundness gaps",
+      "boundary_reason": "The oracle findings lead to implementation fixes and a revised suite."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Conservative wildcard-slot propagation and soundness verification",
+      "boundary_reason": "The soundness fix is retained; the discussion turns to its latency cost."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47"
+      ],
+      "topic": "Deduplicated wildcard subscriptions and latency results",
+      "boundary_reason": "The performance question is answered; the next proposal addresses deletions and shrinking summaries."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Generation-snapshot SCC rebuilds for deleted targets and shrinking summaries",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial epoch-fenced gang reservation design and mid-commit partition test",
+      "boundary_reason": "The initial test supports five-second reservation expiry, and its report is complete."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "Constrained-placement replay exposes duplicate allocations",
+      "boundary_reason": "The replay raises a new question about commits delayed beyond reservation expiry."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Quorum-logged commits, reconciliation, recovery, and tenant-wait testing",
+      "boundary_reason": "The comparison concludes with a decision to replace expiry-only commits."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Single-writer scheduling and worker-acknowledged fencing",
+      "boundary_reason": "The replays lead to a decision not to rely on the 20-second fencing target."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Per-resource quorum tokens and logged gang decisions",
+      "boundary_reason": "Partial-commit replays support adoption of the token-based design."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p5",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Cross-rack shard leases and incomplete-hold reconciliation",
+      "boundary_reason": "Contention and failover results lead to rejection of rack-shard leases."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Prioritized quorum aborts with per-resource tokens",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

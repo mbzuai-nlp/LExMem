@@ -1,0 +1,739 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a semantic parser that generalizes variable binding and quantifier scope to unseen compositions without sacrificing familiar-construction accuracy.",
+      "requirements": [
+        "Achieve ≥90% logical-form exact match on withheld scope–binding combinations with matched vocabulary and length distributions.",
+        "Keep familiar-construction exact-match accuracy within two percentage points of an equally sized supervised baseline."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a typed de Bruijn-indexed grammar decoder on a fixed-size mix of synthetic scope–binding recombinations and original examples."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Does synthetic recombination improve binding across nested quantifiers without distorting scope choices in familiar constructions?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "A 1:1 synthetic–original mix will yield ≥90% withheld scope–binding exact match and ≤2-point familiar accuracy loss versus equal-sized supervision."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Build vocabulary- and length-matched withheld scope–binding splits; train equal-sized mixed and supervised decoders; compare familiar and withheld exact match."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Construct ScopeBind-v1 splits withholding nested-quantifier/binding pairings while matching vocabulary and utterance and logical-form length distributions."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ScopeBind-v1 contains training, familiar-test, and withheld-pairing test splits, plus vocabulary and length-matching audit tables."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Audit ScopeBind-v1 vocabulary and length matching; train equal-sized mixed and supervised decoders; compare withheld and familiar exact match against thresholds."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "On ScopeBind-v1, mixed decoding achieved 92.1% withheld exact match versus 71.4% supervised; familiar exact match was 95.0% versus 96.2%."
+    },
+    {
+      "id": "n10",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Adopt the 1:1 mixed typed decoder: 92.1% withheld exact match exceeds 90%, with familiar accuracy only 1.2 points below baseline."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Run equal-budget ScopeBind-v1 ablations of de Bruijn indexing, type constraints, and recombination; score withheld and familiar exact match."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "ScopeBind-v1 withheld exact match: full 92.1%; without recombination 74.8%, typing 86.3%, or de Bruijn indexing 82.7%; familiar remained ≥95.0%."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n3",
+      "content": "Typed de Bruijn decoding alone, without recombination, will achieve ≥90% withheld and ≥95% familiar exact match."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Retrain the no-recombination typed decoder on five matched ScopeBind-v1 resplits; test 90% withheld and 95% familiar exact-match thresholds."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "On five ScopeBind-v1 resplits, no-recombination averaged 90.4% withheld and 95.3% familiar exact match; the original withheld score was 74.8%."
+    },
+    {
+      "id": "n16",
+      "type": "decision",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Retain recombination pending split-variance analysis: no-recombination meets thresholds on resplits but fails the original withheld split."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Use a span-based compositional parser with explicit binder environments and a contrastive scope reranker trained on minimal pairs."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Can minimal-pair scope reranking generalize to withheld binder configurations without changing correct familiar-construction parses?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Binder-environment parsing plus contrastive reranking will reach ≥90% ScopeBind-v1 withheld exact match and ≤2-point familiar loss versus equal-sized supervision."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Train equal-budget binder-environment span parsers with and without minimal-pair reranking; compare ScopeBind-v1 withheld and familiar exact match to supervision."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "On ScopeBind-v1, reranking raised withheld exact match from 84.3% to 88.6%, below 90%; familiar scored 95.1% versus 96.2% supervision."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 22,
+      "exploration_parent_id": "g1",
+      "content": "Train a CCG parser with lexical lambda templates and explicit quantifier-raising rules, using familiar-example rehearsal."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p3",
+      "content": "Can CCG quantifier raising recover withheld nested binder scopes while rehearsal preserves familiar scope preferences?"
+    },
+    {
+      "id": "n24",
+      "type": "plan",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Fit equal-budget CCG parsers with and without quantifier raising and familiar-example rehearsal; score ScopeBind-v1 withheld and familiar exact match."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Implement CCG lambda templates and quantifier-raising rules; train equal-budget variants with and without raising or familiar-example rehearsal on ScopeBind-v1."
+    },
+    {
+      "id": "n26",
+      "type": "artifact",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "CCG-Scope-v1 provides lambda-template grammar, quantifier-raising rules, and matched-budget checkpoints with and without raising or familiar-example rehearsal."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Score CCG-Scope-v1 checkpoints on ScopeBind-v1 withheld and familiar splits; compare raising and rehearsal ablations against 90% and two-point thresholds."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "On ScopeBind-v1, CCG-Scope-v1 scored 91.3% withheld and 95.4% familiar exact match; without raising, withheld dropped to 83.1%."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Evaluate CCG-Scope-v1 without rehearsal on ScopeBind-v1; compare familiar exact-match retention and withheld scope–binding accuracy against the full model."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Across five ScopeBind-v1 resplits, rehearsal averaged 88.7% withheld exact match versus 90.5% without; familiar scores were 95.4% versus 95.6%."
+    },
+    {
+      "id": "n31",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Retain CCG quantifier raising but drop rehearsal: across resplits, withheld exact match rises from 88.7% to 90.5% without familiar loss."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Factor parsing into predicate structure and scope–binding decisions, then solve binding constraints symbolically with familiar-construction calibration."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p4",
+      "content": "Does symbolic binder resolution transfer across withheld scope combinations when predicate parsing and familiar scope calibration are learned separately?"
+    },
+    {
+      "id": "n34",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Factorized parsing with symbolic resolution will achieve ≥90% withheld exact match and ≤2-point familiar loss against equal-sized supervision."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Train equal-budget factorized and supervised parsers on ScopeBind-v1; test withheld and familiar exact match with symbolic binding enabled and disabled."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "On ScopeBind-v1, symbolic resolution scored 91.8% withheld but 92.9% familiar exact match versus 96.2% supervised."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n34",
+      "content": "Test gold-predicate and recalibrated-scope variants on ScopeBind-v1; compare withheld and familiar exact match against 90% and 94.2%."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "On ScopeBind-v1, learned scope recalibration achieved 90.7% withheld and 94.6% familiar exact match, versus 91.8%/92.9% uncalibrated."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Keep symbolic resolution only with learned scope recalibration: it meets both thresholds, unlike the uncalibrated parser’s 3.3-point familiar deficit."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Train an alpha-renaming-equivariant graph decoder with scope-swap augmentation and a familiar-example consistency loss."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p5",
+      "content": "Can alpha-renaming equivariance distinguish binder identities in novel scope arrangements without disrupting familiar logical forms?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Equivariant graph decoding with scope swaps will exceed 90% withheld exact match while staying within two familiar-accuracy points of supervision."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Generate valid scope-swap pairs, train equal-budget equivariant and non-equivariant decoders, and score ScopeBind-v1 exact match plus alpha-renaming consistency."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Generate type-checked ScopeBind-v1 scope-swap pairs and train equal-budget equivariant graph decoders with familiar-example consistency loss."
+    },
+    {
+      "id": "n45",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "EquiScope-v1 contains type-checked scope-swap pairs, graph-decoder checkpoints, and alpha-renaming consistency evaluation scripts."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Evaluate EquiScope-v1 against equal-budget non-equivariant decoding on ScopeBind-v1 withheld and familiar exact match and alpha-renaming consistency."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "On ScopeBind-v1, EquiScope-v1 achieved 91.6% withheld and 95.0% familiar exact match versus 85.2%/95.6% non-equivariant; alpha-renaming consistency reached 98.4%."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Advance EquiScope-v1: withheld exact match exceeds 90%, and familiar accuracy trails equal-budget supervision by only 1.2 points."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n24",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n24",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n45"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a semantic parser that generalizes variable binding and quantifier scope to unseen compositions without sacrificing familiar-construction accuracy.",
+    "requirements": [
+      "Achieve ≥90% logical-form exact match on withheld scope–binding combinations with matched vocabulary and length distributions.",
+      "Keep familiar-construction exact-match accuracy within two percentage points of an equally sized supervised baseline."
+    ]
+  }
+}

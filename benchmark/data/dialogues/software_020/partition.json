@@ -1,0 +1,116 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Absence probes and producer epochs for concurrent generated-input creation",
+      "boundary_reason": "Unrelated-edit races exposed excess rebuilds, prompting a narrower validation approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Path-scoped epochs, conditional guards, and directory-watch scope",
+      "boundary_reason": "The decision rejects unguarded path validation and broad directory epochs; the next proposal turns to ordered include-search probes."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Guarded, ordered absence probes for generated-header shadowing",
+      "boundary_reason": "The tested GuardedProbe module is established; the next discussion addresses removal of generated outputs."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Producer-output tombstones and consumer invalidation",
+      "boundary_reason": "Generator-removal and fallback tests conclude; focus shifts to concurrent filesystem snapshots."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Journal-barrier validation and an out-of-band rename failure",
+      "boundary_reason": "A rename bypassed the journal barrier, motivating a different filesystem reconciliation approach."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p5",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Snapshot and notification reconciliation under rename races",
+      "boundary_reason": "Notification overflow caused a stale artifact, raising a specific reconciliation question."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Certificate-scoped overflow reconciliation and its publication race",
+      "boundary_reason": "Overflow reconciliation passed, but a rename after reconciliation exposed a separate publication gap."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Mutation-barrier publication and the final protocol decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

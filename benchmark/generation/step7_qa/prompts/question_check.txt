@@ -1,0 +1,16 @@
+Check whether this QA is well formed and suitable for concise answer extraction and whole-answer token F1 scoring.
+
+{{INPUT_JSON}}
+
+- The question must ask one substantive question with exactly one question mark at the end. Reject unrelated requests joined by "and", "respectively", or similar wording. A coherent comparison on the same property or a request for one set is allowed.
+- The requested object, scope, and expected answer must be clear. Reject questions that reveal their answer or ask for open-ended explanations or summaries.
+- Each answer slot must contain one short, independently scorable entity, value, status, or condition. Reject prose explanations, unnecessary detail, and multiple facts packed into one slot. Do not reject a necessary full name or condition merely for its word count.
+- A correct response should be expressible through the supplied concise canonical values or equivalent aliases, without requiring sentence-level semantic judgment. Reject vague labels, overly broad keywords, and answers admitting many materially different correct formulations that the keyword scheme cannot represent reliably.
+- answer_keywords must match the answer slots and canonical values. Aliases must mean the same thing, preserving units, negation, version, and conditions. Use named_slots for distinct fields and unordered_set for interchangeable list positions. Reject duplicate answer items that would double-count one fact.
+
+Check question and scoring quality only; dialogue answerability is checked separately. Do not rewrite the QA or add aliases. Return JSON only:
+{
+  "passed": true,
+  "issues": []
+}
+Pass only when all checks succeed. Otherwise set passed=false and list brief, specific issues, identifying affected slots when applicable.

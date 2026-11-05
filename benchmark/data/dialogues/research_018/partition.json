@@ -1,0 +1,95 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Initial exposure-map bounds and a dominant-network coverage counterexample",
+      "boundary_reason": "The counterexample prompts a revised network-weight condition."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Diffuse-network inference and the failure of neighbor-exposure sensitivity",
+      "boundary_reason": "The decision shifts the approach from exposure-level sensitivity to propagated adoption-level confounding."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Joint-history sensitivity bounds and the HistoryBounds v0.1 audit",
+      "boundary_reason": "The audit supports advancing the method to formal proof, without establishing a guarantee."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Formal coverage check, invalid neighbor factorization, and dependence-robust correction",
+      "boundary_reason": "The decision replaces factorized propensities with dependence-robust joint-history bounds."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "HistoryBounds v0.2 bounds and dependent-neighbor validation",
+      "boundary_reason": "The next question shifts from the bounds and their validation to outcome-selected histories."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Post-selection coverage adjustment and final assumptions",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

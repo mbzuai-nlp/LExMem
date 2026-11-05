@@ -1,0 +1,165 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Insertion-policy goal and force-limited micro-probes for compliance inference",
+      "boundary_reason": "The probe results lead to an adoption decision; the next discussion turns to full insertion evaluation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Unseen-pair evaluation of probe-conditioned diffusion against behavior cloning",
+      "boundary_reason": "The evaluation yields success and force-safety results; the next discussion examines component ablations."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Highly compliant socket failures and adaptive probe redesign",
+      "boundary_reason": "The redesign produces an updated evaluation bundle; the next proposal takes a different approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Passive compliance inference and force-constrained insertion",
+      "boundary_reason": "Mixed compliance-accuracy results prompt a conditional decision and a balanced retest plan."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29"
+      ],
+      "topic": "Balanced retest of passive inference across arms and compliance bins",
+      "boundary_reason": "The balanced trial dataset is produced; the next discussion introduces contact-mode skills."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Initial transfer and transition-force test of contact-mode skills",
+      "boundary_reason": "The initial test misses the force-safety target, motivating a revised transition-guard hypothesis."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Transition-guard experiments and selection of unguarded skills for validation",
+      "boundary_reason": "The guard comparisons lead to a decision; the next discussion prepares independent validation."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Independent skill-transfer validation trials and logs",
+      "boundary_reason": "The validation bundle is produced; the next proposal shifts to contact-model retargeting."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Conformal force bounds for retargeting, including highly compliant sockets",
+      "boundary_reason": "Contrasting results lead to a deployment exclusion and a broader-validation decision."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Recalibration and supervised retesting of conformal force bounds",
+      "boundary_reason": "The recalibrated trial bundle is produced; the next proposal shifts to offline reinforcement learning."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Initial successor-feature offline RL tests on unseen and highly compliant pairs",
+      "boundary_reason": "The highly compliant test misses the targets, motivating a revised hypothesis."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Compliance-conditioned RL revision and comparison with the original policy",
+      "boundary_reason": "The comparisons lead to conditional selection of the original policy and a prospective retest plan."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70"
+      ],
+      "topic": "Prospective compliance-stratified retest of original successor-feature RL",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "a1",
+        "e1",
+        "d1"
+      ],
+      "topic": "Viability-gated foot probes meet blinded-trial accuracy and recovery targets",
+      "boundary_reason": "The decision to advance probing closes the initial evaluation; the next segment begins hardware validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "l1",
+        "a2",
+        "r1",
+        "a3",
+        "e2",
+        "a4",
+        "e3",
+        "d2"
+      ],
+      "topic": "Hardware validation reveals aggregate gains but weak-crust probe failures",
+      "boundary_reason": "The decision disables weak-crust probes pending redesign; the next segment introduces an acoustic approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "q2",
+        "h2",
+        "a5",
+        "e4"
+      ],
+      "topic": "Initial toe-tap acoustic gating falls short on weak crust",
+      "boundary_reason": "The failed test prompts a revised acoustic–shear hypothesis."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "h3",
+        "a6",
+        "e5",
+        "a7",
+        "e6",
+        "d3"
+      ],
+      "topic": "Acoustic–shear fusion succeeds initially but fails held-out clay/peat validation",
+      "boundary_reason": "Deployment is withheld pending recalibration."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "h4",
+        "a8",
+        "e7",
+        "a9",
+        "e8"
+      ],
+      "topic": "Material-conditioned calibration fails held-out moisture variation",
+      "boundary_reason": "The held-out result prompts a new online-calibration hypothesis."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "h5",
+        "a10",
+        "e9",
+        "d4"
+      ],
+      "topic": "Online moisture calibration restores targets under humidity shifts",
+      "boundary_reason": "The decision advances the method to broader-terrain validation, rather than deployment."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "l2",
+        "a11",
+        "r2",
+        "a12",
+        "e10",
+        "d5"
+      ],
+      "topic": "TerrainMix-900 validation supports supervised field pilots",
+      "boundary_reason": "The broader-terrain evaluation and pilot decision conclude this approach's current stage."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p3",
+        "q3",
+        "h6",
+        "a13",
+        "e11",
+        "d6"
+      ],
+      "topic": "Paired-foot load transfers meet mixed-compliance targets",
+      "boundary_reason": "The decision advances paired-foot transfers to held-out field testing; the next segment introduces spatial sentinel mapping."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "q4",
+        "h7",
+        "a14",
+        "e12"
+      ],
+      "topic": "Initial sentinel contacts miss abrupt yield-boundary targets",
+      "boundary_reason": "The failed boundary test prompts a densification revision."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "h8",
+        "a15",
+        "e13",
+        "a16",
+        "e14"
+      ],
+      "topic": "Sentinel densification succeeds on blinded boundaries but fails held-out patchwork",
+      "boundary_reason": "The patchwork result prompts a change-point mapping hypothesis."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "h9",
+        "a17",
+        "e15",
+        "a18",
+        "e16",
+        "a19",
+        "e17",
+        "d7"
+      ],
+      "topic": "Patchwork comparisons favor densification and restrict change-point mapping to wide patches",
+      "boundary_reason": "The comparative decision establishes a focused follow-up validation plan."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "l3",
+        "a20",
+        "r3",
+        "a21",
+        "e18",
+        "d8"
+      ],
+      "topic": "PatchWidth-1200 supports densification pilots and limits other approaches",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

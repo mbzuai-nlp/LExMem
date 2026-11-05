@@ -1,0 +1,23 @@
+Generate exactly one question about the sampled dense subgraph.
+
+{{INPUT_JSON}}
+
+subgraph contains the sampled nodes and their original directed relations. Consider drawing on information from multiple nodes and the relations among them when forming the question. Avoid asking the respondent to explain, elaborate on, or justify an answer. Use full_graph to check relevant context and later updates; do not treat the subgraph as the complete history. Edge density and selection_signals are sampling hints, not proof of causality or difficulty.
+
+- Ask one clear question in English, ending with exactly one question mark. Ask only one substantive question: do not combine multiple requests or stack subquestions, even under a single question mark. Do not reveal the answer or mention node IDs in the question.
+- Include the context, conditions, and stage of the dialogue needed to establish the question's scope without revealing the answer.
+- Keep the reference answer aligned with what the question asks. Include the requested information and the units and qualifiers needed to interpret it. Avoid silently adding background facts or omitting requested details.
+- Express each answer item as a short entity, value, status, or phrase. Separate independently scorable facts without expanding them into explanations.
+- Use named_slots for distinct fields or unordered_set for a list of items. answer_keywords must use the same keys as answer; canonical must equal the corresponding answer, and aliases must be equivalent expressions.
+- Cite supporting node IDs for each answer item. The question must be supported by the graph. Return exactly one item in questions, or an empty array if no supported question is possible.
+
+Return JSON only:
+{
+  "questions": [{
+    "question": "... ?",
+    "answer_mode": "named_slots or unordered_set",
+    "answer": {"slot_name": "short value"},
+    "answer_keywords": {"slot_name": {"canonical": "short value", "aliases": []}},
+    "evidence_node_ids": {"slot_name": ["node ID"]}
+  }]
+}

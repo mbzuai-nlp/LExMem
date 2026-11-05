@@ -1,0 +1,967 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a semantic parser that distinguishes genuine utterance ambiguity from model uncertainty under unseen compositional structures.",
+      "requirements": [
+        "Achieve ambiguity-detection F1 ≥0.85 on unseen compositions, using independently annotated sets of valid interpretations.",
+        "Match unambiguous-input execution accuracy of a single-output parser trained on identical data."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Keep a single-output execution backbone; flag ambiguity only when grammar-constrained, paraphrase-stable alternatives pass calibrated utterance–parse entailment."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What entailment and paraphrase-consistency thresholds reject beam-search artifacts without discarding valid alternative parses on unseen compositions?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Requiring entailment ≥0.80 and agreement across three of four paraphrases will yield ambiguity F1 ≥0.85 without reducing unambiguous execution accuracy."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Independently annotate valid-parse sets for unseen-composition CompoAmbig-1; sweep thresholds, comparing ambiguity F1 and unambiguous execution against the single-output baseline."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Sweep entailment and paraphrase thresholds around 0.80 and three-of-four on CompoAmbig-1; compare ambiguity F1 and unambiguous execution against single-output baseline."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On independently annotated CompoAmbig-1 unseen compositions, 0.80/three-of-four achieved ambiguity F1 0.87; unambiguous execution matched baseline at 91.2%."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt 0.80 entailment and three-of-four paraphrase agreement: ambiguity F1 exceeds 0.85 while unambiguous execution matches baseline."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Freeze the adopted thresholds, then evaluate independently annotated CompoAmbig-2 unseen compositions and unambiguous execution against an identically trained single-output parser."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Run the frozen-threshold parser on independently annotated CompoAmbig-2; measure ambiguity F1 and unambiguous execution against the identically trained baseline."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "CompoAmbig-2 evaluation bundle containing frozen-threshold predictions, independently annotated valid-parse sets, ambiguity F1, and paired unambiguous execution results."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Recompute CompoAmbig-2 bundle metrics from predictions and valid-parse sets; bootstrap F1 and execution gaps to check threshold compliance."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "CompoAmbig-2 audit found ambiguity F1 0.86; unambiguous execution was 90.9% versus 90.9% for the identically trained single-output parser."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n1",
+      "content": "Operator-conditioned entailment thresholds will improve depth-four ambiguity precision by ≥3 points over fixed 0.80 without reducing valid-alternative recall."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Calibrate operator-specific thresholds on CompoAmbig-1; compare depth-four ambiguity precision and valid-alternative recall against fixed 0.80 on CompoAmbig-2."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "On CompoAmbig-2 depth-four cases, operator thresholds raised ambiguity precision only 1.1 points; valid-alternative recall remained 89%."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p1",
+      "content": "Can paraphrase stability reject recurring parser errors when unseen operator nestings mislead both the backbone and entailment verifier?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Audit CompoAmbig-2 false ambiguity positives by operator nesting, testing whether three-of-four paraphrase agreement preserves shared backbone–verifier errors."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Retain the single-output backbone; use span-level scope charts and independently trained contrastive judgments to identify multiple licensed interpretations."
+    },
+    {
+      "id": "n17",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Train span-scope charts and a separate contrastive judge; evaluate CompoAmbig-3 ambiguity F1 and baseline-relative unambiguous execution."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Use the CompoAmbig-2 bundle to identify scope errors; train span-scope charts and a contrastive judge on shared-training-data hard negatives."
+    },
+    {
+      "id": "n19",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "ScopeChart-v1 contains a span-scope generator and independently trained contrastive judge, leaving the single-output execution backbone unchanged."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Does ScopeChart-v1's contrastive judge reject spurious scope alternatives under unseen operator nestings while retaining valid alternatives?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "On CompoAmbig-3 unseen nestings, ScopeChart-v1 will reject ≥80% of spurious scope alternatives while retaining ≥90% of annotated valid alternatives."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Run ScopeChart-v1 on independently annotated CompoAmbig-3 unseen nestings; measure spurious-alternative rejection, valid-alternative recall, ambiguity F1, and unambiguous execution."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "On CompoAmbig-3, ScopeChart-v1 rejected 83% of spurious scope alternatives and retained 92% of annotated valid alternatives."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Keep ScopeChart-v1's contrastive scope filter for further evaluation: it rejects 83% of spurious alternatives while retaining 92% of valid alternatives."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n17",
+      "content": "Compare retained ScopeChart-v1 with the frozen-threshold parser on CompoAmbig-3: ambiguity F1, depth-four false positives, and baseline-relative unambiguous execution."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "On CompoAmbig-3, frozen-threshold ambiguity F1 fell to 0.79 amid depth-four false positives; ScopeChart-v1 reached 0.87 with baseline-matched execution."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "CompoAmbig-3 depth-four false positives will disproportionately reflect shared backbone–verifier scope errors that survive three-of-four paraphrase agreement."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Use ScopeChart-v1 and annotated parses to compare shared backbone–verifier errors among depth-four versus shallower three-of-four-agreement false positives."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Among paraphrase-stable false positives, shared scope errors occurred in 68% of depth-four cases versus 24% shallower; ScopeChart-v1 rejected 79%."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p2",
+      "content": "Can ScopeChart-v1 distinguish genuinely ambiguous scope readings from missing gold interpretations when independent annotators disagree on CompoAmbig-3?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "Blinded adjudication will validate ≥75% of ScopeChart-v1’s unlisted readings on disputed items, versus ≤15% on unanimously unambiguous items."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Blindly adjudicate ScopeChart-v1 unlisted readings on CompoAmbig-3 disputed and unanimously unambiguous items, stratified by audited depth-four scope errors."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "Blinded adjudication validated 78% of disputed versus 12% of unanimous unlisted readings; missed interpretations lowered corrected CompoAmbig-3 F1 to 0.83."
+    },
+    {
+      "id": "n34",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Retain ScopeChart-v1’s scope filter but defer deployment; adjudicate missing readings and retune because corrected ambiguity F1 is 0.83."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Train ScopeChart-v2 on adjudicated valid-parse sets; use calibrated scope-coverage confidence to separate uncertain parses from corroborated alternatives, preserving execution."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "Which scope-coverage confidence cutoff separates corroborated alternatives from incomplete charts on unseen nestings without suppressing adjudicated valid readings?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Scope-coverage ≥0.75 will yield ambiguity F1 ≥0.85 and valid-alternative recall ≥90% on adjudicated CompoAmbig-4 unseen nestings."
+    },
+    {
+      "id": "n37",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Adjudicate missing readings, retrain ScopeChart-v2, tune coverage cutoff on CompoAmbig-3, then test CompoAmbig-4 F1, recall, and execution."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Extend ScopeChart-v1 with adjudicated valid readings; retrain ScopeChart-v2 and calibrate coverage cutoff on held-out CompoAmbig-3 items."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "ScopeChart-v2 revises v1 with adjudication-trained scope judgments and calibrated coverage gating, retaining the unchanged single-output execution backbone."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n37",
+      "content": "Evaluate ScopeChart-v2 at 0.75 coverage on independently adjudicated CompoAmbig-4; measure ambiguity F1, valid-alternative recall, and baseline-relative unambiguous execution."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "On adjudicated CompoAmbig-4, ScopeChart-v2 achieved ambiguity F1 0.87, valid-alternative recall 92%, and unambiguous execution 91.0%, matching baseline."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p3",
+      "content": "Does ScopeChart-v2’s coverage gate mistake shared scope errors for genuine ambiguity when entire operator families are withheld during training?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "On adjudicated CompoAmbig-5 withheld-operator families, ≥20% of coverage-accepted ambiguity flags will reflect shared scope errors."
+    },
+    {
+      "id": "n44",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Create adjudicated CompoAmbig-5 operator-family holdouts; audit accepted ambiguity flags for shared scope errors and compare F1 against CompoAmbig-4."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Run ScopeChart-v2 on adjudicated CompoAmbig-5 withheld families; manually classify coverage-accepted flags and compute shared-error rate and ambiguity F1."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "On adjudicated CompoAmbig-5, 26% of coverage-accepted ambiguity flags were shared scope errors; ambiguity F1 fell to 0.81."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Retain ScopeChart-v2 for tested compositions, but defer withheld-operator deployment: ambiguity F1 was 0.87 on CompoAmbig-4 versus 0.81 on CompoAmbig-5."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Add symbolic operator-scope checks to ScopeChart-v2; evaluate adjudicated CompoAmbig-6 family holdouts for ambiguity F1 ≥0.85 and baseline-matched execution."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "Implement ScopeChart-v3 by adding symbolic operator-scope checks to v2’s ambiguity branch, leaving its single-output execution backbone unchanged."
+    },
+    {
+      "id": "n50",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "ScopeChart-v3 revises v2 with symbolic operator-scope validation before ambiguity flags; its single-output execution backbone remains unchanged."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "Evaluate ScopeChart-v3 on adjudicated CompoAmbig-6 withheld-operator families; measure ambiguity F1, shared-scope false positives, and baseline-relative unambiguous execution."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n51",
+      "content": "On adjudicated CompoAmbig-6 family holdouts, ScopeChart-v3 reached ambiguity F1 0.86; shared-scope errors affected 11% of flags, execution matched baseline."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "Advance ScopeChart-v3 for further testing: v2 passed CompoAmbig-4 but failed family holdouts, whereas v3 met both requirements."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n17",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n17",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n51"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "revise",
+      "target": "n39"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a semantic parser that distinguishes genuine utterance ambiguity from model uncertainty under unseen compositional structures.",
+    "requirements": [
+      "Achieve ambiguity-detection F1 ≥0.85 on unseen compositions, using independently annotated sets of valid interpretations.",
+      "Match unambiguous-input execution accuracy of a single-output parser trained on identical data."
+    ]
+  }
+}

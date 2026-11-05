@@ -1,0 +1,145 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "DeltaTrace design and initial evaluation",
+      "boundary_reason": "The initial results support broader validation; the next discussion tests new alternative-support corrections."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "DeltaTrace alternative-support stress test",
+      "boundary_reason": "Recall falls below the hypothesis, prompting a revised approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Entailment-edge DeltaTrace validation and deployment decision",
+      "boundary_reason": "The held-out audit and decision close this approach before a new proposal begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "TwinProof design and initial benchmark",
+      "boundary_reason": "The initial benchmark ends before an alternative-support stress test."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n22",
+        "n23"
+      ],
+      "topic": "TwinProof alternative-support stress test",
+      "boundary_reason": "The results miss both targets and motivate a revised method."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "TwinProof-CF intervention and initial retest",
+      "boundary_reason": "The retest supports the revision; the next discussion tests held-out cases."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n28",
+        "n29"
+      ],
+      "topic": "TwinProof-CF held-out evaluation",
+      "boundary_reason": "The held-out results fall short and motivate calibration."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "TwinProof-CF calibration, scoring audit, and replication decision",
+      "boundary_reason": "The audited decision and artifact conclude this approach before a new proposal begins."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p3",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "ChangeGate training and initial benchmark",
+      "boundary_reason": "The initial benchmark ends before testing more challenging edits."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n44",
+        "n45"
+      ],
+      "topic": "ChangeGate challenging-edit test",
+      "boundary_reason": "Poor accuracy and retention lead to a question about stability training."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Alternative-support training for ChangeGate and replication decision",
+      "boundary_reason": "The retraining evaluation and artifact close this approach before the overall decision."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n53"
+      ],
+      "topic": "Overall replication and deployment decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

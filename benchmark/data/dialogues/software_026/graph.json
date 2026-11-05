@@ -1,0 +1,1001 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a tiered MVCC storage engine preserving snapshot isolation and safe reclamation during concurrent migration, writes, and crashes.",
+      "requirements": [
+        "Acknowledged writes and snapshot-required versions survive crashes at every migration and reclamation transition.",
+        "Migration increases p99 read latency by at most 20% versus identical workloads without migration."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use fsync-before-ack MVCC WAL, durable snapshot pins, copy-fsync-then-publish manifests, pin-gated reclamation, and read-priority migration throttling."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which durable ordering keeps concurrently written, snapshot-pinned versions reachable across manifest publication and extent reclamation?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Persisted snapshot pins and WAL, followed by copy-fsync, WAL-tail replay, manifest-fsync, then reclamation, yield zero missing versions under crash injection."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Specify durable migration invariants, implement WAL-tail replay and pin-gated reclamation, then crash-test every fsync boundary during concurrent writes and snapshots."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run CrashMatrix-48 across migration fsync and reclamation boundaries with concurrent writes and pinned snapshots, checking recovered version visibility."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "CrashMatrix-48 found 1/48 failures: a post-replay acknowledged write vanished when manifest-fsync advanced the WAL checkpoint beyond its unapplied sequence."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Checkpoint only through manifest-applied WAL sequence, retaining later records and persisted pins; CrashMatrix-48 should recover all acknowledged and pinned versions."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Patch checkpointing to the manifest-applied WAL sequence, then rerun CrashMatrix-48 with post-replay writes and pinned snapshots."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Patched CrashMatrix-48 recovered every acknowledged write and pinned version in 48/48 crash-boundary cases, including post-replay writes."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "After CrashMatrix-48 passes, benchmark identical 90%-read TierBench-1M workloads with and without read-priority migration; measure p99 read-latency inflation."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "TierBench-1M report records p99 read latency of 4.0 ms baseline versus 4.6 ms during migration (+15%)."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Adopt pin-gated reclamation, manifest-applied WAL checkpointing, and read-priority migration: CrashMatrix-48 passed 48/48; TierBench-1M p99 increased 15%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Use a shared durable WAL, immutable shadow SSTables, generation-CAS routing, durable snapshot watermarks, and foreground-reserved migration credits."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Using TierBench-1M’s 4.0 ms baseline, implement generation-CAS shadow routing, watermark reclamation, and migration credits; verify crash safety and p99≤4.8 ms."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "Implement generation-CAS shadow routing and durable snapshot watermarks; run ShadowCrash-64 across WAL, routing, and reclamation boundaries."
+    },
+    {
+      "id": "n14",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "ShadowCrash-64 report records 64/64 crash-boundary recoveries of acknowledged and snapshot-required versions using generation-CAS routing and durable watermarks."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Given ShadowCrash-64’s 64/64 recoveries, can foreground-reserved migration credits keep TierBench-1M p99 read latency ≤4.8 ms?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Rerun ShadowCrash-64 and TierBench-1M with foreground-reserved credits; verify 64/64 recoveries and compare p99 against the 4.0 ms baseline."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "ShadowCrash-64 retained 64/64 recoveries; TierBench-1M migration p99 reached 4.5 ms versus 4.0 ms baseline (+12.5%)."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Adopt p2’s shadow-routing design instead of n11’s: ShadowCrash-64 passed 64/64; TierBench-1M migration p99 fell from 4.6 to 4.5 ms."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n12",
+      "content": "After ShadowCrash-64, run PinChurn-72 on both designs with six-hour snapshots and overwrites, checking crash recovery and migration p99."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "PinChurn-72: baseline p99 5.0 ms; p1 reached 6.3 ms (+26%), p2 5.7 ms (+14%); both recovered 72/72 crashes."
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Durable WAL, generation-CAS routing, and snapshot watermarks preserve required versions; reserved credits limit migration p99 inflation below 20%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Run WatermarkChaos-96 across snapshot release, CAS publication, concurrent writes, and crashes; verify required-version recovery and migration p99≤1.2× baseline."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "WatermarkChaos-96: 1/96 crashes lost a pinned version when reclamation followed an unfsynced snapshot release; migration p99 stayed within 20%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Extend p2 with WAL-fsynced snapshot-release tombstones and epoch-fenced reclamation; delete old SSTables only after durable release and reader quiescence."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "When can old SSTables be reclaimed after snapshot release without losing crash-recovered pins or disrupting in-flight readers?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Reclaim only after release-tombstone fsync, surviving-pin watermark recalculation, and reader-epoch quiescence; WatermarkChaos-96 should recover 96/96 versions."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Implement tombstone-fsync and epoch-fenced reclamation; rerun WatermarkChaos-96 for 96/96 recoveries and p99≤4.8 ms against TierBench-1M’s 4.0 ms baseline."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "Patched WatermarkChaos-96 recovered required versions in 96/96 crashes; TierBench-1M migration p99 was 4.6 ms versus 4.0 ms baseline (+15%)."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Replace p2’s unsafe release reclamation with p3’s fsynced tombstones and epoch fencing; patched crashes pass 96/96, migration p99 +15%."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n24",
+      "content": "Zero per-SSTable reader counts permit safe deletion after durable release and watermark recalculation, reducing reclaim lag versus global epoch fencing."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Prototype per-SSTable reader counts, compare reclaim lag with epoch fencing, and inject crashes around durable release and file deletion."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "After adopting epoch fencing, run ReclaimRace-128 comparing per-SSTable counts against epochs for crash-safe deletion and p99 reclaim lag."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "ReclaimRace-128: both variants recovered 128/128 crashes; per-SSTable counts reduced p99 reclaim lag from 180 ms (epochs) to 45 ms."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "After ReclaimRace-128, stress zero-count deletion against concurrent route lookup and reader-count acquisition; check use-after-free and snapshot visibility."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "RouteRace-256 found 1/256 failures: deletion observed zero readers before route lookup acquired its count, breaking an active snapshot read."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Can atomic route-pin acquisition prevent RouteRace-256’s deletion race while retaining ReclaimRace-128’s 45 ms p99 reclaim lag?"
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Lock-coupled route lookup and reader-count acquisition, then unpublish-and-drain deletion, prevent RouteRace-256 failures while retaining 45 ms p99 reclaim lag."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Implement lock-coupled route pins and unpublish-and-drain deletion; rerun RouteRace-256 and ReclaimRace-128, measuring failures and p99 reclaim lag."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Patched RouteRace-256 passed 256/256; ReclaimRace-128 recovered 128/128 crashes with 45 ms p99 reclaim lag versus epochs’ 180 ms."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n35",
+      "content": "Adopt tombstone-gated, lock-coupled per-SSTable pins: RouteRace-256 passed 256/256, ReclaimRace-128 recovered 128/128, and p99 reclaim lag remained 45 ms."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Build fsynced shared-WAL MVCC with generation-CAS shadow routing, durable snapshot pins and release tombstones, lock-coupled reclamation, and foreground-reserved migration credits."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Integrate n39’s lock-coupled pins into p4; run IntegratedChaos-192 for crash-safe snapshot isolation and TierBench-1M for migration p99≤1.2× baseline."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "After ShadowCrash-64, run IntegratedChaos-192 on p4’s lock-coupled routing, then TierBench-1M; verify version recovery and migration p99≤4.8 ms."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "IntegratedChaos-192 recovered acknowledged and pinned versions in 192/192 crashes; TierBench-1M migration p99 was 4.7 ms versus 4.0 ms (+17.5%)."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n40",
+      "content": "After IntegratedChaos-192, run SoakMix-24h with disk saturation, snapshot churn, migration, and crashes; verify recovered versions and p99≤1.2× baseline."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "SoakMix-24h report: 24/24 crashes preserved acknowledged and pinned versions; migration read p99 was 5.9 ms versus 5.0 ms baseline (+18%)."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "p4",
+      "content": "Adopt p4: IntegratedChaos-192 and SoakMix-24h preserved versions in 192/192 and 24/24 crashes; migration p99 inflation stayed ≤18%."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 51,
+      "exploration_parent_id": "g1",
+      "content": "Replace shadow-SSTable copying with WAL-backed per-range handoffs and immutable delta overlays; reclaim pinned extents only after durable checkpoints."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p5",
+      "content": "Can WAL-backed range handoffs reduce SoakMix-24h’s 18% migration p99 inflation without compromising its 24/24 crash recoveries?"
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "WAL-backed range handoffs with immutable delta overlays keep SoakMix-24h crash recovery at 24/24 while reducing migration p99 inflation below 18%."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Prototype p5 range handoffs; rerun SoakMix-24h with matched load, comparing crash recoveries and migration p99 against p4’s 24/24 and +18%."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "SoakMix-24h with p5 recovered versions in 24/24 crashes; migration read p99 was 5.5 ms versus 5.0 ms baseline (+10%)."
+    },
+    {
+      "id": "n50",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p5",
+      "content": "Given p5’s +10% and p4’s adoption, specify handoff checkpoint invariants, expand crash testing, and retain p4 unless snapshot safety holds."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Using SoakMix-24h’s recovery baseline, run HandoffCrash-256 across checkpoint fsync, pinned-extent retirement, concurrent overwrites, and crash recovery."
+    },
+    {
+      "id": "n52",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n51",
+      "content": "HandoffCrash-256 report: 255/256 recoveries; one crash after checkpoint fsync lost a pinned pre-handoff version during extent retirement."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 59,
+      "exploration_parent_id": "p5",
+      "content": "Defer p5 despite +10% p99 inflation: HandoffCrash-256 lost a pinned version; retain adopted p4’s lock-coupled, tombstone-gated reclamation."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n50",
+      "relation": "decompose",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n53"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a tiered MVCC storage engine preserving snapshot isolation and safe reclamation during concurrent migration, writes, and crashes.",
+    "requirements": [
+      "Acknowledged writes and snapshot-required versions survive crashes at every migration and reclamation transition.",
+      "Migration increases p99 read latency by at most 20% versus identical workloads without migration."
+    ]
+  }
+}

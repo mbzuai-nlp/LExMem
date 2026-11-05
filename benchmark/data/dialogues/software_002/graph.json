@@ -1,0 +1,793 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design distributed garbage collection that safely reclaims cycles despite concurrent object migration, network partitions, and crash recovery.",
+      "requirements": [
+        "Never reclaim objects reachable through durable roots or in-flight references during crashes, partitions, and migration.",
+        "Reclaim unreachable cycles within 3 collection rounds after recovery and quiescence, without global pauses."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use durable reference/message logs, atomic migration handoffs, and concurrent epoch tracing; sweep unmarked cycles after two fully acknowledged rounds."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can an epoch close without overlooking references in unacknowledged messages or migration handoffs across a partition?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Epoch closure waits for durable message and migration acknowledgments, preventing partition-time false reclamation and clearing quiescent cycles within three rounds."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "Model-check CrashPartition-500 migration, delayed-acknowledgment, and crash-recovery schedules for reference safety and three-round cycle reclamation after quiescence."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "CrashPartition-500 found receiver crashes before persisting migration acknowledgment; replay omits acknowledgment, retaining an unreachable cycle past three quiescent rounds."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Persist receipts and migration acceptance before exposure; replay lost acknowledgments from receiver WALs to reclaim quiescent cycles within three rounds."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "h2",
+      "content": "Rerun CrashPartition-500 comparing volatile versus WAL-persisted acknowledgments; check epoch closure, reachable-object safety, and post-quiescence reclamation rounds."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "a2",
+      "content": "CrashPartition-500: acknowledgment gating caused zero reachable-object deletions; WAL replay retained duplicate handoff records, delaying cycle reclamation to round four."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "h2",
+      "content": "Keep acknowledgment gates for safety; persist receiver receipts and deduplicate handoff IDs to eliminate crash-lost acknowledgments and fourth-round delays."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 11,
+      "exploration_parent_id": "g1",
+      "content": "Use durable reference escrows and atomic migration handoffs; partition-fenced trial deletion reclaims isolated cycles within three quiescent rounds."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "p2",
+      "content": "How can trial deletion distinguish escrowed in-flight references from internal cycle edges when migration overlaps a partition?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "q2",
+      "content": "Generation-tagged durable escrows distinguish internal cycle edges; unresolved external references block deletion until reconciliation, then reclaim within three rounds."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "h3",
+      "content": "Run EscrowPartition-1K with partitioned handoffs and generation rollover; measure reachable deletions and quiescent cycle reclamation rounds."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "a3",
+      "content": "EscrowPartition-1K showed zero reachable deletions across 1,000 schedules; all isolated cycles reclaimed by quiescent round three."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "h3",
+      "content": "Extend EscrowPartition-1K with receiver crashes and duplicated generation-tagged escrows; verify external-edge classification and post-recovery round-three reclamation."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "a4",
+      "content": "EscrowPartition-1K crash extension: duplicate generation-tagged escrows appeared external, leaving 37 unreachable cycles unreclaimed after recovery round three."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "e4",
+      "content": "Durable transfer-ID deduplication removes phantom external escrows while unacknowledged handoffs remain protected, restoring three-round post-recovery reclamation."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "h4",
+      "content": "Compare generation-only and durable transfer-ID deduplication on EscrowPartition-1K crash schedules; count false external escrows, reachable deletions, and reclamation rounds."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "a5",
+      "content": "Transfer-ID deduplication eliminated 37 phantom escrows, caused zero reachable deletions, and reclaimed every unreachable cycle by post-recovery round three."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "h4",
+      "content": "Stress transfer-ID deduplication under WAL compaction, delayed partition-heal messages, and migration; verify escrow classification, reachable-object safety, and reclamation rounds."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "a6",
+      "content": "After WAL compaction, delayed partition-heal messages recreated 12 phantom escrows from forgotten transfer IDs; 12 cycles survived round three."
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "e6",
+      "content": "Persist per-sender contiguous accepted-transfer watermarks and sparse IDs across compaction; deduplicate delayed replays, preserving live escrows and three-round reclamation."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "h5",
+      "content": "Replay EscrowPartition-1K with compaction and out-of-order partition-heal messages; check watermark classification, reachable deletions, and post-recovery reclamation rounds."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "a7",
+      "content": "EscrowPartition-1K found three reachable deletions: restarted senders reused sequence numbers below persisted watermarks, suppressing fresh escrows."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "h5",
+      "content": "Compare watermark-only and incarnation-qualified escrows under sender-restart sequence collisions in EscrowPartition-1K; measure reachable deletions and reclamation rounds."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "a8",
+      "content": "Watermark-only prevented phantom escrows and achieved round-three reclamation in 997 noncolliding schedules; incarnation qualification prevented three restart-collision deletions."
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "e8",
+      "content": "Persist sender incarnations before transfers; incarnation-keyed watermarks reject old replays without suppressing fresh escrows, enabling three-round reclamation."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "h6",
+      "content": "Model-check EscrowPartition-1K with incarnation-persistence crashes, compaction, partition-heal replays, and concurrent migration; measure reachable deletions and reclamation rounds."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "a9",
+      "content": "EscrowPartition-1K found zero reachable deletions or phantom escrows; all unreachable cycles cleared by round three after recovery and quiescence."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "h6",
+      "content": "Adopt persisted sender incarnations with compaction-safe per-incarnation watermarks, eliminating restart collisions while retaining round-three reclamation."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Use barrier-protected distributed snapshots capturing channels and migration forwarding; asynchronously trace durable roots and sweep confirmed unmarked cycles."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "How can snapshots retire stale migration forwarding entries after crash recovery without hiding live references or delaying cycle reclamation?"
+    },
+    {
+      "id": "h7",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "q3",
+      "content": "Retire forwarding entries after durable destination receipts and channel-drain certificates; preserve unresolved handoffs and reclaim cycles within three rounds."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "h7",
+      "content": "Model-check SnapshotHandoff-2K with partitioned channels, destination crashes, and forwarding retirement; count reachable deletions and quiescent reclamation rounds."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "a10",
+      "content": "SnapshotHandoff-2K showed zero reachable deletions across 2,000 schedules; all unreachable cycles reclaimed within three post-quiescence rounds."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "h7",
+      "content": "Extend SnapshotHandoff-2K with certificate-log compaction and delayed channel replays; test forwarding retirement safety and three-round reclamation."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "a11",
+      "content": "Compaction erased channel-drain sequence bounds; delayed reference replays bypassed retired forwarding entries, causing two reachable deletions."
+    },
+    {
+      "id": "h8",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "e11",
+      "content": "Persist channel-drain bounds and nonroot migration redirects through compaction; route delayed references safely while reclaiming cycles within three rounds."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "h8",
+      "content": "Rerun SnapshotHandoff-2K compaction/replay schedules comparing ephemeral and persisted channel bounds plus redirects; measure reachable deletions and reclamation rounds."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "a12",
+      "content": "Persisted bounds restored zero reachable deletions, supporting certified retirement; redirects created 19 phantom external edges, delaying reclamation past round three."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "h8",
+      "content": "Adopt durable channel-drain bounds and routing-only redirects; erased bounds caused deletions, while traced redirects delayed reclamation."
+    },
+    {
+      "id": "pl1",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "g1",
+      "content": "Implement acknowledgment-gated receipts, deduplicated handoffs, incarnation-keyed escrows, and durable channel bounds; validate routing-only redirects and three-round reclamation."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "pl1",
+      "content": "Implement WAL-backed acknowledgment gates, incarnation-keyed escrow deduplication, durable channel bounds, and routing-only redirects in collector prototype v0.1."
+    },
+    {
+      "id": "ar1",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "a13",
+      "content": "Collector prototype v0.1 implements WAL-backed acknowledgment gates, incarnation-keyed escrows, durable drain bounds, and routing-only migration redirects."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "refute",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "revise",
+      "target": "h1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a2",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a2",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e2",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "e3",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a4",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "revise",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a6",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "refute",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "revise",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a7",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "refute",
+      "target": "h5"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a8",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "revise",
+      "target": "h5"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "h6",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "h6",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a9",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h7",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "h7"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "h7"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h7"
+    },
+    {
+      "source": "a11",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "e11",
+      "relation": "refute",
+      "target": "h7"
+    },
+    {
+      "source": "h8",
+      "relation": "revise",
+      "target": "h7"
+    },
+    {
+      "source": "h8",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "h8",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "h8",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "h7"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "h8"
+    },
+    {
+      "source": "a12",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "e12",
+      "relation": "support",
+      "target": "h7"
+    },
+    {
+      "source": "e12",
+      "relation": "refute",
+      "target": "h8"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e12"
+    },
+    {
+      "source": "pl1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "pl1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "pl1",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "pl1",
+      "relation": "depend_on",
+      "target": "d3"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a13"
+    },
+    {
+      "source": "a13",
+      "relation": "depend_on",
+      "target": "pl1"
+    },
+    {
+      "source": "a13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "ar1"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design distributed garbage collection that safely reclaims cycles despite concurrent object migration, network partitions, and crash recovery.",
+    "requirements": [
+      "Never reclaim objects reachable through durable roots or in-flight references during crashes, partitions, and migration.",
+      "Reclaim unreachable cycles within 3 collection rounds after recovery and quiescence, without global pauses."
+    ]
+  }
+}

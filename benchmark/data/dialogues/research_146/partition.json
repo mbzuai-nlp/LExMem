@@ -1,0 +1,162 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "SwitchGate-320 gating, benchmark, and ablation",
+      "boundary_reason": "The discussion shifts to a different recognition approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "PhonoBias-320 configuration and ambiguous-switch bypass tests",
+      "boundary_reason": "Contrasting pair results prompt a revised explanation."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Testing bypass suppression against calibration error",
+      "boundary_reason": "The decision to use signed overconfidence leads to a new calibrator proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Initial causal calibrator accuracy and burst-latency tests",
+      "boundary_reason": "The Arabic–Spanish audit motivates a revised, quantized calibrator."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Int8 acoustic calibration and PhonoBias-320 benchmarking",
+      "boundary_reason": "The discussion moves to a boundary-specialist RNN-T proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "BoundaryRNN-T-320 training and initial loanword tests",
+      "boundary_reason": "Unseen-loanword degradation motivates revised training."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Loanword-negative training and the decision not to advance BoundaryRNN-T-320",
+      "boundary_reason": "A new training revision follows the failed rare-loanword and Turkish–Japanese tests."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66"
+      ],
+      "topic": "Phonetic-hard negatives, script balancing, and rare-homophone audit",
+      "boundary_reason": "The discussion shifts to an articulatory-unit model."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "Initial ArticRNN-T-320 unseen-pair and homophone tests",
+      "boundary_reason": "The Turkish–Japanese and out-of-lexicon results motivate a model revision."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79",
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Revised ArticRNN-T-320 tests and six-pair retest report",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Develop and benchmark a calibrated Bayesian lineage mixture",
+      "boundary_reason": "The initial benchmark supports selection of the mixture and produces a report; the next segment audits it on held-out seeds."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9"
+      ],
+      "topic": "Audit mixture performance on held-out ConvergeTree-30 seeds",
+      "boundary_reason": "The held-out audit concludes before a distinct mutation-consistency gating test."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Test mutation-consistency gating and retain the ungated mixture",
+      "boundary_reason": "The gating decision closes this approach before the discussion shifts to temporal transport."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Build and evaluate mutation-anchored temporal transport",
+      "boundary_reason": "Initial results justify advancing transport; the next segment stress-tests robustness."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n22",
+        "n23"
+      ],
+      "topic": "Stress-test transport and the mixture under dropout and clone imbalance",
+      "boundary_reason": "The stress test identifies a transport calibration problem that prompts a targeted correction."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Test stronger clone-abundance correction for transport",
+      "boundary_reason": "Corrected transport still misses the calibration target; the next proposal turns to fusion."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Assess anchor coverage and propensity matching as transport reliability signals",
+      "boundary_reason": "The diagnostic results establish the basis for a separate gated-fusion test."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Evaluate and select propensity-matched anchor-gated fusion",
+      "boundary_reason": "The fusion decision closes this approach before a new contrastive-encoder proposal."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Benchmark a clone-balanced contrastive ancestry encoder with hard negatives",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

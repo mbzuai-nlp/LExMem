@@ -1,0 +1,890 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Recover camera motion and independently moving rigid-object geometry from monocular video while distinguishing focal-length changes from scene motion.",
+      "requirements": [
+        "Reduce scale-aligned reconstruction error by 20% versus fixed-intrinsics multibody reconstruction on variable-focal-length sequences.",
+        "Characterize observational ambiguities and achieve 90% empirical coverage for predicted geometry confidence regions."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Jointly optimize spline focal length, camera and rigid-object poses, and geometry from background/object tracks; report ambiguities and bootstrap geometry intervals."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When do background parallax and object tracks distinguish focal-length drift from forward camera motion and object translation?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "With ≥2° background parallax and ≥1.5× depth spread, estimated focal drift has <5% error despite forward motion and moving objects."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Sweep background parallax, depth spread, zoom, and forward/object motion in ZoomRigid; measure focal error, reconstruction error, and interval coverage."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Render 480 ZoomRigid sequences straddling 2° parallax and 1.5× depth spread with forward/object motion; measure focal-drift error."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On 120 qualifying ZoomRigid sequences with forward/object motion, median focal-drift error was 11%, exceeding the predicted 5%."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "With ≥2° parallax, ≥1.5× depth spread, ≥5% depth-normalized lateral baseline, and ≥60% static tracks, median focal-drift error should be <5%."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Stratify qualifying ZoomRigid sequences by 5% depth-normalized lateral baseline and 60% static tracks; measure median focal-drift error."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Among 48 ZoomRigid sequences meeting both added thresholds, median focal-drift error was 4.3%, versus 14% for the other 72."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "On n8's 48 identifiable ZoomRigid sequences, benchmark scale-aligned geometry error against fixed intrinsics and measure 90% bootstrap-region coverage."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "ZoomRigid-48 benchmark report with scale-aligned geometry errors versus fixed intrinsics, empirical coverage of nominal 90% bootstrap regions, and ambiguity strata."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Does variable-focal fitting cut scale-aligned geometry error ≥20% versus fixed intrinsics and achieve ≥90% coverage of nominal 90% bootstrap regions?"
+    },
+    {
+      "id": "n12",
+      "type": "decision",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Use the ZoomRigid-48 report as adoption gate: ≥20% geometry-error reduction and ≥90% coverage, restricted to identifiable sequences."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use zoom-change-point priors and projective-gauge diagnostics to separate focal jumps from rigid motion and widen geometry intervals under ambiguity."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Fit focal change-points, profile projective gauges, inflate gauge-sensitive intervals, and benchmark scale-aligned error versus fixed intrinsics and coverage."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Using ZoomRigid-48 report's ambiguity strata, calibrate focal change-point penalties and gauge-profiled geometry intervals on 96 disjoint ZoomRigid sequences."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "ZoomGauge-v1 calibration package containing fitted change-point penalties, gauge-profiled geometry intervals, and ambiguity-stratified thresholds from 96 disjoint ZoomRigid sequences."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Benchmark ZoomGauge-v1 against spline-focal and fixed-intrinsics reconstruction on 120 held-out ZoomRigid clips; measure scale-aligned error and ambiguity-stratified 90%-interval coverage."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On 120 held-out ZoomRigid clips, spline-focal lowered scale-aligned geometry error 23% versus fixed intrinsics with 91% coverage; ZoomGauge-v1: 12%, 83%."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Reject ZoomGauge-v1 on held-out clips; defer spline-focal adoption until identifiable-subset results satisfy the adoption gate."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "Does ZoomGauge-v1's change-point prior mistake gradual zoom for object motion, explaining its weaker geometry reduction and 83% coverage?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On gradual-zoom clips, disabling change-point penalties reduces object-translation error ≥15% and raises nominal 90% geometry coverage to ≥90%."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Ablate ZoomGauge-v1 change-point penalties on 60 held-out gradual-zoom clips; compare object-translation error and nominal 90% geometry-region coverage."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 25,
+      "exploration_parent_id": "g1",
+      "content": "Anchor multibody bundle adjustment with focal estimates from orthogonal vanishing points; calibrate geometry intervals by resampling line detections."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p3",
+      "content": "Can background orthogonal vanishing points constrain focal drift when moving-object lines contaminate detections and the principal point is uncertain?"
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "On 80 Manhattan-world ZoomRigid clips, vary moving-object line contamination (0–40%) and principal-point error (±20 pixels); measure vanishing-point focal-drift error."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Penalty ablation cut translation error 18% and raised coverage to 91%; vanishing-point focal error reached 13% at 40% contamination."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "At 40% object-line contamination, unfiltered vanishing-point anchors exceed 10% focal-drift error, making background-line filtering necessary."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "On 40 held-out Manhattan-world clips at 40% line contamination, compare unfiltered versus tracked-background-only vanishing-point focal-drift errors."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n26",
+      "content": "On 40 held-out clips at 40% contamination, unfiltered focal-drift error was 7.8%, versus 8.1% with background-only filtering."
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "At ±20-pixel principal-point offsets, focal-drift error exceeds 10% regardless of line filtering; at ≤5-pixel offsets, it stays below 9%."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Given contamination sensitivity and ineffective line filtering, test ±5/20-pixel principal-point offsets on held-out Manhattan-world clips; compare filtered/unfiltered focal-drift errors."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "At ±20-pixel principal-point offsets, focal-drift error was 12.4% unfiltered and 11.9% filtered; at ≤5 pixels, 7.1% and 7.5%."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n28",
+      "content": "Using n30's offset strata, measure filtered and unfiltered focal-drift errors on 60 independent Manhattan clips at ≤5- and ±20-pixel offsets."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "On 60 independent Manhattan clips, ±20-pixel offsets yielded 8.6% unfiltered and 8.4% filtered focal-drift error, contradicting >10%."
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "At ±20-pixel principal-point offsets, ≥30° projected vanishing-direction separation keeps focal-drift error <9% despite 40% object-line contamination."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Render matched Manhattan clips above/below 30° vanishing-direction separation; impose ±20-pixel offsets and 40% contamination, then compare focal-drift errors."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Reconcile n30/n32 using 80 matched Manhattan clips at ±20-pixel offsets and 40% contamination; compare focal-drift errors above/below 30° separation."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "On 80 matched clips, ≥30° separation yielded 7.9% focal-drift error versus 13.2% below 30°, with ±20-pixel offsets and 40% contamination."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Test n36's ≥30° threshold on 100 independent Manhattan clips at ±20-pixel offsets and 40% contamination; measure focal-drift error."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Manhattan-100 validation report with separation-stratified focal-drift errors, principal-point offsets, contamination labels, and confidence intervals."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n33",
+      "content": "Adopt ≥30° separation for vanishing-point anchors only if Manhattan-100 confirms <9% focal-drift error; otherwise disable anchors."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Fuse pretrained object-shape priors with silhouette-based multibody bundle adjustment to distinguish zoom from motion; calibrate geometry intervals conformally."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "When silhouettes expand, can shape priors separate zoom from approaching objects without under-covering unseen-category geometry?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "With ≥3 tracked objects, shape-prior fitting keeps zoom-versus-approach misclassification below 10%, while conformal geometry regions cover ≥90% unseen-category shapes."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Use ZoomGauge-v1 thresholds to stratify 120 unseen-category clips with ≥3 objects; measure shape-prior zoom/approach misclassification, geometry error, and conformal coverage."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Across 120 unseen-category clips, shape priors misclassified zoom/approach 8%, reduced scale-aligned geometry error 22% versus fixed intrinsics, with 91% coverage."
+    },
+    {
+      "id": "n44",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n40",
+      "content": "Prioritize shape-prior fitting for ≥3-object unseen-category clips (22% error reduction, 91% coverage) after rejecting ZoomGauge-v1."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Estimate zoom from background-line curvature under focal-dependent radial distortion, then reconstruct rigid bodies with ambiguity-stratified conformal geometry intervals."
+    },
+    {
+      "id": "n45",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "p5",
+      "content": "Fit coupled focal-length/distortion trajectories from background lines, optimize multibody geometry, and calibrate 90% intervals across line-density strata."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "Implement CurvZoom-v1: gate vanishing anchors per n39, include n44's shape priors, and fit focal-distortion multibody geometry from background-line curvature."
+    },
+    {
+      "id": "n47",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n46",
+      "content": "CurvZoom-v1 implementation containing gated vanishing-point anchors, shape-prior initialization, coupled focal-distortion bundle adjustment, and line-density-stratified conformal geometry intervals."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n45",
+      "content": "Benchmark CurvZoom-v1 on 150 held-out variable-focal clips across line-density strata; compare fixed-intrinsics geometry error and nominal 90% interval coverage."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n48",
+      "content": "On 150 held-out clips, CurvZoom-v1 reduced scale-aligned geometry error 24% versus fixed intrinsics; nominal 90% intervals covered 91.3%."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "p5",
+      "content": "Adopt CurvZoom-v1 with n39's conditional anchor gate and n44's shape priors: 24% error reduction, 91.3% coverage."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "revise",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n44"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Recover camera motion and independently moving rigid-object geometry from monocular video while distinguishing focal-length changes from scene motion.",
+    "requirements": [
+      "Reduce scale-aligned reconstruction error by 20% versus fixed-intrinsics multibody reconstruction on variable-focal-length sequences.",
+      "Characterize observational ambiguities and achieve 90% empirical coverage for predicted geometry confidence regions."
+    ]
+  }
+}

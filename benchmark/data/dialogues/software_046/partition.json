@@ -1,0 +1,137 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n03",
+        "n04",
+        "n05",
+        "n06",
+        "n07",
+        "n08",
+        "n09",
+        "n10"
+      ],
+      "topic": "Durable commits and ingress-epoch reconciliation after controller crashes",
+      "boundary_reason": "The recovery approach is adopted and implemented; the next test introduces overlapping updates."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Preventing epoch-tag reuse during overlapping updates",
+      "boundary_reason": "The tag-reservation revision is tested; discussion shifts to the rule-cap requirement."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n16",
+        "n17"
+      ],
+      "topic": "Bounding rules when intermediate configurations are oversized",
+      "boundary_reason": "A coalescing and admission plan is stated; the next proposal develops it into a controller design."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Intent coalescing and classifier-inclusive shadow-bank admission",
+      "boundary_reason": "The rule-cap violation is corrected and retested; the next work evaluates combined crash recovery."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Coalesced-update recovery and delayed-packet tag-reuse audit",
+      "boundary_reason": "The delayed-packet audit artifact is produced; the next proposal incorporates a quiescence barrier."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Quiescence-gated tag reuse with replayable coalesced epochs",
+      "boundary_reason": "The implementation and crash test are reported; discussion turns to counter loss on switch reboot."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Testing quiescence certificates across switch reboots",
+      "boundary_reason": "Buffered packets refute the assumed lifetime gate, prompting a revised design."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Queue-aware reboot fencing and oversized-intent rule audits",
+      "boundary_reason": "The initial audit and mid-drain reboot test are reported; the next test broadens crash and reboot schedules."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Closing the NIC-ring gap in reboot drain certificates",
+      "boundary_reason": "NIC-ring attestations resolve the observed mixed paths; the next work revises the full rule audit and recovery plan."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63"
+      ],
+      "topic": "Final NIC-ring-aware replay, rule-bound validation, and RouteEpoch implementation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

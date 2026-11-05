@@ -1,0 +1,123 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Mask-blind, class-balanced subset experts and their reversal-test results",
+      "boundary_reason": "An ablation exposes a reversal where the approach falls short, prompting investigation of the residual error."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Testing whether difficulty selection explains residual error using stratified group-DRO",
+      "boundary_reason": "Group-DRO misses its error target, leading to a revised explanation and method."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Testing within-class feature shift and teacher alignment, then deferring both approaches",
+      "boundary_reason": "The decision closes this line of investigation before a new proposal."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Disagreement-calibrated minimax gating and the GateBench v1 artifact",
+      "boundary_reason": "The gating evaluation and artifact are complete; the next proposal explores imputation."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Difficulty-adversarial imputation with uncertainty-weighted predictions",
+      "boundary_reason": "The imputation comparison concludes before a distinct counterfactual-dropout proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p4",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Difficulty-targeted counterfactual dropout with tail CVaR",
+      "boundary_reason": "The result refutes the proposed improvement; the next discussion changes methods."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p5",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Mask-probability minimax classifiers under joint shifts and high-loss dropout",
+      "boundary_reason": "Contrasting results motivate a separate question about the uncertainty radius."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Sweeping mask-shift radii on reversal and held-out splits",
+      "boundary_reason": "Held-out results overturn the proposed fixed radius, motivating a validation-based selection rule."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Selecting the mask-shift radius with difficulty-stratified validation CVaR",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

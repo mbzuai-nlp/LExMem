@@ -1,0 +1,176 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Counterfactual residuals for intent detection and force-capped override testing",
+      "boundary_reason": "The crossover report completes this evaluation; the next nodes examine a separate perturbation ablation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10"
+      ],
+      "topic": "False alarms from counterfactual prediction during abrupt impedance changes",
+      "boundary_reason": "The ablation identifies a limitation, followed by a new masking proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Design and calibration of HeadingGate-v1",
+      "boundary_reason": "The calibrated design leads to a focused question about route changes during its mask."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Initial tests of route-change detection during the HeadingGate mask",
+      "boundary_reason": "Conflicting recall results prompt a narrower hypothesis."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Replication of masked-window recall and the supervised-trial decision",
+      "boundary_reason": "The decision closes this line of testing before a new micro-pause proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Initial micro-pause trials and coincident-switch failure",
+      "boundary_reason": "The stress-test failure motivates a rate-limited modification."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Rate-limited micro-pauses and override-reduction crossover",
+      "boundary_reason": "The crossover report completes this approach’s evaluation before the response-kernel proposal."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Dither-kernel calibration and first-change testing",
+      "boundary_reason": "Poor results for changes during dithers motivate a revised method."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Heading-triggered dither pauses and their coincident-switch limitation",
+      "boundary_reason": "The decision restricts paused dithers and leads to a switch-aware routing proposal."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66"
+      ],
+      "topic": "Switch-aware routing tests and the FirstChange report",
+      "boundary_reason": "The report closes the routing evaluation before a multimodal fusion proposal."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73"
+      ],
+      "topic": "Gaze–torso–force fusion and its vulnerability to unreliable cues",
+      "boundary_reason": "Occlusion results motivate cue-quality gating."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78",
+        "n79",
+        "n80",
+        "n81",
+        "n82"
+      ],
+      "topic": "Quality-gated fusion with MicroPause fallback and mixed-visibility evaluation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

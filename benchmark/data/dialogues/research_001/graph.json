@@ -1,0 +1,695 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Predict specific protein molecular functions in unseen families while distinguishing genuine functional novelty from incomplete annotations.",
+      "requirements": [
+        "Achieve ≥10% relative macro-AUPRC improvement over sequence-only transfer on family-disjoint, temporally held-out annotations.",
+        "Distinguish novel functions from missing annotations with ≥0.80 AUROC on independently adjudicated proteins."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Combine ESM-2 embeddings and Foldseek active-site matches for GO prediction; distinguish novelty from annotation gaps using assay-coverage-aware positive-unlabeled calibration."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can assay-coverage estimates distinguish untested GO activities from genuinely novel functions when active-site matches lack matching annotations?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "For proteins with unlabeled active-site matches, assay-coverage-aware calibration will distinguish genuine novelty from annotation gaps at AUROC ≥0.80."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "On 400 independently adjudicated proteins with unlabeled Foldseek active-site matches, compare assay-coverage-calibrated versus uncalibrated novelty-versus-gap AUROC."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "Across 400 independently adjudicated proteins with unlabeled active-site matches, assay-coverage calibration raised novelty-versus-gap AUROC from 0.72 to 0.84."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Retain assay-coverage calibration for novelty triage because adjudicated AUROC reached 0.84, exceeding the 0.80 target."
+    },
+    {
+      "id": "pl1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Retain calibration; train through 2024, then compare Foldseek–ESM-2 against sequence-only macro-AUPRC on Pfam-disjoint 2025–2026 GO annotations."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "pl1",
+      "content": "Train Foldseek–ESM-2 and sequence-only baselines on pre-2025 annotations; measure macro-AUPRC on Pfam-disjoint 2025–2026 experimental GO additions."
+    },
+    {
+      "id": "ar1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "PfamTime-GO v1 contains frozen Pfam-disjoint splits, 2025–2026 experimental labels, both models’ predictions, and macro-AUPRC evaluation scripts."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "pl1",
+      "content": "Audit PfamTime-GO v1 for split leakage, then bootstrap its predictions to test ≥10% relative macro-AUPRC improvement."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "PfamTime-GO v1 had no cross-split Pfam overlaps; Foldseek–ESM-2 macro-AUPRC was 0.284 versus sequence-only 0.250 (+13.6%)."
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "q1",
+      "content": "Among proteins with unlabeled active-site matches, assay-provenance coverage outperforms annotation-count coverage by ≥0.08 novelty-versus-gap AUROC."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "h2",
+      "content": "On the 400 adjudicated proteins with unlabeled active-site matches, compare assay-provenance and annotation-count coverage via paired cross-validated AUROC."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "a4",
+      "content": "On 400 adjudicated proteins, assay-provenance coverage reached novelty-versus-gap AUROC 0.84 versus annotation-count coverage 0.79, a 0.05 gain."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Does Foldseek–ESM-2’s macro-AUPRC gain persist for rare catalytic GO terms, or arise mainly from broadly annotated binding functions?"
+    },
+    {
+      "id": "pl2",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "q2",
+      "content": "Stratify PfamTime-GO v1 catalytic and binding terms by ≤20 training positives; bootstrap relative macro-AUPRC gains from frozen predictions."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "pl2",
+      "content": "Partition PfamTime-GO v1 terms by catalytic versus binding function and training frequency; bootstrap macro-AUPRC gains across held-out families."
+    },
+    {
+      "id": "ar2",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "a5",
+      "content": "PfamTime-GO v1 stratification report contains catalytic and binding term lists, ≤20-positive rare-term flags, and family-bootstrap macro-AUPRC comparisons."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Train a GO-hierarchy-aware reaction graph on ligand-binding pockets and verified substrates, with assay-coverage-calibrated novelty abstention."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can pre-2025 substrate–reaction edges improve substrate-specific GO prediction in unseen Pfam families without leaking held-out annotations?"
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "q3",
+      "content": "Leakage-filtered pre-2025 substrate–reaction edges will increase substrate-specific GO macro-AUPRC ≥10% over Foldseek–ESM-2 on held-out Pfam families."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "h3",
+      "content": "Use the PfamTime-GO stratification report to select catalytic terms; leakage-filter pre-2025 reaction edges and compare substrate-specific macro-AUPRC against Foldseek–ESM-2."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "a6",
+      "content": "On held-out Pfam families, leakage-filtered reaction edges raised substrate-specific GO macro-AUPRC from 0.214 to 0.221 (+3.3%), below 10%."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "e4",
+      "content": "For high-confidence ligand pockets, pre-2025 verified substrate–reaction edges will improve substrate-specific macro-AUPRC ≥10% over Foldseek–ESM-2."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "h4",
+      "content": "Using PfamTime-GO stratification, bootstrap pre-2025 verified-edge versus Foldseek–ESM-2 substrate-specific macro-AUPRC across held-out families with pocket pLDDT ≥90."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "a7",
+      "content": "For held-out families with pocket pLDDT ≥90, verified-edge macro-AUPRC was 0.243 versus Foldseek–ESM-2’s 0.230 (+5.7%)."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "h4",
+      "content": "Using PfamTime-GO catalytic strata, retest verified-edge versus Foldseek–ESM-2 macro-AUPRC on 2026-only Pfam-disjoint proteins with pocket pLDDT ≥90."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "a8",
+      "content": "On 2026-only Pfam-disjoint proteins with pocket pLDDT ≥90, verified edges achieved substrate-specific macro-AUPRC 0.224 versus 0.200 (+12%)."
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "e6",
+      "content": "After leakage audits, verified substrate edges yield ≥10% macro-AUPRC improvement in 2026-only high-confidence pockets, but not pooled families."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "h5",
+      "content": "Using PfamTime-GO strata, audit pre-2025 edge provenance; bootstrap macro-AUPRC gains versus Foldseek–ESM-2 across pooled and 2026-only pLDDT ≥90 pockets."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "a9",
+      "content": "Edge-provenance audit found zero held-out annotation links; pLDDT ≥90 pockets gained 12% macro-AUPRC in 2026-only versus 5.7% pooled."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "e7",
+      "content": "Defer broad reaction-graph deployment; pilot verified-edge reranking on 2026-only pLDDT ≥90 pockets, pending replication of its 12% gain."
+    },
+    {
+      "id": "pl3",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "d2",
+      "content": "Replicate the verified-edge pilot on independent 2026-only Pfam-disjoint proteins with pocket pLDDT ≥90; audit provenance and compare macro-AUPRC."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "pl3",
+      "content": "Freeze an independent 2026-only Pfam-disjoint cohort with pocket pLDDT ≥90; audit edge provenance and bootstrap verified-edge versus Foldseek–ESM-2 macro-AUPRC."
+    },
+    {
+      "id": "ar3",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "a10",
+      "content": "PocketRep-2026 v1 contains independent Pfam-disjoint 2026 proteins, pLDDT ≥90 pocket masks, edge-provenance audits, and bootstrap macro-AUPRC comparisons."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Fuse conserved operon neighborhoods and knockout phenotypes through cross-genome graph attention; calibrate novelty predictions with verified negative assays."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Do conserved operon neighborhoods improve specific GO predictions across unseen families independently of taxonomic relatedness and annotation density?"
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "q4",
+      "content": "Conserved operon attention will improve family-disjoint GO macro-AUPRC ≥10% over Foldseek–ESM-2 after matching taxa and annotation density."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "h6",
+      "content": "Using PocketRep-2026 v1 proteins, assemble conserved operon graphs and compare GO macro-AUPRC against Foldseek–ESM-2 after taxon and annotation-density matching."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "a11",
+      "content": "On taxon- and annotation-density-matched PocketRep-2026 proteins, operon attention raised GO macro-AUPRC from 0.230 to 0.258 (+12.2%)."
+    },
+    {
+      "id": "pl4",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "e8",
+      "content": "Test operon attention on clade-held-out, annotation-density-matched PocketRep-2026 proteins; mask neighbor annotations and compare macro-AUPRC after operon-edge ablation."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "pl4",
+      "content": "Construct genus-held-out PocketRep-2026 splits; match annotation density, mask neighbor GO labels, and compare operon attention against edge ablation by macro-AUPRC."
+    },
+    {
+      "id": "ar4",
+      "type": "artifact",
+      "order": 44,
+      "exploration_parent_id": "a12",
+      "content": "OperonHoldout-2026 v1 contains genus-held-out splits, matched annotation-density strata, masked-neighbor predictions, and operon-edge ablation macro-AUPRC scripts."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "pl4",
+      "content": "Audit OperonHoldout-2026 v1 for leakage; bootstrap genus-held-out macro-AUPRC for operon attention, edge ablation, and Foldseek–ESM-2."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a13",
+      "content": "OperonHoldout-2026 passed leakage audits; genus-held-out macro-AUPRC was 0.236 versus 0.209 for Foldseek–ESM-2 and 0.211 after edge ablation."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "pl1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "pl1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "pl1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "ar1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "pl2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "pl2",
+      "relation": "decompose",
+      "target": "a5"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "ar2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a6",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "revise",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a7",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "refute",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "revise",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "h5",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "h5",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "a9",
+      "relation": "depend_on",
+      "target": "ar2"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "d2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "pl3",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "pl3",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "pl3",
+      "relation": "decompose",
+      "target": "a10"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "ar3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a11",
+      "relation": "depend_on",
+      "target": "ar3"
+    },
+    {
+      "source": "a11",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "pl4",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "pl4",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "pl4",
+      "relation": "decompose",
+      "target": "a12"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "ar4"
+    },
+    {
+      "source": "pl4",
+      "relation": "decompose",
+      "target": "a13"
+    },
+    {
+      "source": "a13",
+      "relation": "depend_on",
+      "target": "ar4"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "ar4"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "p3"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Predict specific protein molecular functions in unseen families while distinguishing genuine functional novelty from incomplete annotations.",
+    "requirements": [
+      "Achieve ≥10% relative macro-AUPRC improvement over sequence-only transfer on family-disjoint, temporally held-out annotations.",
+      "Distinguish novel functions from missing annotations with ≥0.80 AUROC on independently adjudicated proteins."
+    ]
+  }
+}

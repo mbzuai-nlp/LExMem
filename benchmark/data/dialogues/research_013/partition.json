@@ -1,0 +1,95 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Initial net-dissipation projection and its backscatter limitation",
+      "boundary_reason": "The ablation challenges the initial projection, prompting a revised approach."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16"
+      ],
+      "topic": "Forward-transfer-only projection and seed-dependent energy excursion",
+      "boundary_reason": "The candidate is retained but acceptance is deferred; the next proposal changes the stability mechanism."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Dissipation-credit closure testing and CreditLES-v1 adoption",
+      "boundary_reason": "CreditLES-v1 is adopted, and the next discussion explores a separate shell-transfer closure."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Standalone energy-neutral shell transfers and their limited overall spectral gain",
+      "boundary_reason": "The standalone closure is deferred; the next proposal combines shell transfers with CreditLES-v1."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p4",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Shell-augmented CreditLES-v1 results, package, and reproduction",
+      "boundary_reason": "Steady-forcing results are reproduced before the discussion shifts to abrupt forcing changes."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Forcing-pulse stress test, conditional Shell-v2 adoption, and final closure selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

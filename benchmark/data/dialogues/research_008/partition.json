@@ -1,0 +1,129 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Initial chunkwise-transducer proposal and Spanish–Arabic holdout result",
+      "boundary_reason": "The initial result supports advancing the full model to additional unseen-pair validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "SwitchHoldout-v2 validation and leakage audit",
+      "boundary_reason": "The audit establishes the additional unseen-pair results; discussion shifts to component ablations."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Boundary-weighting and distillation ablations",
+      "boundary_reason": "The results refute the stated ablation hypothesis, prompting a revised explanation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Testing whether phoneme bottlenecks drive unseen-pair gains",
+      "boundary_reason": "The bottleneck ablation refutes the revised explanation."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Testing switch-spliced augmentation as the source of gains",
+      "boundary_reason": "The augmentation ablation refutes that explanation and leads to a simpler-model hypothesis."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Initial test of the bottleneck-free, splice-free model",
+      "boundary_reason": "The initial test misses the switch-gain target; a speaker-disjoint replication follows."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Five-seed speaker-disjoint replication of the streamlined model",
+      "boundary_reason": "The replication supports a dataset-specific revised hypothesis before expansion to new pairs."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Italian-pair expansion and decision on external validation",
+      "boundary_reason": "The streamlined-model work reaches a decision; the graph shifts to another proposal."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p2",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Initial confidence-gated articulatory rescoring test",
+      "boundary_reason": "Excess false triggers and monolingual WER loss motivate a gating refinement."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Hysteresis-confirmed articulatory rescoring",
+      "boundary_reason": "The refinement is evaluated; the graph shifts to language-specific heads."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p3",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44"
+      ],
+      "topic": "Composed language heads, decoder ablations, and approach selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

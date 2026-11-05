@@ -1,0 +1,129 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Baseline ScopeIR design, fixtures, and cancellation-schedule results",
+      "boundary_reason": "The baseline decision closes this evaluation before a separate Lean check."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11"
+      ],
+      "topic": "Lean counterexample to direct-child joins and the transitive-obligation hypothesis",
+      "boundary_reason": "The counterexample motivates a new proposal to track borrowing descendants."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n12",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Descendant obligations, recursive spawn summaries, and revised-checker tests",
+      "boundary_reason": "The provisional decision closes the testing stage before formalization."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Lean loan-liveness proof and audit of ScopeIR",
+      "boundary_reason": "The proof audit ends before the focus shifts to affine cancellation continuations."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Cancel/migrate handoff race and atomic supervisor registration",
+      "boundary_reason": "The handoff decision closes the investigation before integration work."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Integrating atomic supervisor handoff into ScopeIR proofs",
+      "boundary_reason": "The resulting artifacts close this implementation stage before branded permits are proposed."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Branded affine permits, the U12 failure, and acknowledged descendant draining",
+      "boundary_reason": "The permit decision closes this test-and-revision cycle; the next question concerns scope escape."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n43",
+        "n44",
+        "p5",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Rank-2 scope brands for detached-task nonescape and nested children",
+      "boundary_reason": "The adoption decision closes the typing comparison before further proof work."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Lean preservation lemmas and audit of rank-2 nonescape",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

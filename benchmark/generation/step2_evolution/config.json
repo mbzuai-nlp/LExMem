@@ -1,0 +1,7 @@
+{
+  "S": {"probability": 0.25, "templates": {"S1": 1}},
+  "F": {"probability": 0.25, "templates": {"F1": 1}},
+  "RH": {"probability": 0.25, "templates": {"RH1": 1, "RH2": 1}},
+  "RA": {"probability": 0.25, "templates": {"RA1": 1}},
+  "V": {"probability": 0.25, "templates": {"V1": 1, "V2": 1}}
+}

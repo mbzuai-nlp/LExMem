@@ -1,0 +1,1033 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a mixed-criticality accelerator runtime guaranteeing control-task deadlines despite nonpreemptible inference kernels and shared-memory interference.",
+      "requirements": [
+        "Under declared execution and interference bounds, all admitted control jobs meet 2 ms deadlines.",
+        "Guarantee starvation-free inference progress under adversarial arrivals without compromising admitted control deadlines."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Admit controls against 2-ms response bounds accounting for reserved FIFO inference slots, bounded nonpreemptible kernels, and shared-memory interference."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What positive inference-slot reservation preserves 2-ms control response bounds under worst-case arrivals and shared-memory interference?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Reserving 200 µs every 8 ms for ≤200-µs FIFO kernels, within interference-aware admission, preserves 2-ms deadlines and inference progress."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Derive interference-aware 2-ms control-response and FIFO service bounds for 200-µs slots every 8 ms under adversarial arrivals."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Compute control response and FIFO service bounds under adversarial arrivals, 200-µs/8-ms slots, 200-µs blocking, and 80-µs/job DRAM stalls."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "A 200-µs kernel plus a permitted 80-µs DRAM stall needs 280 µs; strict 200-µs slots provide zero worst-case FIFO service."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Reserve 280-µs FIFO slots every 8 ms for 200-µs kernels plus 80-µs stalls; admit controls against blocking and interference."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Recalculate 2-ms control-response and FIFO-service bounds for 280-µs slots every 8 ms, including the 80-µs stall that invalidated 200-µs slots."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "At ≤1.36-ms interference-inclusive control demand, 280-µs slot plus 280-µs blocking yields 1.92-ms response; backlogged FIFO completes ≥1 kernel/8 ms."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt 280-µs slots every 8 ms and ≤1.36-ms control admission; rejected 200-µs slots cannot cover interference stalls."
+    },
+    {
+      "id": "n12",
+      "type": "artifact",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "SlotGuard specification: 280-µs FIFO slots every 8 ms, ≤1.36-ms control admission, 1.92-ms response bound, and backlogged FIFO service proof."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n5",
+      "content": "Implement SlotGuard trace simulator from its specification; replay adversarial arrivals and 80-µs stalls, checking 2-ms deadlines and FIFO progress."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "SlotGuard adversarial traces recorded 1.92-ms maximum control response and one FIFO completion per reserved 8-ms cycle under continuous backlog."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p1",
+      "content": "Which hardware isolation and admission checks can enforce SlotGuard’s 80-µs DRAM-stall and 280-µs kernel bounds?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Configure DRAM QoS and tiled kernels; test adversarial contention against 200-µs execution and 80-µs stall limits before admission."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "In QoSStress-1’s million launches, tiled kernels peaked at 198 µs execution and 76 µs DRAM stall under adversarial contention."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Adopt QoS-isolated tiled kernels conditionally: QoSStress-1 stayed within bounds and SlotGuard traces met deadlines; require certified bounds before admission."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 19,
+      "exploration_parent_id": "p1",
+      "content": "Implement QoS-backed SlotGuard with certified kernel bounds, ≤1.36-ms control admission, 280-µs FIFO slots every 8 ms, and adversarial validation."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Partition accelerator into dedicated control and inference slices with guaranteed DRAM bandwidth; admit controls using interference-aware response-time analysis."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can hardware-sliced control and inference lanes sustain independent progress while DRAM contention remains bounded within 2-ms control deadlines?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "With 75/25 compute slices and 70/30 DRAM guarantees, ≤1.5-ms interference-inclusive control demand meets deadlines; inference completes ≥1 kernel/8 ms."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Using SlotGuard’s kernel bounds, simulate 75/25 compute and 70/30 DRAM slices under adversarial 1.5-ms demand; check deadlines and inference progress."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "SliceSim-A recorded 1.78-ms maximum control response and ≥1 inference completion per 8-ms cycle under backlog and adversarial contention."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n22",
+      "content": "Use SlotGuard’s 280-µs kernel bound in a hardware contention microbenchmark to verify 70/30 DRAM guarantees and independent slice dispatch."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "SliceBench-H: 75/25 compute and verified 70/30 DRAM still incurred 610-µs shared-dispatch blocking; 1.5-ms controls responded in 2.11 ms."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Independent per-slice queues with ≤100-µs dispatch blocking should yield ≤1.6-ms control response and ≥1 inference completion/8 ms."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Implement independent per-slice dispatch queues; replay SliceSim-A arrivals on SliceBench-H using SlotGuard bounds; measure blocking, response, inference throughput."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "SliceBench-H with per-slice queues measured 92-µs maximum dispatch blocking, 1.592-ms control response, and ≥1 inference completion/8 ms."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n27",
+      "content": "Derive arrival-curve admission and inference-service proofs using SlotGuard kernel bounds; verify 100-µs per-slice dispatch cap against SliceBench-H traces."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Arrival-curve analysis permits three simultaneous 500-µs controls; three 100-µs dispatch delays yield 1.8-ms response, refuting the 1.6-ms bound."
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Arrival-curve admission charging 100-µs dispatch per control job should prove ≤2-ms responses; the independent inference slice sustains ≥1 kernel/8 ms."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Derive arrival-curve admission and inference-service bounds with per-job 100-µs dispatch, SliceBench-H isolation, and SlotGuard’s 280-µs kernels."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Arrival-curve proof bounds admitted controls at 1.8 ms including per-job dispatch; the isolated inference slice guarantees ≥1 kernel/8 ms."
+    },
+    {
+      "id": "n35",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Adopt per-slice queues and per-job 100-µs dispatch admission: measured blocking is 92 µs; corrected control bound is 1.8 ms."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "Implement 75/25 slices, 70/30 DRAM QoS, per-slice queues, and arrival-curve admission charging 100 µs dispatch per control."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Implement 75/25 slices, 70/30 DRAM QoS, and per-slice queues; stress-test SlotGuard-bounded admission charging 100-µs dispatch under adversarial arrivals."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "SliceGuard v0.1: 75/25 compute slices, 70/30 DRAM QoS, per-slice queues, 100-µs dispatch admission charges, and adversarial test logs."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n37",
+      "content": "SliceGuard v0.1 stress logs showed 1.79-ms maximum admitted-control response and ≥1 inference completion per backlogged 8-ms cycle."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Select SliceGuard’s isolated slices for deployment: corrected admission proves 1.8-ms control response, and stress logs show inference progress."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Use hierarchical EDF with a 10%-reserved inference server, ≤150-µs interference-bounded kernel tiles, and control admission accounting for server interference."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "p3",
+      "content": "What 10% server period and budget cover 150-µs tiles plus 80-µs DRAM stalls while preserving admitted 2-ms EDF deadlines?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "A 240-µs/2.4-ms FIFO server fits 150-µs tiles plus 80-µs stalls; interference-aware EDF admission preserves deadlines and progress."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Replay SliceGuard v0.1 adversarial logs with 80-µs stalls; analyze 240-µs/2.4-ms server EDF deadlines and FIFO tile service."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "SliceGuard replay exposed 92-µs launch delay: a 150-µs tile plus 80-µs stall needs 322 µs, exceeding 240-µs server budget."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n43",
+      "content": "Run hierarchical EDF on SliceGuard v0.1 hardware with adversarial control releases; log deadline misses and FIFO service at 240-µs budgets."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "In sampled runs with ≤8-µs launch delays, EDF peaked at 1.94-ms control response and completed ≥1 FIFO tile/period."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Reject 240-µs server certification: sampled 8-µs launches pass, but permitted 92-µs delays prevent worst-case tile service."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "p3",
+      "content": "Evaluate a 330-µs/3.3-ms server covering 322-µs worst-case tiles; recompute EDF admission and FIFO service under adversarial arrivals."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Replay SliceGuard v0.1 adversarial traces with 330-µs/3.3-ms budgets; calculate EDF response and FIFO service under 92-µs launch delays."
+    },
+    {
+      "id": "n51",
+      "type": "artifact",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "EDF-Server-330 report contains adversarial replay traces, response-time calculations, and FIFO-service analysis for 330-µs budgets every 3.3 ms."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n50",
+      "content": "EDF-Server-330 analysis bounds admitted control response at 1.98 ms and backlogged FIFO service at ≥1 tile/3.3 ms under 92-µs launches."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n49",
+      "content": "Implement EDF-Server-330 on hardware; inject 92-µs launch delays and adversarial control arrivals, measuring deadline response and FIFO progress."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "EDF-Server-330 hardware hit 2.04-ms control response with 92-µs launches; unmodeled 60-µs replenishment jitter broke admission."
+    },
+    {
+      "id": "n55",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Defer hierarchical EDF: the 330-µs server’s 1.98-ms bound omits jitter causing 2.04-ms misses; 240-µs budgets lack guaranteed progress."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p3",
+      "content": "Retain the 330-µs/3.3-ms server; tighten EDF admission for 60-µs replenishment jitter and reprove bounded FIFO service."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Recompute EDF-Server-330 admission with 60-µs replenishment jitter; verify revised control and FIFO bounds against 92-µs-launch hardware traces."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "EDF-Server-330-J report adds 60-µs jitter to admission tests, control-response bounds, and backlogged FIFO service calculations."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n57",
+      "content": "EDF-Server-330-J bounds admitted responses at 1.96 ms including jitter; hardware traces peaked at 1.95 ms with ≥1 tile/3.36 ms."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Adopt jitter-aware EDF-Server-330 with tightened admission: 1.96-ms control response and ≥1 backlogged FIFO tile/3.36 ms resolve prior failures."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "revise",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n32",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "revise",
+      "target": "n49"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a mixed-criticality accelerator runtime guaranteeing control-task deadlines despite nonpreemptible inference kernels and shared-memory interference.",
+    "requirements": [
+      "Under declared execution and interference bounds, all admitted control jobs meet 2 ms deadlines.",
+      "Guarantee starvation-free inference progress under adversarial arrivals without compromising admitted control deadlines."
+    ]
+  }
+}

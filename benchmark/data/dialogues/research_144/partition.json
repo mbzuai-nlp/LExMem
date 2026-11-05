@@ -1,0 +1,172 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "q1",
+        "h1",
+        "pl1",
+        "a1",
+        "e1",
+        "h2",
+        "a2",
+        "e2",
+        "d1",
+        "ar1"
+      ],
+      "topic": "Test residual-based CIFS, then adopt crossed color–texture swaps after the initial worst-domain gain falls short.",
+      "boundary_reason": "The swapped CIFS configuration is adopted and released; the discussion shifts to feature-probe results and texture-defined labels."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "a3",
+        "e3",
+        "q2",
+        "a4",
+        "e4"
+      ],
+      "topic": "Assess original CIFS feature preservation and CIFS-Swap performance when texture defines the label.",
+      "boundary_reason": "The CIFS probe and TextureLabel-8 evaluations conclude; a new cue-protection method is proposed."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "q3",
+        "h3",
+        "a5",
+        "e5",
+        "a6",
+        "e6"
+      ],
+      "topic": "Test whether FACTOR-Guard protects essential texture without protecting correlated color, including at 95% agreement.",
+      "boundary_reason": "The high-agreement stress test exposes excessive color protection, prompting a revised approach."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "h4",
+        "a7",
+        "e7",
+        "a8",
+        "e8"
+      ],
+      "topic": "Try texture-fixed recoloring and sweep its probability to reduce color protection at 95% agreement.",
+      "boundary_reason": "The 50% setting meets the measured targets, leading to fresh-split validation."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "h5",
+        "pl2",
+        "a9",
+        "e9",
+        "a10",
+        "e10",
+        "h6",
+        "a11",
+        "e11",
+        "d2",
+        "ar2"
+      ],
+      "topic": "Validate 50% recoloring, address a failing split with adaptive 50%/75% recoloring, and release FACTOR-Guard v2.",
+      "boundary_reason": "Adaptive recoloring is adopted and packaged; discussion shifts to spurious feature interactions."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "q4",
+        "h7",
+        "a12",
+        "e12",
+        "d3",
+        "ar3"
+      ],
+      "topic": "Evaluate and adopt COMBI-Guard for suppressing spurious conjunctions while retaining label-essential interactions.",
+      "boundary_reason": "COMBI-Guard is released; a distinct rare-conjunction reweighting approach begins."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "q5",
+        "h8",
+        "a13",
+        "e13",
+        "a14",
+        "e14"
+      ],
+      "topic": "Test RISK-Envelope under label noise and find that 2% rare conjunctions undermine its initial results.",
+      "boundary_reason": "The rare-conjunction failure motivates a revised weighting method."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "h9",
+        "a15",
+        "e15",
+        "a16",
+        "e16"
+      ],
+      "topic": "Test loss trimming and count smoothing for rare, noisy conjunctions, including independent splits.",
+      "boundary_reason": "An independent split falls short, prompting marginal shrinkage."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "h10",
+        "pl3",
+        "a17",
+        "e17",
+        "a18",
+        "e18"
+      ],
+      "topic": "Tune and ablate marginal shrinkage of conjunction weights.",
+      "boundary_reason": "An ablation-cohort split falls short, motivating reliability-gated shrinkage."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "h11",
+        "a19",
+        "e19",
+        "a20",
+        "e20"
+      ],
+      "topic": "Evaluate reliability-gated shrinkage and blind-test its worst-domain gains.",
+      "boundary_reason": "A blind split misses the gain threshold, motivating source-only swaps."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "h12",
+        "a21",
+        "e21",
+        "a22",
+        "e22"
+      ],
+      "topic": "Add color/background swaps to gated shrinkage and check whether predictive interaction probes remain accurate.",
+      "boundary_reason": "A fresh split exceeds the permitted probe loss, prompting investigation of logit anchoring."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "h13",
+        "a23",
+        "e23",
+        "a24",
+        "e24",
+        "a25",
+        "e25",
+        "d4",
+        "ar4"
+      ],
+      "topic": "Compare swaps with shape×texture-logit anchoring on matched splits and defer RISK-Envelope.",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

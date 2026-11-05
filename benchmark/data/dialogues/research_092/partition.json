@@ -1,0 +1,142 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "ScopeGraph-NLI’s initial ScopeSplit-3 evaluation and advancement decision",
+      "boundary_reason": "The initial evaluation and its artifact are complete; the next nodes turn to ablations."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "ScopeGraph-NLI ablations and five-seed testing without scope supervision",
+      "boundary_reason": "The component assessment ends before a different model is proposed."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "DenotationNLI training and five-seed comparison on ScopeSplit-3",
+      "boundary_reason": "The comparison results lead to a new question about generalization."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "DenotationNLI generalization to unseen lexemes and graph-disjoint larger domains",
+      "boundary_reason": "The graph-disjoint result challenges the hypothesis and motivates revised training."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Structure-diverse training for graph-disjoint DenotationNLI evaluation",
+      "boundary_reason": "The revised training test concludes before the ScopeProof-NLI proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "ScopeProof-NLI’s initial AmbiScope-3 evaluation and component ablation",
+      "boundary_reason": "The next evaluation shifts to leave-one-permutation-out generalization."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Held-out ScopeProof-NLI failures, oracle-forest diagnosis, and parser-repair decision",
+      "boundary_reason": "The diagnosis and decision conclude before a new parser-focused model is proposed."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "LatticeScope-NLI training and held-out AmbiScope-3 evaluation",
+      "boundary_reason": "The initial evaluation concludes; the next nodes examine its components."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n47",
+        "n48"
+      ],
+      "topic": "LatticeScope-NLI ablation reveals a reversal-contrastive deficit",
+      "boundary_reason": "The ablation raises a separate question about the cause of the deficit."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Audit of ambiguous reversal-negative labels",
+      "boundary_reason": "The label-error hypothesis is tested and rejected, prompting an alternative explanation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n53",
+        "n54",
+        "n55",
+        "n56"
+      ],
+      "topic": "Overlap-masked reversal contrast and adoption decision",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

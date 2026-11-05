@@ -1,0 +1,892 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a subsurface two-phase flow surrogate that preserves local mass conservation while generalizing across unseen permeability connectivity.",
+      "requirements": [
+        "Maximum cellwise mass-balance error stays below 0.1% of injected mass per timestep.",
+        "On unseen channel connectivity, breakthrough-time error remains below 5% versus a converged finite-volume solver."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a permeability-conditioned graph network to predict transmissibility corrections, then solve pressure and update saturations using shared-face finite-volume phase fluxes."
+    },
+    {
+      "id": "n1",
+      "type": "hypothesis",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Shared-face fluxes keep cellwise imbalance below 0.1% of injected mass per step; graph-conditioned corrections keep unseen-connectivity breakthrough error below 5%."
+    },
+    {
+      "id": "n2",
+      "type": "activity",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Benchmark 200 held-out channel-connectivity realizations against converged finite-volume solutions, measuring maximum per-step injected-mass-normalized cellwise imbalance and breakthrough-time error."
+    },
+    {
+      "id": "n3",
+      "type": "evidence",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Across 200 held-out channel realizations, maximum per-step normalized cellwise imbalance was 0.06%, and worst-case breakthrough-time error was 4.2%."
+    },
+    {
+      "id": "n4",
+      "type": "question",
+      "order": 6,
+      "exploration_parent_id": "n1",
+      "content": "Can permeability-conditioned graph corrections resolve unseen dead-end channels adjacent to injection wells at 100:1 permeability contrast?"
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Using the 200-realization benchmark as baseline, test added 100:1 near-well dead ends against finite-volume breakthrough and mass-balance metrics."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Generate 80 unseen 100:1 near-well dead-end channels; compare surrogate breakthrough times and maximum normalized cellwise imbalance against finite-volume solutions."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "DeadEnd-80 benchmark: 80 held-out 100:1 near-well channel maps, converged finite-volume trajectories, and per-case breakthrough and cellwise-imbalance scores."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Validate DeadEnd-80 finite-volume convergence and score surrogate breakthrough error and normalized cellwise imbalance by dead-end length and well distance."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On DeadEnd-80, maximum normalized cellwise imbalance was 0.07%; worst-case breakthrough-time error versus converged finite-volume solutions was 4.6%."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "p1",
+      "content": "On 120 unseen braided-channel maps, ablate graph-conditioned transmissibility corrections and shared-face updates; compare breakthrough error and maximum cellwise imbalance."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "On 120 unseen braided maps, worst-case breakthrough-time error reached 9.1% versus finite-volume solutions despite 0.08% maximum normalized cellwise imbalance."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Does limited graph message-passing radius miss competing parallel pathways in unseen braided channels, causing 9.1% worst-case breakthrough error?"
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Using DeadEnd-80 success and braided-channel failure as controls, sweep graph message-passing radii and measure breakthrough error against finite-volume references."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Retrain 2-, 4-, 8-, and 16-hop networks identically; compare breakthrough errors on 120 braided maps and DeadEnd-80."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "HopSweep-v1 contains four matched network checkpoints, predictions on 120 braided maps and DeadEnd-80, and per-case breakthrough-error tables."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Add multiscale well-to-well pathway attention to transmissibility corrections while retaining pressure solves and shared-face finite-volume fluxes."
+    },
+    {
+      "id": "n16",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Multiscale pathway attention reduces worst-case braided-channel breakthrough error below 5% without raising normalized cellwise imbalance above 0.1%."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Select HopSweep-v1's lowest-error checkpoint, add multiscale well-to-well attention, and measure braided/DeadEnd-80 breakthrough errors and cellwise imbalance versus finite-volume references."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "On 120 braided maps, pathway attention achieved 4.3% worst-case breakthrough error and 0.08% maximum normalized cellwise imbalance."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Benchmark pathway attention against HopSweep-v1 checkpoints on 100 new 100:1 braided maps, tracking worst-case breakthrough error and cellwise imbalance."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On 100 new 100:1 braided maps, pathway attention reached 7.4% worst-case breakthrough error despite 0.09% maximum normalized cellwise imbalance."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Does pathway attention misrank competing high-contrast branches when pressure gradients redirect flow, explaining the 7.4% worst-case breakthrough error?"
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Compare attention branch rankings with finite-volume fluxes in 120-map and 100-map cohorts, stratifying pressure reversals and breakthrough errors."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Audit pathway-attention rankings against finite-volume branch fluxes across both braided cohorts, stratifying pressure reversals, breakthrough error, and cellwise imbalance."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "In 100 high-contrast maps, attention misranked dominant branches during 28% of pressure reversals; worst-case breakthrough error reached 7.4%."
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n21",
+      "content": "Recomputing pathway attention from each pressure solve will reduce high-contrast branch misranking below 10% and worst-case breakthrough error below 5%."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Using the audited 100-map cohort, recompute attention after each pressure solve; measure branch misranking, worst-case breakthrough error, and cellwise imbalance."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Across 100 maps, pressure-updated attention cut branch misranking to 8% and worst-case breakthrough error to 4.7%; maximum imbalance was 0.09%."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "p2",
+      "content": "Adopt pressure-updated pathway attention: 4.3% braided error warranted retention; 7.4% high-contrast failure and 28% misranking required updating; revised error 4.7%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Use topology-aware multigrid pressure prediction with locally conservative fine-grid phase-flux reconstruction and finite-volume saturation updates."
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "Topology-aware multigrid resolves nonlocal braided pathways, yielding worst-case breakthrough error below 5% and maximum normalized cellwise imbalance below 0.1%."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Train topology-aware multigrid on matched realizations; benchmark both braided cohorts against converged finite-volume references for worst-case breakthrough error and imbalance."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Across both braided cohorts, multigrid's worst-case breakthrough error was 4.8% versus converged finite-volume references; maximum normalized cellwise imbalance was 0.08%."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "p3",
+      "content": "Benchmark multigrid on 96 unseen branching-channel maps at 200:1 permeability contrast against converged finite-volume breakthrough times and cellwise mass balance."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "On 96 unseen 200:1 branching maps, multigrid reached 8.3% worst-case breakthrough error despite 0.08% maximum normalized cellwise imbalance."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Does coarse-grid aggregation erase narrow 200:1 branches, causing multigrid's 8.3% worst-case breakthrough error despite conservative flux reconstruction?"
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Contrast successful braided and failing 200:1 branching cohorts; vary aggregation scale and measure narrow-branch flux loss and breakthrough error."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Reaggregate braided and 200:1 branching maps at 2×2, 4×4, and 8×8 scales; compare narrow-branch flux retention and breakthrough errors."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "On 200:1 branching maps, 8×8 aggregates retained 62% of reference narrow-branch flux versus 94% at 2×2; breakthrough error reached 8.3%."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 42,
+      "exploration_parent_id": "p3",
+      "content": "Defer 8×8 multigrid: braided error was 4.8%, but branching error reached 8.3% with only 62% narrow-branch flux retention."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 43,
+      "exploration_parent_id": "g1",
+      "content": "Combine pressure-updated pathway attention with branch-preserving adaptive multigrid pressure solves and shared-face finite-volume phase fluxes."
+    },
+    {
+      "id": "n39",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "p4",
+      "content": "Adaptive branch-preserving solves plus pressure-updated attention achieve under 5% worst-case breakthrough error and 0.1% maximum normalized cellwise imbalance."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n39",
+      "content": "Benchmark hybrid on both held-out high-contrast cohorts, measuring worst-case breakthrough error and maximum injected-mass-normalized cellwise imbalance against finite-volume references."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Across 100 braided and 96 branching high-contrast maps, hybrid worst-case breakthrough error was 4.5%; maximum normalized cellwise imbalance was 0.08%."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Building on the hybrid's 196-map results, benchmark 300 unseen channel topologies against converged finite-volume breakthrough and cellwise mass balance."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Generate 300 unseen 50:1–200:1 connected, braided, and branching maps; run converged finite-volume references and hybrid predictions."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Connectivity-300 contains 300 held-out permeability maps, converged finite-volume trajectories, hybrid predictions, and per-case breakthrough and mass-balance scores."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Validate Connectivity-300 reference convergence; audit hybrid worst-case breakthrough error and per-step maximum normalized cellwise imbalance by topology."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "On Connectivity-300, hybrid worst-case breakthrough-time error was 4.7% versus converged finite-volume references; maximum normalized cellwise imbalance was 0.09%."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "Select the hybrid for deployment: Connectivity-300 worst-case breakthrough error was 4.7% and maximum cellwise imbalance 0.09%, confirming high-contrast results."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "evaluate",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "produce",
+      "target": "n3"
+    },
+    {
+      "source": "n3",
+      "relation": "support",
+      "target": "n1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "depend_on",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "revise",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a subsurface two-phase flow surrogate that preserves local mass conservation while generalizing across unseen permeability connectivity.",
+    "requirements": [
+      "Maximum cellwise mass-balance error stays below 0.1% of injected mass per timestep.",
+      "On unseen channel connectivity, breakthrough-time error remains below 5% versus a converged finite-volume solver."
+    ]
+  }
+}

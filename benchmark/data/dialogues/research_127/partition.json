@@ -1,0 +1,161 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Develop and revise rollout gating for source-skill transfer",
+      "boundary_reason": "The revised gate is adopted and its initial audit is recorded; discussion turns to transfer benchmarks."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Benchmark bootstrap-gated adapters against scratch training",
+      "boundary_reason": "The transfer scorecard is produced; a different routing proposal begins."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Initial evaluation of fingerprint-routed residual policies",
+      "boundary_reason": "The initial benchmark reveals an incompatible-target deficit, prompting a diagnostic question."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22"
+      ],
+      "topic": "Diagnose fingerprint routing and test phase-conditioned routing",
+      "boundary_reason": "The diagnosis, reconsideration, and follow-up overlap scorecard conclude before a new proposal."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n23",
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Benchmark and prioritize ModeStitch",
+      "boundary_reason": "ModeStitch is prioritized; discussion shifts to mid-episode friction changes."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Audit ModeStitch under friction jumps and add fallback detection",
+      "boundary_reason": "The revised friction-jump audit is produced; a separate replay-transfer approach begins."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Initial test of likelihood-weighted source replay",
+      "boundary_reason": "The initial replay benchmark misses both targets, motivating a revised approach."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Revise replay transfer with contact-mode weighting and alarm filtering",
+      "boundary_reason": "Replay is reconsidered and a held-out latency scorecard is produced; a new MPC proposal follows."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Compare and prioritize factorized-ensemble MPC",
+      "boundary_reason": "The initial comparison leads to prioritization; discussion moves to robustness validation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Audit MPC robustness and interaction budgets",
+      "boundary_reason": "The budget-corrected audit leads to suspension of MPC; discussion turns to possible failure mechanisms."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61"
+      ],
+      "topic": "Ablate MPC calibration and fallback delays",
+      "boundary_reason": "Stratified findings support keeping bootstrap-gated adapters as the default; a full-cohort retest is planned next."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Retest and audit revised MPC on full Jump and Latency cohorts",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

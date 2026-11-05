@@ -1,0 +1,1241 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design distributed training recovery that preserves optimizer and data progress consistency across failures and worker membership changes.",
+      "requirements": [
+        "Recovered executions match failure-free optimizer-update and sample-consumption histories, including failures during resharding.",
+        "Recovery adds at most 5% failure-free step latency versus identical training without recovery support."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use deterministic step-indexed sampling, asynchronous copy-on-write optimizer/cursor snapshots, and atomic epoch-fenced manifests for replay-safe resharding."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should epoch-fenced manifests atomically commit optimizer state, sampling position, and shard ownership when a worker fails mid-reshard?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "An epoch-fenced manifest atomically referencing durable optimizer snapshots, sample cursors, and shard maps enables deterministic replay after mid-reshard failures."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Durably stage optimizer/cursor snapshots and shard maps, CAS-publish epoch-fenced manifests, then test mid-reshard replay and ≤5% step-latency overhead."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Inject 200 mid-reshard crashes during 8-to-12-worker ReshardBench transitions; compare optimizer/sample traces against uninterrupted runs and latency against recovery-disabled training."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ReshardBench: all 200 mid-reshard recoveries matched uninterrupted optimizer-update and sample-consumption traces; recovery-enabled median step latency rose 3.2%."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Run ManifestRace with 500 crashes around concurrent epoch-fenced CAS publications; compare replay traces and p95 latency against recovery-disabled runs."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "ManifestRace: 9/500 crash trials duplicated sample IDs when stale-epoch workers continued after manifest CAS; p95 latency overhead was 6.1%."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 10,
+      "exploration_parent_id": "n4",
+      "content": "Epoch-fenced per-step optimizer/cursor commits reject stale workers; batched lease checks preserve exact replay with p95 overhead ≤5%."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Implement epoch-checked step commits binding optimizer/cursor snapshots to shard maps; batch worker lease checks, then rerun ManifestRace and p95 benchmarks."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Rerun 500 ManifestRace CAS-adjacent crashes comparing original manifests with epoch-checked commits and batched leases; measure duplicates and p95 overhead."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "With failed workers terminated before CAS, original manifests matched 500/500 traces; per-step commits also matched 500/500 with continuing workers."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n12",
+      "content": "ManifestRace: per-step commits preserved exact traces, but batched lease checks raised p95 step latency 8.4% versus recovery-disabled training."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n11",
+      "content": "Run LeasePiggyback with stale-worker injections and epoch checks on gradient all-reduces; measure replay mismatches and p95 latency overhead."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "LeasePiggyback: 0/500 stale-worker replay mismatches; piggybacked batched lease checks reduced p95 latency overhead from 8.4% to 4.3%."
+    },
+    {
+      "id": "n17",
+      "type": "decision",
+      "order": 17,
+      "exploration_parent_id": "n11",
+      "content": "Adopt epoch-checked per-step commits with collective-piggybacked leases: standalone checks cost 8.4% p95 overhead versus 4.3% with piggybacking."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 18,
+      "exploration_parent_id": "g1",
+      "content": "Use a quorum-replicated step ledger with deterministic sample ranges, idempotent optimizer commits, and asynchronous compaction across membership changes."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "p2",
+      "content": "Can quorum-replicated step records bind sample ranges to optimizer commits through resharding without exceeding 5% p95 step overhead?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Quorum-committed step IDs atomically bind sample ranges and optimizer deltas, yielding exact replay with ≤5% p95 latency overhead."
+    },
+    {
+      "id": "n21",
+      "type": "plan",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Implement three-replica quorum step records with idempotent optimizer deltas; inject resharding failures and benchmark p95 step overhead against recovery-disabled runs."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Inject 500 LedgerCrash failures during commits, resharding, and compaction; compare optimizer/sample histories and p95 overhead against uninterrupted and recovery-disabled baselines."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "LedgerCrash: 6/500 compaction-reshard failures duplicated sample ranges; quorum writes raised p95 step latency 7.2% versus recovery-disabled training."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n21",
+      "content": "Run LedgerIsolation with asynchronous compaction enabled versus disabled during 8-to-12-worker resharding; measure duplicate sample ranges and p95 overhead."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "LedgerIsolation: pausing asynchronous compaction during resharding eliminated duplicates (0/500 versus 6/500) and lowered p95 overhead to 4.6%."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "Adopt the quorum ledger with compaction paused during resharding: duplicate trials fell from 6/500 to 0/500; p95 overhead reached 4.6%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Maintain shadow optimizer shards and sampler counters on standby workers, fencing reshard handoffs with two-phase ownership transfer."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "How do standby shadows distinguish committed optimizer updates from speculative transfers if a worker fails between ownership-transfer phases?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Epoch-tagged shadow optimizer deltas and sampler counters applied only after ownership-commit markers ensure exact replay with ≤5% p95 overhead."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Implement epoch-tagged standby deltas with ownership-commit markers; fault both handoff phases and compare histories and p95 latency against baseline."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Inject 400 ShadowHandoff crashes before and after ownership commits; compare promoted-shadow optimizer/sample traces with uninterrupted runs."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "ShadowHandoff trace bundle contains 400 crash logs, ownership-commit markers, promoted-shadow snapshots, and optimizer/sample history comparisons."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n30",
+      "content": "Audit ShadowHandoff traces for speculative-delta promotion and replay mismatches; benchmark standby replication’s p95 step overhead against recovery-disabled training."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "ShadowHandoff: 400/400 promoted-shadow histories matched uninterrupted runs; zero speculative deltas applied, with 4.8% p95 overhead versus recovery-disabled training."
+    },
+    {
+      "id": "n35",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Retain shadow handoffs as an alternative: 400/400 exact recoveries and 4.8% p95 overhead, pending comparison with ledger and fenced commits."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 36,
+      "exploration_parent_id": "g1",
+      "content": "Replay from incremental checkpoints using seeded global-batch IDs, membership-invariant reductions, and fenced reshard barriers."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 37,
+      "exploration_parent_id": "p4",
+      "content": "Can seeded global-batch replay reproduce optimizer updates across different worker counts when floating-point reduction order changes?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Fixed-order FP32 reduction trees indexed by global-batch IDs yield bitwise-identical optimizer updates across worker counts with ≤5% p95 overhead."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Implement batch-ID-indexed FP32 reductions and checkpoint replay; test 8-to-12-worker failures for bitwise updates and p95 overhead."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Run ReplayTree over 300 checkpoint-to-reshard crashes, comparing bitwise optimizer hashes, sample IDs, and p95 latency to uninterrupted training."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "ReplayTree matched optimizer hashes and sample IDs in 300/300 recoveries, but p95 step latency rose 7.6% versus uninterrupted training."
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n38",
+      "content": "Pipelining batch-ID-fixed reduction-tree chunks preserves bitwise replay across worker counts while reducing p95 step overhead below 5%."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Run PipelinedReplay across 300 reshard crashes; compare optimizer hashes and sample IDs against uninterrupted runs, p95 latency against recovery-disabled training."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "PipelinedReplay matched optimizer hashes and sample IDs in 300/300 reshard recoveries; p95 step overhead fell to 4.9%."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n42",
+      "content": "Stress PipelinedReplay on mixed-precision 4-to-16-worker transitions with 500 mid-accumulation crashes; compare optimizer hashes, sample IDs, and p95 overhead."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "PipelinedReplay mixed-precision: 12/500 mid-accumulation recoveries mismatched optimizer hashes after 4-to-16-worker resharding; sample IDs matched; p95 overhead reached 5.7%."
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Fenced microbatch checkpoints of FP32 accumulators and loss-scaler state plus adaptive pipelining restore bitwise replay with ≤5% p95 overhead."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Checkpoint FP32 accumulators and loss-scaler state at fenced microbatch boundaries; tune pipelining, then repeat mixed-precision crashes and p95 benchmarks."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Repeat 500 mixed-precision 4-to-16-worker mid-accumulation crashes with fenced microbatch checkpoints; compare optimizer hashes, sample IDs, and p95 overhead."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "FencedMicrobatch matched optimizer hashes and sample IDs in 500/500 mixed-precision recoveries; adaptive pipelining cut p95 step overhead to 4.7%."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n48",
+      "content": "Inject 600 checkpoint-publication crashes during 16-to-4-worker resharding; compare optimizer/sample histories against uninterrupted runs and p95 overhead against recovery-disabled runs."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "CheckpointPublish: 8/600 16-to-4-worker crashes loaded mixed-generation accumulator shards, changing optimizer hashes; sample IDs matched, p95 overhead 4.8%."
+    },
+    {
+      "id": "n53",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "Defer FencedMicrobatch adoption: despite 500/500 exact mid-accumulation recoveries, 8/600 publication crashes mixed accumulator generations; require atomic checkpoint manifests."
+    },
+    {
+      "id": "n54",
+      "type": "hypothesis",
+      "order": 54,
+      "exploration_parent_id": "n47",
+      "content": "Atomic generation manifests for accumulator shards and loss-scaler state prevent mixed-generation restores while preserving bitwise replay and ≤5% p95 overhead."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Durably stage all accumulator shards and scaler state, atomically publish generation manifests, then repeat checkpoint-publication crashes and p95 benchmarking."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Repeat 600 CheckpointPublish crashes during 16-to-4-worker resharding with atomic manifests; check optimizer hashes, sample IDs, and p95 step overhead."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "CheckpointPublish with atomic manifests matched optimizer hashes and sample IDs in 600/600 recoveries; p95 step overhead was 4.9%."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n55",
+      "content": "Adopt atomic-manifest FencedMicrobatch over unpipelined replay: fixes earlier mismatch modes, passes 600/600 publication crashes, and achieves 4.9% p95 overhead."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 59,
+      "exploration_parent_id": "g1",
+      "content": "Erasure-code optimizer shards and sampler cursors across workers, using joint-consensus epoch barriers to transfer ownership during resharding."
+    },
+    {
+      "id": "n60",
+      "type": "question",
+      "order": 60,
+      "exploration_parent_id": "p5",
+      "content": "Can joint-consensus epoch barriers reconstruct committed erasure-coded optimizer shards without replaying sample ranges after simultaneous worker loss?"
+    },
+    {
+      "id": "n61",
+      "type": "hypothesis",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "A 6+2 Reed–Solomon stripe committed alongside sampler cursors under joint-consensus epochs recovers two worker losses exactly with ≤5% p95 overhead."
+    },
+    {
+      "id": "n62",
+      "type": "plan",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Implement 6+2 coded optimizer/cursor stripes and joint-consensus epoch commits; inject two-worker losses during resharding and benchmark p95 overhead."
+    },
+    {
+      "id": "n63",
+      "type": "activity",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Run CodedReshard with 500 paired worker losses across epoch commits; compare reconstructed optimizer/sample traces and p95 latency to baselines."
+    },
+    {
+      "id": "n64",
+      "type": "evidence",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "CodedReshard: 500/500 paired-loss recoveries matched optimizer and sample histories; 6+2 coding added 4.4% p95 step latency."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n62",
+      "content": "Stress CodedReshard with 700 paired losses during parity regeneration and 8-to-16-worker transitions; compare histories and p95 overhead."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "CodedReshard: 11/700 regeneration-phase losses reconstructed mixed-epoch optimizer shards; p95 step overhead reached 5.6% during 8-to-16-worker transitions."
+    },
+    {
+      "id": "n67",
+      "type": "hypothesis",
+      "order": 67,
+      "exploration_parent_id": "n61",
+      "content": "Generation-fenced parity regeneration with atomic stripe manifests and pipelined encoding prevents mixed-epoch reconstruction under two losses at ≤5% p95 overhead."
+    },
+    {
+      "id": "n68",
+      "type": "plan",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "Fence parity regeneration by epoch, atomically publish complete stripe manifests, pipeline encoding, then repeat paired-loss trials and p95 benchmarking."
+    },
+    {
+      "id": "n69",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "Compare original and generation-fenced 6+2 stripes across 700 parity-regeneration failures; measure optimizer/sample mismatches and p95 step overhead."
+    },
+    {
+      "id": "n70",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "Generation-fenced 6+2 stripes cut optimizer/sample-history mismatches from 11/700 to 0/700; pipelined encoding held p95 overhead at 4.8%."
+    },
+    {
+      "id": "n71",
+      "type": "activity",
+      "order": 71,
+      "exploration_parent_id": "n68",
+      "content": "Inject 900 paired losses around stripe-manifest publication during 16-to-8-worker resharding; check committed generations, replay histories, and p95 overhead."
+    },
+    {
+      "id": "n72",
+      "type": "evidence",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "StripePublish: 7/900 paired losses restored mixed-epoch optimizer shards when manifest publication outran parity durability; p95 overhead was 4.9%."
+    },
+    {
+      "id": "n73",
+      "type": "decision",
+      "order": 73,
+      "exploration_parent_id": "n68",
+      "content": "Defer coded recovery: fencing fixed regeneration failures, but 7/900 publication crashes still mixed epochs; require durable parity before manifest CAS."
+    },
+    {
+      "id": "n74",
+      "type": "decision",
+      "order": 74,
+      "exploration_parent_id": "g1",
+      "content": "Choose epoch-checked commits with collective-piggybacked leases: 0/500 replay mismatches, 4.3% p95 overhead; retain ledger, shadows, and replay as alternatives."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "n47"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "revise",
+      "target": "n47"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n61",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n62",
+      "relation": "decompose",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n63",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "produce",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n62",
+      "relation": "decompose",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "refute",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n67",
+      "relation": "revise",
+      "target": "n61"
+    },
+    {
+      "source": "n67",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "n60"
+    },
+    {
+      "source": "n68",
+      "relation": "decompose",
+      "target": "n69"
+    },
+    {
+      "source": "n69",
+      "relation": "evaluate",
+      "target": "n61"
+    },
+    {
+      "source": "n69",
+      "relation": "produce",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n68",
+      "relation": "decompose",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "n67"
+    },
+    {
+      "source": "n71",
+      "relation": "produce",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "refute",
+      "target": "n67"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n66"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n70"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n72"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n73"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design distributed training recovery that preserves optimizer and data progress consistency across failures and worker membership changes.",
+    "requirements": [
+      "Recovered executions match failure-free optimizer-update and sample-consumption histories, including failures during resharding.",
+      "Recovery adds at most 5% failure-free step latency versus identical training without recovery support."
+    ]
+  }
+}

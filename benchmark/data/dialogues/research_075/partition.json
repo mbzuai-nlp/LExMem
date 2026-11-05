@@ -1,0 +1,147 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "topic": "Identifiability of piecewise clock drift with sparse or repeated anchors",
+      "boundary_reason": "The anchor conditions are decided; the discussion moves to benchmarking the gated matcher."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Gated-matcher benchmark and potential overconfidence from repeated events",
+      "boundary_reason": "The discussion shifts to an alternative event-spacing approach."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Initial benchmark and audit of anchor-calibrated event spacing",
+      "boundary_reason": "The audit finds a periodic-repeat failure, prompting a focused investigation of its cause."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Resolving periodic-repeat cycle aliases with a second anchor",
+      "boundary_reason": "The two-anchor decision closes the alias investigation; the next test examines posterior overconfidence."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25"
+      ],
+      "topic": "Collapsed versus multimodal event-spacing posteriors",
+      "boundary_reason": "The posterior comparison concludes before a new harmonic-fusion proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Harmonic fusion under unequal flicker and hum dropouts",
+      "boundary_reason": "The favorable dropout result raises a distinct question about independent electrical sources."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Independent-source phase drift and coherence-gated harmonic fusion",
+      "boundary_reason": "The coherence-gating decision closes the phase-drift investigation; attention turns to delay classification."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Classifying delayed impacts versus missed repeats",
+      "boundary_reason": "The classification comparison concludes before the hybrid proposal."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Initial one-anchor hybrid calibration and alias-recall audit",
+      "boundary_reason": "The audit misses both targets, motivating a calibration revision."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Coherence-stratified calibration of one-anchor cycle-mode sets",
+      "boundary_reason": "Coverage and alias-recall results are established; the discussion moves to a broader hybrid benchmark."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Benchmark and selection of the coherence-gated hybrid",
+      "boundary_reason": "The hybrid design is selected; the remaining work is implementation and held-out testing."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n53",
+        "n54"
+      ],
+      "topic": "Hybrid implementation and held-out benchmark artifact",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

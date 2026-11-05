@@ -1,0 +1,120 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Derive and validate SlotGuard’s interference-aware inference slots and control admission bounds",
+      "boundary_reason": "The slot specification and adversarial trace validation are complete; discussion shifts to enforcing the assumed hardware bounds."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Check hardware enforcement of SlotGuard’s kernel and DRAM-stall bounds",
+      "boundary_reason": "A conditional implementation plan is established; the next proposal explores a different accelerator partition."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Propose hardware slices and simulate control deadlines and inference progress",
+      "boundary_reason": "Simulation results are recorded; evaluation moves to a hardware contention benchmark."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Resolve shared-dispatch blocking and correct per-slice control admission",
+      "boundary_reason": "The revised admission rule and response bound are adopted; work moves to implementation and stress testing."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Implement, stress-test, and select SliceGuard",
+      "boundary_reason": "SliceGuard is selected for deployment; the next discussion evaluates a hierarchical EDF alternative."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Evaluate whether a 240-µs hierarchical EDF inference server guarantees tile service",
+      "boundary_reason": "The 240-µs budget is rejected for worst-case service; evaluation turns to a larger server budget."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Analyze and test a 330-µs EDF server against hardware deadline behavior",
+      "boundary_reason": "Unmodeled replenishment jitter causes deadline misses, prompting a revised admission analysis."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Revise EDF admission for replenishment jitter and verify deadline and FIFO bounds",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

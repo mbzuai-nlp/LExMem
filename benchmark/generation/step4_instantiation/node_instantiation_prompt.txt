@@ -1,0 +1,48 @@
+Fill the current node with concrete content for the supplied task.
+
+INPUT
+{{INPUT_JSON}}
+
+- task: objective and requirements.
+- prefix_graph: accepted earlier nodes and their relations.
+- current_node: the node to fill.
+- current_edges: its relations to earlier nodes, in either direction.
+- retry_feedback: issues from the previous attempt, or [].
+
+CONTENT
+Write one English sentence or phrase, at most 20 words. State the specific information this node adds:
+- proposal: a candidate method or approach.
+- question: a specific unresolved issue.
+- hypothesis: a testable claim about that issue.
+- plan: intended steps.
+- activity: a concrete test, analysis, or implementation action.
+- evidence: an observed result or finding.
+- decision: a choice and its reason.
+- artifact: a deliverable and what it contains or changes.
+
+CONCRETE DETAILS
+Actively invent plausible task-specific details: metric names, numerical values, experiment or dataset names, methods, and versions. For measurable claims and findings, prefer a named metric with a value, threshold, or comparison over vague statements such as "performs better." For activities and artifacts, use concrete test, dataset, or deliverable names when they help identify the work.
+
+Example: "On CiteBench, caption links raised evidence recall from 69% to 84%."
+
+Choose details that help express the current node or its relations; not every node needs a number or new name. Reuse established names and metrics across related nodes. Keep invented measurements plausible, units clear, and recorded facts consistent. These details are fictional, not reports of real experiments. The 20-word limit still applies.
+
+Use earlier content as context. Name the relevant method or object briefly; do not repeat its full description, the task requirements, or previous results. Include a condition, threshold, or earlier value only when needed to distinguish the current claim or comparison. Do not turn the same goal statement into successive questions, hypotheses, and plans by changing its wording.
+
+RELATIONS (source -> target)
+Satisfy every current edge using the current content and prefix together:
+- address: source tackles the target question or advances the goal.
+- produce: source activity yields the target result or deliverable.
+- depend_on: source requires target as a prerequisite; topical relevance alone is insufficient.
+- evaluate: source activity tests or assesses target.
+- support: source evidence gives grounds for target.
+- refute: source evidence contradicts the target claim or shows a proposal fails a requirement within its stated scope.
+- decompose: target is an approach or activity within source.
+- revise: source changes the earlier target's substance; adoption is not implied.
+- revive: source gives grounds to reconsider a target previously rejected, deferred, or made inactive in the prefix; refutation alone does not establish that history.
+
+The exploration parent specifies traversal, not a semantic relation. Do not invent earlier events or anticipate future outcomes. New findings may challenge earlier conclusions without rewriting earlier observations. On retry, change only the current content to address feedback. Do not add graph fields, keywords, or dialogue.
+
+OUTPUT
+Return only JSON:
+{"node_id": "<current node id>", "content": "<sentence or phrase>"}

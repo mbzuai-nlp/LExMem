@@ -1,0 +1,1047 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a multi-tenant workflow runtime enforcing information-flow isolation across shared caches, asynchronous retries, and explicitly authorized declassification.",
+      "requirements": [
+        "Establish termination-insensitive noninterference under concurrent execution and retries, except for tenant-authorized declassification.",
+        "Keep median workflow latency overhead below 15% versus identical executions without information-flow enforcement."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Implement tenant-scoped dynamic labels, label-keyed caches, label-preserving retry envelopes, versioned declassification capabilities, and memoized label joins."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can shared-cache eviction and retry scheduling avoid secret-dependent changes to tenant-visible outputs under concurrent execution?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Per-label cache quotas and reserved retry lanes preserve low-output traces across high-input variants at under 15% median overhead."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Implement per-label cache quotas and reserved retry lanes; compare paired secret-variant traces modulo authorized releases and measure median overhead."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run FlowPair-10k concurrent secret-variant schedules with evictions and retries; compare low traces modulo authorized releases and median latency against baseline."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "FlowPair-10k found 31/10,000 low-trace mismatches: cross-label eviction changed visible retry status; median latency overhead was 12%."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Hard-partitioned cache capacity and label-local retry status eliminate cross-label trace mismatches while retaining under 15% median overhead."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Rerun FlowPair-10k concurrent schedules with hard-partitioned cache capacity and label-local retry status; compare release-normalized traces and baseline-relative median overhead."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "FlowPair-10k rerun found 0/10,000 release-normalized low-trace mismatches with hard partitions and label-local retry status; median overhead was 13.4%."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt hard-partitioned caches and label-local retry status over quotas: mismatches fell from 31 to zero at 13.4% overhead."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Implement the quota-cache and reserved-retry-lane baseline; compare paired traces and median overhead against adopted partitions on FlowPair-10k."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "FlowPair-10k harness and comparison report document quota versus partition results: 31 versus zero trace mismatches, 12% versus 13.4% median overhead."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How do quota-based caches and reserved retry lanes compare with hard partitions on low-trace isolation and median latency?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use tenant-signed, audience-scoped release capabilities with replay-safe retry binding, one-time verification, and auditable declassification events."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Prove release-aware trace equivalence across cache and retry interleavings; implement idempotent capability consumption and benchmark median overhead below 15%."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Extend FlowPair-10k with capability replay and audience-mismatch cases; enumerate cache/retry interleavings and measure release-normalized mismatches and median overhead."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "FlowPair-10k-Release v1 contains replay and audience-mismatch fixtures, an interleaving enumerator, release-normalized trace checker, and median-overhead report."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Run FlowPair-10k-Release v1 on partitioned caches and signed capabilities under concurrent retries; measure unauthorized releases, trace mismatches, median overhead."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "FlowPair-10k-Release v1 found 0 unauthorized releases or low-trace mismatches in 10,000 cases; join-cache invalidations raised median overhead to 16.8%."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Retain hard partitions and signed release capabilities; defer deployment until join-cache invalidation overhead drops below 15%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Benchmark quota-based caches with reserved retry lanes against hard partitions on FlowPair-10k-Release v1, comparing trace mismatches and median overhead."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "FlowPair-10k-Release v1: quotas had 37/10,000 low-trace mismatches at 14.3% median overhead; partitions had zero at 16.8%."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Can capability-versioned, tenant-local label-join caches reduce invalidation costs without admitting revoked releases or exceeding 15% median overhead?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Partitions had zero mismatches at 16.8%; tenant-local epoch-keyed joins should avoid invalidations, save ≥1.9 points, and block revocation leaks."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Implement tenant-local epoch-keyed join caches; replay revocation races in FlowPair-10k-Release v1 and measure unauthorized releases, trace mismatches, median overhead."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "FlowPair-10k-Release v1 found 2 revoked-capability releases in 10,000 revocation races despite 14.4% median overhead."
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Tenant-local epoch-keyed joins plus atomic revocation-epoch validation at release commit eliminate revoked releases while maintaining median overhead below 15%."
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Add atomic epoch checks at release commit; repeat revocation-race tests and compare mismatches and overhead against partition and cached-join baselines."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Implement atomic epoch-check-and-consume at release commit; rerun FlowPair-10k-Release v1 revocation races, measuring revoked releases, low-trace mismatches, and median overhead."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "FlowPair-10k-Release v1 found zero revoked releases or low-trace mismatches in 10,000 races; median overhead was 14.7%."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Adopt hard partitions over quotas, tenant-local epoch-keyed joins, and atomic release checks: zero mismatches and revoked releases at 14.7% overhead."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Develop a per-tenant stuttering-simulation proof for release-aware noninterference across cache/retry interleavings, alongside epoch-check cost accounting."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Model concurrent cache, retry, and release steps; prove termination-insensitive tenant-low equivalence modulo authorized releases; benchmark median overhead below 15%."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Encode FlowPair-10k-Release v1 cache, retry, and release semantics in TLA+; model-check paired low traces across interleavings."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "FlowIso.tla defines paired-tenant executions, partitioned caches, label-local retries, atomic release checks, and release-normalized low-trace assertions."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Run TLC on FlowIso.tla with three tenants, two retries, and revocation; check release-normalized stuttering equivalence across interleavings."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "TLC explored 1.2 million FlowIso states with three tenants, two retries, and revocation; no release-normalized low-trace violations occurred."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "What inductive relation proves release-normalized low-trace equivalence for unbounded retries and tenant counts beyond TLC's three-tenant model?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Equal tenant-low cache and retry projections with aligned authorized-release ledgers form an inductive stuttering relation for unbounded tenants and retries."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Check FlowIso.tla in TLAPS for parametric initialization, cache, retry, revocation, release preservation, and low-step matching under the proposed relation."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "TLAPS found paired states satisfying cache/retry projections and release-ledger alignment, but differing pending low notifications violate step matching."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n40",
+      "content": "Replay TLAPS counterexample in FlowIso.tla and test whether pending-notification equality restores low-step matching for the proposed relation."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "FlowIso replay traced notification divergence to unreachable queue states; reachable retry transitions preserved n40’s low projections and matched notifications."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Strengthen n40’s relation with reachable-queue equality for pending low notifications; defer the unbounded proof until TLAPS verifies it."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Use tenant-partitioned notification outboxes with atomic retry/release commits, a TLAPS queue invariant, and a 15% median-overhead CI gate."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Does atomic outbox insertion preserve pending-notification equality through crashes and replayed retries without exceeding 15% median latency overhead?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Atomic retry/release commits to tenant-partitioned outboxes with retry-ID deduplication preserve pending-notification equality after crashes below 15% median overhead."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Implement atomic retry/release commits to tenant-partitioned outboxes with retry-ID deduplication; TLAPS-check queue equality, fault-inject crash replays, benchmark median overhead."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Fault-inject 10,000 crash/replay pairs into FlowPair-10k-Release v1 outboxes; compare pending queues and low traces, benchmark median overhead."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "FlowPair-10k-Release v1 crash/replay runs showed zero pending-queue or low-trace mismatches in 10,000 pairs; median overhead was 14.8%."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n49",
+      "content": "Encode the crash-tested outbox commits in FlowIso.tla and use TLAPS to prove pending-notification equality for unbounded retry sequences."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "FlowIso-Outbox.tla contains atomic commit semantics, retry-ID deduplication, and TLAPS lemmas preserving paired pending-notification equality."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Run TLAPS on FlowIso-Outbox.tla to verify n45’s strengthened queue relation and parametric release-aware stuttering; rerun 15% overhead gate."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "TLAPS discharged 23/23 parametric release-aware stuttering obligations; FlowPair-10k-Release v1 measured 14.8% median overhead."
+    },
+    {
+      "id": "n56",
+      "type": "decision",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Lift proof deferral and adopt tenant-partitioned atomic outboxes: TLAPS discharged 23/23 obligations, with 14.8% median overhead."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 57,
+      "exploration_parent_id": "g1",
+      "content": "Enforce proof-to-code conformance with transition-level runtime assertions, tenant-isolated audit logs, and a sub-15% median-overhead deployment gate."
+    },
+    {
+      "id": "n58",
+      "type": "plan",
+      "order": 58,
+      "exploration_parent_id": "p5",
+      "content": "Instrument cache, retry, release, and outbox transitions against FlowIso-Outbox.tla; fuzz tenant-paired executions and enforce a <15% median-overhead CI gate."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Map runtime cache, retry, release, and outbox events to FlowIso-Outbox.tla actions; add assertions for labels, epochs, and outbox deduplication."
+    },
+    {
+      "id": "n60",
+      "type": "artifact",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "FlowIso-Guard v1 maps runtime events to FlowIso-Outbox.tla actions and asserts label partitions, release epochs, and retry-ID deduplication."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Fuzz FlowIso-Guard v1 across 10,000 paired revocation, eviction, and crash schedules; check assertions, unauthorized releases, traces, and median overhead."
+    },
+    {
+      "id": "n62",
+      "type": "evidence",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "FlowIso-Guard v1 passed 10,000 paired schedules with zero assertion failures, unauthorized releases, or trace mismatches; median overhead was 14.9%."
+    },
+    {
+      "id": "n63",
+      "type": "question",
+      "order": 63,
+      "exploration_parent_id": "p5",
+      "content": "Can shared audit-log batching expose cross-tenant release activity through tenant-visible receipts or push median overhead past 15%?"
+    },
+    {
+      "id": "n64",
+      "type": "hypothesis",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Tenant-scoped receipt sequences and asynchronous per-tenant audit batching hide cross-tenant releases while keeping median overhead below 15%."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "Extend FlowIso-Guard v1 with tenant-scoped receipts and audit batches; fuzz cross-tenant releases, comparing receipt traces and median overhead."
+    },
+    {
+      "id": "n66",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n65",
+      "content": "FlowIso-Guard v1 found 8/10,000 cross-tenant receipt-trace mismatches: shared flush acknowledgments exposed batch occupancy; median overhead was 14.9%."
+    },
+    {
+      "id": "n67",
+      "type": "decision",
+      "order": 67,
+      "exploration_parent_id": "p5",
+      "content": "Retain partitioned caches, epoch-checked releases, and atomic outboxes; block deployment until tenant-local audit acknowledgments eliminate receipt leaks."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "revise",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n58",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "n60"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n61",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "evaluate",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "refute",
+      "target": "n64"
+    },
+    {
+      "source": "n62",
+      "relation": "support",
+      "target": "n67"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n66"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n67",
+      "relation": "depend_on",
+      "target": "n32"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a multi-tenant workflow runtime enforcing information-flow isolation across shared caches, asynchronous retries, and explicitly authorized declassification.",
+    "requirements": [
+      "Establish termination-insensitive noninterference under concurrent execution and retries, except for tenant-authorized declassification.",
+      "Keep median workflow latency overhead below 15% versus identical executions without information-flow enforcement."
+    ]
+  }
+}

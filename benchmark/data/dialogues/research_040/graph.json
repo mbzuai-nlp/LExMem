@@ -1,0 +1,839 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable speech–gesture reference resolution that distinguishes gesture-dependent meaning from speaker-specific correlations under uncertain cross-modal timing.",
+      "requirements": [
+        "Achieve ≥10 percentage-point accuracy gains over speech-only models on gesture-dependent references from unseen speakers.",
+        "Limit accuracy degradation to 5 percentage points under irrelevant-gesture substitutions and ±300-millisecond audiovisual offsets."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a speaker-adversarial, relevance-gated grounding model using counterfactual gesture substitutions and latent ±300-ms alignment marginalization."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Does speaker-adversarial training preserve referential gesture cues while relevance gating rejects distractors under ±300-ms alignment uncertainty?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "On unseen speakers, adversarial alignment-marginalized gating beats speech-only by ≥10 points; irrelevant gestures or ±300-ms offsets cost ≤5 accuracy points."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Build speaker-disjoint, 30-speaker ReferGesture-1K; compare speech-only, full, adversarial-free, and gate-free models on gesture-dependent, swapped-gesture, and ±300-ms-offset trials."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Train four models on 24 ReferGesture-1K speakers; measure accuracy on six held-out speakers under gesture-dependent, irrelevant-substitution, and ±300-ms-offset conditions."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On held-out ReferGesture-1K speakers, gesture-dependent accuracy was 76% versus speech-only’s 68%; irrelevant substitutions cost 7 points."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n3",
+      "content": "Compare full, adversarial-free, and gate-free models on held-out speakers; stratify accuracy losses by gesture substitution and ±300-ms offset."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "At ±300-ms offsets, full-model accuracy fell 3 points from 76%; gate-free accuracy fell 9 points."
+    },
+    {
+      "id": "n8",
+      "type": "question",
+      "order": 10,
+      "exploration_parent_id": "p1",
+      "content": "Which gesture–speech mismatches cause the gate to trust irrelevant gestures, limiting unseen-speaker gains and substitution robustness?"
+    },
+    {
+      "id": "n9",
+      "type": "plan",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Match n5 substitution failures to n7 offset-stable trials by speaker and utterance; inspect gate weights and semantic mismatch types."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Match n5 substitution errors to n7 offset-stable trials; annotate referent conflicts, pointing similarity, and gate activation."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "ReferGesture-1K failure atlas pairing substitution errors with offset-stable trials, including mismatch labels, pointing similarity, gate activations, and predictions."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 14,
+      "exploration_parent_id": "g1",
+      "content": "Train a referent-consistency critic using atlas-labeled mismatch negatives, speaker-balanced contrastive pairs, and temporal jitter augmentation."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p2",
+      "content": "Can the critic reject conflicting pointing without suppressing valid cues for unseen speakers under ±300-ms offsets?"
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "On held-out ReferGesture-1K speakers, the critic raises gesture-dependent accuracy to ≥78% and caps substitution and offset losses at 5 points."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Train atlas-negative critic on 24 speakers; test six held-out speakers against 68% speech-only and 76% full-model baselines under substitutions/±300-ms offsets."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "On held-out speakers, critic accuracy reached 79% versus speech-only’s 68%; irrelevant substitutions cost 4 points and ±300-ms offsets 3."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Track scene objects and rerank speech candidates using speaker-invariant pointing geometry marginalized over timing; fall back on uncertain intersections."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "p3",
+      "content": "Stratify failure-atlas substitutions by referent conflict, pointing overlap, and gate activation; compare error rates before and after geometry-based fallback."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n16",
+      "content": "Using the ReferGesture-1K failure atlas, stratify conflicting substitutions by pointing overlap and gate activation; compare fallback versus baseline accuracy."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n17",
+      "content": "ReferGesture-1K error-strata table comparing geometry-fallback and baseline accuracy by pointing overlap and gate activation on conflicting substitutions."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n16",
+      "content": "Audit error-strata table for pointing-overlap errors, then benchmark geometry fallback on six held-out speakers under substitutions and ±300-ms offsets."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n19",
+      "content": "On held-out speakers, geometry fallback reached 80% gesture-dependent accuracy versus speech-only’s 68%; substitution and ±300-ms-offset losses were 4 points."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n16",
+      "content": "Ablate object tracking and pointing rays; compare referent accuracy and substitution losses on six held-out speakers at ±300-ms offsets."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "On occluded-object trials at ±300-ms offsets, substitutions cost geometry fallback 9 points versus 3 without pointing rays."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 27,
+      "exploration_parent_id": "p3",
+      "content": "Can visibility-aware confidence trigger speech fallback on occluded pointing rays without sacrificing gains from clearly visible gestures?"
+    },
+    {
+      "id": "n24",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Calibrate visibility confidence; compare fallback versus geometry reranking by accuracy on held-out visible/occluded substitutions and ±300-ms offsets."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n24",
+      "content": "Given n20’s gains and n22’s occlusion failures, calibrate visibility-triggered fallback on development speakers; test visible/occluded held-out substitution accuracy."
+    },
+    {
+      "id": "n26",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "Visibility-fallback report specifying a calibrated confidence threshold and held-out accuracy by occlusion, gesture substitution, and ±300-ms offset."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Train a counterfactual reference scorer with speaker-timbre randomization, temporal-window pooling, and calibrated speech fallback for low-relevance gestures."
+    },
+    {
+      "id": "n27",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "p4",
+      "content": "Calibrate counterfactual-scorer fallback using ray-visibility estimates, then compare occluded-substitution robustness and visible-gesture gains at ±300-ms offsets."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n27",
+      "content": "Compare p4’s counterfactual scorer against n26’s calibrated visibility fallback on six held-out speakers across visible/occluded substitutions and ±300-ms offsets."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n28",
+      "content": "Held-out accuracy reached 81% versus speech-only’s 68%; occluded substitutions cost 3 versus visibility-fallback’s 5 points; ±300-ms offsets cost 3."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n27",
+      "content": "Ablate relevance-gated fallback and temporal-window pooling; measure visible and occluded substitution accuracy on unseen speakers at ±300-ms offsets."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "On visible overlapping-pointing trials at ±300 ms, substitutions cost the full model 8 accuracy points versus 4 without temporal pooling."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Train speaker-invariant, event-level gesture matching with overlapping-pointing counterfactuals, ±300-ms timing jitter, and ambiguity-triggered speech fallback."
+    },
+    {
+      "id": "n32",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p5",
+      "content": "Can event-level matching separate overlapping pointing strokes from irrelevant substitutions while retaining useful gestures across ±300-ms offsets?"
+    },
+    {
+      "id": "n33",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n32",
+      "content": "Event-level matching cuts overlapping-pointing substitution loss to ≤5 points while sustaining ≥78% accuracy on unseen speakers at ±300-ms offsets."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n33",
+      "content": "Train event-level matcher on ReferGesture-1K; compare p4 and speech-only on overlapping-pointing substitutions and ±300-ms offsets across six held-out speakers."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "Evaluate event-level matcher on six held-out speakers: record offset accuracy and overlapping-pointing substitution loss versus p4 and speech-only."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "On held-out speakers, event matching scored 79% at ±300-ms offsets; overlapping-pointing substitutions cost 4 points versus p4’s 8."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n34",
+      "content": "Using n36’s offset-robust matcher, compare clean accuracy and irrelevant-substitution losses against p4 by stroke duration on held-out speakers."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n37",
+      "content": "On held-out speakers, event matching reached 82% clean accuracy versus p4’s 81%; short-stroke substitutions cost 4 versus 8 points."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n34",
+      "content": "Stress-test event matching on held-out long-stroke and occluded gestures; measure substitution and ±300-ms-offset losses against clean accuracy."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "On occluded long-stroke trials, substitutions cost 9 accuracy points and ±300-ms offsets cost 7, exceeding the five-point limit."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p5",
+      "content": "Can occlusion- and duration-calibrated fallback protect long-stroke trials without sacrificing event matching’s short-stroke gains?"
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "n41",
+      "content": "Calibrate fallback jointly on occlusion and stroke duration; test long-stroke substitution/offset losses and short-stroke clean accuracy on held-out speakers."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Using n38’s short-stroke gains and n40’s occlusion failures, calibrate fallback; retest short-stroke accuracy and long-stroke substitution/offset losses on held-out speakers."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "Duration–occlusion calibration report with fallback thresholds and held-out short-stroke accuracy and long-stroke substitution/offset losses."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n42",
+      "content": "Freeze n44’s fallback thresholds; validate on a new six-speaker fold, measuring short-stroke accuracy and occluded long-stroke substitution/offset losses."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n45",
+      "content": "On the new six-speaker fold, short-stroke accuracy was 83%; occluded long-stroke substitution and ±300-ms-offset losses were 4 points each."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 53,
+      "exploration_parent_id": "p5",
+      "content": "Adopt duration–occlusion-calibrated event matching: n38 showed short-stroke gains, and n46 reduced n40’s long-stroke perturbation losses to four points."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n8"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n27",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n33"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n40"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable speech–gesture reference resolution that distinguishes gesture-dependent meaning from speaker-specific correlations under uncertain cross-modal timing.",
+    "requirements": [
+      "Achieve ≥10 percentage-point accuracy gains over speech-only models on gesture-dependent references from unseen speakers.",
+      "Limit accuracy degradation to 5 percentage points under irrelevant-gesture substitutions and ±300-millisecond audiovisual offsets."
+    ]
+  }
+}

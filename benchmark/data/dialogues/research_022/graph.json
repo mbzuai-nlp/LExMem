@@ -1,0 +1,900 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable zero-shot voice conversion across unseen tonal languages while transferring speaker identity without altering lexical tone or prosody.",
+      "requirements": [
+        "Keep lexical-tone error within 2 percentage points of unconverted speech, preserving source intonation and rhythm.",
+        "Achieve 90% target-speaker verification acceptance at 1% false acceptance using evaluators independent of training."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Condition a zero-shot flow vocoder on XLS-R content, source F0, energy, and durations, plus pitch-adversarial target-speaker embeddings."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can pitch-adversarial target embeddings transfer identity without target-reference F0 overwriting source lexical tones?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Pitch-adversarial embeddings yield ≤2-point ToneER increase and ≥90% independent target-speaker acceptance at 1% FAR on unseen tonal languages."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Train pitch-adversarial and baseline vocoders; test held-out Thai and Yoruba with ToneER, F0/rhythm errors, and independent speaker verification."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Benchmark adversarial versus baseline embeddings on 500 held-out Thai/Yoruba utterances: ToneER, F0, timing, and independent 1%-FAR speaker acceptance."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On held-out Thai/Yoruba, unconverted/adversarial/baseline ToneER was 4.8%/6.2%/8.1%; adversarial embeddings achieved 91% independent-speaker acceptance at 1% FAR."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Select pitch-adversarial embeddings for further prosody validation: ToneER increased 1.4 points and independent speaker acceptance reached 91%."
+    },
+    {
+      "id": "n7",
+      "type": "plan",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Validate selected adversarial embeddings on held-out Thai/Yoruba: source F0-contour correlation ≥0.95 and syllable-duration MAE ≤25 ms."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Align the 500 held-out Thai/Yoruba source–conversion pairs; measure voiced F0-contour correlation and syllable-duration MAE against source prosody."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Thai/Yoruba prosody audit with source–conversion alignments, per-utterance voiced F0 correlation, syllable-duration MAE, and audio links."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Inspect 100 stratified audit alignments against audio, recalculating F0 correlation and syllable-duration MAE to detect alignment errors."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Audio-validated Thai/Yoruba alignments (98/100) showed voiced F0 correlation of 0.96 and syllable-duration MAE of 19 ms."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 14,
+      "exploration_parent_id": "n1",
+      "content": "For source–target median-F0 gaps ≥6 semitones, residual embedding leakage raises Thai/Yoruba ToneER over 2 points above unconverted speech."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Stratify 500 Thai/Yoruba pairs by source–target median-F0 gap; compare ToneER increases above and below 6 semitones."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "At ≥6-semitone gaps, Thai/Yoruba ToneER rose from 5.0% unconverted to 6.6% converted, below the hypothesized 2-point increase."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p1",
+      "content": "Does independent 1%-FAR target-speaker acceptance remain ≥90% for source–target F0 gaps ≥6 semitones?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Recompute independent 1%-FAR speaker acceptance on ≥6-semitone-gap Thai/Yoruba pairs, with bootstrap confidence intervals and a <6-semitone comparison."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "F0-gap speaker-verification report with fixed independent 1%-FAR threshold, stratified acceptance rates, bootstrap intervals, and pair counts."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Use target-conditioned spectral-envelope diffusion with source harmonic excitation, retaining original F0 trajectories and timing for unseen-language conversion."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Can target-conditioned spectral-envelope diffusion achieve ≥90% independent speaker acceptance at 1% FAR while retaining source harmonic excitation?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Target-conditioned envelope diffusion reaches ≥90% independent 1%-FAR speaker acceptance without source F0 or duration modification on held-out Thai/Yoruba."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Using n17’s fixed 1%-FAR threshold, benchmark envelope diffusion on held-out Thai/Yoruba for speaker acceptance, F0 correlation, and duration MAE."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Envelope diffusion yielded 84% independent 1%-FAR speaker acceptance; source-F0 correlation was 0.98 and syllable-duration MAE 12 ms."
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Adding target-conditioned glottal spectral tilt to envelope diffusion raises independent 1%-FAR acceptance to ≥90% without changing source F0."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Ablate target-conditioned glottal tilt on held-out Thai/Yoruba; compare fixed-threshold speaker acceptance, ToneER, and source-F0 correlation against envelope diffusion."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Glottal-tilt diffusion raised independent 1%-FAR acceptance from 84% to 92%; source-F0 correlation was 0.98 and ToneER rose 1.3 points."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Select glottal-tilt diffusion: 92% speaker acceptance, 0.98 F0 correlation, and 1.3-point ToneER increase outperform adversarial conversion."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 29,
+      "exploration_parent_id": "p2",
+      "content": "Test selected glottal-tilt diffusion on unseen Cantonese/Vietnamese for ≤2-point ToneER increase, F0/rhythm fidelity, and ≥90% independent 1%-FAR speaker acceptance."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Convert 500 held-out Cantonese/Vietnamese utterances; score ToneER, F0 correlation, syllable-duration MAE, and independent 1%-FAR speaker acceptance."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Cantonese/Vietnamese transfer report with paired audio, baseline/converted ToneER, F0 correlation, duration MAE, and independent 1%-FAR speaker acceptance."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Independently re-audit Thai/Yoruba prosody alignments and Cantonese/Vietnamese transfer scores against paired audio, recalculating each report’s metrics."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Full-cohort audit: adversarial Thai/Yoruba F0 correlation was 0.91 (<0.95); diffusion Cantonese/Vietnamese ToneER rose 1.5 points, with 92% independent 1%-FAR acceptance."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n26",
+      "content": "After the audit, benchmark both converters on matched Cantonese/Vietnamese pairs for ToneER, F0 correlation, duration MAE, and independent 1%-FAR acceptance."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Matched Cantonese/Vietnamese: diffusion/adversarial ToneER increases were 1.5/2.4 points, F0 correlations 0.98/0.90, duration MAE 13/24 ms, independent 1%-FAR acceptance 92%/88%."
+    },
+    {
+      "id": "n33",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "Does target-conditioned envelope diffusion preserve Cantonese/Vietnamese vowel contrasts while transferring target timbre, as measured by independent phoneme error?"
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Using n32’s matched cohort, audit n28’s report for omitted vowel substitutions; compare both converters’ independently scored phoneme-error rates."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n34",
+      "content": "Vowel-aware audit found 9% Cantonese/Vietnamese vowel substitutions; corrected diffusion ToneER rose 2.6 points, versus previously reported 1.5."
+    },
+    {
+      "id": "n36",
+      "type": "decision",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "Suspend both converters pending vowel-preserving redesign: corrected diffusion ToneER rises 2.6 points; adversarial fails tone, F0, and speaker thresholds."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Constrain glottal-tilt diffusion with source vowel-formant anchors and phoneme-consistency loss, retaining source F0 and syllable timing."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Can source vowel-formant anchors reduce corrected ToneER below 2 points without lowering independent speaker acceptance below 90%?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Source-formant anchors plus phoneme consistency reduce corrected ToneER increase to ≤1.8 points while retaining ≥90% independent 1%-FAR speaker acceptance."
+    },
+    {
+      "id": "n39",
+      "type": "plan",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Following suspension, train formant-anchored, phoneme-consistent diffusion; ablate each constraint on held-out Cantonese/Vietnamese using corrected ToneER and independent speaker verification."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Train four glottal-tilt variants crossing formant anchors and phoneme-consistency loss; score Cantonese/Vietnamese with n17’s fixed independent 1%-FAR threshold."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Four-variant Cantonese/Vietnamese ablation table with corrected ToneER increases, vowel-substitution rates, and fixed-threshold independent speaker acceptance."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Reaudit n41’s vowel substitutions against n35’s corrected baseline; recompute ToneER increases and independent 1%-FAR speaker acceptance."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Reaudit: dual constraints reduced vowel substitutions 9%→3%, corrected ToneER increase to 1.7 points; independent 1%-FAR speaker acceptance reached 91%."
+    },
+    {
+      "id": "n44",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "p3",
+      "content": "For source–target vowel F2 gaps ≥300 Hz, do formant anchors maintain ≥90% independent 1%-FAR speaker acceptance?"
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Following suspension, stratify n41’s n43-audited dual-constraint conversions by ≥300-Hz versus <300-Hz F2 gaps; compare independent 1%-FAR acceptance and corrected ToneER."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "For ≥300-Hz F2 gaps, dual-constraint diffusion achieved 90% independent 1%-FAR speaker acceptance and a 1.8-point corrected ToneER increase."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Conditionally reinstate diffusion: overall 1.7-point/91%, high-F2 1.8-point/90%; require full-cohort prosody audit against n11’s audio-validated F0/timing benchmarks."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n11",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n9"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n35",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n30",
+      "relation": "support",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n22"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n39",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "address",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n11"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable zero-shot voice conversion across unseen tonal languages while transferring speaker identity without altering lexical tone or prosody.",
+    "requirements": [
+      "Keep lexical-tone error within 2 percentage points of unconverted speech, preserving source intonation and rhythm.",
+      "Achieve 90% target-speaker verification acceptance at 1% false acceptance using evaluators independent of training."
+    ]
+  }
+}

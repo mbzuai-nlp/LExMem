@@ -1,0 +1,1100 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop decentralized multi-agent reinforcement learning that adapts to unfamiliar teammates without destabilizing coordination under partial observability.",
+      "requirements": [
+        "Achieve 20% higher normalized held-out teammate return than matched nonadaptive policies under identical observation constraints.",
+        "Retain 95% of familiar-team return without teammate identities, communication, or test-time parameter sharing."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train decentralized local-history teammate-belief adapters that confidence-gate residual actions atop frozen familiar-team policies using diverse training partners."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can belief-confidence gating activate residual actions for unfamiliar partners while preserving frozen-policy behavior with familiar partners?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "History-gated residuals at unfamiliar-partner probability >0.8 improve held-out normalized return ≥20% over frozen policies while retaining ≥95% familiar return."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Train history-only adapters; sweep confidence thresholds around 0.8 on held-out and familiar partners against frozen baselines under identity-free decentralized inference."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run 0.6–0.9 gate sweeps on PartnerShift-PO, comparing held-out normalized return and familiar retention against frozen policies across 10 seeds."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "On PartnerShift-PO, gating at 0.8 raised held-out normalized return from 0.50 to 0.62, retaining 97% familiar baseline (10 seeds)."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Select the 0.8 gate for PartnerShift-PO follow-up because held-out return rose 24% and familiar retention reached 97%."
+    },
+    {
+      "id": "n9",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "PartnerShift-PO gate-sweep report contains ten-seed return tables, familiar-retention ratios, frozen-baseline comparisons, and 0.6–0.9 threshold configurations."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n5",
+      "content": "Using the selected 0.8 gate and sweep configurations, compare held-out and familiar returns against frozen baselines on disjoint PartnerShift-PO families."
+    },
+    {
+      "id": "n11",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "On disjoint PartnerShift-PO switchers, the 0.8 gate achieved 0.56 versus frozen 0.52 held-out return and 93% familiar retention."
+    },
+    {
+      "id": "n12",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Change-point-calibrated belief gating with clipped residuals will improve switcher held-out return ≥20% over frozen baselines while retaining ≥95% familiar return."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "Fit local-history change-point calibration, clip residual actions, then test disjoint switchers and familiar teams against frozen baselines."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Fit change-point-calibrated gates with residual norms clipped at 0.2; evaluate disjoint PartnerShift-PO switchers and familiar teams across 10 seeds."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "On disjoint PartnerShift-PO switchers, calibrated clipping achieved 0.60 versus frozen 0.52 held-out return (15% gain), despite 96% familiar retention."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Sweep change-point windows (4, 8, 16) and residual clips (0.2, 0.3, 0.4) on disjoint PartnerShift-PO switchers and familiar teams."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "On PartnerShift-PO switchers, eight-step calibration and 0.3 residual clipping achieved 0.64 versus frozen 0.52 held-out return and 96% familiar retention."
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Eight-step change-point gating with 0.3-clipped residuals yields ≥20% held-out gains and ≥95% familiar retention across switch frequencies."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Stratify PartnerShift-PO by 4–32-step switch intervals; compare the eight-step, 0.3-clipped adapter with frozen policies on held-out and familiar returns."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Evaluate the eight-step, 0.3-clipped adapter against frozen policies at 4-, 8-, 16-, and 32-step PartnerShift-PO switches across 10 seeds."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Across 4–32-step PartnerShift-PO switches, held-out normalized return exceeded frozen baselines by 21–27%; familiar retention was 95–97% (10 seeds)."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n19",
+      "content": "Ablate change-point calibration and residual clipping across PartnerShift-PO switch intervals, comparing held-out return and familiar retention against frozen policies."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "With 4-step episodes withheld from calibration, the eight-step/0.3 adapter gained only 16% held-out return and retained 94% familiar return."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Multi-timescale change-point gating with familiar-policy rollback will deliver ≥20% held-out gain and ≥95% familiar retention on unseen four-step switches."
+    },
+    {
+      "id": "n25",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Train 2/8-step change-point gates without four-step calibration, add uncertainty-triggered rollback, then compare withheld switchers and familiar teams against frozen baselines."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Evaluate 2/8-step gates with uncertainty-triggered rollback on withheld four-step PartnerShift-PO switches and familiar teams versus frozen policies across 10 seeds."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "On withheld four-step switches, multi-timescale rollback achieved 0.63 versus frozen 0.52 held-out return (21% gain) and 96% familiar retention."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n25",
+      "content": "Ablate two-step gating and uncertainty rollback separately on withheld four-step switchers; measure held-out gain and familiar retention across 10 seeds."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "On aliased withheld four-step switchers, full rollback gained 14%; removing rollback gained 22% but retained 92% familiar return."
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Local-return-trend rollback replaces uncertainty rollback; 2/8-step gates achieve ≥20% held-out gain on aliased switchers and ≥95% familiar retention."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Tune locally observed reward-trend rollback on training partners; evaluate aliased withheld switchers and familiar teams against frozen policies."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Compare reward-trend versus uncertainty rollback using 2/8-step gates on aliased withheld four-step switchers and familiar teams versus frozen policies."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "On aliased four-step switchers, uncertainty rollback gained 21% with 96% familiar retention; reward-trend rollback gained 18%."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n31",
+      "content": "Reconcile conflicting 14%/21% uncertainty-rollback gains by retesting reward-trend rollback on matched aliased splits, measuring held-out gain and familiar retention."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "On matched aliased splits, reward-trend rollback gained 18% versus uncertainty rollback's 17%; familiar retention was 96%."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Sweep 2/4/8-step reward-trend rollback patience against no-rollback controls on matched aliased splits, measuring held-out gain and familiar retention."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "On matched aliased splits, four-step reward-trend patience yielded 21% held-out gain versus frozen policies and 95.5% familiar retention."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Select four-step reward-trend rollback for further evaluation: matched splits met both targets despite earlier reward-trend shortfalls."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Train a trajectory-predictive convention ensemble with decentralized Bayesian policy mixing and a coordination-risk shield, without teammate identities or communication."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p2",
+      "content": "Can trajectory-predictive beliefs disambiguate aliased conventions sufficiently for shielded policy mixing to improve held-out return without familiar-team losses?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "On aliased PartnerShift-PO switchers, trajectory-predictive shielded mixing yields ≥20% held-out return gain over frozen policies with ≥95% familiar retention."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Train convention predictors on local histories, calibrate risk-shielded policy mixing, and benchmark aliased switchers and familiar teams against frozen policies."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Benchmark trajectory-predictive, risk-shielded Bayesian mixing against frozen policies on aliased PartnerShift-PO switchers and familiar teams across 10 seeds."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "On aliased PartnerShift-PO switchers, shielded mixing scored 0.64 versus frozen 0.52 held-out return (23% gain), with 97% familiar retention."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n42",
+      "content": "Following the 23% gain, stress-test shielded mixing on unseen near-identical conventions against frozen policies, tracking familiar retention."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "On unseen near-identical, aliased PartnerShift-PO switchers, shielded mixing gained only 12% over frozen policies despite 97% familiar retention."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Defer shielded mixing as a general solution; its 23% standard-switcher gain fell to 12% on unseen near-identical conventions."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Near-Identical Convention Stress Report records held-out return, familiar retention, frozen-policy baselines, and trajectory-prediction errors for unseen PartnerShift-PO switchers."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 49,
+      "exploration_parent_id": "g1",
+      "content": "Train low-regret diagnostic actions that reveal teammate conventions, with familiar-policy anchoring and decentralized adaptation from local observation histories."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p3",
+      "content": "Can low-regret diagnostic actions distinguish near-identical teammate conventions from local observations without sacrificing familiar-team return?"
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Train local-history diagnostic probes anchored to the familiar policy; compare convention discrimination and held-out/familiar returns against frozen PartnerShift-PO baselines."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Audit stress-report prediction errors against replayed trajectories; compare selected rollback, shielded mixing, and diagnostic probes on held-out/familiar returns."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "On near-identical switchers, diagnostic probes gained 22% over frozen policies versus rollback's 17% and mixing's 12%, retaining 96% familiar return."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n51",
+      "content": "After the 22% gain, ablate probes across stress-report prediction-error strata; measure convention accuracy, probe regret, held-out gain, and familiar retention."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "In high-aliasing stress-report strata, diagnostic probes incurred 0.08 normalized probe regret, yielding 11% held-out gain and 93% familiar retention."
+    },
+    {
+      "id": "n56",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Gate diagnostic probes by predicted regret ≤0.02; expect ≥20% held-out gain and ≥95% familiar retention in high-aliasing strata."
+    },
+    {
+      "id": "n57",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Calibrate local-history probe-regret estimates, gate probes at 0.02, then test high-aliasing PartnerShift-PO strata against frozen policies."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Using prior 22% probe gain and 0.08 high-aliasing regret, test 0.02-regret-gated probes against ungated/frozen baselines on held-out/familiar returns."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "In high-aliasing strata, gated probes gained 21% versus frozen and retained 96% familiar return; delayed-reward familiar subgroup retained only 91%."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Retain rollback; defer mixing and gated-probe rollout despite 21% gain, pending safeguards against 91% delayed-reward familiar retention."
+    },
+    {
+      "id": "n61",
+      "type": "artifact",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Probe-Regret Audit v1 records high-aliasing gains, calibrated regret thresholds, and delayed-reward familiar retention for gated and ungated probes."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n12"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "revise",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n33",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n41"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n57",
+      "relation": "decompose",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n59",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop decentralized multi-agent reinforcement learning that adapts to unfamiliar teammates without destabilizing coordination under partial observability.",
+    "requirements": [
+      "Achieve 20% higher normalized held-out teammate return than matched nonadaptive policies under identical observation constraints.",
+      "Retain 95% of familiar-team return without teammate identities, communication, or test-time parameter sharing."
+    ]
+  }
+}

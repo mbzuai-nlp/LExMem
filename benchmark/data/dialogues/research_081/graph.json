@@ -1,0 +1,1008 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop semantic parsers that generalize to unseen operator compositions despite training correlations between linguistic templates and program structure.",
+      "requirements": [
+        "Achieve 80% exact-match accuracy on held-out operator compositions under reversed template–structure correlations.",
+        "Retain in-distribution exact-match accuracy within two percentage points of an identically sized, conventionally trained parser."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train SwapParse using operator-aligned counterfactual template swaps and compositional decoding, with in-distribution distillation from a same-size baseline."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What fraction of SwapParse template swaps preserve operator scope in nested negation–quantifier utterances?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "At least 95% of operator-aligned SwapParse template swaps preserve gold scope on nested negation–quantifier utterances."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Blindly annotate operator scope for 400 nested negation–quantifier SwapParse swaps; compare with source programs to measure preservation."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Blind annotation found 386 of 400 SwapParse swaps (96.5%) preserved gold negation–quantifier scope."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Proceed with operator-aligned SwapParse swaps, filtering scope-ambiguous samples because audited preservation reached 96.5%."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Filter scope-ambiguous swaps, then audit 200 swaps per negation–quantifier ordering and report post-filter gold-scope preservation."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Apply scope-ambiguity filters to SwapParse swaps and blindly annotate 200 retained examples for each negation–quantifier ordering."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "SwapParse ScopeAudit-v1: 400 retained swaps with blind scope labels, ordering strata, filter decisions, and preservation-rate calculations."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Reannotate 80 stratified ScopeAudit-v1 swaps; compare scope labels and independently verify per-ordering preservation calculations."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "ScopeAudit-v1 reannotation agreed on 78/80 labels; verified gold-scope preservation was 198/200 and 197/200 by ordering."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Train same-size SwapParse and conventional parsers on TemplateFlip-v1; measure reversed-correlation held-out composition and in-distribution exact match across five seeds."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Across five TemplateFlip-v1 seeds, SwapParse scored 76.8% held-out exact match, below 80%; in-distribution accuracy trailed baseline by 1.3 points."
+    },
+    {
+      "id": "n13",
+      "type": "decision",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Keep audited swaps and distillation, but revise compositional decoding to address 76.8% held-out accuracy while preserving in-distribution performance."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Retain filtered swaps and distillation; audit scope preservation in 400 new nested cases, then add scope-constrained decoding."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "Annotate 400 new nested swaps for scope preservation, then implement scope-constrained decoding using audited operator-order constraints."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "ScopeAudit-v2 extends v1 with 400 additional nested-swap scope labels, machine-readable operator-order constraints, and a scope-constrained decoder."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Independently reannotate 80 ScopeAudit-v2 swaps, verify decoding constraints, and rerun five-seed TemplateFlip-v1 held-out and in-distribution exact-match comparisons."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "ScopeAudit-v2 preserved gold scope in 390/400 new swaps (97.5%); independent reannotation agreed on 79/80 labels."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 21,
+      "exploration_parent_id": "g1",
+      "content": "Train TypeBind with typed operator-slot supervision, template-adversarial structural embeddings, and baseline-logit anchoring for in-distribution fidelity."
+    },
+    {
+      "id": "n19",
+      "type": "question",
+      "order": 22,
+      "exploration_parent_id": "p2",
+      "content": "Does TypeBind's template adversary reduce template-ID probe accuracy below 30% while retaining at least 95% operator-slot labeling accuracy?"
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "With adversarial weight 0.2, TypeBind achieves under 30% template-ID probe accuracy and at least 95% operator-slot labeling accuracy."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Train TypeBind at adversarial weight 0.2 across five TemplateFlip-v1 seeds; measure template-ID probe, slot accuracy, and both exact-match splits."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "TypeBind averaged 26% template-ID probe accuracy, 96% operator-slot accuracy, 82% held-out exact match, and a 1.2-point in-distribution deficit."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n19",
+      "content": "Ablate TypeBind's adversary and slot supervision separately across five TemplateFlip-v1 seeds; compare template-ID probes and both exact-match splits."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "On TemplateFlip-v1 triple-operator held-outs, TypeBind reached 73% exact match versus 84% without its adversary, missing the 80% target."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Keep TypeBind's slot supervision and anchoring; disable adversarial loss for triple operators, where full TypeBind scored 73%."
+    },
+    {
+      "id": "n26",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Does triple-operator-only adversary removal recover exact match while keeping TypeBind's overall template-ID probe below 30%?"
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "TypeBind without triple-operator adversarial loss achieves at least 80% triple-operator exact match and under 30% overall template-ID probe accuracy."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Train triple-operator-gated TypeBind across five TemplateFlip-v1 seeds; evaluate triple-operator exact match and overall template-ID probe accuracy."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Triple-operator-gated TypeBind averaged 83% triple-operator exact match and 28% overall template-ID probe accuracy across five seeds."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n26",
+      "content": "Evaluate frozen gated TypeBind on TemplateFlip-v1's held-out triple compositions, reporting per-family exact match and independently trained template-ID probe accuracy."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "Frozen gated TypeBind scored 83% triple-operator exact match, but an independently trained probe reached 36% template-ID accuracy."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Retain triple-operator gating for 83% exact match, but reject the invariance claim until the independent probe’s 36% accuracy is addressed."
+    },
+    {
+      "id": "n33",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "Retain triple-operator gating; penalize probe-identified template leakage in slot embeddings, then retest ≥80% triple exact match and <30% independent-probe accuracy."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "Fit leakage probes on gated TypeBind slot embeddings; penalize identified template directions and rerun five-seed triple-composition evaluations."
+    },
+    {
+      "id": "n35",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n34",
+      "content": "TypeBind-LeakGuard-v1: gated parser checkpoint, slot-embedding leakage penalty, five-seed evaluation outputs, and independent-probe training scripts."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n35",
+      "content": "Independently reproduce LeakGuard-v1’s five-seed TemplateFlip-v1 triple and in-distribution exact match; train fresh template-ID probes on frozen slot embeddings."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n36",
+      "content": "Independent LeakGuard-v1 replication found 81% triple-operator exact match, 29% fresh-probe template-ID accuracy, and a 1.5-point in-distribution deficit."
+    },
+    {
+      "id": "n38",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n37",
+      "content": "Advance LeakGuard-v1 to full-composition evaluation: independent probe falls from 36% to 29%, triple exact match 81%, in-distribution deficit 1.5 points."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 42,
+      "exploration_parent_id": "g1",
+      "content": "Train WitnessRank with execution witnesses that distinguish operator-order program negatives, plus baseline-logit distillation for in-distribution accuracy."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "p3",
+      "content": "How often can WitnessRank find a distinguishing execution witness for operator-order negatives in TemplateFlip-v1 triple compositions?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Bounded execution over 32 synthetic databases finds distinguishing witnesses for at least 90% of triple-operator order negatives."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Generate 1,000 TemplateFlip-v1 triple-operator order negatives; execute each pair against 32 seeded databases and measure witness coverage."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "Across 1,000 triple-operator negatives, 32 seeded databases distinguished 927 pairs, yielding 92.7% execution-witness coverage."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n39",
+      "content": "Stratify WitnessRank's 1,000 triple-operator negatives by operator ordering; check witness coverage and semantic equivalence of unresolved pairs."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "All 73 unresolved negatives were gold-equivalent but structurally distinct filter–count reorderings; execution witnesses cannot distinguish this exact-match class."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Retain witness ranking for 927 distinguishable pairs; handle 73 equivalent filter–count reorderings with gold-serialization supervision."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "Can gold-serialization supervision resolve equivalent filter–count reorderings without reducing WitnessRank’s accuracy on distinguishable triple-operator pairs?"
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Gold-serialization supervision yields at least 80% exact match on equivalent filter–count reorderings without reducing distinguishable-pair accuracy by over one point."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Train WitnessRank with and without gold-serialization loss; measure exact match on 73 equivalent reorderings and accuracy on 927 distinguishable pairs."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "Gold-serialization loss raised equivalent-reordering exact match from 64% to 85%; distinguishable-pair accuracy fell 0.4 points."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 54,
+      "exploration_parent_id": "n49",
+      "content": "Adopt hybrid WitnessRank: serialize equivalent reorderings and rank distinguishable negatives by witnesses, accepting the 0.4-point pairwise accuracy cost."
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 55,
+      "exploration_parent_id": "n50",
+      "content": "Train hybrid WitnessRank; evaluate disjoint filter–count reorderings, distinguishable triple compositions, and in-distribution exact match against serialization-free controls."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n51",
+      "content": "Train five-seed hybrid and serialization-free WitnessRank models; score disjoint equivalent reorderings, distinguishable triples, and TemplateFlip-v1 in-distribution programs."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n52",
+      "content": "WitnessRank-Hybrid-v1: five-seed checkpoints, witness-pair training sets, serialization-loss ablations, and disjoint evaluation splits with exact-match scores."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n53",
+      "content": "Independently rerun WitnessRank-Hybrid-v1 on disjoint reorderings and distinguishable triples; compare in-distribution exact match with a same-size baseline."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n54",
+      "content": "Independent reruns found 82% exact match on disjoint equivalent reorderings, 81% on distinguishable triples, and a 1.7-point in-distribution deficit."
+    },
+    {
+      "id": "n56",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n55",
+      "content": "Advance WitnessRank alongside LeakGuard and audited swaps: witnesses handle 81% of distinguishable triples; serialization handles 82% of equivalents."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "depend_on",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "revise",
+      "target": "n8"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n18"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop semantic parsers that generalize to unseen operator compositions despite training correlations between linguistic templates and program structure.",
+    "requirements": [
+      "Achieve 80% exact-match accuracy on held-out operator compositions under reversed template–structure correlations.",
+      "Retain in-distribution exact-match accuracy within two percentage points of an identically sized, conventionally trained parser."
+    ]
+  }
+}

@@ -1,0 +1,973 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design runtime verification for multicore embedded controllers that preserves deadline guarantees and sound verdicts despite asynchronous, lossy telemetry.",
+      "requirements": [
+        "Verdicts are sound under telemetry loss and complete for bounded-response violations when telemetry is lossless.",
+        "Monitoring adds ≤5% worst-case execution time per control job while preserving all specified deadlines."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use sequenced per-core logs, bounded-skew timestamps, gap-aware three-valued bounded-response monitors, and response-time-certified 5% instrumentation budgets."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What heartbeat period, delivery bound, and clock-skew limit permit sound violation finalization after a response deadline?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "With 2 ms heartbeats, 1 ms delivery, and 100 µs skew, contiguous per-core watermarks soundly finalize violations within 3.2 ms."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Derive watermark closure bounds; simulate packet loss and skew to check unknown verdicts and 3.2 ms lossless finalization."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Simulate four-core WatermarkBench: 2 ms heartbeats, 1 ms delivery, 100 µs skew, injected loss; check soundness and closure."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "WatermarkBench's 1 million trials yielded zero false violations under loss and detected every lossless violation within 3.2 ms."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Adopt contiguous per-core watermarks and unknown-on-gap verdicts; WatermarkBench met 3.2 ms closure with zero false violations."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Instrument controller jobs with the adopted watermark logger; measure WCET overhead and verify deadlines via multicore response-time analysis."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "ControllerMonitor-v1 contains the per-core watermark logger, three-valued verifier, per-job WCET overhead measurements, and multicore deadline-analysis reports."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Replay 100,000 ControllerMonitor-v1 traces with 1-ms delivery, 100-µs skew, and burst loss; check lossless 3.2-ms closure and unknown-on-gap verdicts."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "ControllerMonitor-v1 found 27 lossless violations finalized after 3.2 ms (maximum 3.38 ms) because relative clock skew reached 200 µs."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "With relative skew bounded by 200 µs, contiguous watermarks finalize lossless violations within 3.4 ms; gaps remain unknown."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Replay ControllerMonitor-v1 traces at 200 µs relative skew and burst loss; verify 3.4 ms closure and unknown-on-gap verdicts."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "In 100,000 ControllerMonitor-v1 replays, lossless closure peaked at 3.38 ms; unresolved lossy gaps yielded unknown, with zero false violations."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 16,
+      "exploration_parent_id": "p1",
+      "content": "Does ControllerMonitor-v1 keep every control job’s measured WCET overhead ≤5% and multicore worst-case response time below its deadline?"
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Stress-test ControllerMonitor-v1 per-job WCET under cold caches and peak contention; compute overhead ratios and interference-aware deadline bounds."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "WCET analysis under cold-cache contention bounded per-job instrumentation overhead at 4.6%; response-time analysis certified all deadlines with ≥0.7 ms slack."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Use DMA hardware trace and a dedicated core for gap-aware interval-timestamp monitors, with bus-interference-certified ≤5% control overhead."
+    },
+    {
+      "id": "n20",
+      "type": "plan",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "Specify DMA sequence-gap and interval-timestamp semantics, then test verdict soundness, lossless violation completeness, bus interference, and deadline bounds."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Run TraceBusBench against ControllerMonitor-v1’s 4.6% WCET baseline, comparing lossy verdict soundness, lossless completeness, bus interference, and deadlines."
+    },
+    {
+      "id": "n22",
+      "type": "artifact",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "TraceBusBench report compares DMA and ControllerMonitor-v1 verdict accuracy, per-job WCET overhead, bus interference, and certified deadline slack."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Audit TraceBusBench’s report using 100,000 paired traces and cold-cache bus-contention schedules; recompute verdict errors, WCET overhead, and deadline slack."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "TraceBusBench: zero unsound lossy verdicts, 100% lossless violation detection across 100,000 traces; maximum job overhead 2.8%, minimum slack 0.9 ms."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Adopt DMA tracing with contiguous-watermark, unknown-on-gap verdicts; TraceBusBench shows 2.8% maximum overhead and zero unsound verdicts."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Implement DMAMonitor-v2 on a dedicated core with sequence-gap detection, interval timestamps, contiguous watermarks, and per-job deadline certification."
+    },
+    {
+      "id": "n27",
+      "type": "artifact",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "DMAMonitor-v2 includes dedicated-core trace decoding, sequence-gap-aware bounded-response verdicts, interval-timestamp watermarks, and per-job WCET/deadline certificates."
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 28,
+      "exploration_parent_id": "p2",
+      "content": "Under 10 ms DMA-overflow bursts, gap-aware DMAMonitor-v2 yields zero false violations across 100,000 traces."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Inject 10 ms DMA-overflow bursts into 100,000 oracle-labeled DMAMonitor-v2 traces; count false violations and inspect gap-to-unknown transitions."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Eight false violations occurred in 100,000 traces: DMA overflow dropped responses before sequence assignment, hiding gaps and falsely closing watermarks."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n28",
+      "content": "Replay eight failing DMAMonitor-v2 seeds with pre-sequencing ingress counters; check whether overflow stays invisible to gap detection."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Existing DMAMonitor-v2 ingress counters marked all eight replayed overflows unknown; the earlier harness suppressed their interrupts, causing false verdicts."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 33,
+      "exploration_parent_id": "g1",
+      "content": "Deploy per-core inline three-valued monitors before telemetry loss, exchanging epoch-tagged events through statically scheduled mailboxes with fixed instrumentation budgets."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 34,
+      "exploration_parent_id": "p3",
+      "content": "Can four-core mailbox exchanges correlate cross-core responses before verdict deadlines while keeping each job’s WCET overhead ≤5%?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "DMAMonitor-v2 with inline epoch-tagged mailboxes yields zero false violations under 10 ms overflows and deadline-safe cross-core correlation at ≤5% overhead."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Restore DMAMonitor-v2 overflow interrupts; benchmark four-core epoch-tagged mailboxes under 10 ms overflows for soundness, correlation latency, WCET, and deadlines."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Four-core replay found zero false violations, but mailbox contention raised worst-job WCET overhead to 6.3%, exceeding 5%."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n35",
+      "content": "In DMAMonitor-v2, replace 6.3%-overhead contended mailboxes with padded per-core slots; retest overflow soundness, correlation, WCET, and deadlines."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "Padded-slot replay: zero false violations across 100,000 overflow traces, complete, timely lossless correlation, 4.7% peak overhead, 0.4 ms deadline slack."
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Replacing contended mailboxes with padded per-core slots bounds overhead at 4.7% while retaining sound overflow verdicts and deadline-safe correlation."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Certify padded-slot mailbox latency under four-core contention, then bound per-job WCET overhead and response times against every deadline."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Analyze DMAMonitor-v2 padded-slot latency under four-core contention; verify ≤4.7% overhead, ≥0.4 ms slack, and sound overflow verdicts."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Four-core analysis bounded padded-slot latency at 0.18 ms, peak overhead at 4.7%, and minimum deadline slack at 0.4 ms."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n41",
+      "content": "Replay DMAMonitor-v2 with padded slots and enabled overflow interrupts; check gap-aware soundness and lossless correlation under 200 µs skew."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "At 200 µs skew, padded-slot replay produced six false violations in 100,000 traces: overwritten cross-core responses evaded gap detection."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Defer padded-slot deployment: despite 4.7% overhead and 0.4 ms slack, undetected overwrites cause false violations; require overwrite-visible counters."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Add release-ordered per-core generation counters before padded-slot overwrites; replay six failing seeds and recertify overhead and deadlines."
+    },
+    {
+      "id": "n48",
+      "type": "artifact",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "DMAMonitor-v2.1 adds release-ordered overwrite counters; its validation bundle contains six-seed replay logs and updated WCET and deadline analyses."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p3",
+      "content": "Do DMAMonitor-v2.1’s overwrite counters prevent false verdicts under concurrent writes without exceeding 5% overhead or missing deadlines?"
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Stress DMAMonitor-v2.1 with concurrent slot overwrites and 10 ms telemetry loss; measure false verdicts, job overhead, and response-time slack."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "DMAMonitor-v2.1 recorded zero false verdicts in 100,000 lossy traces, 100% lossless violation detection, 4.9% peak overhead, and 0.2 ms slack."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 52,
+      "exploration_parent_id": "g1",
+      "content": "Use hardware event taps and timer-comparator shadow automata; sticky overflow flags force unknown, isolated-bus analysis certifies deadlines."
+    },
+    {
+      "id": "n53",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "p4",
+      "content": "Specify shadow-automaton timing and sticky-overflow semantics; validate verdicts under loss and certify tap interference against 5% overhead and deadlines."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Port DMAMonitor-v2.1 bounded-response properties into timer-comparator shadow automata; add sticky tap-overflow flags and preserve epoch-tagged cross-core correlation."
+    },
+    {
+      "id": "n55",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "ShadowTap-v1 contains timer-comparator automata, epoch-tagged cross-core event taps, sticky overflow registers, and job-interference analysis scripts."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n53",
+      "content": "Benchmark ShadowTap-v1 against DMAMonitor-v2.1’s 4.9% overhead, testing lossy verdicts, lossless violation detection, and deadline slack."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "ShadowTap-v1 showed zero false violations across 100,000 lossy traces, 100% lossless detection, 1.6% peak overhead, and 0.8 ms deadline slack."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Prefer ShadowTap-v1 over DMAMonitor-v2.1: both passed verdict tests, but peak overhead fell from 4.9% to 1.6%."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "Integrate ShadowTap-v1 into the four-core controller; run cold-cache interference tests and verify bounded-response verdicts under injected tap loss."
+    },
+    {
+      "id": "n60",
+      "type": "artifact",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "ShadowTap-v1 integration bundle contains four-core firmware, tap-loss replay traces, cold-cache interference measurements, and per-job deadline certificates."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n21"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n20",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n54"
+    },
+    {
+      "source": "n53",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design runtime verification for multicore embedded controllers that preserves deadline guarantees and sound verdicts despite asynchronous, lossy telemetry.",
+    "requirements": [
+      "Verdicts are sound under telemetry loss and complete for bounded-response violations when telemetry is lossless.",
+      "Monitoring adds ≤5% worst-case execution time per control job while preserving all specified deadlines."
+    ]
+  }
+}

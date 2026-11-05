@@ -1,0 +1,1033 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Predict yeast growth effects of unseen mutation combinations across genetic backgrounds while distinguishing transferable epistasis from background-specific interactions.",
+      "requirements": [
+        "Reduce combination-level RMSE by 10% versus background-aware additive models on unseen genetic backgrounds.",
+        "Exceed 75% accuracy identifying epistasis sign changes across backgrounds for independently measurable nonadditive effects."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Fit a pathway-regularized hierarchical growth model separating transferable mutation-pair effects from genotype-conditioned residuals that permit epistasis sign reversals."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can replicated growth measurements distinguish genuine background-dependent epistasis sign reversals from noise in pathway-regularized residuals?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Requiring 95% credible intervals excluding zero in both backgrounds will yield ≥80% sign-reversal concordance across independent growth-assay batches."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Measure singles and pairs across eight backgrounds in independent batches; test whether 95%-credible reversals achieve ≥80% concordance."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Assay 120 mutation pairs and constituent singles across eight backgrounds in two batches; calculate 95%-credible reversal concordance."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Among 64 batch-one reversals with 95% credible intervals excluding zero, only 42 (66%) replicated in batch two."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Discovery-batch reversals with 99% credible intervals and ≥0.05 log-growth-unit effects in both backgrounds will replicate ≥80% across batches."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Reanalyze the 64 batch-one reversals using 99% credible intervals and ≥0.05 log-growth-unit effects in both backgrounds; assess batch-two concordance."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Of 30 batch-one reversals meeting both stricter criteria, 26 replicated in batch two (87% concordance)."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt reversal labels requiring 99% credible intervals and ≥0.05 log-growth-unit effects in both backgrounds; replication rose from 66% to 87%."
+    },
+    {
+      "id": "n12",
+      "type": "artifact",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Reversal-QC v1 table records 64 candidates, background-specific effect estimates, 99% credible intervals, and batch-two outcomes for 30 qualifying calls."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n5",
+      "content": "Blindly audit Reversal-QC v1 by re-assaying singles and pairs for 30 qualifying and 34 rejected calls in batch three."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Batch-three assays reproduced 27/30 qualifying sign reversals versus 15/34 rejected calls, supporting reproducible background-conditioned interactions."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "p1",
+      "content": "Which genetic-background representation enables pathway-regularized interactions to generalize to held-out backgrounds while preserving reproducible sign reversals?"
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Run leave-one-background-out validation comparing pathway-burden and raw-genotype embeddings against additive baselines on growth RMSE and Reversal-QC sign accuracy."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Pathway-burden RMSE was 0.096 versus raw-genotype 0.104 and additive 0.110 log-growth units; Reversal-QC sign accuracy was 83% (25/30)."
+    },
+    {
+      "id": "n18",
+      "type": "decision",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Select pathway-burden embeddings: held-out RMSE fell 12.7% versus additive, with 83% Reversal-QC sign accuracy and 27/30 labels replicated."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 19,
+      "exploration_parent_id": "p1",
+      "content": "Prospectively assay unseen pairs in new backgrounds; test pathway-burden for ≥10% additive-RMSE reduction and >75% independently measured sign-reversal accuracy."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 20,
+      "exploration_parent_id": "g1",
+      "content": "Transfer pairwise epistasis between backgrounds matched by single-mutant growth-response profiles, using uncertainty-weighted neighbors to flag context-specific sign changes."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "p2",
+      "content": "Does single-mutant response similarity identify transferable pair effects better than pathway-burden similarity without masking independently validated sign reversals?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Response-profile neighbors will beat pathway-burden RMSE (0.096 log-growth units) on held-out backgrounds while retaining >75% validated reversal accuracy."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Across leave-one-background-out folds, fit uncertainty-weighted background neighbors from single-mutant profiles; compare RMSE and batch-three-validated Reversal-QC v1 reversal accuracy against pathway-burden."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Response-profile neighbors achieved 0.091 versus pathway-burden’s 0.096 log-growth-unit RMSE; sign accuracy was 22/27 (81%) on batch-three-validated reversals."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n22",
+      "content": "Mask each test pair’s constituent singles before neighbor selection; recompute held-out-background RMSE and Reversal-QC v1 reversal accuracy against pathway-burden."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "After masking constituent singles, neighbor RMSE rose to 0.103 versus pathway-burden’s 0.096; validated reversal accuracy fell to 19/27 (70%)."
+    },
+    {
+      "id": "n27",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "Pathway-burden-constrained neighbors using pair-masked single-mutant profiles will achieve held-out RMSE below 0.096 log-growth units and validated reversal accuracy above 75%."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Fit pathway-burden-constrained neighbors using pair-masked profiles; compare held-out RMSE and validated Reversal-QC v1 accuracy against 0.096 and 75%."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Pair-masked, pathway-constrained neighbors achieved 0.094 log-growth-unit held-out RMSE and 22/27 (81%) accuracy on batch-three-validated reversals."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n27",
+      "content": "Withhold nearest donor backgrounds; assess pair-masked constrained neighbors against 0.096 RMSE and 75% accuracy on validated Reversal-QC calls."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Without nearest donors, constrained-neighbor RMSE rose to 0.102 log-growth units and validated reversal accuracy dropped to 18/27 (67%)."
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Gate pair-masked neighbor transfer by cosine distance ≤0.20, otherwise use pathway-burden; predict RMSE <0.096 and validated reversal accuracy >75%."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Test ≤0.20 cosine-gated neighbors with pathway-burden fallback in standard and nearest-donor-withheld folds; measure RMSE and validated Reversal-QC accuracy."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Gated transfer achieved RMSE 0.093/0.095 log-growth units and validated reversal accuracy 22/27 (81%)/21/27 (78%) in standard/donor-withheld folds."
+    },
+    {
+      "id": "n35",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Adopt cosine-gated transfer with pathway-burden fallback: donor-withheld RMSE improved from 0.102 to 0.095 and reversal accuracy from 67% to 78%."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "Prospectively assay 150 pairs in four new backgrounds; compare gated transfer against pathway-burden on RMSE and independently measured reversal accuracy."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Assay 150 pairs and singles across four new backgrounds; compare gated-transfer versus pathway-burden RMSE and independently replicated Reversal-QC reversal accuracy."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Prospective-150 v1 contains replicated pair and single growth measurements, both models’ predictions, and Reversal-QC calls across four new backgrounds."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n37",
+      "content": "Prospective-150: gated-transfer RMSE was 0.094 versus pathway-burden 0.101 and additive 0.109; independently replicated reversal accuracy was 29/36 (81%)."
+    },
+    {
+      "id": "n40",
+      "type": "decision",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Select cosine-gated transfer with pathway-burden fallback: prospective RMSE improved 14% versus additive, with 81% independently replicated reversal accuracy."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 41,
+      "exploration_parent_id": "g1",
+      "content": "Fit a transcriptome-conditioned mixture of shared and stress-state-specific epistasis experts to predict held-out growth and sign reversals."
+    },
+    {
+      "id": "n42",
+      "type": "question",
+      "order": 42,
+      "exploration_parent_id": "p3",
+      "content": "Can pre-mutation transcriptomes identify background-specific epistasis without leaking growth responses from the mutation combinations being predicted?"
+    },
+    {
+      "id": "n43",
+      "type": "hypothesis",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Wild-type-only RNA-seq gating will achieve held-out-background RMSE below 0.094 log-growth units and >75% independently replicated reversal accuracy."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Sequence unmutated parents; train transcriptome-gated experts on eight backgrounds, then compare Prospective-150 RMSE and reversal accuracy against gated transfer."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "Wild-type RNA-seq gating yielded Prospective-150 RMSE 0.097 versus gated transfer’s 0.094; reversal accuracy was 26/36 (72%)."
+    },
+    {
+      "id": "n46",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n43",
+      "content": "Batch-correct wild-type RNA-seq with ComBat-seq, refit transcriptome-gated experts, and score Prospective-150 RMSE and independently replicated reversal accuracy."
+    },
+    {
+      "id": "n47",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "ComBat-seq-corrected wild-type RNA-seq gating achieved Prospective-150 RMSE 0.092 log-growth units and independently replicated reversal accuracy 29/36 (81%)."
+    },
+    {
+      "id": "n48",
+      "type": "decision",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Adopt ComBat-seq-corrected transcriptome gating: prospective RMSE improved from 0.097 to 0.092 and reversal accuracy from 72% to 81%."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "p3",
+      "content": "Pre-register train-only ComBat-seq correction; collect parental RNA-seq before mutagenesis, then compare models on blinded combinations in four new backgrounds."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Assay 150 blinded pairs in four new backgrounds after parental RNA-seq; compare train-only-corrected gating with Prospective-150-calibrated transfer on RMSE/reversal accuracy."
+    },
+    {
+      "id": "n51",
+      "type": "artifact",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Blind-150 v1 contains pre-mutagenesis parental RNA-seq, replicated growth measurements, frozen model predictions, and independently confirmed reversal labels."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n50",
+      "content": "On Blind-150, train-only-corrected gating achieved 0.090 versus transfer 0.096 and additive 0.108 log-growth-unit RMSE; reversal accuracy reached 31/38 (82%)."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n49",
+      "content": "Using the frozen train-only-corrected gating model, shuffle Blind-150 parental RNA-seq across backgrounds, regenerate predictions, and compare RMSE and reversal accuracy."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Across 100 parental-RNA-seq shuffles, mean Blind-150 RMSE remained 0.090 and reversal accuracy 31/38, matching unshuffled gating."
+    },
+    {
+      "id": "n55",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Defer transcriptome gating despite 0.090 RMSE: parental-RNA shuffling preserves performance, so its added assay cannot justify deployment over transfer."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p3",
+      "content": "Replace new-background deployment with independent-culture parental RNA-seq and train-only normalization; require improvement over shuffled-RNA controls before restoring gating."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Resequence independently cultured Blind-150 parents; assess RNA-seq reproducibility and train-only-normalized gated RMSE and reversal accuracy against shuffled-RNA controls."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Blind-150 RNA-QC v2 contains independent-culture parental expression matrices, replicate correlations, train-only normalization parameters, and shuffled-control prediction scores."
+    },
+    {
+      "id": "n59",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n57",
+      "content": "With independent-culture RNA and train-only normalization, Blind-150 RMSE was 0.091 versus shuffled 0.098; reversal accuracy was 30/38 versus 25/38."
+    },
+    {
+      "id": "n60",
+      "type": "decision",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Reconsider transcriptome gating for prospective validation, not deployment: independent-culture RNA improved RMSE to 0.091 versus shuffled 0.098."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "revise",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n27"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "refute",
+      "target": "n27"
+    },
+    {
+      "source": "n32",
+      "relation": "revise",
+      "target": "n27"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n46",
+      "relation": "produce",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "revise",
+      "target": "n49"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n42"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "support",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Predict yeast growth effects of unseen mutation combinations across genetic backgrounds while distinguishing transferable epistasis from background-specific interactions.",
+    "requirements": [
+      "Reduce combination-level RMSE by 10% versus background-aware additive models on unseen genetic backgrounds.",
+      "Exceed 75% accuracy identifying epistasis sign changes across backgrounds for independently measurable nonadditive effects."
+    ]
+  }
+}

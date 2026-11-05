@@ -1,0 +1,14 @@
+Decide where the newly read turns start new memory units in an ongoing conversation.
+
+{{INPUT_JSON}}
+
+open_unit_turns is the complete unit already open before this batch (null if this is the first batch). new_turns are the turns just read. Each turn has a turn_number and the user's message of that turn; the assistant's replies are omitted, but each turn is a user message plus a reply, so a short user follow-up still belongs to the discussion before it.
+
+Go through new_turns in order and judge only whether the discussion focus shifts — a change in the topic, task, question, or piece of work being discussed, not a change in tone, a follow-up question, or a brief detour that returns to the same focus. Do not use turn count, message length, or role alternation as a signal. Judge each hypothesis, experiment, or measurement round on its own: a new hypothesis being proposed, a new experiment being run, or a new result being reported is a new piece of work and starts a new unit, even if it concerns the same broad subject as open_unit_turns or an earlier round in this batch.
+
+- new_unit_starts: turn_number values, from new_turns only, where a new unit begins. Each one closes the unit open immediately before it (open_unit_turns for the first split point in this batch, otherwise the segment right before it). May be empty, or list several if the focus shifts more than once in this batch.
+
+Return JSON only:
+{
+  "new_unit_starts": [turn_number]
+}

@@ -1,0 +1,877 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a distributed scheduler for preemptible gang jobs that reconciles tenant fairness, placement constraints, and recovery from scheduler partitions.",
+      "requirements": [
+        "Prevent conflicting resource assignments during partitions, including stale schedulers and partially completed gang reservations.",
+        "After connectivity stabilizes, restore scheduling progress within 30 seconds while preventing starvation under feasible demand."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use quorum-fenced scheduler epochs, worker-verified atomic gang commits, tenant-weighted aging with constraint-aware preemption, and five-second failover leases."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How do workers identify and release partial gang reservations when a scheduler loses its lease mid-commit?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Epoch-fenced workers expiring uncommitted gang-ID reservations after five seconds will clear orphaned holds within ten seconds without conflicting assignments."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Run GangFault-1k mid-commit partition tests; verify stale-epoch rejection, orphan-hold clearance within ten seconds, and zero duplicate allocations."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Execute GangFault-1k with 1,000 mid-commit partitions; record stale-epoch rejections, orphan-hold clearance latency, and duplicate allocations."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "GangFault-1k: maximum orphan-hold clearance was 8.2 seconds; all stale epochs were rejected, with zero duplicate allocations."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt epoch-fenced five-second reservation expiry: GangFault-1k cleared orphan holds within 8.2 seconds without duplicate allocations."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "GangFault-1k report records 1,000 partition traces, 8.2-second maximum orphan clearance, complete stale-epoch rejection, and zero duplicate allocations."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Replay GangFault-1k report’s worst mid-commit traces with 64-worker placement constraints; measure stale-epoch rejection, orphan clearance, and duplicate allocations."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "In 64-worker constrained replays, delayed commit propagation caused two duplicate allocations when prepared workers expired already-committed gang slots."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "p1",
+      "content": "Do epoch-fenced atomic commits remain conflict-free when constrained placements delay commit propagation beyond five-second reservation expiry?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 13,
+      "exploration_parent_id": "g1",
+      "content": "Quorum-log gang commits before worker activation; retain uncertain slots until reconciliation, then resume weighted-deficit, constraint-aware preemption within 30 seconds."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "p2",
+      "content": "Implement quorum-logged gang commits, worker reconciliation, weighted-deficit preemption; test 64-worker partitions for zero conflicts, ≤30-second recovery, and feasible-tenant starvation."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n11",
+      "content": "Replay GangFault-1k report traces against quorum-logged commits and worker reconciliation; measure duplicate allocations and recovery latency on 64 workers."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "GangFault-1k replay bundle contains 64-worker partition traces, quorum-commit reconciliation logs, duplicate-allocation counts, and recovery-latency measurements."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Audit GangFault-1k bundle; rerun partitions under p1 and p2 with contention, comparing duplicate allocations, recovery, and tenant wait."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "64-worker replays: p2 had zero duplicates versus p1’s two; p2 recovered within 24 seconds, with longest feasible-tenant wait 82 seconds."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Can p2 keep feasible-tenant wait below 120 seconds under sustained contention and restrictive gang placements?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Under sustained contention, weighted-deficit aging and constraint-aware preemption keep maximum feasible-tenant wait below 120 seconds across 64 workers."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Compare p1/p2 in 30-minute, 64-worker constrained-gang partition tests with eight-second commit delays; measure duplicates and maximum feasible-tenant wait."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "In 30-minute constrained tests, p2’s maximum feasible-tenant wait was 109 seconds, with zero duplicates despite eight-second commit delays."
+    },
+    {
+      "id": "n20",
+      "type": "decision",
+      "order": 23,
+      "exploration_parent_id": "n11",
+      "content": "Replace p1’s expiry-only commits with p2’s quorum-logged reconciliation: zero duplicates, 24-second recovery, and 109-second maximum feasible-tenant wait."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 24,
+      "exploration_parent_id": "g1",
+      "content": "Use Raft-elected single-writer scheduling, worker-acknowledged fencing, durable gang bindings, and aging-based fairness with 20-second failover."
+    },
+    {
+      "id": "n21",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p3",
+      "content": "Can worker-acknowledged fencing complete within 20 seconds when partitioned workers hold durable gang bindings?"
+    },
+    {
+      "id": "n22",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n21",
+      "content": "After connectivity stabilizes, worker-acknowledged epoch fencing completes within 20 seconds across 64 workers without releasing committed gang bindings."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "n22",
+      "content": "Replay GangFault-1k bundle across 64 workers; time post-reconnection fencing acknowledgments and audit committed gang bindings for unintended release."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "GangFault-1k replay: fencing acknowledgments took up to 26.4 seconds after reconnection across 64 workers; no committed bindings were released."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n22",
+      "content": "Replay GangFault-1k with 10% delayed worker reconnects; measure fencing acknowledgment latency and committed-binding retention against the 20-second target."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n25",
+      "content": "With 10% delayed reconnects, all workers acknowledged fencing within 18.7 seconds after full reconnection; no committed bindings were released."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 31,
+      "exploration_parent_id": "n22",
+      "content": "Do not rely on p3’s 20-second fencing target: one replay took 26.4 seconds despite another completing in 18.7 seconds."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Quorum-issued per-resource tokens and logged gang decisions gate activation; placement-aware deficit preemption resumes on reconciled workers without global fencing."
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "p4",
+      "content": "Implement token validation and logged gang decisions; replay partitions to measure duplicate allocations, recovery within 30 seconds, and feasible-tenant wait."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n28",
+      "content": "Replay GangFault-1k bundle on 64 workers with quorum tokens and logged gang decisions; measure duplicates, recovery, and feasible-tenant wait."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 35,
+      "exploration_parent_id": "n29",
+      "content": "TokenGang-64 replay report contains quorum-token validation traces, logged gang decisions, duplicate-allocation counts, recovery latencies, and feasible-tenant waits."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "n28",
+      "content": "Audit TokenGang-64 traces and rerun partial-commit partitions; check duplicate allocations, 30-second recovery, and 120-second feasible-tenant wait."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n31",
+      "content": "TokenGang-64 partial-commit replays produced zero duplicate allocations, 21-second maximum recovery, and 97-second maximum feasible-tenant wait."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 38,
+      "exploration_parent_id": "n28",
+      "content": "Adopt p4’s quorum tokens and logged gang decisions: TokenGang-64 showed zero duplicates, 21-second recovery, and 97-second feasible-tenant wait."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 39,
+      "exploration_parent_id": "g1",
+      "content": "Quorum-lease rack shards; durably commit gangs before activation, reconcile holds within 25 seconds after reconnection, and age placement-aware tenant deficits."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 40,
+      "exploration_parent_id": "p5",
+      "content": "Can cross-rack gangs acquire shard leases atomically without stranded holds delaying reconciliation beyond 25 seconds?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "n34",
+      "content": "A quorum-logged gang coordinator releases incomplete cross-rack shard holds within 25 seconds without activating partial gangs."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Instrument cross-rack lease acquisition and coordinator decisions; inject mid-reservation partitions, then measure hold release and partial activation."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n36",
+      "content": "Extend TokenGang-64 traces across four racks; inject coordinator partitions mid-reservation and measure hold-release latency, partial activations, and recovery."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n37",
+      "content": "Four-rack replays released incomplete holds within 22 seconds with zero partial activations, but shard-lease contention delayed scheduling recovery 37 seconds."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n36",
+      "content": "Stress TokenGang-64 with concurrent cross-rack lease requests and coordinator failover; check atomic activation and 25-second incomplete-hold release."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n39",
+      "content": "Under concurrent cross-rack requests and coordinator failover, incomplete holds persisted 31 seconds; no partial gangs activated."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n36",
+      "content": "Reject p5’s rack-shard leases: contention yielded 37-second recovery, and failover stranded incomplete holds for 31 seconds."
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 48,
+      "exploration_parent_id": "n35",
+      "content": "Prioritized quorum aborts and per-resource tokens clear holds within 25 seconds, prevent partial activation, and restore scheduling within 30 seconds."
+    },
+    {
+      "id": "n43",
+      "type": "plan",
+      "order": 49,
+      "exploration_parent_id": "n42",
+      "content": "Replay four-rack failovers with prioritized aborts and per-resource tokens; verify hold release within 25 seconds and recovery within 30 seconds."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n43",
+      "content": "Gate TokenGang-64’s prioritized-abort implementation on n41’s rack-lease rejection; replay four-rack failovers against p5, measuring hold release, partial activations, recovery."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n44",
+      "content": "Four-rack failovers: prioritized aborts cleared holds in 19 seconds; recovery took 26 seconds versus p5’s 37, without partial activations."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "n43",
+      "content": "Retain p4 tokens with prioritized quorum aborts, not p5 rack leases: 19-second hold clearance and 26-second recovery."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n22"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n21"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n43",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n43",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a distributed scheduler for preemptible gang jobs that reconciles tenant fairness, placement constraints, and recovery from scheduler partitions.",
+    "requirements": [
+      "Prevent conflicting resource assignments during partitions, including stale schedulers and partially completed gang reservations.",
+      "After connectivity stabilizes, restore scheduling progress within 30 seconds while preventing starvation under feasible demand."
+    ]
+  }
+}

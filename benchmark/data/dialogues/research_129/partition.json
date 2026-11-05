@@ -1,0 +1,183 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial evaluation of a visibility-aware probabilistic SDF",
+      "boundary_reason": "The benchmark meets both targets, prompting a move to held-out validation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Held-out calibration and reproducibility of the SDF",
+      "boundary_reason": "Held-out results are reproduced; the focus shifts to testing the latents separately."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Ablation of specular latents and visibility conditioning",
+      "boundary_reason": "The ablation refutes regional independence, and a different reconstruction proposal begins."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21",
+        "n22",
+        "n23"
+      ],
+      "topic": "Mirror-normal-guided reconstruction under normal perturbations",
+      "boundary_reason": "The perturbation results support advancing p2 to a paired comparison with p1."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n24",
+        "n25",
+        "n26"
+      ],
+      "topic": "Paired interval-width comparison of p2 and p1",
+      "boundary_reason": "The paired comparison concludes, and mesh diffusion becomes the next proposal."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Testing 32 mesh samples on multimodal occlusions",
+      "boundary_reason": "Undercoverage motivates a revised sampling approach."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Testing 128 mode-stratified mesh samples",
+      "boundary_reason": "Coverage improves but the width target is missed, prompting another revision."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40"
+      ],
+      "topic": "Selecting 64 mode-balanced meshes after standard and perturbed tests",
+      "boundary_reason": "A mesh-sampling choice is made, and the discussion moves to visual hulls and highlights."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Highlight-motion constraints with visual hulls",
+      "boundary_reason": "The initial ablation supports highlight constraints; the next test changes to held-out moving lights."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n46",
+        "n47"
+      ],
+      "topic": "Highlight constraints under held-out moving lights",
+      "boundary_reason": "The moving-light result falls short of the hypothesized gain, motivating compensation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Moving-light compensation and displacement-stratified recalibration",
+      "boundary_reason": "A decision retains highlights with stratified recalibration, before a new correspondence-based proposal."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "p5",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Initial test of epipolar highlight-track routing",
+      "boundary_reason": "The initial boundary-occlusion result meets the targets; testing shifts to thin occluders."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n61",
+        "n62"
+      ],
+      "topic": "Fixed routing on held-out thin occluders",
+      "boundary_reason": "Thin-occluder undercoverage motivates boundary-adaptive routing."
+    },
+    {
+      "session_id": "S14",
+      "node_ids": [
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67",
+        "n68"
+      ],
+      "topic": "Comparing and selecting routing rules for thin occluders",
+      "boundary_reason": "Default and perturbed-thin routing rules are chosen, followed by an audit plan."
+    },
+    {
+      "session_id": "S15",
+      "node_ids": [
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74"
+      ],
+      "topic": "Routing audit and adoption of p5",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

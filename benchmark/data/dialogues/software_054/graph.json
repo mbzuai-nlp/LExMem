@@ -1,0 +1,1045 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build a dependency-upgrade analyzer that distinguishes client-reachable behavioral incompatibilities from harmless upstream changes despite dynamic dispatch and incomplete code.",
+      "requirements": [
+        "Achieve at least 90% recall and 90% precision on 100 labeled upgrade scenarios.",
+        "Provide reproducible client-level witnesses for incompatibilities; explicitly identify uncertainty caused by unavailable code or reflection."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Combine client-seeded points-to reachability with differential execution to filter harmless changes, replay incompatibilities, and flag reflection or missing code."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should client-seeded reachability handle reflective calls and missing library bodies without falsely dismissing reachable regressions?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Constant-string reflection resolution plus unknown labels for unresolved targets and missing bodies should reduce false-safe classifications versus closed-world reachability."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Implement constant-string reflection resolution, propagate unknowns through missing bodies, replay differential witnesses, and compare false-safe rates against closed-world reachability."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Implement ReflectionResolver for constant-string Class.forName/getMethod calls and propagate UNKNOWN through missing library bodies in client-seeded call graphs."
+    },
+    {
+      "id": "n5",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "ReflectionResolver emits client-seeded call graphs with resolved constant-string targets and UNKNOWN edges for unresolved reflection or absent bodies."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Run UpgradeBench-100 against ReflectionResolver and closed-world reachability, measuring false-safe rates and UNKNOWN coverage for reflective and missing-body cases."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "On UpgradeBench-100, false-safe errors fell from 8 to 1; UNKNOWN labeling covered 17 of 19 unresolved cases."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n5",
+      "content": "Run ReflectionResolver on ReflectionStress-20 with computed method names and omitted bodies; compare false-safe rates against closed-world reachability."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On ReflectionStress-20, both approaches made 4 false-safe classifications: computed-name callbacks from omitted wrappers escaped UNKNOWN propagation."
+    },
+    {
+      "id": "n10",
+      "type": "question",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Can boundary summaries capture computed-name callbacks from omitted wrappers without marking every downstream client call UNKNOWN?"
+    },
+    {
+      "id": "n11",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Symbolic callback-and-name summaries for omitted wrappers should reduce ReflectionStress-20 false-safe errors below 4 without labeling all 20 UNKNOWN."
+    },
+    {
+      "id": "n12",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Add wrapper-boundary summaries for callback arguments and symbolic names; rerun ReflectionStress-20, tracking false-safe errors and UNKNOWN labels."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Implement symbolic wrapper-boundary callback summaries in ReflectionResolver and rerun ReflectionStress-20, counting false-safe classifications and UNKNOWN labels."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "On ReflectionStress-20, false-safe errors remained 4; summaries missed callbacks stored in omitted wrappers' fields."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n12",
+      "content": "Extend ReflectionResolver with field-sensitive summaries for callbacks stored by omitted wrappers; rerun ReflectionStress-20 measuring false-safe errors and UNKNOWN labels."
+    },
+    {
+      "id": "n16",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n15",
+      "content": "Field-sensitive summaries reduced ReflectionStress-20 false-safe errors from 4 to 1, with 7 of 20 scenarios labeled UNKNOWN."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "Which client-to-callback path causes ReflectionStress-20’s remaining false-safe error despite field-sensitive summaries?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "The remaining false-safe path likely passes through an omitted wrapper’s callback container alias, requiring alias-aware field summaries."
+    },
+    {
+      "id": "n19",
+      "type": "plan",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "Trace the remaining client-to-callback path, add alias-aware field summaries if confirmed, and rerun ReflectionStress-20 for false-safe errors."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n19",
+      "content": "Trace ReflectionStress-20’s residual callback path in ReflectionResolver, implement alias-aware field summaries, and recount false-safe errors and UNKNOWN labels."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n20",
+      "content": "Trace confirmed a container alias; alias-aware summaries cut ReflectionStress-20 false-safe errors from 1 to 0, with 8 UNKNOWN labels."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n19",
+      "content": "Ablate alias propagation in ReflectionResolver on the residual scenario; compare callback paths and false-safe classifications with alias-aware summaries."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n22",
+      "content": "Without alias propagation, ReflectionStress-20 still had zero false-safe errors; UNKNOWN rose from 8 to 12, contradicting alias necessity."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n19",
+      "content": "Replay ReflectionStress-20’s residual case with UNKNOWN fallback temporarily disabled, comparing concrete callback paths with and without alias propagation."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n24",
+      "content": "With UNKNOWN fallback disabled, alias propagation recovered the residual callback path; without it, the case became false-safe."
+    },
+    {
+      "id": "n26",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n25",
+      "content": "Retain alias-aware summaries for concrete callback paths and UNKNOWN fallback for unresolved ones; both prevent different kinds of missed regressions."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Synthesize minimized, version-pinned client tests for reachable changes, comparing observable outcomes while reporting untestable paths as uncertain."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "How can generated client tests reproduce changed behavior across both versions without treating nondeterministic output or missing code as incompatibility?"
+    },
+    {
+      "id": "n28",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "Generate minimized client harnesses, pin versions and seeds, replay five times, normalize observables, and mark missing-code paths uncertain."
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Implement WitnessHarness for minimized client calls, pinned versions and seeds, five replays, normalized observables, and missing-code uncertainty."
+    },
+    {
+      "id": "n30",
+      "type": "artifact",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "WitnessHarness exports minimized client tests with locked dependency coordinates, five-run outcome traces, normalized diffs, and explicit missing-code uncertainty."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n28",
+      "content": "Run WitnessHarness on UpgradeBench-100, measuring client-witness reproducibility, harmless-change false positives, and missing-code uncertainty against labels."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "On UpgradeBench-100, only 18/25 incompatibilities yielded stable five-run witnesses; six harmless cases triggered clock-dependent false positives."
+    },
+    {
+      "id": "n33",
+      "type": "decision",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "Defer incompatibility verdicts from unstable traces and replace clock normalization with deterministic clock injection before reassessing witness coverage."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Add deterministic environment injection and three-way verdicts: witnessed incompatibility, verified harmless change, or uncertainty with explicit causes."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Which environment controls eliminate clock-driven false positives without hiding genuine timing-sensitive client incompatibilities?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Injecting identical virtual clocks while comparing version-specific call sequences should remove six clock false positives yet preserve timing-order regressions."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Inject matched virtual clocks into WitnessHarness and compare five-run traces and timing-order labels across UpgradeBench-100."
+    },
+    {
+      "id": "n37",
+      "type": "evidence",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "On UpgradeBench-100, virtual clocks eliminated all six clock-driven false positives and retained all three labeled timing-order regressions."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n35",
+      "content": "Stress-test virtual clocks on ClockShift-12 with matched randomized tick schedules, checking labeled timeout regressions and harmless jitter."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "On ClockShift-12, matched randomized ticks masked 2 of 5 timing-order regressions by synchronizing callbacks across versions."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Can shared wall-clock inputs coexist with independent callback schedulers so timing regressions remain visible without restoring clock-driven false positives?"
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Shared injected wall-clock reads with independent event-loop scheduling should recover both masked ClockShift-12 regressions without clock false positives."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "Separate wall-clock injection from callback scheduling; rerun ClockShift-12 and UpgradeBench-100, checking recovered regressions and clock false positives."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n42",
+      "content": "Modify WitnessHarness to share wall-clock reads but schedule callbacks independently; rerun ClockShift-12 and UpgradeBench-100 for timing recall and false positives."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Independent scheduling recovered all 5 ClockShift-12 timing regressions; UpgradeBench-100 retained zero clock-driven false positives."
+    },
+    {
+      "id": "n45",
+      "type": "decision",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "Adopt shared virtual wall-clock reads with independent callback schedulers; synchronized ticks concealed regressions despite removing spurious clock differences."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 50,
+      "exploration_parent_id": "g1",
+      "content": "Introduce VerdictGate to combine reachability, reproducible differential witnesses, and explicit UNKNOWN labels; measure verdict precision and recall on UpgradeBench-100."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 51,
+      "exploration_parent_id": "p4",
+      "content": "What VerdictGate criteria distinguish verified harmless changes from UNKNOWN paths when no differential witness reproduces?"
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Require closed client reachability and matched stable traces for harmless verdicts; classify unresolved edges or unstable replays UNKNOWN."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Implement VerdictGate using ReflectionResolver closure and WitnessHarness five-run traces; emit UNKNOWN for unresolved edges, missing bodies, or unstable replays."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "VerdictGate emits witnessed incompatibility, verified harmless, or UNKNOWN, attaching minimized replay traces and unresolved-reflection or missing-code reasons."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n47",
+      "content": "Evaluate VerdictGate on UpgradeBench-100, reporting incompatibility precision, recall, reproducible witness coverage, and UNKNOWN counts."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "On UpgradeBench-100, VerdictGate achieved 92% recall (23/25), 95.8% precision (23/24), 23 reproducible witnesses, and 10 UNKNOWN verdicts."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n47",
+      "content": "Run VerdictGate on held-out BoundaryBench-30 with computed reflection and unavailable bodies; measure false-safe harmless verdicts and cause-labeled UNKNOWN coverage."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "BoundaryBench-30 yielded zero false-safe harmless verdicts; all 9 incomplete-code cases carried explicit UNKNOWN causes."
+    },
+    {
+      "id": "n54",
+      "type": "question",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Can observed client callback traces resolve any of BoundaryBench-30’s nine incomplete-code UNKNOWN verdicts without assuming behavior for unavailable code?"
+    },
+    {
+      "id": "n55",
+      "type": "hypothesis",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Recording callback targets during pinned client replays should resolve at least three of nine UNKNOWN cases without increasing false-safe verdicts."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "Instrument callback entry points in pinned replays, add observed edges to reachability, then reassess nine UNKNOWN cases and false-safe counts."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Instrument WitnessHarness callback entries, merge observed targets into VerdictGate, and rerun BoundaryBench-30 to count resolved UNKNOWNs and false-safe verdicts."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "BoundaryBench-30 resolved 3/9 UNKNOWNs with zero false-safe verdicts, but a nondeterministic callback caused one false incompatibility (80% precision)."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n56",
+      "content": "Run ten independent matched-seed BoundaryBench-30 replays through VerdictGate, measuring callback stability, false incompatibilities, and resolved UNKNOWNs."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "Across ten BoundaryBench-30 seeds, the callback mismatch vanished under four seeds; VerdictGate still issued one false incompatibility."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "Retain conservative UNKNOWN verdicts for seed-unstable callbacks; accept observed-edge incompatibilities only with stable cross-seed client witnesses."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n10"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "refute",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n15",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n11"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "decompose",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n28",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "depend_on",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n33"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "refute",
+      "target": "n35"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "revise",
+      "target": "n35"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n37",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n54"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n58",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n53",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build a dependency-upgrade analyzer that distinguishes client-reachable behavioral incompatibilities from harmless upstream changes despite dynamic dispatch and incomplete code.",
+    "requirements": [
+      "Achieve at least 90% recall and 90% precision on 100 labeled upgrade scenarios.",
+      "Provide reproducible client-level witnesses for incompatibilities; explicitly identify uncertainty caused by unavailable code or reflection."
+    ]
+  }
+}

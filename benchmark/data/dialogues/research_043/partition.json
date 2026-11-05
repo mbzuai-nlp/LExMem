@@ -1,0 +1,148 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "TailSwap foreground-mask error sweep and the ≤10% miss-rate decision",
+      "boundary_reason": "The mask-error finding leads to a decision; the next nodes begin a follow-up evaluation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8"
+      ],
+      "topic": "Source-calibrated TailSwap masks and planned LT-iNat-Rev evaluation",
+      "boundary_reason": "The evaluation and its report are specified; discussion shifts to a head-distillation ablation."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n9",
+        "n10"
+      ],
+      "topic": "Effect of removing TailSwap head distillation",
+      "boundary_reason": "The ablation result is recorded; discussion shifts to mask dilation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Mask dilation at 20% foreground misses on LT-CUB-Rev and LT-iNat-Rev",
+      "boundary_reason": "Both dilation evaluations are reported; a new method is proposed."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "CoreGuard pooling when diagnostic parts have low mask confidence",
+      "boundary_reason": "The observed tail loss leads to an adaptive-pooling decision; the next nodes specify its follow-up evaluation."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n22",
+        "n23"
+      ],
+      "topic": "Planned LT-iNat-Rev evaluation of adaptive CoreGuard pooling",
+      "boundary_reason": "The evaluation and its sheet are specified; discussion shifts to ClusterGuard."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "ClusterGuard purity test and tail-group weight tuning",
+      "boundary_reason": "The initial and weight-tuned results are recorded; discussion turns to sparse cluster support."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "ClusterGuard tail-class audit by source-cluster support",
+      "boundary_reason": "The support-stratified audit is specified; a new method is proposed."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "PairAlign pose mismatch and the positive-pair filtering decision",
+      "boundary_reason": "The pose comparison leads to a filtering decision; the next nodes specify replication."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n38",
+        "n39"
+      ],
+      "topic": "Planned three-seed comparison of pose-filtered PairAlign",
+      "boundary_reason": "The comparison artifact is specified; discussion shifts to ContextAdv."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "ContextAdv benchmark on two reversed-background datasets",
+      "boundary_reason": "The benchmark results are recorded; the next test examines source-cluster support bins."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "ContextAdv performance across source-cluster support bins and advancement decision",
+      "boundary_reason": "The stratified finding supports an advancement decision; the next nodes specify replication."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n46",
+        "n47"
+      ],
+      "topic": "Planned three-seed ContextAdv replication on unseen backgrounds",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+Check a completed dialogue against its instantiated graph and fixed session partition.
+
+INPUT
+{{INPUT_JSON}}
+
+graph is the source of task-specific information. partition assigns nodes to sessions. annotated_dialogue contains program-assigned source-node blocks and their messages. Metadata is not part of the visible conversation.
+
+Check whether every node's substantive meaning is accurately expressed in its assigned block, in node order; whether hypotheses, observations, conditions, versions, and decisions retain their intended meaning; and whether updates remain consistent across sessions. Reject unsupported task-specific facts, causes, results, experiments, commitments, decisions, or substantive information expressed before its source node. Check for material contradictions or incoherent handoffs.
+
+LENIENT REVIEW
+This is a final sanity check. Every node was already checked individually against its own history, so do not repeat that review. Reject only for a clear, material problem that you can support by quoting the exact wording from the dialogue:
+- a node's substantive content, values or conditions are missing or changed in its block;
+- two blocks contradict each other or the graph;
+- a hypothesis is presented as established fact, or a plan as an executed activity;
+- a task-specific result, experiment, cause or decision appears that neither the source node nor its history supplies;
+- the assistant or user explicitly declares an earlier result invalid, obsolete, superseded, abandoned or revived, or says which historical value must or must not be used, and the source node does not itself say so.
+Do not flag qualitative paraphrase of a node's own numbers, elaboration, emphasis, rhetorical framing, borderline wording, or anything you consider tolerable. When unsure, pass.
+
+HISTORICAL INFORMATION CHECK
+For each candidate statement or question about history, distinguish source-node content from information merely available in the history or relations. Reject either role when it adds any of the following beyond the source node:
+- A judgment that earlier information is valid, invalid, supported, refuted, obsolete, superseded, abandoned, or revived.
+- Instructions about which historical value/version is authoritative or must not be used, or conclusions about whether an earlier target is met or missed.
+- A recap of earlier changes, including a sequence of old, corrected, and new results, or questions inviting such a recap or status judgment.
+
+A historical judgment can be factually correct and still violate this rule. Its presence in earlier dialogue or elsewhere in the graph is not permission to repeat it in this block. Decision nodes and closing summaries have no exception. "After corrected audits" does not authorize narrating the audit history or its old values.
+
+A decision node's own conclusion and the reason it states (for example that stated metrics meet requirements) belong to that node; expressing them is not a violation.
+Do not reject comparisons, corrections, decisions, or reasons explicitly contained in the source node. Minimal historical references needed to identify its method, experiment, object, or comparison baseline are allowed. That permission does not extend to explaining which older alternatives are obsolete or why they are invalid.
+
+For each violation, quote the offending wording and explain the extra historical judgment or recap that the source node does not state. Do not flag a keyword alone; assess the meaning and source-node scope. Do not reject solely for verbosity, repetition, paraphrasing, or clarification.
+
+Apply this check separately to every source-node block. Identify the session and source-node ID for each issue. The complete graph is for verification, not permission to combine its facts into historical conclusions.
+
+Relations must hold in context but need not be explicitly stated. Do not require historical recaps, explicit refutation language, extra experimental detail, a fixed length, or complete question–answer pairs within blocks or sessions. General conceptual explanation is allowed. Role alternation continues across both node and session boundaries. Evaluate fidelity to the supplied graph; do not demand external verification of fictional source facts.
+
+OUTPUT
+Return only JSON:
+{"passed": true, "issues": []}
+If material problems remain, set passed to false and provide concise issues identifying the affected session and node IDs. List only genuine, material violations in issues. Never list an item you judge acceptable, fine, borderline-but-tolerable, or not an issue; if no material violation remains, return passed=true with an empty issues array. passed must be true exactly when issues is empty. Do not rewrite the dialogue.

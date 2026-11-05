@@ -1,0 +1,160 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Select a whisper-preserving gate threshold and prepare a consonant-error audit",
+      "boundary_reason": "Threshold selection and the keyboard-mixture audit conclude; evaluation shifts to unseen dish clatter."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Validate the 0.55 gate on unseen dish clatter",
+      "boundary_reason": "Independent validation raises consonant insertions, leading to deployment deferral and a new proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Test causal onset-context classification against dish clatter",
+      "boundary_reason": "The clatter test concludes; attention turns to whispered /s/ in steam hiss."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Evaluate onset-context masking on steam hiss",
+      "boundary_reason": "Steam-hiss deletions and insufficient SI-SDR gain defer deployment, prompting a fricative-preservation proposal."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Develop and ablate a vowel-to-fricative preservation veto",
+      "boundary_reason": "The veto advances only to independent validation; the next discussion examines word-initial /s/."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Audit the veto for word-initial and silence-preceded /s/",
+      "boundary_reason": "A silence-preceded subgroup failure defers the veto and motivates onset-specific protection."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Test an 80-ms causal onset hold on hiss and mixed noise",
+      "boundary_reason": "The fixed hold is deferred because pure-hiss SI-SDR gain falls short; work shifts to diagnosing that shortfall."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Diagnose the fixed hold and test sustained-hiss early release",
+      "boundary_reason": "Early release advances to independent validation; a separate risk-calibration approach begins."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n62",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67",
+        "n68",
+        "n69"
+      ],
+      "topic": "Calibrate consonant-error risk and add impulse-specific abstention",
+      "boundary_reason": "Impulse abstention advances from impulse testing to cross-noise validation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75",
+        "n76",
+        "n77",
+        "n78"
+      ],
+      "topic": "Cross-validate impulse abstention on mixed hiss-and-click noise",
+      "boundary_reason": "A subgroup reaudit overturns passing aggregate results and withdraws the advancement."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n79"
+      ],
+      "topic": "Block deployment and set the remaining independent-validation priority",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

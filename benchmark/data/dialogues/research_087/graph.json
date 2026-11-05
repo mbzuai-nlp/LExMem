@@ -1,0 +1,1020 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop long-tail image recognition that preserves rare-class accuracy when predictive background correlations reverse without target-domain labels.",
+      "requirements": [
+        "Improve bottom-quintile class macro-accuracy by 5 percentage points over empirical risk minimization under background reversals.",
+        "Keep top-quintile class macro-accuracy within 1 percentage point of that baseline using identical training data."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train class-balanced foreground prototypes with pseudo-masked source background swaps, distilling head-class logits from a frozen ERM model."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What pseudo-mask foreground recall is needed for background swaps to preserve rare-class cues while head-logit distillation protects head classes?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "At ≥85% foreground-mask recall, swaps raise reversal-set tail macro-accuracy ≥5 points versus ERM; distillation limits head loss ≤1 point."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Audit 200 source masks; sweep pseudo-mask thresholds around 85% recall and distillation strength; compare BackgroundFlip-LT quintile macro-accuracy with ERM."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Audit 200 source masks, train 80/85/90%-recall swap variants at two distillation weights, and score BackgroundFlip-LT quintile macro-accuracy."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On BackgroundFlip-LT, 85%-recall swaps with distillation yielded tail macro-accuracy 34% versus ERM’s 28%, and head 71.5% versus 72%."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Select 85%-recall swaps with head-logit distillation, given BackgroundFlip-LT’s 6-point tail gain and 0.5-point head loss versus ERM."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "BackgroundFlip-LT mask-sweep report containing the 200-mask audit, six swap–distillation configurations, per-quintile macro-accuracy, and ERM comparisons."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Using the mask-sweep report, test 85%-recall swaps plus distillation on unseen BackgroundFlip-LT reversals, measuring three-seed quintile macro-accuracy versus ERM."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On unseen BackgroundFlip-LT reversals, three-seed tail macro-accuracy was 29% versus ERM’s 28%; head was 71.5% versus 72%."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "≥95%-recall, ≤5%-leakage masks should improve unseen-reversal tail macro-accuracy ≥5 points versus ERM, with distillation limiting head loss ≤1 point."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Refine source-only pseudo-masks toward ≥95% recall and ≤5% leakage; retrain swaps with distillation and compare unseen-reversal quintile accuracy against ERM."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "At 95% mask recall and 4% leakage, unseen-reversal tail macro-accuracy reached 34% versus ERM’s 28%; head, 71.4% versus 72%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Train source-only background-cluster group DRO with rare-class weighting and ERM-logit regularization on frequent classes."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Cluster source backgrounds, train rare-weighted group DRO with head-logit regularization, then compare unseen-reversal quintile macro-accuracy against identical-data ERM."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Use the mask-sweep report’s audited masks to extract source backgrounds; cluster them and train rare-weighted group DRO with head-logit regularization."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Source-background group manifest with cluster assignments, rare-class weights, and training configuration for head-regularized group DRO."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Audit manifest cluster assignments and weights; compare group DRO, refined foreground swaps, and ERM on unseen BackgroundFlip-LT quintile macro-accuracy."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "On newly held-out BackgroundFlip-LT reversal clusters, group DRO tail/head macro-accuracy: 35%/71.3%; refined swaps: 30%/71.4%; ERM: 28%/72%."
+    },
+    {
+      "id": "n18",
+      "type": "question",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Does group DRO’s 7-point tail gain persist for rare classes represented in fewer than three source-background clusters?"
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "For rare classes spanning fewer than three source-background clusters, group DRO’s tail macro-accuracy gain falls below 5 points versus ERM."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Using the source-background group manifest, compare group DRO’s ERM-relative rare-class macro-accuracy for <3 versus ≥3 source-cluster classes on held-out reversals."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "On held-out reversals, <3-cluster rare classes scored 30% macro-accuracy versus ERM’s 28%; ≥3-cluster classes scored 40% versus 28%."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n19",
+      "content": "Using the group manifest, restrict rare classes to two clusters; retrain group DRO and ERM identically and compare reversal macro-accuracy."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "In controlled two-cluster retraining, group DRO achieved 34% rare-class reversal macro-accuracy versus ERM’s 28%, a 6-point gain."
+    },
+    {
+      "id": "n24",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "n18",
+      "content": "For rare classes with fewer than three clusters, group DRO retains ≥5-point gains when each cluster contains ≥20 training images."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Using the group manifest, stratify <3-cluster rare classes by minimum cluster size (≥20 versus <20); compare reversal macro-accuracy against ERM."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Among <3-cluster rare classes, minimum cluster size ≥20 yielded 34% reversal macro-accuracy versus ERM’s 28%; <20 yielded 27% versus 28%."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 30,
+      "exploration_parent_id": "g1",
+      "content": "Fill sparse rare-class background clusters to 20 images using ≥95%-recall source-only swaps; train group DRO with head-logit distillation."
+    },
+    {
+      "id": "n27",
+      "type": "question",
+      "order": 31,
+      "exploration_parent_id": "p3",
+      "content": "Do source-only swaps filling sparse rare-class clusters to 20 images restore ≥5-point tail gains without exceeding 1-point head loss?"
+    },
+    {
+      "id": "n28",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n27",
+      "content": "Filling rare-class clusters to 20 images with ≥95%-recall swaps yields ≥5-point tail gain and ≤1-point head loss versus ERM."
+    },
+    {
+      "id": "n29",
+      "type": "plan",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Fill sparse clusters to 20 images with audited swaps; compare hybrid, unfilled group DRO, and ERM on reversal tail/head macro-accuracy."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Using the group manifest, fill <3-cluster rare-class groups to 20 with ≥95%-recall swaps; compare hybrid, unfilled DRO, ERM tail/head accuracies."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Hybrid achieved 36%/71.4% tail/head macro-accuracy versus ERM’s 28%/72%; filled sparse-class accuracy rose from 27% unfilled to 34%."
+    },
+    {
+      "id": "n32",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n30",
+      "content": "BackgroundFlip-LT hybrid evaluation bundle with source-only cluster-fill manifest, ≥95%-recall mask audit, model checkpoint, and ERM-matched quintile scores."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n29",
+      "content": "Using the hybrid bundle, audit source-only provenance and evaluate three-seed tail/head macro-accuracy on disjoint BackgroundFlip-LT reversals against ERM."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "On disjoint BackgroundFlip-LT reversals, three-seed hybrid tail/head macro-accuracy averaged 35%/71.3% versus ERM’s 28%/72%; provenance audit confirmed source-only training."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n29",
+      "content": "Using the hybrid bundle, ablate head-logit distillation and reduce cluster-fill targets to 10 images; measure reversal tail/head macro-accuracy."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "On texture-only reversals, hybrid tail accuracy was 31% versus ERM’s 28%; 10-fill reached 29%, undistilled head 69% versus 72%."
+    },
+    {
+      "id": "n37",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p3",
+      "content": "Are sparse clusters filled with texture-homogeneous backgrounds despite semantic diversity, explaining the hybrid’s 3-point tail gain on texture-only reversals?"
+    },
+    {
+      "id": "n38",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Four texture modes per 20-image filled cluster should yield ≥5-point texture-reversal tail gain versus ERM and ≤1-point head loss."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "Using the hybrid bundle, audit fill-texture diversity, rebalance each 20-image cluster across four modes, and score texture-reversal quintiles versus ERM."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Audit found 78% of filled clusters single-mode; four-mode texture-reversal tail/head accuracy reached 34%/71.3% versus ERM’s 28%/72%."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 45,
+      "exploration_parent_id": "n37",
+      "content": "Retain the distilled hybrid’s disjoint-reversal gains, but require four-mode, 20-image fills to address its texture-reversal failure."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Train texture-stratified group DRO with four-mode, 20-image source-only rare-cluster fills and ERM head-logit distillation."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Build source-only four-mode fills, retrain distilled texture-stratified group DRO, and validate quintile macro-accuracy on disjoint semantic and texture reversals."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Using the source-background manifest and four-mode audit, fill sparse rare-class clusters to 20 images across four textures; train distilled DRO."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Texture-stratified DRO checkpoint and source-only fill manifest recording each rare-class cluster’s 20 images, four texture modes, and distillation settings."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n42",
+      "content": "Audit the checkpoint’s fill manifest; compare three-seed bottom/top-quintile macro-accuracy with identical-data ERM on disjoint semantic and texture reversals."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Source-only audit passed; three-seed semantic and texture reversal tail/head macro-accuracy: 35%/71.3% and 34%/71.2%; ERM: 28%/72% on both."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n42",
+      "content": "Using the checkpoint and fill manifest, test joint semantic–texture reversals against identical-data ERM across three seeds, auditing tail/head macro-accuracy."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "On joint semantic–texture reversals, three-seed tail/head macro-accuracy was 31%/71.1% versus ERM’s 28%/72%, missing the 5-point tail target."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 54,
+      "exploration_parent_id": "p4",
+      "content": "Do four-mode fills undersample semantic–texture combinations, leaving rare classes exposed when both background cues reverse together?"
+    },
+    {
+      "id": "n50",
+      "type": "hypothesis",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Balancing 20-image fills across eight semantic–texture cells, ≥2 images per cell, should restore ≥5-point joint-reversal tail gains versus ERM."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Audit checkpoint fills; rebalance eight source-only semantic–texture cells to ≥2 images each, retrain, and score joint-reversal tail/head macro-accuracy versus ERM."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "With ≥2 images in every semantic–texture cell, joint-reversal tail/head macro-accuracy reached 32%/71.2% versus ERM’s 28%/72%."
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "n49",
+      "content": "Joint-cue reliance, not cell undersampling, drives failure; paired-swap foreground consistency should yield ≥5-point tail gain, ≤1-point head loss."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Using the checkpoint, measure paired-swap prediction agreement, add foreground-consistency loss, and evaluate joint-reversal tail/head macro-accuracy against ERM."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Paired-swap agreement rose from 62% to 84%; joint-reversal tail/head macro-accuracy reached 34%/71.2% versus ERM’s 28%/72%."
+    },
+    {
+      "id": "n56",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "n49",
+      "content": "Adopt paired-swap foreground consistency atop texture-stratified DRO: joint-reversal tail gains 6 points with 0.8-point head loss; cell balancing insufficient."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "revise",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n18"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n28",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n27"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n24"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "revise",
+      "target": "n28"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n38"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n38"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n45"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n53",
+      "relation": "revise",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n48"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n56"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop long-tail image recognition that preserves rare-class accuracy when predictive background correlations reverse without target-domain labels.",
+    "requirements": [
+      "Improve bottom-quintile class macro-accuracy by 5 percentage points over empirical risk minimization under background reversals.",
+      "Keep top-quintile class macro-accuracy within 1 percentage point of that baseline using identical training data."
+    ]
+  }
+}

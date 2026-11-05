@@ -1,0 +1,1135 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a legged locomotion controller that identifies hidden terrain yielding limits while maintaining recoverability during exploratory foot contacts.",
+      "requirements": [
+        "Estimate previously unseen terrain’s load-bearing limits with median relative error below 15%.",
+        "Reduce falls by 30% versus an otherwise matched nonexploratory controller at equal traversal speed."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use graded-load foot probes and Bayesian force–sinkage inference to estimate yield limits, while viability-constrained MPC reserves recovery steps."
+    },
+    {
+      "id": "q1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Can graded foot probes identify yield load without shrinking the viability-constrained MPC recovery set below a safe margin?"
+    },
+    {
+      "id": "h1",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "q1",
+      "content": "Viability-gated probes maintain a ≥0.15 m recovery-step margin while estimating yield load with <15% median relative error."
+    },
+    {
+      "id": "a1",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "h1",
+      "content": "On 300 blinded terrain trials, measure plate-referenced median yield error, minimum recovery-step margin, and matched-speed fall reduction."
+    },
+    {
+      "id": "e1",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "a1",
+      "content": "In 300 blinded trials, median yield error was 12.8%, minimum recovery margin 0.16 m, and matched-speed falls 12 versus 18."
+    },
+    {
+      "id": "d1",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "e1",
+      "content": "Advance viability-gated probing to hardware validation because blinded trials met estimation and recovery thresholds and cut matched-speed falls by 33%."
+    },
+    {
+      "id": "l1",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "d1",
+      "content": "Run 120 randomized hardware traversals on unseen yielding beds; compare matched-speed falls, plate-referenced yield error, and recovery margin against baseline."
+    },
+    {
+      "id": "a2",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "l1",
+      "content": "Run 60 matched-speed hardware traversals per controller on blinded yielding beds, logging plate-referenced yield error, falls, and recovery margin."
+    },
+    {
+      "id": "r1",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "a2",
+      "content": "YieldBed-H120 dataset: 120 matched-speed hardware traversals with force–sinkage traces, plate-referenced yield loads, recovery margins, and fall labels."
+    },
+    {
+      "id": "a3",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "r1",
+      "content": "Audit YieldBed-H120 completeness and force-plate labels; compute plate-referenced median yield error, minimum recovery margin, and matched-speed fall reduction."
+    },
+    {
+      "id": "e2",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "a3",
+      "content": "YieldBed-H120 showed 13.4% median yield error, 0.16 m minimum recovery margin, and 8 versus 12 matched-speed falls (33% fewer)."
+    },
+    {
+      "id": "a4",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "e2",
+      "content": "Bootstrap YieldBed-H120 to assess uncertainty in yield error and matched-speed fall reduction, and audit low-margin probe contacts."
+    },
+    {
+      "id": "e3",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "a4",
+      "content": "In 18 low-margin weak-crust trials per controller, probing caused 6 falls versus 4; median yield error reached 22%."
+    },
+    {
+      "id": "d2",
+      "type": "decision",
+      "order": 15,
+      "exploration_parent_id": "e3",
+      "content": "Continue hardware development given aggregate gains, but disable weak-crust probes pending redesigned gating and subgroup validation."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Fuse toe-tap acoustic crust detection with load-capped Bayesian probing and chance-constrained foothold switching before full loading."
+    },
+    {
+      "id": "q2",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Can toe-tap acoustics detect weak crust early enough to cap probe loads without sacrificing yield-limit accuracy?"
+    },
+    {
+      "id": "h2",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "q2",
+      "content": "Acoustic gating identifies weak crust before high-load probing, achieving <15% median yield error and ≥30% fewer matched-speed falls."
+    },
+    {
+      "id": "a5",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "h2",
+      "content": "Run 240 randomized weak-crust traversals; compare acoustic-gated probing against matched-speed baseline on pre-load detection, plate-referenced yield error, and falls."
+    },
+    {
+      "id": "e4",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "a5",
+      "content": "Across 120 trials per arm, pre-load crust detection was 68%, median yield error 18%, and falls 10 versus 12."
+    },
+    {
+      "id": "h3",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "e4",
+      "content": "Fusing acoustic taps with capped toe shears detects ≥90% weak crust pre-load, achieving <15% yield error and ≥30% fewer falls."
+    },
+    {
+      "id": "a6",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "h3",
+      "content": "Randomize 300 weak-crust traversals between capped toe-shear–acoustic probing and baseline; measure pre-load detection, plate-referenced yield error, and matched-speed falls."
+    },
+    {
+      "id": "e5",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "a6",
+      "content": "Across 150 trials per arm, fusion achieved 92% pre-load crust detection, 13.1% median yield error, and 9 versus 15 falls."
+    },
+    {
+      "id": "a7",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "h3",
+      "content": "Run 400 randomized, held-out weak-crust clay/peat traversals comparing fused probing with speed-matched baseline; measure pre-load detection, yield error, and falls."
+    },
+    {
+      "id": "e6",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "a7",
+      "content": "Held-out clay/peat (200/arm): fusion achieved 86% pre-load detection, 16.2% median yield error, and 14 versus 18 matched-speed falls."
+    },
+    {
+      "id": "d3",
+      "type": "decision",
+      "order": 26,
+      "exploration_parent_id": "e6",
+      "content": "Withhold fusion deployment despite initial gains; held-out clay/peat misses detection, yield-error, and fall-reduction thresholds, requiring recalibration."
+    },
+    {
+      "id": "h4",
+      "type": "hypothesis",
+      "order": 27,
+      "exploration_parent_id": "d3",
+      "content": "Material-conditioned acoustic–shear calibration and adaptive probe caps achieve ≥90% pre-load detection, <15% median yield error, ≥30% matched-speed fall reduction."
+    },
+    {
+      "id": "a8",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "h4",
+      "content": "Calibrate material-conditioned gates and adaptive caps separately; randomize 480 speed-matched clay/peat traversals against baseline, measuring detection, yield error, falls."
+    },
+    {
+      "id": "e7",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "a8",
+      "content": "Clay/peat (240/arm): pre-load detection 92%, median yield error 13.6%, and 11 versus 17 matched-speed falls (35% fewer)."
+    },
+    {
+      "id": "a9",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "h4",
+      "content": "Run 600 held-out clay/peat traversals across moisture levels against speed-matched baseline; measure detection, plate-referenced yield error, falls, and recovery margin."
+    },
+    {
+      "id": "e8",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "a9",
+      "content": "Held-out clay/peat (300/arm) across moisture: 87% pre-load detection, 16.4% median yield error, and 17 versus 22 matched-speed falls."
+    },
+    {
+      "id": "h5",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "e8",
+      "content": "Online moisture-conditioned acoustic–shear calibration with adaptive caps achieves ≥90% pre-load detection, <15% median yield error, ≥30% fewer matched-speed falls."
+    },
+    {
+      "id": "a10",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "h5",
+      "content": "Test online moisture calibration on 800 held-out clay/peat traversals across humidity shifts; compare detection, yield error, and matched-speed falls."
+    },
+    {
+      "id": "e9",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "a10",
+      "content": "Held-out humidity shifts (400/arm): online calibration achieved 93% pre-load detection, 13.9% median yield error, and 14 versus 21 matched-speed falls."
+    },
+    {
+      "id": "d4",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "e9",
+      "content": "Advance online moisture calibration to broader-terrain validation, not deployment: it restored thresholds under humidity shifts after static calibration failed."
+    },
+    {
+      "id": "l2",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "d4",
+      "content": "Run 900 blinded sand/loam/peat traversals at matched speeds versus baseline; assess online calibration’s yield error, fall reduction, and recovery margin."
+    },
+    {
+      "id": "a11",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "l2",
+      "content": "Randomize 450 traversals per arm across unseen sand, loam, and peat; log force-plate yield loads, recovery margins, falls, and speed."
+    },
+    {
+      "id": "r2",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "a11",
+      "content": "TerrainMix-900: 900 blinded sand/loam/peat traversals with controller assignments, toe signals, force-plate yield loads, recovery margins, speeds, and falls."
+    },
+    {
+      "id": "a12",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "l2",
+      "content": "Audit TerrainMix-900 labels and speed balance; assess acoustic–shear probing by substrate-specific yield error, fall reduction, and minimum recovery margin."
+    },
+    {
+      "id": "e10",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "a12",
+      "content": "TerrainMix-900: median yield error 13.7%, minimum recovery margin 0.16 m; speed-matched falls 20 versus 30 baseline (33% fewer)."
+    },
+    {
+      "id": "d5",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "e10",
+      "content": "Advance online-calibrated probing to supervised field pilots; TerrainMix-900 met aggregate accuracy and fall targets, but deployment needs further validation."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 42,
+      "exploration_parent_id": "g1",
+      "content": "Use paired-foot load transfers to infer yield thresholds, retracting force whenever capture-point slack drops below 0.18 m."
+    },
+    {
+      "id": "q3",
+      "type": "question",
+      "order": 43,
+      "exploration_parent_id": "p3",
+      "content": "Can paired-foot load transfers distinguish probing-foot yield from supporting-foot compliance before capture-point slack falls below 0.18 m?"
+    },
+    {
+      "id": "h6",
+      "type": "hypothesis",
+      "order": 44,
+      "exploration_parent_id": "q3",
+      "content": "Alternating paired-foot loads and differential sinkage inference separate foot-specific yielding with <15% median error while preserving ≥0.18 m slack."
+    },
+    {
+      "id": "a13",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "h6",
+      "content": "Test paired-foot probing against speed-matched nonexploratory control over 360 mixed-compliance traversals; measure foot-specific yield error, capture-point slack, and falls."
+    },
+    {
+      "id": "e11",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "a13",
+      "content": "Mixed-compliance trials (180/arm): foot-specific yield error 13.2%, minimum capture-point slack 0.19 m, matched-speed falls 8 versus 12."
+    },
+    {
+      "id": "d6",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "e11",
+      "content": "Advance paired-foot transfer to held-out field testing; mixed-compliance trials met yield-error, capture-point-slack, and matched-speed fall targets."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 48,
+      "exploration_parent_id": "g1",
+      "content": "Couple spatial Gaussian-process yield mapping with bounded-force sentinel contacts and chance-constrained route replanning to maintain recovery footholds."
+    },
+    {
+      "id": "q4",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p4",
+      "content": "Can bounded-force sentinel contacts detect abrupt yield boundaries before the spatial map selects footholds without viable recovery options?"
+    },
+    {
+      "id": "h7",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "q4",
+      "content": "Sentinel contacts detect ≥90% of abrupt yield boundaries before foothold commitment, maintaining <15% median error and ≥30% fewer matched-speed falls."
+    },
+    {
+      "id": "a14",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "h7",
+      "content": "Randomize 600 traversals across concealed firm-to-soft boundaries; measure precommitment detection, plate-referenced yield error, recovery footholds, and matched-speed falls."
+    },
+    {
+      "id": "e12",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "a14",
+      "content": "Boundary trials (300/arm): precommitment detection was 82%, median yield error 17.1%, and matched-speed falls 16 versus 20."
+    },
+    {
+      "id": "h8",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "e12",
+      "content": "Uncertainty-triggered sentinel densification detects ≥90% of abrupt yield boundaries precommitment, yields <15% median error, and reduces matched-speed falls ≥30%."
+    },
+    {
+      "id": "a15",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "h8",
+      "content": "Test uncertainty-triggered sentinel densification on 800 blinded boundary traversals versus matched-speed baseline; assess precommitment detection, yield error, and falls."
+    },
+    {
+      "id": "e13",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "a15",
+      "content": "Blinded boundaries (400/arm): densification achieved 92% precommitment detection, 13.8% median yield error, and 14 versus 21 matched-speed falls."
+    },
+    {
+      "id": "a16",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "h8",
+      "content": "Validate densification on 1,000 held-out patchwork-terrain traversals, measuring precommitment detection, yield error, recovery footholds, and matched-speed falls."
+    },
+    {
+      "id": "e14",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "a16",
+      "content": "Held-out patchwork terrain (500/arm): precommitment detection 86%, median yield error 16.3%, and 19 versus 25 matched-speed falls."
+    },
+    {
+      "id": "h9",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "e14",
+      "content": "Patchwork-aware change-point mapping triggers precommitment sentinel probes, predicting ≥90% boundary detection, <15% median yield error, ≥30% fewer matched-speed falls."
+    },
+    {
+      "id": "a17",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "h9",
+      "content": "Randomize 1,200 held-out patchwork traversals against matched-speed baseline; measure precommitment boundary detection, plate-referenced yield error, falls, and recovery footholds."
+    },
+    {
+      "id": "e15",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "a17",
+      "content": "Held-out patchwork (600/arm): precommitment detection 88%, median yield error 15.8%, and 24 versus 31 matched-speed falls."
+    },
+    {
+      "id": "a18",
+      "type": "activity",
+      "order": 61,
+      "exploration_parent_id": "h9",
+      "content": "Run 900 randomized patchwork traversals across uncertainty-triggered densification, change-point mapping, and speed-matched baseline; compare detection, yield error, falls."
+    },
+    {
+      "id": "e16",
+      "type": "evidence",
+      "order": 62,
+      "exploration_parent_id": "a18",
+      "content": "Patchwork (300/arm, speed-matched): densification detection 92%, median yield error 14.1%, falls 13; change-point 87%, 16.2%, 17; baseline falls 20."
+    },
+    {
+      "id": "a19",
+      "type": "activity",
+      "order": 63,
+      "exploration_parent_id": "h9",
+      "content": "Stratify held-out patchwork traversals by patch width; audit change-point precommitment detection, plate-referenced yield error, and matched-speed falls."
+    },
+    {
+      "id": "e17",
+      "type": "evidence",
+      "order": 64,
+      "exploration_parent_id": "a19",
+      "content": "For patches ≥0.4 m (200/arm), change-point detection reached 94%, median yield error 13.8%, and matched-speed falls 6 versus 10."
+    },
+    {
+      "id": "d7",
+      "type": "decision",
+      "order": 65,
+      "exploration_parent_id": "e17",
+      "content": "Prioritize densification for further patchwork validation; restrict change-point mapping to patches ≥0.4 m, where subgroup targets were met."
+    },
+    {
+      "id": "l3",
+      "type": "plan",
+      "order": 66,
+      "exploration_parent_id": "d7",
+      "content": "Run 1,200 speed-matched patchwork traversals: densification versus baseline across widths; change-point only ≥0.4 m; assess detection, error, falls."
+    },
+    {
+      "id": "a20",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "l3",
+      "content": "Randomize 800 mixed-width traversals to densification or baseline, plus 400 wide-patch traversals to change-point or baseline at matched speeds."
+    },
+    {
+      "id": "r3",
+      "type": "artifact",
+      "order": 68,
+      "exploration_parent_id": "a20",
+      "content": "PatchWidth-1200: randomized traversals labeled with patch width, sentinel detections, plate-referenced yield loads, recovery footholds, speeds, and falls."
+    },
+    {
+      "id": "a21",
+      "type": "activity",
+      "order": 69,
+      "exploration_parent_id": "l3",
+      "content": "Audit PatchWidth-1200 labels and speed balance; compare width-stratified sentinel arms against baselines on detection, yield error, falls, and recovery footholds."
+    },
+    {
+      "id": "e18",
+      "type": "evidence",
+      "order": 70,
+      "exploration_parent_id": "a21",
+      "content": "PatchWidth-1200 mixed-width arm: 93% boundary detection, 13.9% median yield error, and 13 versus 20 matched-speed falls (400/arm)."
+    },
+    {
+      "id": "d8",
+      "type": "decision",
+      "order": 71,
+      "exploration_parent_id": "e18",
+      "content": "Prioritize densification pilots after 35% fewer falls; limit change-point to wide patches, disable weak-crust probes, and validate alternatives separately."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h1",
+      "relation": "address",
+      "target": "q1"
+    },
+    {
+      "source": "a1",
+      "relation": "evaluate",
+      "target": "h1"
+    },
+    {
+      "source": "a1",
+      "relation": "produce",
+      "target": "e1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "h1"
+    },
+    {
+      "source": "e1",
+      "relation": "support",
+      "target": "d1"
+    },
+    {
+      "source": "d1",
+      "relation": "depend_on",
+      "target": "e1"
+    },
+    {
+      "source": "l1",
+      "relation": "depend_on",
+      "target": "d1"
+    },
+    {
+      "source": "l1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a2"
+    },
+    {
+      "source": "l1",
+      "relation": "decompose",
+      "target": "a3"
+    },
+    {
+      "source": "a2",
+      "relation": "produce",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "evaluate",
+      "target": "r1"
+    },
+    {
+      "source": "a3",
+      "relation": "produce",
+      "target": "e2"
+    },
+    {
+      "source": "e2",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "a4",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "a4",
+      "relation": "depend_on",
+      "target": "r1"
+    },
+    {
+      "source": "a4",
+      "relation": "produce",
+      "target": "e3"
+    },
+    {
+      "source": "e3",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e2"
+    },
+    {
+      "source": "d2",
+      "relation": "depend_on",
+      "target": "e3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h2",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a5",
+      "relation": "evaluate",
+      "target": "h2"
+    },
+    {
+      "source": "a5",
+      "relation": "produce",
+      "target": "e4"
+    },
+    {
+      "source": "e4",
+      "relation": "refute",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "relation": "revise",
+      "target": "h2"
+    },
+    {
+      "source": "h3",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a6",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a6",
+      "relation": "produce",
+      "target": "e5"
+    },
+    {
+      "source": "e5",
+      "relation": "support",
+      "target": "h3"
+    },
+    {
+      "source": "a7",
+      "relation": "evaluate",
+      "target": "h3"
+    },
+    {
+      "source": "a7",
+      "relation": "produce",
+      "target": "e6"
+    },
+    {
+      "source": "e6",
+      "relation": "refute",
+      "target": "h3"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e5"
+    },
+    {
+      "source": "d3",
+      "relation": "depend_on",
+      "target": "e6"
+    },
+    {
+      "source": "h4",
+      "relation": "revise",
+      "target": "h3"
+    },
+    {
+      "source": "h4",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a8",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a8",
+      "relation": "produce",
+      "target": "e7"
+    },
+    {
+      "source": "e7",
+      "relation": "support",
+      "target": "h4"
+    },
+    {
+      "source": "a9",
+      "relation": "evaluate",
+      "target": "h4"
+    },
+    {
+      "source": "a9",
+      "relation": "produce",
+      "target": "e8"
+    },
+    {
+      "source": "e8",
+      "relation": "refute",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "revise",
+      "target": "h4"
+    },
+    {
+      "source": "h5",
+      "relation": "address",
+      "target": "q2"
+    },
+    {
+      "source": "a10",
+      "relation": "evaluate",
+      "target": "h5"
+    },
+    {
+      "source": "a10",
+      "relation": "produce",
+      "target": "e9"
+    },
+    {
+      "source": "e9",
+      "relation": "support",
+      "target": "h5"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e7"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e8"
+    },
+    {
+      "source": "d4",
+      "relation": "depend_on",
+      "target": "e9"
+    },
+    {
+      "source": "l2",
+      "relation": "depend_on",
+      "target": "d4"
+    },
+    {
+      "source": "l2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a11"
+    },
+    {
+      "source": "l2",
+      "relation": "decompose",
+      "target": "a12"
+    },
+    {
+      "source": "a11",
+      "relation": "produce",
+      "target": "r2"
+    },
+    {
+      "source": "a12",
+      "relation": "depend_on",
+      "target": "r2"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "r2"
+    },
+    {
+      "source": "a12",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "a12",
+      "relation": "produce",
+      "target": "e10"
+    },
+    {
+      "source": "e10",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "d5",
+      "relation": "depend_on",
+      "target": "e10"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h6",
+      "relation": "address",
+      "target": "q3"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "h6"
+    },
+    {
+      "source": "a13",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "a13",
+      "relation": "produce",
+      "target": "e11"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "h6"
+    },
+    {
+      "source": "e11",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "d6",
+      "relation": "depend_on",
+      "target": "e11"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "h7",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a14",
+      "relation": "evaluate",
+      "target": "h7"
+    },
+    {
+      "source": "a14",
+      "relation": "produce",
+      "target": "e12"
+    },
+    {
+      "source": "e12",
+      "relation": "refute",
+      "target": "h7"
+    },
+    {
+      "source": "h8",
+      "relation": "revise",
+      "target": "h7"
+    },
+    {
+      "source": "h8",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "a15",
+      "relation": "evaluate",
+      "target": "h8"
+    },
+    {
+      "source": "a15",
+      "relation": "produce",
+      "target": "e13"
+    },
+    {
+      "source": "e13",
+      "relation": "support",
+      "target": "h8"
+    },
+    {
+      "source": "a16",
+      "relation": "evaluate",
+      "target": "h8"
+    },
+    {
+      "source": "a16",
+      "relation": "produce",
+      "target": "e14"
+    },
+    {
+      "source": "e14",
+      "relation": "refute",
+      "target": "h8"
+    },
+    {
+      "source": "h9",
+      "relation": "revise",
+      "target": "h8"
+    },
+    {
+      "source": "h9",
+      "relation": "address",
+      "target": "q4"
+    },
+    {
+      "source": "h9",
+      "relation": "depend_on",
+      "target": "e13"
+    },
+    {
+      "source": "h9",
+      "relation": "depend_on",
+      "target": "e14"
+    },
+    {
+      "source": "a17",
+      "relation": "evaluate",
+      "target": "h9"
+    },
+    {
+      "source": "a17",
+      "relation": "produce",
+      "target": "e15"
+    },
+    {
+      "source": "e15",
+      "relation": "refute",
+      "target": "h9"
+    },
+    {
+      "source": "a18",
+      "relation": "evaluate",
+      "target": "h8"
+    },
+    {
+      "source": "a18",
+      "relation": "evaluate",
+      "target": "h9"
+    },
+    {
+      "source": "a18",
+      "relation": "produce",
+      "target": "e16"
+    },
+    {
+      "source": "e16",
+      "relation": "support",
+      "target": "h8"
+    },
+    {
+      "source": "e16",
+      "relation": "refute",
+      "target": "h9"
+    },
+    {
+      "source": "a19",
+      "relation": "evaluate",
+      "target": "h9"
+    },
+    {
+      "source": "a19",
+      "relation": "produce",
+      "target": "e17"
+    },
+    {
+      "source": "e17",
+      "relation": "support",
+      "target": "h9"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e13"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e14"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e15"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e16"
+    },
+    {
+      "source": "d7",
+      "relation": "depend_on",
+      "target": "e17"
+    },
+    {
+      "source": "l3",
+      "relation": "depend_on",
+      "target": "d7"
+    },
+    {
+      "source": "l3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a20"
+    },
+    {
+      "source": "l3",
+      "relation": "decompose",
+      "target": "a21"
+    },
+    {
+      "source": "a20",
+      "relation": "produce",
+      "target": "r3"
+    },
+    {
+      "source": "a21",
+      "relation": "depend_on",
+      "target": "r3"
+    },
+    {
+      "source": "a21",
+      "relation": "evaluate",
+      "target": "r3"
+    },
+    {
+      "source": "a21",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "a21",
+      "relation": "produce",
+      "target": "e18"
+    },
+    {
+      "source": "e18",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "e18"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d7"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d2"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d5"
+    },
+    {
+      "source": "d8",
+      "relation": "depend_on",
+      "target": "d6"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a legged locomotion controller that identifies hidden terrain yielding limits while maintaining recoverability during exploratory foot contacts.",
+    "requirements": [
+      "Estimate previously unseen terrain’s load-bearing limits with median relative error below 15%.",
+      "Reduce falls by 30% versus an otherwise matched nonexploratory controller at equal traversal speed."
+    ]
+  }
+}

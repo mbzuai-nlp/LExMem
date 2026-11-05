@@ -1,0 +1,952 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Build an incremental interprocedural alias analysis that preserves soundness across pointer escapes, indirect calls, and changing function summaries.",
+      "requirements": [
+        "Soundly handle heap objects, pointer casts, recursion, and opaque external calls under documented IR semantics.",
+        "After single-function edits, match full recomputation’s alias answers while reducing median analysis latency by 50%."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use allocation-site points-to constraints, conservative cast/escape/opaque-call effects, indirect-call target expansion, SCC summary fixpoints, and dependency-indexed invalidation."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How should summary dependencies detect newly feasible indirect-call targets when a function edit expands escaped-pointer points-to sets?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Reverse-indexing indirect callsites by function-pointer points-to sets and escape summaries, then re-solving affected SCCs, matches full-recompute aliases."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Index callsite dependencies on function-pointer sets and escape summaries; propagate changes, discover new targets, re-solve SCCs, verify alias equivalence."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run AliasEdit-120 edits covering escapes, indirect targets, and recursive SCCs; compare incremental alias matrices and latency against full recomputation."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "AliasEdit-120 found 3/120 alias-matrix mismatches: initially empty indirect callsites gained targets without indexed dependencies, escaping SCC re-solving."
+    },
+    {
+      "id": "n6",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Index indirect callsites by function-pointer definitions and escape-summary producers, including empty sets, to restore full-recompute alias equivalence."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Register empty-set callsite dependencies on pointer definitions and escape producers; rerun AliasEdit-120, checking alias matrices and median latency."
+    },
+    {
+      "id": "n8",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "AliasEdit-120 yielded 0/120 alias-matrix mismatches and 43 ms incremental versus 104 ms full median latency (59% reduction)."
+    },
+    {
+      "id": "n9",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Adopt empty-set-inclusive definition and escape-producer indexing: it resolves three alias mismatches while achieving 59% median latency reduction."
+    },
+    {
+      "id": "n10",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n3",
+      "content": "Integrate adopted empty-set-inclusive dependency indexing into the analyzer and add AliasEdit-120 regression coverage for indirect-target growth and SCC invalidation."
+    },
+    {
+      "id": "n11",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "AliasInc v0.1 delivers empty-set-inclusive dependency indexing, SCC invalidation, AliasEdit-120 regressions, and documented heap, cast, escape, and opaque-call semantics."
+    },
+    {
+      "id": "n12",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "How can incremental updates retract stale points-to facts when edits remove indirect-call targets or shrink summaries within recursive SCCs?"
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Run ShrinkSCC-80 deletion edits against AliasInc v0.1, comparing points-to sets and alias answers with full recomputation."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "ShrinkSCC-80 found 0/80 points-to and alias mismatches after deletions; dependency-indexed SCC rebuilding cleared stale targets."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 17,
+      "exploration_parent_id": "g1",
+      "content": "Specify conservative heap, cast, and opaque-call semantics, then validate recursive edit sequences against full recomputation."
+    },
+    {
+      "id": "n15",
+      "type": "plan",
+      "order": 18,
+      "exploration_parent_id": "p2",
+      "content": "Define IR transfer rules, build heap/cast/external-call fixtures, then compare incremental and full aliases across recursive edit sequences."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Using AliasInc v0.1, add IRSpec-1 allocation-site, cast-to-unknown, opaque-call escaped-heap havoc, and recursive-edit fixtures with full-recompute alias oracles."
+    },
+    {
+      "id": "n17",
+      "type": "artifact",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "IRSpec-1 contains executable heap, cast-to-unknown, opaque-call havoc, and recursive-edit fixtures with full-recomputation alias oracles."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "Run IRSpec-1 fixtures through AliasInc v0.1, checking expected may-alias edges and full-recompute equivalence after recursive edits."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "IRSpec-1: both solvers missed 4/20 required cast-mediated aliases, invalidating full-recomputation equivalence as a soundness oracle."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "Does cast-to-unknown discard allocation-site provenance, causing the four missing IRSpec-1 aliases in both solvers?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Cast-to-unknown drops allocation-site provenance; retaining original targets alongside Unknown should restore all four missing IRSpec-1 aliases."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Patch cast-to-unknown to retain allocation-site targets alongside Unknown; rerun IRSpec-1’s 20 expected aliases and incremental/full comparisons."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Patched IRSpec-1 recovered 20/20 required aliases, including four cast-mediated edges, with zero incremental/full mismatches."
+    },
+    {
+      "id": "n24",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Require cast-to-unknown to retain source targets plus Unknown; IRSpec-1 exposed four omissions that the patch eliminated."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n15",
+      "content": "Run EditMix-240 single-function edits with adopted cast semantics and SCC rebuilding; compare expected aliases, full-recompute matrices, and median latency."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "EditMix-240: zero incremental/full mismatches and 56% median latency reduction, but both solvers missed two expected opaque-call aliases."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Retain dependency-indexed rebuilding, but block soundness sign-off until opaque-call transfer rules recover the two missing aliases."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Extend opaque-call havoc to transitive escape closure, treating pointer returns as Unknown and invalidating summaries when closure changes."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "Are EditMix-240’s missing opaque-call aliases caused by unmodeled writes through pointers stored in transitively escaped heap objects?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "The two aliases traverse pointers stored in escaped heap objects; transitive escape-closure havoc should restore both without broadening unrelated locals."
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Extend AliasInc v0.1 with transitive escape-closure havoc; rerun EditMix-240’s two opaque-call cases and unrelated-local controls."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Transitive escape-closure havoc recovered both opaque-call aliases; all 12 unrelated-local controls remained unchanged on EditMix-240."
+    },
+    {
+      "id": "n32",
+      "type": "decision",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Adopt transitive escape-closure havoc and resume IR-semantics validation; both missing aliases recovered, but full-suite soundness sign-off remains pending."
+    },
+    {
+      "id": "n33",
+      "type": "plan",
+      "order": 37,
+      "exploration_parent_id": "n32",
+      "content": "Trace both opaque-call pointer paths, document transitive escape-closure havoc, then rerun IRSpec-1 and EditMix-240 for soundness and latency."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Trace both EditMix-240 opaque-call aliases through escaped heap fields and document transitive closure-havoc rules in IRSpec-1."
+    },
+    {
+      "id": "n35",
+      "type": "artifact",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "IRSpec-1 addendum records both escaped-field pointer paths and specifies opaque-call havoc over transitively reachable heap objects."
+    },
+    {
+      "id": "n36",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n28",
+      "content": "Disabling only escaped-field havoc should recreate both opaque-call misses while leaving return-value effects unchanged, isolating the original omission."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Ablate escaped-field havoc on the two documented EditMix-240 traces; compare required aliases with the full closure-havoc implementation."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Escaped-field ablation lost only one of two aliases; object-level closure havoc preserved the other, supporting comprehensive transitive havoc."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "p3",
+      "content": "Keep both object-level and escaped-field closure havoc: together they recovered both aliases, while field-only ablation isolated just one."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Track per-object escape-closure fingerprints to invalidate affected opaque-call summaries selectively, retaining conservative havoc while reducing recomputation."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Implement escape-closure fingerprints, invalidate dependent opaque-call summaries on changes, then benchmark EditMix-240 alias coverage, recomputation equivalence, and median latency."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Implement per-object escape-closure fingerprints and selective opaque-call invalidation under IRSpec-1; benchmark EditMix-240 alias coverage, full-recompute equivalence, and latency."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "EditMix-240: per-object fingerprints missed 3/240 field rewires with unchanged closure membership; full-recompute havoc retained both opaque-call aliases."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Which field-level changes must escape-closure fingerprints encode to invalidate opaque-call summaries when reachable-object membership stays unchanged?"
+    },
+    {
+      "id": "n44",
+      "type": "hypothesis",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Hash field-labeled points-to edges, including Unknown targets, alongside closure membership; this should invalidate all three missed rewires."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Add field-labeled points-to edges and Unknown targets to fingerprints; rerun EditMix-240’s three rewires against full-recompute aliases."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Field-labeled fingerprints invalidated all 3 rewires; EditMix-240 had zero incremental/full alias mismatches and retained both opaque-call aliases."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Adopt field-labeled closure fingerprints while preserving object-level and escaped-field havoc; all three rewires now invalidate correctly."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Replace membership-only fingerprints with field-labeled edge and Unknown-target hashes; rerun IRSpec-1 and EditMix-240 coverage, equivalence, and latency checks."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Run IRSpec-1 and EditMix-240 with field-labeled fingerprints, checking expected aliases, incremental/full matrices, and median single-function-edit latency."
+    },
+    {
+      "id": "n50",
+      "type": "artifact",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Validation report records IRSpec-1’s 20/20 required aliases, EditMix-240’s 0/240 incremental/full mismatches, and 53% lower median edit latency."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n40",
+      "content": "Audit IRSpec-1 fixtures against the validation report, checking opaque-call return coverage and controls for the 53% latency comparison."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Audit confirmed all six opaque-return fixtures produce Unknown and matched EditMix-240 workloads support the 53% median latency reduction."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "refute",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "revise",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n7",
+      "relation": "evaluate",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "support",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n10",
+      "relation": "produce",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "n11"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n16"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n15",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n14"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n26",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "n32",
+      "relation": "revive",
+      "target": "p2"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n33",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "refute",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n31"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n48",
+      "relation": "revise",
+      "target": "n40"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p4"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Build an incremental interprocedural alias analysis that preserves soundness across pointer escapes, indirect calls, and changing function summaries.",
+    "requirements": [
+      "Soundly handle heap objects, pointer casts, recursion, and opaque external calls under documented IR semantics.",
+      "After single-function edits, match full recomputation’s alias answers while reducing median analysis latency by 50%."
+    ]
+  }
+}

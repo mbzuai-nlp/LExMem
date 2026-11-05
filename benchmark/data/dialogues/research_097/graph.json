@@ -1,0 +1,1027 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Enable mobile manipulators to distinguish object slip from localization drift while maintaining contact during furniture repositioning.",
+      "requirements": [
+        "Reposition unseen furniture within 5 cm in 90% of trials with intermittent visual occlusion.",
+        "Identify slip versus localization drift with 90% balanced accuracy without external tracking during execution."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use contact-constrained factor-graph fusion of wrist shear, odometry, and intermittent RGB-D to distinguish slip from drift during furniture repositioning."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "During three-second visual occlusions, which wrist-shear and contact-kinematic cues distinguish gripper slip from base-pose drift?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "During three-second occlusions, contact residuals with shear spikes indicate slip; residuals without spikes indicate drift at ≥90% balanced accuracy."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Record FurnitureContact-1 with induced grip slip and odometry drift during three-second occlusions; fit shear-conditioned residuals and evaluate balanced accuracy."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run FurnitureContact-1 held-out slip-versus-drift trials with three-second occlusions; compute balanced accuracy from wrist-shear-conditioned contact residuals."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On 120 held-out FurnitureContact-1 trials with three-second occlusions, shear-conditioned residuals classified slip versus drift at 92% balanced accuracy."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n3",
+      "content": "Analyze misclassifications from FurnitureContact-1’s 92% classifier, refit residuals on training trials, and reassess three-second-occlusion balanced accuracy."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "FurnitureContact-1 diagnostic package containing labeled misclassifications, refitted shear-conditioned residual parameters, and held-out three-second-occlusion confusion matrices."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "Audit diagnostic-package matrices; test refitted contact-graph fusion on tracker-free, occluded unseen-furniture trials for 5-cm success and slip/drift balanced accuracy."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On 100 tracker-free unseen-furniture trials, contact-graph fusion achieved 76% within 5 cm and 84% slip/drift balanced accuracy."
+    },
+    {
+      "id": "n10",
+      "type": "decision",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "Defer contact-graph fusion deployment: tracker-free trials missed both 90% thresholds, achieving 76% placement success and 84% balanced accuracy."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Do caster-swivel transients mimic gripper slip during occlusion, contributing to the 84% tracker-free balanced accuracy?"
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Reanalyze 100 tracker-free trials, comparing slip false-positive rates during caster-swivel torque transients versus matched steady-motion intervals."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "Tracker-free three-second-occlusion subset achieved 91% balanced accuracy versus 84% overall; swivel transients raised slip false positives from 5% to 14%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 16,
+      "exploration_parent_id": "g1",
+      "content": "Use caster-aware contact factors and low-force probing to separate slip from drift, correcting furniture pose with reacquired RGB-D."
+    },
+    {
+      "id": "n14",
+      "type": "plan",
+      "order": 17,
+      "exploration_parent_id": "p2",
+      "content": "Fit caster-aware factors, probe ambiguous shear at 8 N, and reacquire RGB-D; measure tracker-free 5-cm placement and slip/drift balanced accuracy."
+    },
+    {
+      "id": "n15",
+      "type": "activity",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "Use FurnitureContact-1 diagnostic misclassifications to fit caster-swivel contact factors and calibrate 8 N probing triggers on training trials."
+    },
+    {
+      "id": "n16",
+      "type": "artifact",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "CasterFactor-v1 contains fitted swivel-contact residuals and 8 N ambiguity-trigger calibration derived from FurnitureContact-1 training trials."
+    },
+    {
+      "id": "n17",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "Does CasterFactor-v1’s 8 N probe reduce swivel-induced slip false positives below 5% without moving furniture over 1 cm?"
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n17",
+      "content": "CasterFactor-v1’s 8 N reversal probe reduces swivel-induced slip false positives below 5%, with furniture displacement under 1 cm."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Test CasterFactor-v1’s 8 N probe on 60 held-out swivel trials; compare slip false positives and furniture displacement with controls."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n19",
+      "content": "On 60 held-out swivel trials, probing reduced slip false positives from 14% to 4%, but median displacement reached 1.6 cm."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n18",
+      "content": "Test CasterFactor-v1’s 8 N probe on 40 occluded, low-friction furniture trials; measure slip false positives and displacement."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "On 40 occluded low-friction trials, CasterFactor-v1 yielded 2.5% slip false positives and 0.8 cm median probe displacement."
+    },
+    {
+      "id": "n23",
+      "type": "question",
+      "order": 26,
+      "exploration_parent_id": "p2",
+      "content": "Can caster-state-dependent probe duration keep displacement below 1 cm across furniture types without raising slip false positives?"
+    },
+    {
+      "id": "n24",
+      "type": "plan",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Use 1.6-cm swivel and 0.8-cm low-friction displacement results to tune caster-dependent probe durations; test 1-cm displacement and 5% false-positive limits."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n24",
+      "content": "Tune CasterFactor-v1’s 8 N probe duration by inferred caster state, targeting a 1 cm displacement budget on training furniture."
+    },
+    {
+      "id": "n26",
+      "type": "artifact",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "CasterFactor-v2 revises CasterFactor-v1 with 80 ms swivel and 140 ms low-friction 8 N probes targeting under 1 cm displacement."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Run 100 tracker-free occluded unseen-furniture trials with CasterFactor-v2 and RGB-D reacquisition; measure 5-cm placement, slip/drift balanced accuracy, probe displacement."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n27",
+      "content": "In 100 occluded tracker-free unseen-furniture trials, CasterFactor-v2 achieved 92% 5-cm placement, 91% slip/drift balanced accuracy, and 0.7-cm median probe displacement."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 32,
+      "exploration_parent_id": "g1",
+      "content": "Fuse dual-gripper tactile motion with onboard lidar wall landmarks; correct grip slip or base drift while preserving contact."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 33,
+      "exploration_parent_id": "p3",
+      "content": "Can onboard lidar distinguish simultaneous two-gripper slip from base drift when only one wall segment remains visible?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "One-wall lidar innovations plus dual-gripper tactile velocities distinguish simultaneous slip from base drift at ≥90% balanced accuracy."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Run 100 tracker-free one-wall trials inducing simultaneous gripper slip or base drift; measure lidar-tactile balanced accuracy and 5-cm placement."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "Across 100 tracker-free one-wall trials, lidar-tactile fusion achieved 83% balanced accuracy and 81% within-5-cm placement."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Test lidar-tactile fusion on 80 tracker-free two-wall trials with simultaneous slip; measure balanced accuracy and 5-cm placement."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "Across 80 tracker-free two-wall slip/drift trials, lidar-tactile fusion achieved 92% balanced accuracy and 91% within-5-cm placement."
+    },
+    {
+      "id": "n35",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "Can contact-preserving lidar viewpoint changes reveal a second wall landmark in one-wall scenes while limiting furniture displacement to 1 cm?"
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Use the one-wall versus two-wall performance gap to plan contact-preserving lidar sidesteps; test second-wall visibility and ≤1 cm displacement."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Using prior one-/two-wall benchmarks, test contact-preserving lidar sidesteps; record second-wall visibility, displacement, and one-wall pre-sidestep versus post-sidestep balanced accuracy."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Sidesteps revealed second walls in 38/60 trials; 22 remaining one-wall trials reached 91% balanced accuracy, with 0.8-cm median displacement."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n35",
+      "content": "Use lidar-tactile fusion as a two-wall auxiliary: 91% placement versus 81% one-wall; sidestep classification lacks placement validation."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Fuse gripper tactile optical flow with downward-facing floor-flow odometry to distinguish slip from drift and correct unseen furniture pose."
+    },
+    {
+      "id": "n40",
+      "type": "plan",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "Calibrate floor-flow odometry and gripper tactile flow, then test slip/drift balanced accuracy and 5-cm placement on tracker-free occluded furniture."
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 46,
+      "exploration_parent_id": "n40",
+      "content": "Use CasterFactor-v2’s bounded probes to label training slip events; calibrate synchronized gripper tactile flow against downward floor-flow odometry."
+    },
+    {
+      "id": "n42",
+      "type": "artifact",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "FloorTactile-v1 contains synchronized 30 Hz floor-flow and gripper-flow calibration plus probe-labeled slip training events."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n40",
+      "content": "Run FloorTactile-v1 on 100 tracker-free, occluded unseen-furniture trials across tile and carpet; measure slip/drift balanced accuracy and 5-cm placement."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Across 100 tracker-free tile/carpet trials, FloorTactile-v1 achieved 93% within-5-cm placement and 92% slip/drift balanced accuracy."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "p4",
+      "content": "Does FloorTactile-v1 retain ≥90% slip/drift balanced accuracy on glossy or textureless floors where downward optical flow degrades?"
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "On glossy or textureless floors with fewer than 20 floor-flow tracks/frame, FloorTactile-v1 falls below 90% slip/drift balanced accuracy."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Test FloorTactile-v1 on glossy and textureless floors, stratifying tracker-free slip/drift balanced accuracy by 20 floor-flow tracks/frame."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Run 80 tracker-free glossy/textureless-floor trials with FloorTactile-v1; report balanced accuracy and 5-cm placement by floor-flow track count."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Among 44/80 glossy/textureless-floor trials with fewer than 20 tracks/frame, FloorTactile-v1 achieved 78% balanced accuracy and 82% within-5-cm placement."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n47",
+      "content": "Compare FloorTactile-v1 slip/drift balanced accuracy in 36 ≥20-track glossy/textureless trials against 44 documented low-track trials."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Glossy-floor trials retained 92% balanced accuracy below 20 tracks/frame versus 93% above; textureless cases drove the pooled 78%."
+    },
+    {
+      "id": "n52",
+      "type": "question",
+      "order": 57,
+      "exploration_parent_id": "n46",
+      "content": "Which textureless-floor failure mode explains 78% pooled balanced accuracy despite 92% accuracy on low-track glossy floors?"
+    },
+    {
+      "id": "n53",
+      "type": "hypothesis",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Textureless floors concentrate tracks within one image quadrant, biasing odometry and lowering balanced accuracy below 80% regardless of track count."
+    },
+    {
+      "id": "n54",
+      "type": "plan",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Reanalyze discrepant glossy and textureless trials, stratifying floor-flow quadrant occupancy and odometry bias against slip/drift balanced accuracy."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "Measure quadrant concentration, odometry bias, and slip/drift balanced accuracy across 80 glossy/textureless FloorTactile-v1 trials, controlling for track count."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "Textureless trials with ≥75% single-quadrant tracks showed 4.2 cm/m odometry bias and 76% balanced accuracy across track-count strata."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "p4",
+      "content": "Retain FloorTactile-v1 for tile/carpet; prioritize CasterFactor-v2 fallback for ≥75%-quadrant textureless flow, not low-track glossy scenes."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n14",
+      "relation": "decompose",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n15",
+      "relation": "produce",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n17"
+    },
+    {
+      "source": "n19",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n16"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "address",
+      "target": "n23"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n24",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n24",
+      "relation": "decompose",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "depend_on",
+      "target": "n16"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "revise",
+      "target": "n16"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n41"
+    },
+    {
+      "source": "n40",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n51",
+      "relation": "refute",
+      "target": "n46"
+    },
+    {
+      "source": "n53",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "revise",
+      "target": "n46"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n53"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Enable mobile manipulators to distinguish object slip from localization drift while maintaining contact during furniture repositioning.",
+    "requirements": [
+      "Reposition unseen furniture within 5 cm in 90% of trials with intermittent visual occlusion.",
+      "Identify slip versus localization drift with 90% balanced accuracy without external tracking during execution."
+    ]
+  }
+}

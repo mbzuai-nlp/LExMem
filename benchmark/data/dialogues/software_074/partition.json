@@ -1,0 +1,176 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Crash-safe migration with WAL fences, manifest swaps, and snapshot pins",
+      "boundary_reason": "Crash testing supports the migration-safety decision; the discussion turns to latency benchmarking."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "TierBench copy-rate limits for read-p99 latency",
+      "boundary_reason": "The benchmark identifies a passing copy-rate cap; focus shifts to reclamation safety."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Reclamation guards and a long-lived snapshot failure",
+      "boundary_reason": "The observed premature deletion exposes a snapshot-pin issue requiring separate investigation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Nonexpiring snapshot pins and checkpoint-replay crash testing",
+      "boundary_reason": "Pin-barrier crashes reveal a stale-checkpoint failure; the next work addresses repair and burst-read latency."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Pin-replay repair and adaptive copying for bursty reads",
+      "boundary_reason": "The throttled burst-read implementation produces a report; a new journaling proposal follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p2",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33",
+        "n34"
+      ],
+      "topic": "Unified journal recovery and generation-fenced dual reads",
+      "boundary_reason": "Crash recovery passes, but dual-read latency misses the target, prompting a different read design."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Epoch-protected single-hop reads and preemptible copying",
+      "boundary_reason": "The patchset passes crash and burst-read checks; sustained read pressure remains to be tested."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42"
+      ],
+      "topic": "Sustained-read latency and migration progress",
+      "boundary_reason": "Sustained reads reveal both a latency violation and slow migration; focus turns to pointer safety."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49"
+      ],
+      "topic": "Pointer-publication safety and epoch-gated source retirement",
+      "boundary_reason": "Pointer safety is retained and a scheduling patchset is produced; the next proposal evaluates migration queues."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55"
+      ],
+      "topic": "Dedicated migration queues under sustained reads",
+      "boundary_reason": "Queue depth one meets the tested latency and progress thresholds; crash safety remains to be checked."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60",
+        "n61",
+        "n62"
+      ],
+      "topic": "Retirement crash safety and queue-depth-one release candidate",
+      "boundary_reason": "Crash tests support adoption and a release-candidate package is produced; an alternative architecture follows."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "p5",
+        "n63",
+        "n64",
+        "n65",
+        "n66",
+        "n67"
+      ],
+      "topic": "Immutable-run prototype and comparison with the release candidate",
+      "boundary_reason": "The prototype shows crash safety and improved read latency; device saturation is the next question."
+    },
+    {
+      "session_id": "S13",
+      "node_ids": [
+        "n68",
+        "n69",
+        "n70",
+        "n71",
+        "n72",
+        "n73",
+        "n74",
+        "n75"
+      ],
+      "topic": "Read-reserved credits under device saturation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

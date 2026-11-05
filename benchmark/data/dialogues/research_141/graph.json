@@ -1,0 +1,1337 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Develop a learned large-eddy closure reconciling local energy backscatter with long-horizon stability across unseen Reynolds numbers.",
+      "requirements": [
+        "Reduce kinetic-energy spectrum error by 20% versus dynamic Smagorinsky on held-out Reynolds numbers.",
+        "Maintain bounded kinetic energy for 100 eddy-turnover times without suppressing all local backscatter."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Train a Galilean-invariant stress network with spectral loss and an energy-dependent global injection cap that preserves local backscatter."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Should the injection cap limit instantaneous domain-wide subgrid transfer or its running mean to preserve intermittent backscatter?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Unlike a ten-turnover running-mean cap, instantaneous global capping will bound energy for 100 turnovers while preserving ≥10% backscattering cells."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Train identical closures with instantaneous versus ten-turnover running-mean caps; compare 100-turnover energy bounds, backscatter fractions, and held-out-Re spectral errors."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run 100-turnover LES at held-out Reλ=180,300; compare instantaneous and running-mean caps on energy bounds, backscatter fractions, and spectral errors."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "At held-out Reλ=180/300, instantaneous caps kept energy below 1.4K_DNS for 100 turnovers with 13% backscattering cells; running-mean caps exceeded 2K_DNS."
+    },
+    {
+      "id": "n8",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Adopt instantaneous global injection capping: it bounded 100-turnover energy while retaining 13% backscattering cells, unlike running-mean capping."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Benchmark the instantaneous-capped closure against dynamic Smagorinsky at held-out Reλ=180/300 using spectrum error and 100-turnover energy trajectories."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "LES-Bench v1 report containing Reλ=180/300 spectral-error comparisons against dynamic Smagorinsky, 100-turnover energy trajectories, and local backscatter fractions."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Compare instantaneous and running-mean caps on held-out Reλ=180/300 LES using wavenumber-resolved spectral error and subgrid-transfer PDFs."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Held-out Reλ=180/300 relative spectrum L1 errors: instantaneous 0.23, running-mean 0.21, dynamic Smagorinsky 0.25; stable cap improves only 8%."
+    },
+    {
+      "id": "n13",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n5",
+      "content": "Audit instantaneous-cap interventions by correlating shellwise spectral residuals with cap activation and clipped subgrid injection at Reλ=180/300."
+    },
+    {
+      "id": "n14",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Cap triggered on 4% of steps; clipped injection tracked high-k deficits (r=0.61), while 13% of cells backscattered."
+    },
+    {
+      "id": "n15",
+      "type": "question",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "Can wavenumber-selective injection capping reduce high-k spectral deficits while maintaining bounded energy for 100 turnovers?"
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "n15",
+      "content": "Reallocate injection from low-k to high-k shells under the same instantaneous energy budget; test held-out spectra and 100-turnover stability."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Implement budget-preserving shellwise injection reallocation prioritizing k>0.6k_c; compare 100-turnover Reλ=180/300 spectra, energy, and backscatter against the original cap."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "ShellCap-v2 module and benchmark bundle containing budget-preserving high-k reallocation, Reλ=180/300 spectra, energy trajectories, and backscatter logs."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 19,
+      "exploration_parent_id": "g1",
+      "content": "Train a scale-conditioned residual-stress network with spectral loss and energy-triggered eddy viscosity that retains negative local subgrid transfer."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 20,
+      "exploration_parent_id": "p2",
+      "content": "At what kinetic-energy threshold should eddy viscosity activate to arrest growth without erasing local backscatter at Reλ=300?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "At Reλ=300, activating viscosity above 1.2K_ref (five-turnover baseline) will keep energy below 1.4K_ref for 100 turnovers, retaining ≥10% backscattering cells."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Run 100-turnover Reλ=300 LES with activation thresholds 1.1, 1.2, and 1.3K_ref; record peak energy and backscattering-cell fraction."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "At Reλ=300, the 1.2K_ref trigger peaked at 1.56K_ref over 100 turnovers, despite 12% backscattering cells."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 24,
+      "exploration_parent_id": "g1",
+      "content": "Augment nonnegative dynamic Smagorinsky with a learned, Reynolds-normalized zero-net-work stress that redistributes shellwise energy and permits local backscatter."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "p3",
+      "content": "Train the zero-net-work residual on Reλ=100/140/220; test LES-Bench v1 Reλ=180/300 spectral L1, 100-turnover energy, and backscatter against dynamic Smagorinsky."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "At Reλ=180/300, spectral L1 was 0.19 versus Smagorinsky’s 0.25; peak energy stayed ≤1.4K_ref over 100 turnovers, with 12% backscattering cells."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 27,
+      "exploration_parent_id": "p3",
+      "content": "Audit residual net work, spectral L1, and peak energy across five seeds and 64³/128³ grids at Reλ=180/300."
+    },
+    {
+      "id": "n28",
+      "type": "evidence",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "At 128³, five-seed Reλ=300 spectral L1 was 0.24 versus Smagorinsky’s 0.25, missing the 20% target."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Can k/k_c conditioning restore the zero-net-work closure’s ≥20% spectral-L1 improvement at 128³, Reλ=300 without destabilizing energy?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "k/k_c-conditioned zero-net-work stress will achieve 128³ Reλ=300 spectral L1 ≤0.20, 100-turnover energy ≤1.4K_ref, and ≥10% backscattering cells."
+    },
+    {
+      "id": "n31",
+      "type": "plan",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Condition residual stress on k/k_c, enforce zero net work, then compare five-seed 128³ Reλ=300 spectral error, energy, and backscatter."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Run five-seed, 100-turnover 128³ Reλ=300 LES; compare conditioned stress with unconditioned stress and Smagorinsky on spectral L1, energy, and backscatter."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Five-seed 128³ Reλ=300: spectral L1 0.19 versus 0.24 unconditioned and 0.25 Smagorinsky; 100-turnover peak energy ≤1.35K_ref; backscatter 11%."
+    },
+    {
+      "id": "n34",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n31",
+      "content": "Ablate k/k_c conditioning across five fresh 128³ Reλ=300 seeds; measure spectral L1, 100-turnover peak energy, and backscatter."
+    },
+    {
+      "id": "n35",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Across five fresh 128³ Reλ=300 seeds, conditioned spectral L1 averaged 0.22 versus Smagorinsky’s 0.25, missing the ≤0.20 prediction."
+    },
+    {
+      "id": "n36",
+      "type": "question",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Do fresh-seed spectral failures stem from high-k transfer miscalibration or seed-dependent forcing statistics at 128³ Reλ=300?"
+    },
+    {
+      "id": "n37",
+      "type": "hypothesis",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Fresh-seed failures reflect underpredicted high-k backscatter, not forcing variation; shellwise calibration is needed to reach spectral L1 ≤0.20."
+    },
+    {
+      "id": "n38",
+      "type": "plan",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Compare shellwise transfer and forcing statistics between original and fresh 128³ seeds; calibrate high-k stress if transfer bias persists."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n38",
+      "content": "At 128³ Reλ=300, compute seedwise high-k subgrid transfer bias and forcing-power variance for original versus fresh five-seed cohorts."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Fresh seeds underpredicted filtered-DNS high-k backscatter by 18% versus 4% originally; forcing-power CV was 3% in both cohorts."
+    },
+    {
+      "id": "n41",
+      "type": "decision",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Retain k/k_c conditioning, add high-k transfer calibration, and require fresh-seed validation: spectral L1 rose 0.19→0.22 alongside an 18% backscatter deficit."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Calibrate high-k transfer on training Reynolds numbers; rerun matched-forcing fresh-seed 128³ Reλ=300 LES, measuring spectral L1 and energy."
+    },
+    {
+      "id": "n43",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "HighK-Cal v1 checkpoint and matched-forcing 128³ Reλ=300 benchmark bundle with shellwise transfer, spectral L1, and 100-turnover energy traces."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 44,
+      "exploration_parent_id": "g1",
+      "content": "Train a Reynolds-normalized stochastic stress model with a Lyapunov-constrained drift and shellwise spectral loss, retaining intermittent local backscatter."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 45,
+      "exploration_parent_id": "p4",
+      "content": "How strongly can stochastic high-k stress fluctuate before its energy injection overwhelms the Lyapunov-constrained drift?"
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "High-k noise capped at 10% of dissipative power bounds 100-turnover energy below 1.4K_ref while retaining ≥10% backscattering cells."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "Sweep high-k noise caps of 5%, 10%, and 20% dissipative power in 100-turnover Reλ=180/300 LES; measure energy and backscatter."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "At Reλ=180/300, the 10% cap kept 100-turnover peak energy ≤1.36K_ref and 12% backscattering cells; 20% reached 1.72K_ref."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "p4",
+      "content": "Run fresh-seed 128³ Reλ=180/300 LES comparing 10%-noise stochastic closure with ShellCap-v2 benchmarks on spectral L1, 100-turnover energy, and backscatter."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Fresh-seed 128³ Reλ=300 spectral L1 was 0.23 versus ShellCap-v2’s 0.21 and Smagorinsky’s 0.25, missing the 20% target."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "p4",
+      "content": "Ablate stochastic forcing in five-seed Reλ=180/300 LES; compare high-k spectral L1 and backscatter against the deterministic drift-only closure."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "At Reλ=300, stochastic forcing reduced high-k spectral L1 from 0.27 to 0.23 and raised backscattering cells from 7% to 12%."
+    },
+    {
+      "id": "n53",
+      "type": "question",
+      "order": 53,
+      "exploration_parent_id": "p4",
+      "content": "Can DNS-matched shellwise noise covariance lower fresh-seed Reλ=300 spectral L1 to ≤0.20 without exceeding the 10% injection cap?"
+    },
+    {
+      "id": "n54",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Fit DNS covariance using ablation-isolated high-k gains; retest against fresh-seed L1=0.23, targeting ≤0.20 under 10% cap."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n54",
+      "content": "Fit shellwise covariance on training DNS; run five fresh-seed, 100-turnover 128³ Reλ=300 LES, tracking spectral L1, energy, and injection."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Fresh-seed Reλ=300 spectral L1 reached 0.19 versus Smagorinsky’s 0.25; energy ≤1.38K_ref over 100 turnovers, injection ≤10%, backscatter 12%."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Adopt DNS-covariance stochastic closure: noise ablation supports backscatter; fresh-seed L1 improved 0.23→0.19 with 100-turnover energy ≤1.38K_ref."
+    },
+    {
+      "id": "n58",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "Run ten independent 128³ Reλ=300 DNS-covariance LES; verify spectral L1 ≤0.20, injection ≤10%, bounded 100-turnover energy, and backscatter."
+    },
+    {
+      "id": "n59",
+      "type": "artifact",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "CovLES-v1 validation bundle: ten-seed Reλ=300 spectral L1, injection-cap logs, backscatter fractions, and 100-turnover energy traces."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 60,
+      "exploration_parent_id": "g1",
+      "content": "Train a scale-conditioned mixed-stress closure with a dissipation-funded reservoir enabling local backscatter, cumulative passivity, and shellwise spectral loss."
+    },
+    {
+      "id": "n61",
+      "type": "question",
+      "order": 61,
+      "exploration_parent_id": "p5",
+      "content": "What reservoir capacity preserves high-k backscatter without exhausting dissipation credit during 100-turnover LES at held-out Reλ=300?"
+    },
+    {
+      "id": "n62",
+      "type": "hypothesis",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "A reservoir capped at 0.15K_ref will sustain ≥10% backscattering cells while keeping peak energy ≤1.4K_ref over 100 turnovers."
+    },
+    {
+      "id": "n63",
+      "type": "plan",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Sweep reservoir capacities 0.05, 0.15, and 0.30K_ref across held-out Reλ=180/300 LES; track depletion, backscatter, energy, and spectra."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Run 100-turnover 128³ Reλ=300 reservoir sweeps (0.05/0.15/0.30K_ref); benchmark depletion, spectral L1, energy, and backscatter against HighK-Cal v1 and CovLES-v1."
+    },
+    {
+      "id": "n65",
+      "type": "evidence",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "At Reλ=300, the 0.15K_ref reservoir achieved spectral L1=0.18 versus Smagorinsky’s 0.25; 100-turnover peak energy was 1.34K_ref, backscatter 13%, depletion 2%."
+    },
+    {
+      "id": "n66",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n63",
+      "content": "Stress-test the 0.15K_ref reservoir across ten fresh Reλ=180/300 seeds; audit depletion, passivity, backscatter, spectral L1, and 100-turnover energy."
+    },
+    {
+      "id": "n67",
+      "type": "evidence",
+      "order": 67,
+      "exploration_parent_id": "n66",
+      "content": "Fresh Reλ=180 seeds yielded spectral L1=0.22 versus Smagorinsky’s 0.25 (12% improvement), despite ≤1.38K_ref energy and 12% backscatter."
+    },
+    {
+      "id": "n68",
+      "type": "question",
+      "order": 68,
+      "exploration_parent_id": "n67",
+      "content": "Does the Reλ=180 spectrum miss arise from reservoir depletion or Reynolds-dependent low-k stress bias?"
+    },
+    {
+      "id": "n69",
+      "type": "hypothesis",
+      "order": 69,
+      "exploration_parent_id": "n68",
+      "content": "At Reλ=180, replace 0.15K_ref with 0.05K_ref: low-k bias, not depletion, drives spectral error; expect ≥10% backscatter and ≤1.4K_ref energy."
+    },
+    {
+      "id": "n70",
+      "type": "plan",
+      "order": 70,
+      "exploration_parent_id": "n69",
+      "content": "Retain Reλ=300’s 0.15K_ref setting; compare 0.05/0.15K_ref on fresh Reλ=180 seeds for low-k bias, depletion, spectral L1, energy, and backscatter."
+    },
+    {
+      "id": "n71",
+      "type": "activity",
+      "order": 71,
+      "exploration_parent_id": "n70",
+      "content": "Run paired 100-turnover Reλ=180 LES at 0.05/0.15K_ref; compare low-k transfer bias, reservoir depletion, spectral L1, energy, and backscatter."
+    },
+    {
+      "id": "n72",
+      "type": "evidence",
+      "order": 72,
+      "exploration_parent_id": "n71",
+      "content": "At Reλ=180, shrinking reservoir 0.15→0.05K_ref cut low-k bias 16%→5% and spectral L1 0.22→0.19; depletion 4%, backscatter 11%, peak energy 1.36K_ref."
+    },
+    {
+      "id": "n73",
+      "type": "activity",
+      "order": 73,
+      "exploration_parent_id": "n70",
+      "content": "Replay matched Reλ=180 filtered-DNS trajectories with 0.05/0.15K_ref reservoirs; measure low-k stress error conditional on credit depletion."
+    },
+    {
+      "id": "n74",
+      "type": "evidence",
+      "order": 74,
+      "exploration_parent_id": "n73",
+      "content": "Matched Reλ=180 replay attributed 78% of 0.15K_ref low-k stress error to exhausted-credit frames; outside depletion, bias was 4%."
+    },
+    {
+      "id": "n75",
+      "type": "question",
+      "order": 75,
+      "exploration_parent_id": "n74",
+      "content": "Why does the 0.15K_ref reservoir exhaust credit during low-k transfer events despite only 2% overall depletion at Reλ=300?"
+    },
+    {
+      "id": "n76",
+      "type": "hypothesis",
+      "order": 76,
+      "exploration_parent_id": "n75",
+      "content": "At Reλ=180, high-k withdrawal bursts precede low-k events and exhaust shared credit, causing depletion-linked stress error."
+    },
+    {
+      "id": "n77",
+      "type": "plan",
+      "order": 77,
+      "exploration_parent_id": "n76",
+      "content": "Align paired reservoir runs with depletion-labeled DNS replays; test whether high-k withdrawals precede low-k stress errors at Reλ=180."
+    },
+    {
+      "id": "n78",
+      "type": "activity",
+      "order": 78,
+      "exploration_parent_id": "n77",
+      "content": "Cross-correlate shellwise withdrawals with depleted-credit low-k stress errors across matched Reλ=180 trajectories, stratifying 0.05/0.15K_ref capacities."
+    },
+    {
+      "id": "n79",
+      "type": "evidence",
+      "order": 79,
+      "exploration_parent_id": "n78",
+      "content": "At Reλ=180, high-k withdrawal bursts preceded 81% of depleted-credit low-k errors within 0.3 turnovers at 0.15K_ref capacity."
+    },
+    {
+      "id": "n80",
+      "type": "decision",
+      "order": 80,
+      "exploration_parent_id": "n79",
+      "content": "Retain the reservoir closure with scale-conditioned capacity and protected low-k credit: 0.05K_ref improved Reλ=180 spectra; high-k bursts depleted 0.15K_ref."
+    },
+    {
+      "id": "n81",
+      "type": "activity",
+      "order": 81,
+      "exploration_parent_id": "n80",
+      "content": "Implement protected low-k credit and scale-conditioned 0.05–0.15K_ref capacity; test fresh-seed Reλ=180/300 spectral L1, depletion, backscatter, and 100-turnover energy."
+    },
+    {
+      "id": "n82",
+      "type": "artifact",
+      "order": 82,
+      "exploration_parent_id": "n81",
+      "content": "ReservoirLES-v2 checkpoint and fresh-seed Reλ=180/300 benchmark bundle with protected-credit logs, spectral L1, backscatter fractions, and 100-turnover energy traces."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n7",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n9",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n13",
+      "relation": "produce",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n15"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "decompose",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n34",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "produce",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "refute",
+      "target": "n30"
+    },
+    {
+      "source": "n37",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "revise",
+      "target": "n30"
+    },
+    {
+      "source": "n38",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n38",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n39",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n37"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n36"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n54",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n54",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n54",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n53"
+    },
+    {
+      "source": "n58",
+      "relation": "produce",
+      "target": "n59"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n62",
+      "relation": "address",
+      "target": "n61"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "n61"
+    },
+    {
+      "source": "n63",
+      "relation": "decompose",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "address",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n62"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n64",
+      "relation": "evaluate",
+      "target": "n59"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n65",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n65",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "decompose",
+      "target": "n66"
+    },
+    {
+      "source": "n66",
+      "relation": "address",
+      "target": "n61"
+    },
+    {
+      "source": "n66",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n66",
+      "relation": "produce",
+      "target": "n67"
+    },
+    {
+      "source": "n67",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n69",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "revise",
+      "target": "n62"
+    },
+    {
+      "source": "n70",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n70",
+      "relation": "decompose",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n71",
+      "relation": "evaluate",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "produce",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "support",
+      "target": "n69"
+    },
+    {
+      "source": "n70",
+      "relation": "decompose",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n73",
+      "relation": "evaluate",
+      "target": "n69"
+    },
+    {
+      "source": "n73",
+      "relation": "produce",
+      "target": "n74"
+    },
+    {
+      "source": "n74",
+      "relation": "refute",
+      "target": "n69"
+    },
+    {
+      "source": "n76",
+      "relation": "address",
+      "target": "n75"
+    },
+    {
+      "source": "n76",
+      "relation": "revise",
+      "target": "n69"
+    },
+    {
+      "source": "n77",
+      "relation": "address",
+      "target": "n75"
+    },
+    {
+      "source": "n77",
+      "relation": "depend_on",
+      "target": "n72"
+    },
+    {
+      "source": "n77",
+      "relation": "depend_on",
+      "target": "n74"
+    },
+    {
+      "source": "n77",
+      "relation": "decompose",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "address",
+      "target": "n75"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n76"
+    },
+    {
+      "source": "n78",
+      "relation": "produce",
+      "target": "n79"
+    },
+    {
+      "source": "n79",
+      "relation": "support",
+      "target": "n76"
+    },
+    {
+      "source": "n79",
+      "relation": "support",
+      "target": "n80"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n72"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n74"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n80"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "n75"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n81",
+      "relation": "produce",
+      "target": "n82"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Develop a learned large-eddy closure reconciling local energy backscatter with long-horizon stability across unseen Reynolds numbers.",
+    "requirements": [
+      "Reduce kinetic-energy spectrum error by 20% versus dynamic Smagorinsky on held-out Reynolds numbers.",
+      "Maintain bounded kinetic energy for 100 eddy-turnover times without suppressing all local backscatter."
+    ]
+  }
+}

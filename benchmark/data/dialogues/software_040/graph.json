@@ -1,0 +1,1050 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a network diagnosis system that separates concurrent causal faults from downstream symptoms under asymmetric routing and incomplete telemetry.",
+      "requirements": [
+        "Achieve ≥90% fault-localization precision at ≥80% incident coverage with 30% telemetry loss.",
+        "Report observationally indistinguishable fault sets without asserting unsupported single-cause explanations."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Build a forward/reverse-path causal factor graph with joint fault inference, symptom-propagation factors, missingness-aware likelihoods, and indistinguishable-fault-set reporting."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which forward/reverse-path evidence distinguishes simultaneous link faults from propagated symptoms under 30% probe loss?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Forward/reverse path divergence and interface counters distinguish concurrent faults from propagated symptoms at ≥90% precision, ≥80% coverage under 30% loss."
+    },
+    {
+      "id": "n5",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Replay AsymFault-30 dual-fault and symptom-only incidents with directional probes, interface counters, and 30% dropout; measure localization precision and coverage."
+    },
+    {
+      "id": "n6",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "On AsymFault-30 at 30% dropout, directional probes plus counters achieved 92% fault-localization precision and 83% incident coverage."
+    },
+    {
+      "id": "n7",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "Adopt directional probes and interface counters for joint fault inference; AsymFault-30 exceeds both targets despite 30% dropout."
+    },
+    {
+      "id": "n8",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Implement the adopted probe-and-counter factor graph, report indistinguishable fault sets, and validate precision and coverage on held-out AsymFault-30."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Implement PathGraph v1 with direction-specific probe/counter factors, symptom-propagation edges, dropout-aware joint inference, and observational-equivalence reporting."
+    },
+    {
+      "id": "n10",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "PathGraph v1 exposes directional factor-graph inference, missing-telemetry likelihoods, and equivalence-class fault reports without unsupported single-cause attribution."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Run PathGraph v1 on held-out AsymFault-30 with 30% dropout; measure precision, coverage, equivalence-set recall, and unsupported singletons."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "Held-out AsymFault-30 at 30% dropout yielded 87% precision and 82% coverage; shared-interface symptoms caused false fault labels."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "n4",
+      "content": "Condition shared-interface counters on fanout; independent directional evidence and fault-set abstention yield ≥90% precision, ≥80% coverage at 30% loss."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "Test fanout-conditioned PathGraph v2 with fault-set abstention on untouched AsymFault-30 incidents at 30% dropout; measure precision and coverage."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n14",
+      "content": "On untouched AsymFault-30 with 30% dropout, PathGraph v2 achieved 92% precision, 81% coverage, and zero unsupported single-cause reports."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n13",
+      "content": "Ablate fanout conditioning and directional probes on AsymFault-30 at 30% dropout; measure precision, coverage, and unsupported singleton rate."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "On AsymFault-30’s separate ablation cohort, full PathGraph v2 reached 88% overall precision at 81% coverage; both ablations worsened precision."
+    },
+    {
+      "id": "n18",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "Stratum-calibrated shared-interface likelihoods and directional-probe gating yield ≥90% precision at ≥80% coverage across cohorts with 30% dropout."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Calibrate PathGraph v3 on training strata; test precision, coverage, and unsupported singletons across held-out cohorts with 30% dropout."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "At 30% dropout, PathGraph v3 achieved ≥91% precision and ≥80% coverage in each held-out cohort, with zero unsupported singletons."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "Stress-test PathGraph v3 on topology-shifted AsymFault-30 incidents with correlated 30% telemetry loss; measure precision, coverage, and false singletons."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Topology-shifted AsymFault-30 with correlated 30% loss yielded 86% precision, 77% coverage, and four unsupported singletons for PathGraph v3."
+    },
+    {
+      "id": "n23",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Topology-aware path uncertainty and correlated-dropout modeling with fault-set abstention achieve ≥90% precision and ≥80% coverage under shifted, 30%-loss telemetry."
+    },
+    {
+      "id": "n24",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "Run factorial topology-shift × dropout-correlation ablations on PathGraph v3 at 30% loss; measure precision, coverage, and unsupported singletons."
+    },
+    {
+      "id": "n25",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Factorial ablations: shifted topology with independent 30% loss retained 91% precision, 80% coverage, and zero unsupported singletons."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n23",
+      "content": "Implement PathGraph v4 with uncertain-route marginalization, correlated-dropout factors, and fault-set abstention; evaluate shifted AsymFault-30 at 30% loss."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "On shifted AsymFault-30 with correlated 30% loss, PathGraph v4 reached 93% precision but 76% coverage; zero unsupported singletons."
+    },
+    {
+      "id": "n28",
+      "type": "decision",
+      "order": 28,
+      "exploration_parent_id": "n27",
+      "content": "Deploy v3 only under validated independent-loss conditions; defer correlated-loss v4 despite zero unsupported singletons until coverage reaches 80%."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 29,
+      "exploration_parent_id": "g1",
+      "content": "Add budgeted adaptive bidirectional probes targeting ambiguous fault sets during correlated outages, retaining set-valued reports until evidence separates causes."
+    },
+    {
+      "id": "n30",
+      "type": "question",
+      "order": 30,
+      "exploration_parent_id": "p2",
+      "content": "Can four adaptive bidirectional probes per incident restore ≥80% coverage at ≥90% precision under correlated 30% loss?"
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Entropy-ranked bidirectional probes separate ambiguous fault sets within four probes per incident, raising shifted-cohort coverage to ≥80% without lowering precision."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Simulate four entropy-ranked bidirectional probes per incident with PathGraph v4 on shifted AsymFault-30 under correlated 30% loss."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "On shifted AsymFault-30, four adaptive probes raised PathGraph v4 coverage from 76% to 82% at 92% precision; zero unsupported singletons."
+    },
+    {
+      "id": "n34",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "p2",
+      "content": "Implement entropy-ranked probing atop PathGraph v4, then validate the four-probe budget and set-valued reporting on held-out correlated-loss incidents."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Implement ProbeSelector v1 with entropy-ranked forward/reverse probes, four-probe incident caps, and fault-set-preserving PathGraph v4 integration."
+    },
+    {
+      "id": "n36",
+      "type": "artifact",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "ProbeSelector v1 schedules up to four entropy-ranked directional probes per incident and updates PathGraph v4 fault-set posteriors."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n34",
+      "content": "Replay held-out correlated-loss AsymFault-30 through ProbeSelector v1 and PathGraph v4; measure precision, coverage, probe counts, and unsupported singletons."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Held-out correlated-loss AsymFault-30: ProbeSelector v1 achieved 91% precision, 81% coverage, zero unsupported singletons, averaging 3.2 probes per incident."
+    },
+    {
+      "id": "n39",
+      "type": "activity",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Stress-test ProbeSelector v1 against shared-conduit probe blackouts and mid-incident asymmetric reroutes; measure precision, coverage, and unsupported singletons."
+    },
+    {
+      "id": "n40",
+      "type": "evidence",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Under shared-conduit blackouts and asymmetric reroutes, ProbeSelector v1 yielded 88% precision, 73% coverage, and two unsupported singletons."
+    },
+    {
+      "id": "n41",
+      "type": "question",
+      "order": 41,
+      "exploration_parent_id": "p2",
+      "content": "How can adaptive probes avoid shared-conduit blackouts and stale asymmetric routes while preserving valid fault-set ambiguity?"
+    },
+    {
+      "id": "n42",
+      "type": "hypothesis",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Conduit-disjoint probe selection plus route-epoch invalidation restores ≥90% precision and ≥80% coverage under blackouts and reroutes without unsupported singletons."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Compare conduit-disjoint, route-epoch-aware ProbeSelector v2 against v1 under blackouts and reroutes; measure precision, coverage, and unsupported singletons."
+    },
+    {
+      "id": "n44",
+      "type": "evidence",
+      "order": 44,
+      "exploration_parent_id": "n43",
+      "content": "Blackout/reroute replay: ProbeSelector v2 achieved 91% precision, 80% coverage, zero unsupported singletons versus v1’s 88%, 73%, and two."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n42",
+      "content": "Ablate conduit diversity and route-epoch invalidation separately on held-out blackout/reroute incidents; measure precision, coverage, and unsupported singletons."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Held-out blackout/reroute cohort: full v2 yielded 92% precision, 77% coverage, zero unsupported singletons; route-epoch ablation produced two."
+    },
+    {
+      "id": "n47",
+      "type": "decision",
+      "order": 47,
+      "exploration_parent_id": "n41",
+      "content": "Deploy four-probe ProbeSelector v1 only for validated correlated-loss incidents; retain v2’s route-epoch safeguards but defer blackout/reroute deployment pending ≥80% coverage."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 48,
+      "exploration_parent_id": "g1",
+      "content": "Fuse time-aligned BGP updates, optical alarms, and sampled flows using route-epoch causal inference and ambiguity-preserving fault sets."
+    },
+    {
+      "id": "n49",
+      "type": "question",
+      "order": 49,
+      "exploration_parent_id": "p3",
+      "content": "Can route-epoch-aligned BGP, optical alarms, and sampled flows restore blackout/reroute coverage without mistaking downstream symptoms for faults?"
+    },
+    {
+      "id": "n50",
+      "type": "hypothesis",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Route-epoch-aligned BGP and optical alarms plus sampled flows raise blackout/reroute coverage to ≥80% at ≥90% precision without unsupported singletons."
+    },
+    {
+      "id": "n51",
+      "type": "activity",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Replay held-out blackout/reroute incidents with 30% telemetry loss; compare epoch-aligned BGP, optical, and flow fusion against ProbeSelector v2."
+    },
+    {
+      "id": "n52",
+      "type": "evidence",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "At 30% loss, full fusion reached 89% precision and 82% coverage; misaligned optical alarms caused three unsupported singletons."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n50",
+      "content": "Stratify fusion errors by BGP route epoch, optical alarm skew, and flow sampling rate; measure precision, coverage, and unsupported singletons."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "With optical alarm skew ≤2 seconds, epoch-aligned fusion achieved 92% precision, 81% coverage, and zero unsupported singletons."
+    },
+    {
+      "id": "n55",
+      "type": "decision",
+      "order": 55,
+      "exploration_parent_id": "n50",
+      "content": "Enable fusion only when optical skew ≤2 seconds; otherwise preserve ambiguous fault sets rather than risk misaligned-alarm singletons."
+    },
+    {
+      "id": "n56",
+      "type": "plan",
+      "order": 56,
+      "exploration_parent_id": "p3",
+      "content": "Build skew-gated route-epoch fusion, then validate fault-set precision, coverage, and singleton safety across mixed-skew blackout/reroute incidents."
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Implement EpochFuse v1 with ≤2-second optical-skew gating, route-epoch joins, sampled-flow factors, and set-valued fallback for untrusted alarms."
+    },
+    {
+      "id": "n58",
+      "type": "artifact",
+      "order": 58,
+      "exploration_parent_id": "n57",
+      "content": "EpochFuse v1 joins BGP and sampled-flow evidence by route epoch, gates optical alarms at ≤2-second skew, and preserves fault-set ambiguity."
+    },
+    {
+      "id": "n59",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n56",
+      "content": "Replay mixed-skew blackout/reroute incidents at 30% telemetry loss through EpochFuse v1; measure precision, coverage, and unsupported singletons."
+    },
+    {
+      "id": "n60",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Mixed-skew blackout/reroute replay at 30% loss: EpochFuse v1 achieved 91% precision, 80% coverage, and zero unsupported singletons."
+    },
+    {
+      "id": "n61",
+      "type": "decision",
+      "order": 61,
+      "exploration_parent_id": "p3",
+      "content": "Adopt skew-gated EpochFuse v1 for blackout/reroute incidents; mixed-skew replay meets both targets without unsupported single-cause reports."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n5",
+      "relation": "produce",
+      "target": "n6"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "support",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n8",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n13",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n18",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "refute",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "revise",
+      "target": "n18"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n24",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n24",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n18"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "refute",
+      "target": "n23"
+    },
+    {
+      "source": "n25",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n20"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n27"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n34",
+      "relation": "address",
+      "target": "n30"
+    },
+    {
+      "source": "n34",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n36"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n34",
+      "relation": "decompose",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "n39",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n39",
+      "relation": "produce",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n43",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n42"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "n42"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n33"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n40"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n40",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n44",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n50",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n51",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "refute",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n56",
+      "relation": "address",
+      "target": "n49"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n56",
+      "relation": "decompose",
+      "target": "n59"
+    },
+    {
+      "source": "n59",
+      "relation": "depend_on",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "evaluate",
+      "target": "n50"
+    },
+    {
+      "source": "n59",
+      "relation": "produce",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n61",
+      "relation": "depend_on",
+      "target": "n60"
+    },
+    {
+      "source": "n52",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n61"
+    },
+    {
+      "source": "n60",
+      "relation": "support",
+      "target": "n61"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a network diagnosis system that separates concurrent causal faults from downstream symptoms under asymmetric routing and incomplete telemetry.",
+    "requirements": [
+      "Achieve ≥90% fault-localization precision at ≥80% incident coverage with 30% telemetry loss.",
+      "Report observationally indistinguishable fault sets without asserting unsupported single-cause explanations."
+    ]
+  }
+}

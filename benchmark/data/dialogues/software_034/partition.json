@@ -1,0 +1,127 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Select snapshot-pinning granularity from initial write and read benchmarks",
+      "boundary_reason": "The initial benchmark leads to a 4-MiB pinning decision; implementation and crash testing follow."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Implement pinning and revise granularity after measuring fsynced WAL writes",
+      "boundary_reason": "The 1-MiB configuration meets the benchmark targets; the discussion shifts to crash recovery of snapshot pins."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Recover WAL-registered snapshot pins after a crash",
+      "boundary_reason": "Crash testing resolves the pin-recovery question; a different storage design is proposed next."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p2",
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Compare value-log MVCC with pinning and implement the selected design",
+      "boundary_reason": "The selected value-log design has a patch; the next discussion tests longer-lived snapshots."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Tune value-log garbage collection for 24-hour snapshots",
+      "boundary_reason": "GC tuning meets the measured write and read targets; a tiered-LSM alternative follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "Explore four-run snapshot-aware tiering and index caching",
+      "boundary_reason": "Caching improves the initial tiering result; broader validation and crash testing follow."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48"
+      ],
+      "topic": "Validate cached tiering, reject its post-crash read latency, and implement throttled value-log GC",
+      "boundary_reason": "The retained value-log implementation and crash-test report are produced; the next question revisits tiering with persisted hints."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n49",
+        "n50",
+        "n51"
+      ],
+      "topic": "Test persisted tiered-run hints for post-crash reads",
+      "boundary_reason": "Hint results are available; a Bε-tree alternative is proposed next."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Compare, select, and harden immutable Bε-tree batches",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

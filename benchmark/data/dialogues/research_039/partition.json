@@ -1,0 +1,141 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Passive hazard-cue certificates for safe exploration and sublinear regret",
+      "boundary_reason": "The sufficient condition is adopted; the next discussion stress-tests it."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8"
+      ],
+      "topic": "CueAlias-2 counterexamples to cue separation and probe coverage",
+      "boundary_reason": "The counterexample appendix is complete; the focus shifts to implementation results."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n9",
+        "n10"
+      ],
+      "topic": "CueSafe-v1 failure and regret measurements",
+      "boundary_reason": "The measurements are reported; the next discussion examines hidden-state drift."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Belief-filter error and cue-certificate validity under hidden-state drift",
+      "boundary_reason": "The drift tests conclude; a different certification approach begins."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Propensity-weighted near-miss certificates under censored logging",
+      "boundary_reason": "The theoretical condition is adopted; implementation follows."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n22",
+        "n23"
+      ],
+      "topic": "NearMiss-POMDP-20 implementation and audit package",
+      "boundary_reason": "The benchmark artifact closes this approach before transferable hazards are considered."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Transferable hazard certification in aliased and matched target classes",
+      "boundary_reason": "The contrasting results motivate a new question about distinguishability."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n29",
+        "n30",
+        "n31",
+        "n32"
+      ],
+      "topic": "Certified-probe distinguishability for oracle-relevant target models",
+      "boundary_reason": "The KL audit is produced; the focus shifts to belief safety kernels."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p4",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Initial oracle-probe inclusion in passive-cue belief safety kernels",
+      "boundary_reason": "The candidate is retained after the kernel tests; a proof audit follows."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n38",
+        "n39"
+      ],
+      "topic": "Belief-kernel proof conditions for inclusion, safety, and regret",
+      "boundary_reason": "The proof appendix is produced; the next approach uses exogenous reward events."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "p5",
+        "n40",
+        "n41",
+        "n42",
+        "n43",
+        "n44",
+        "n45"
+      ],
+      "topic": "Exogenous reward-event certification and its safety and regret guarantees",
+      "boundary_reason": "Event certification is adopted; stress-testing follows."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n46",
+        "n47"
+      ],
+      "topic": "EventDrift-8 stress test of reward-event rates and hazard correlations",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,1022 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an SSD-backed key-value store that limits write amplification under long-lived snapshots without sacrificing crash consistency.",
+      "requirements": [
+        "Reduce total host-written bytes by 30% versus leveled LSM compaction under identical update-heavy workloads.",
+        "Preserve snapshot isolation and acknowledged writes across crashes; keep p99 reads within 10% of baseline."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use fsynced, CRC-framed version-log commits and a cached LSM pointer index; pin snapshot versions for epoch-gated segment reclamation."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Should version-log segments segregate snapshot-pinned versions from hot updates to avoid repeated cleaning during six-hour snapshots?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Segregating snapshot-pinned versions from hot writes reduces cleaner rewrites by 40% during six-hour snapshots versus mixed segments."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Compare segregated and mixed segments under six-hour snapshots, measuring cleaner rewrites, host bytes, p99 reads, and crash recovery."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run SnapHot-6h with 80% overwrites and six-hour snapshots, comparing cleaner-rewritten bytes for segregated versus mixed segments."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "On SnapHot-6h, segregated segments rewrote 560 GB during cleaning versus 1,000 GB for mixed segments, a 44% reduction."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt segregated segments for snapshot-pinned versions; SnapHot-6h showed 44% fewer cleaner-rewritten bytes than mixed segments."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 9,
+      "exploration_parent_id": "n4",
+      "content": "SnapHot-6h report records the 80% overwrite workload, six-hour snapshots, and cleaner rewrites: 560 GB segregated versus 1,000 GB mixed."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 10,
+      "exploration_parent_id": "n3",
+      "content": "Replay the SnapHot-6h report workload on the version-log store and leveled LSM; compare host bytes, p99 reads, and power-cut recovery."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "On SnapHot-6h, the version-log store cut host writes 34% but increased p99 reads 18% versus leveled LSM."
+    },
+    {
+      "id": "n10",
+      "type": "hypothesis",
+      "order": 12,
+      "exploration_parent_id": "n1",
+      "content": "A 512-MB hot-value cache lets segregated segments retain their 44% cleaner-rewrite savings while reducing p99 read regression below 10%."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 13,
+      "exploration_parent_id": "n10",
+      "content": "Replay SnapHot-6h with 512-MB hot-value cache enabled and disabled; measure p99 reads, host writes, and cleaner-rewritten bytes."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "On SnapHot-6h, the 512-MB cache preserved 560 GB cleaner rewrites but left p99 reads 13% above leveled LSM."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use fsynced WAL-backed MVCC indexing: inline hot small values, append cold and snapshot-pinned versions to segregated immutable segments."
+    },
+    {
+      "id": "n13",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Implement WAL-backed inline-hot MVCC; benchmark SnapHot-6h host writes and p99 reads, then power-cut-test acknowledged writes and snapshot isolation."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Replay the SnapHot-6h report’s 80% overwrite workload against inline-hot MVCC and leveled LSM, measuring host writes and p99 reads."
+    },
+    {
+      "id": "n15",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "SnapHot-6h benchmark report records inline-hot MVCC at 0.64× leveled-LSM host writes and 1.07× p99 read latency."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Audit the SnapHot-6h report against NVMe host-write counters and request-latency traces; independently recompute write ratio and p99."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "SnapHot-6h audit confirmed 36% fewer NVMe host-written bytes and 7% higher p99 reads for inline-hot MVCC versus leveled LSM."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n13",
+      "content": "Recreate SnapHot-6h benchmark configuration, inject 10,000 power cuts around WAL fsync and checkpoint, and verify acknowledged writes and snapshot visibility."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "In 10,000 power cuts, 12 recoveries lost acknowledged inline-hot writes when WAL truncation preceded durable MVCC-index checkpoint."
+    },
+    {
+      "id": "n20",
+      "type": "question",
+      "order": 23,
+      "exploration_parent_id": "p2",
+      "content": "Can generation-tagged MVCC checkpoints and a durable replay frontier prevent premature WAL truncation from losing acknowledged inline-hot writes?"
+    },
+    {
+      "id": "n21",
+      "type": "hypothesis",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Atomically publishing a durable checkpoint generation and replay frontier before WAL truncation prevents acknowledged-write losses in 10,000 power cuts."
+    },
+    {
+      "id": "n22",
+      "type": "plan",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Implement generation-tagged MVCC checkpoints with atomically persisted replay frontiers before WAL truncation; rerun 10,000 power cuts and SnapHot-6h."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n22",
+      "content": "Using SnapHot-6h report settings, inject 10,000 power cuts around atomic generation-tagged checkpoint/frontier publication and WAL truncation; verify acknowledged writes."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Across 10,000 power cuts, generation-tagged checkpoints and durable replay frontiers recovered every acknowledged write; zero losses occurred."
+    },
+    {
+      "id": "n25",
+      "type": "artifact",
+      "order": 28,
+      "exploration_parent_id": "n23",
+      "content": "Revised SnapHot-6h report adds a crash-recovery appendix: 12 acknowledged-write losses before the checkpoint fix, zero across 10,000 cuts afterward."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n22",
+      "content": "Using the revised SnapHot-6h report, rerun fixed-checkpoint and power-cut tests; audit host writes, p99 reads, and snapshot isolation."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n26",
+      "content": "Fixed-checkpoint SnapHot-6h: 34% fewer host-written bytes, 8% higher p99 reads; 10,000 cuts yielded zero acknowledged-write losses or snapshot violations."
+    },
+    {
+      "id": "n28",
+      "type": "activity",
+      "order": 31,
+      "exploration_parent_id": "n22",
+      "content": "Replay revised SnapHot-6h crash cases under 10,000 reordered checkpoint/WAL fsync schedules; verify every acknowledged write survives recovery."
+    },
+    {
+      "id": "n29",
+      "type": "evidence",
+      "order": 32,
+      "exploration_parent_id": "n28",
+      "content": "Under 10,000 reordered fsync schedules, three recoveries lost acknowledged writes when replay-frontier publication preceded checkpoint-data durability."
+    },
+    {
+      "id": "n30",
+      "type": "decision",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Retain inline-hot MVCC, but block release until checkpoint data fsync precedes frontier publication and reordered-fsync crash tests pass."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 34,
+      "exploration_parent_id": "n20",
+      "content": "Fsyncing checkpoint data and its directory before publishing the durable replay frontier eliminates acknowledged-write losses under 10,000 reordered-fsync schedules."
+    },
+    {
+      "id": "n32",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "Using revised SnapHot-6h crash cases, enforce checkpoint-file and directory fsync before frontier publication; test 10,000 reordered-fsync schedules for acknowledged-write loss."
+    },
+    {
+      "id": "n33",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n32",
+      "content": "All 10,000 reordered-fsync schedules recovered acknowledged writes after checkpoint-file and directory fsync preceded replay-frontier publication; zero losses occurred."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 37,
+      "exploration_parent_id": "g1",
+      "content": "Use fsynced-WAL inline-hot MVCC and snapshot-pinned cold segments; fsync checkpoint data and directory before publishing replay frontier and truncating WAL."
+    },
+    {
+      "id": "n34",
+      "type": "question",
+      "order": 38,
+      "exploration_parent_id": "p3",
+      "content": "Can epoch-gated reclamation free a snapshot-pinned cold segment before its surviving version references reach a durable checkpoint?"
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n34",
+      "content": "Epoch-only reclamation may free cold segments before surviving references reach a durable checkpoint, producing dangling reads after crash recovery."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Inject crashes between snapshot release, segment reclamation, and checkpoint publication; check recovered references for dangling cold-segment pointers."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Run 10,000 SnapHot-6h crash injections around snapshot release, epoch reclamation, and checkpoint publication; scan recovered references for deleted segments."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "In 10,000 SnapHot-6h crashes, epoch-only reclamation yielded seven recovered pointers to deleted cold segments after snapshot release."
+    },
+    {
+      "id": "n39",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n37",
+      "content": "SnapHot-6h reclamation crash log captures seven dangling-pointer recoveries, deleted segment IDs, snapshot epochs, and checkpoint generations."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n36",
+      "content": "Replay the reclamation crash log’s seven dangling-pointer cases on p3; trace durable checkpoints, WAL replay, and segment unlink ordering."
+    },
+    {
+      "id": "n41",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "All seven replays recovered dangling MVCC pointers because snapshot expiry unlinked cold segments before surviving references were durably checkpointed."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Extend inline-hot MVCC with checkpoint-gated reclamation: unlink segments only after snapshot expiry, durable reference rewrites, and replay-frontier advancement."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Implement checkpoint-gated reclamation; rerun SnapHot-6h write/read benchmarks and crash-inject segment unlinking to verify snapshot and acknowledged-write recovery."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Implement checkpoint-gated segment unlinking, then replay the reclamation crash log’s seven failures and 10,000 new power-cut schedules."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "Revised SnapHot-6h reclamation crash log records zero dangling pointers across seven formerly failing replays and 10,000 new power cuts."
+    },
+    {
+      "id": "n45",
+      "type": "activity",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Independently replay the revised SnapHot-6h log’s 10,007 crash cases; verify p4 recovers snapshots and acknowledged writes without dangling references."
+    },
+    {
+      "id": "n46",
+      "type": "evidence",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Two of 10,007 crash replays lost acknowledged hot updates: reclamation advanced the WAL frontier beyond the checkpoint’s captured sequence."
+    },
+    {
+      "id": "n47",
+      "type": "question",
+      "order": 52,
+      "exploration_parent_id": "p4",
+      "content": "How should reclamation cap WAL frontier advancement at the checkpoint’s captured sequence while concurrent hot updates commit?"
+    },
+    {
+      "id": "n48",
+      "type": "hypothesis",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Generation-checked publication caps WAL truncation at the durable checkpoint’s captured sequence, preserving concurrently acknowledged hot updates across crashes."
+    },
+    {
+      "id": "n49",
+      "type": "plan",
+      "order": 54,
+      "exploration_parent_id": "n48",
+      "content": "Add generation-checked WAL truncation capped at checkpoint sequence; replay both hot-update losses, then rerun crash and SnapHot-6h benchmarks."
+    },
+    {
+      "id": "n50",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Replay the revised SnapHot-6h crash log with generation-checked WAL truncation capped at checkpoint sequence; audit acknowledged writes."
+    },
+    {
+      "id": "n51",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "Generation-checked WAL truncation recovered all acknowledged writes across 10,007 revised SnapHot-6h crash replays, including both previously failing schedules."
+    },
+    {
+      "id": "n52",
+      "type": "artifact",
+      "order": 57,
+      "exploration_parent_id": "n50",
+      "content": "Final SnapHot-6h crash log adds acknowledged-write checks: zero losses and zero dangling pointers across 10,007 generation-checked replays."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n49",
+      "content": "Independently audit the final SnapHot-6h crash log against WAL sequence traces; rerun workloads measuring host-written bytes and p99 reads."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Checkpoint-capped WAL preserved all acknowledged writes across 10,007 audited replays; SnapHot-6h writes fell 32%, p99 reads rose 9% versus LSM."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n49",
+      "content": "Replay final SnapHot-6h crash log with durable six-hour snapshots; compare recovered historical reads against a pre-crash MVCC oracle."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "Across 10,007 SnapHot-6h crash replays, recovered six-hour snapshot reads matched the pre-crash MVCC oracle with zero visibility mismatches."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "p4",
+      "content": "Adopt checkpoint-gated inline-hot MVCC with generation-checked WAL truncation: 32% fewer writes, 9% higher p99, 10,007 clean crash replays."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n8"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n10",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "n10"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n10"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n14"
+    },
+    {
+      "source": "n14",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n13",
+      "relation": "decompose",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n21",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n22",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n26"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n25"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n25",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "decompose",
+      "target": "n28"
+    },
+    {
+      "source": "n28",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n28",
+      "relation": "evaluate",
+      "target": "n21"
+    },
+    {
+      "source": "n28",
+      "relation": "produce",
+      "target": "n29"
+    },
+    {
+      "source": "n29",
+      "relation": "refute",
+      "target": "n21"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n29",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n20"
+    },
+    {
+      "source": "n31",
+      "relation": "revise",
+      "target": "n21"
+    },
+    {
+      "source": "n32",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n32",
+      "relation": "produce",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n34"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n40"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "n41",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n44",
+      "relation": "revise",
+      "target": "n39"
+    },
+    {
+      "source": "n45",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n45",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "produce",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "refute",
+      "target": "p4"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "address",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "revise",
+      "target": "n42"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "depend_on",
+      "target": "n44"
+    },
+    {
+      "source": "n50",
+      "relation": "evaluate",
+      "target": "n48"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n51"
+    },
+    {
+      "source": "n50",
+      "relation": "produce",
+      "target": "n52"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n52",
+      "relation": "revise",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n52"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n48"
+    },
+    {
+      "source": "n49",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n52"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n46",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n51",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n57"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n57"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an SSD-backed key-value store that limits write amplification under long-lived snapshots without sacrificing crash consistency.",
+    "requirements": [
+      "Reduce total host-written bytes by 30% versus leveled LSM compaction under identical update-heavy workloads.",
+      "Preserve snapshot isolation and acknowledged writes across crashes; keep p99 reads within 10% of baseline."
+    ]
+  }
+}

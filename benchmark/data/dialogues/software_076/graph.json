@@ -1,0 +1,1369 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design an incremental cross-module optimizer that preserves optimization benefits while maintaining sound cache reuse under symbol interposition.",
+      "requirements": [
+        "Match clean-build semantics under dependency changes, dynamic symbol interposition, and mixed optimized/unoptimized modules.",
+        "For single-module edits, halve full-LTO rebuild time while keeping runtime within 5% of full LTO."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Cache optimized function partitions by dependency and symbol-resolution fingerprints; inline only provably nonpreemptible definitions, retaining calls into unoptimized modules."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "Which symbol-resolution and visibility facts must enter partition fingerprints to prevent stale inlining after weak-definition or interposition-policy changes?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Recording prevailing-definition identity, linkage strength, visibility, and interposition policy while forbidding preemptible inlining prevents stale reuse across weak/DSO changes."
+    },
+    {
+      "id": "n3",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Enumerate resolution inputs, key affected partitions, and compare incremental versus clean builds across weak, DSO, and mixed-mode edits."
+    },
+    {
+      "id": "n4",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "Run InterposeMatrix-48, toggling weak winners, DSO preload, visibility, and unoptimized callers; compare cached binaries against clean-build traces."
+    },
+    {
+      "id": "n5",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "InterposeMatrix-48 found zero trace mismatches; all 12 weak-winner changes invalidated affected partitions while unrelated partitions remained cached."
+    },
+    {
+      "id": "n6",
+      "type": "decision",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Adopt resolution-aware partition keys and prohibit preemptible inlining, since InterposeMatrix-48 showed zero clean-build trace mismatches."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Implement the adopted resolution-aware partition cache and benchmark EditBench-30 single-module edits for rebuild time and runtime versus full LTO."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "IncrementalLTO v0.1 contains resolution-aware partition caching, nonpreemptible-only inlining, and EditBench-30 rebuild-time and runtime reports."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n3",
+      "content": "Run DependencySweep-64 with transitive callee edits across optimized/unoptimized modules; compare cached traces and partition invalidations against clean builds."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "DependencySweep-64 found three clean-build trace mismatches when transitive callee edits bypassed partition fingerprints and reused stale inline bodies."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 13,
+      "exploration_parent_id": "g1",
+      "content": "Extend resolution-aware partition keys with Merkle-hashed transitive inline-body dependencies, invalidating affected callers while retaining nonpreemptible-only inlining."
+    },
+    {
+      "id": "n11",
+      "type": "plan",
+      "order": 14,
+      "exploration_parent_id": "p2",
+      "content": "Implement Merkle dependency invalidation; rerun DependencySweep-64 and InterposeMatrix-48, then benchmark EditBench-30 rebuild time and runtime against full LTO."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 15,
+      "exploration_parent_id": "n11",
+      "content": "Patch IncrementalLTO v0.1 with transitive inline-body Merkle hashes, then rerun DependencySweep-64 and InterposeMatrix-48 against clean builds."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 16,
+      "exploration_parent_id": "n12",
+      "content": "IncrementalLTO v0.2 adds transitive inline-body Merkle keys and emits partition invalidation logs for DependencySweep-64 and InterposeMatrix-48."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 17,
+      "exploration_parent_id": "n13",
+      "content": "Does transitive invalidation halve EditBench-30 rebuild time while keeping runtime within 5% of full LTO?"
+    },
+    {
+      "id": "n15",
+      "type": "hypothesis",
+      "order": 18,
+      "exploration_parent_id": "n14",
+      "content": "On EditBench-30, v0.2 cuts median single-module rebuild time by at least 50% with runtime slowdown below 5%."
+    },
+    {
+      "id": "n16",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n15",
+      "content": "Benchmark IncrementalLTO v0.2 on EditBench-30 against full LTO, measuring median rebuild speedup, runtime slowdown, and clean-build trace equivalence."
+    },
+    {
+      "id": "n17",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n16",
+      "content": "EditBench-30: v0.2 cut median rebuild time 54%, increased runtime 3.1%, and matched clean-build traces in 30/30 cases."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 21,
+      "exploration_parent_id": "n15",
+      "content": "Repeat EditBench-30 with five randomized edit orders and mixed optimized/unoptimized modules, measuring median rebuild savings and runtime versus full LTO."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 22,
+      "exploration_parent_id": "n18",
+      "content": "Five shuffled mixed-mode EditBench-30 runs cut median rebuild time only 42% versus full LTO, below the hypothesized 50%."
+    },
+    {
+      "id": "n20",
+      "type": "hypothesis",
+      "order": 23,
+      "exploration_parent_id": "n15",
+      "content": "Caching fingerprinted resolution summaries alongside Merkle keys yields ≥50% median mixed-mode rebuild savings on EditBench-30 with under 5% runtime slowdown."
+    },
+    {
+      "id": "n21",
+      "type": "activity",
+      "order": 24,
+      "exploration_parent_id": "n20",
+      "content": "Profile v0.2 on shuffled EditBench-30, attributing rebuild time to resolution-summary recomputation versus partition compilation."
+    },
+    {
+      "id": "n22",
+      "type": "evidence",
+      "order": 25,
+      "exploration_parent_id": "n21",
+      "content": "Optimized-only EditBench-30 edits retained 54% median rebuild savings versus full LTO; resolution-summary recomputation consumed 18% of mixed-mode time."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n20",
+      "content": "Cache fingerprinted resolution summaries in v0.2; rerun five shuffled mixed-mode EditBench-30 orders, measuring full-LTO-relative rebuild savings and runtime."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n23",
+      "content": "Five shuffled mixed-mode EditBench-30 runs saved 47% median rebuild time despite cached summaries; runtime slowdown remained 3.2%."
+    },
+    {
+      "id": "n25",
+      "type": "activity",
+      "order": 28,
+      "exploration_parent_id": "n20",
+      "content": "Measure resolution-summary hit rates and rebuild savings across mixed-mode EditBench-30 edits, stratified by symbol churn."
+    },
+    {
+      "id": "n26",
+      "type": "evidence",
+      "order": 29,
+      "exploration_parent_id": "n25",
+      "content": "Low-churn mixed-mode edits saved 53% median rebuild time with 91% summary hits; high-churn edits had 39% hits."
+    },
+    {
+      "id": "n27",
+      "type": "decision",
+      "order": 30,
+      "exploration_parent_id": "n20",
+      "content": "Retain summary caching for low-churn edits, but optimize high-churn resolution because mixed-mode savings remain 47% overall."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Maintain a per-symbol resolution dependency graph; recompute summaries only for changed bindings and dependents, preserving interposition-aware invalidation."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p3",
+      "content": "How can the resolution graph detect weak-winner and DSO preload changes without invalidating partitions that depend on unrelated symbols?"
+    },
+    {
+      "id": "n29",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n28",
+      "content": "Fingerprint link-time candidate sets and preemptibility policy per symbol; retain dynamic calls and invalidate only dependents of changed bindings."
+    },
+    {
+      "id": "n30",
+      "type": "plan",
+      "order": 34,
+      "exploration_parent_id": "n29",
+      "content": "Implement per-symbol candidate fingerprints, preserve preemptible calls, and test weak-winner/preload changes for clean-build equivalence and localized invalidation."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n30",
+      "content": "Run InterposeMatrix-48 with per-symbol fingerprints; compare clean-build traces and unrelated-partition invalidations after weak-winner and DSO-preload changes."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n31",
+      "content": "InterposeMatrix-48 matched 48/48 clean-build traces; weak-winner changes invalidated only dependent partitions, and DSO preloads preserved dynamic dispatch."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n30",
+      "content": "Mutate weak candidates and visibility across mixed-mode DependencySweep-64; compare invalidation reachability and preemptible-call dispatch against clean builds."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 38,
+      "exploration_parent_id": "n33",
+      "content": "DependencySweep-64 found 2/64 trace mismatches: weak aliases in unoptimized modules changed bindings without invalidating canonical-symbol dependents."
+    },
+    {
+      "id": "n35",
+      "type": "hypothesis",
+      "order": 39,
+      "exploration_parent_id": "n29",
+      "content": "Tracking weak-alias-to-canonical edges across unoptimized modules and fingerprinting resolved target candidates prevents stale bindings without unrelated invalidation."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Add weak-alias canonical edges, rerun DependencySweep-64 and InterposeMatrix-48, then measure shuffled EditBench-30 savings."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "Add canonical weak-alias edges to the mixed-mode resolution graph; rerun DependencySweep-64 and InterposeMatrix-48 against clean-build traces and invalidation logs."
+    },
+    {
+      "id": "n38",
+      "type": "evidence",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "DependencySweep-64 and InterposeMatrix-48 matched clean-build traces in 112/112 cases; weak-alias edits invalidated dependents only."
+    },
+    {
+      "id": "n39",
+      "type": "decision",
+      "order": 43,
+      "exploration_parent_id": "n35",
+      "content": "Adopt canonical weak-alias tracking: it fixes the two mixed-mode mismatches while retaining localized invalidation and 112/112 clean-build matches."
+    },
+    {
+      "id": "n40",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n39",
+      "content": "Integrate canonical weak-alias tracking into IncrementalLTO v0.3; benchmark shuffled mixed-mode EditBench-30 rebuild savings and runtime against full LTO."
+    },
+    {
+      "id": "n41",
+      "type": "artifact",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "IncrementalLTO v0.3 includes canonical weak-alias dependency edges, per-symbol resolution invalidation, and shuffled mixed-mode EditBench-30 benchmark reports."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 46,
+      "exploration_parent_id": "g1",
+      "content": "Schedule invalidated partitions across eight workers, retaining unaffected cache entries and rechecking symbol-resolution fingerprints before final link."
+    },
+    {
+      "id": "n42",
+      "type": "plan",
+      "order": 47,
+      "exploration_parent_id": "p4",
+      "content": "Implement eight-worker partition scheduling with final-link fingerprint checks; benchmark shuffled EditBench-30 and verify clean-build traces under concurrent edits."
+    },
+    {
+      "id": "n43",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n42",
+      "content": "Run five shuffled mixed-mode EditBench-30 orders with eight-worker v0.3, measuring rebuild savings, runtime slowdown, and clean-build trace agreement."
+    },
+    {
+      "id": "n44",
+      "type": "artifact",
+      "order": 49,
+      "exploration_parent_id": "n43",
+      "content": "EditBench-30 eight-worker report records rebuild savings, runtime slowdown, and clean-build trace agreement across five shuffled mixed-mode orders."
+    },
+    {
+      "id": "n45",
+      "type": "question",
+      "order": 50,
+      "exploration_parent_id": "n44",
+      "content": "Do eight-worker runs close the 47%-to-50% mixed-mode rebuild gap without exceeding 5% runtime slowdown or introducing trace mismatches?"
+    },
+    {
+      "id": "n46",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n45",
+      "content": "Eight-worker v0.3 achieves at least 50% median mixed-mode rebuild savings, under 5% runtime slowdown, and 150/150 clean-build trace matches."
+    },
+    {
+      "id": "n47",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n46",
+      "content": "Analyze the eight-worker EditBench-30 report for median rebuild savings, runtime slowdown, and clean-build trace matches across 150 edits."
+    },
+    {
+      "id": "n48",
+      "type": "evidence",
+      "order": 53,
+      "exploration_parent_id": "n47",
+      "content": "Eight-worker EditBench-30 saved 52% median rebuild time, slowed runtime 3.3%, and matched clean-build traces in 150/150 edits."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 54,
+      "exploration_parent_id": "n46",
+      "content": "Stratify the eight-worker EditBench-30 report by symbol churn; stress concurrent weak-winner and DSO-preload changes against clean-build traces."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 55,
+      "exploration_parent_id": "n49",
+      "content": "Concurrent-churn EditBench-30 replay matched only 148/150 clean-build traces, versus 150/150 in the initial eight-worker run."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n46",
+      "content": "Pin immutable resolution snapshots and retry links on epoch changes, targeting 150/150 clean-build matches, ≥50% rebuild savings, and <5% slowdown."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Add epoch-pinned resolution snapshots, retry changed epochs, and rerun concurrent-churn EditBench-30 plus weak/DSO clean-build comparisons."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "Implement epoch-pinned resolution snapshots and retry stale links; replay 150 concurrent-churn EditBench-30 edits against clean builds."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 59,
+      "exploration_parent_id": "n53",
+      "content": "Epoch-pinned replay matched 150/150 clean-build traces, saved 51% median rebuild time, and incurred 3.4% runtime slowdown."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n52",
+      "content": "Run concurrent weak-winner and DSO-preload changes in InterposeMatrix-48, checking epoch retries and clean-build traces across mixed-mode links."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n55",
+      "content": "InterposeMatrix-48 exposed 1/48 clean-build mismatches because unoptimized weak-winner publications bypassed epoch increments, leaving stale bindings."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n51",
+      "content": "Keep epoch-pinned snapshots, but block release until unoptimized weak-winner publications increment epochs; replay passed EditBench-30 but failed InterposeMatrix-48."
+    },
+    {
+      "id": "n58",
+      "type": "hypothesis",
+      "order": 63,
+      "exploration_parent_id": "n51",
+      "content": "Epoching unoptimized weak-winner publications restores 48/48 interposition matches and 150/150 churn matches with ≥50% rebuild savings, <5% slowdown."
+    },
+    {
+      "id": "n59",
+      "type": "plan",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Epoch all weak-winner publications, including unoptimized modules; repeat InterposeMatrix-48 and concurrent-churn EditBench-30 with clean-build and performance checks."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "Epoch unoptimized weak-winner publications; rerun InterposeMatrix-48 and concurrent-churn EditBench-30, checking traces, rebuild savings, and runtime."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "After weak-winner epoching, InterposeMatrix-48 matched 48/48 traces; churn EditBench-30 matched 150/150, saved 50.5% rebuild time, and slowed runtime 3.5%."
+    },
+    {
+      "id": "n62",
+      "type": "activity",
+      "order": 67,
+      "exploration_parent_id": "n59",
+      "content": "Repeat 150 concurrent-churn EditBench-30 edits with fresh seeds and randomized unoptimized weak-winner publications; verify traces, rebuild savings, and runtime."
+    },
+    {
+      "id": "n63",
+      "type": "evidence",
+      "order": 68,
+      "exploration_parent_id": "n62",
+      "content": "Fresh-seed EditBench-30 matched 150/150 traces, saved 48% rebuild time, and slowed runtime 3.6% versus full LTO."
+    },
+    {
+      "id": "n64",
+      "type": "decision",
+      "order": 69,
+      "exploration_parent_id": "n58",
+      "content": "Retain weak-winner epoching for correctness, but defer release: fresh-seed rebuild savings fell to 48%, below the 50% target."
+    },
+    {
+      "id": "n65",
+      "type": "activity",
+      "order": 70,
+      "exploration_parent_id": "n64",
+      "content": "Batch weak-winner publications into atomic epoch commits; rerun fresh-seed EditBench-30 for ≥50% rebuild savings, <5% slowdown, and trace equivalence."
+    },
+    {
+      "id": "n66",
+      "type": "artifact",
+      "order": 71,
+      "exploration_parent_id": "n65",
+      "content": "IncrementalLTO v0.4 batches weak-winner updates into atomic epoch commits and includes fresh-seed EditBench-30 trace and performance reports."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 72,
+      "exploration_parent_id": "g1",
+      "content": "Reuse unchanged partitions across epoch-retried links, validating their dependency fingerprints against the committed snapshot before final linking."
+    },
+    {
+      "id": "n67",
+      "type": "question",
+      "order": 73,
+      "exploration_parent_id": "p5",
+      "content": "Can snapshot-validated retry reuse recover fresh-seed rebuild savings above 50% without admitting stale partitions after concurrent weak-winner changes?"
+    },
+    {
+      "id": "n68",
+      "type": "hypothesis",
+      "order": 74,
+      "exploration_parent_id": "n67",
+      "content": "Reusing partitions only when Merkle and resolution fingerprints match the committed epoch yields ≥50% rebuild savings and zero trace mismatches."
+    },
+    {
+      "id": "n69",
+      "type": "plan",
+      "order": 75,
+      "exploration_parent_id": "n68",
+      "content": "Add committed-epoch validation for retry reuse; benchmark fresh-seed EditBench-30 and verify weak-winner/DSO clean-build traces."
+    },
+    {
+      "id": "n70",
+      "type": "activity",
+      "order": 76,
+      "exploration_parent_id": "n69",
+      "content": "Add committed-epoch fingerprint checks to v0.3 partition caching; benchmark fresh-seed EditBench-30 rebuild savings, runtime, and clean-build traces."
+    },
+    {
+      "id": "n71",
+      "type": "evidence",
+      "order": 77,
+      "exploration_parent_id": "n70",
+      "content": "Fresh-seed EditBench-30 with committed-epoch retry reuse saved 52% median rebuild time, slowed runtime 3.6%, and matched 150/150 traces."
+    },
+    {
+      "id": "n72",
+      "type": "activity",
+      "order": 78,
+      "exploration_parent_id": "n69",
+      "content": "Stress v0.3 retry reuse with concurrent weak-winner flips and DSO preloads in InterposeMatrix-48, comparing traces and reused-partition fingerprints."
+    },
+    {
+      "id": "n73",
+      "type": "evidence",
+      "order": 79,
+      "exploration_parent_id": "n72",
+      "content": "InterposeMatrix-48 found 1/48 trace mismatches: versioned weak aliases shared one resolution key, reusing a stale partition after winner flips."
+    },
+    {
+      "id": "n74",
+      "type": "hypothesis",
+      "order": 80,
+      "exploration_parent_id": "n68",
+      "content": "Key versioned weak aliases by name, version, and canonical target before snapshot validation; expect ≥50% savings and zero mismatches."
+    },
+    {
+      "id": "n75",
+      "type": "plan",
+      "order": 81,
+      "exploration_parent_id": "n74",
+      "content": "Separate versioned weak-alias keys, validate retry reuse against committed snapshots, and rerun InterposeMatrix-48 plus fresh-seed EditBench-30."
+    },
+    {
+      "id": "n76",
+      "type": "activity",
+      "order": 82,
+      "exploration_parent_id": "n75",
+      "content": "Patch v0.3 with versioned weak-alias keys; rerun InterposeMatrix-48 and fresh-seed EditBench-30 against clean builds and full LTO."
+    },
+    {
+      "id": "n77",
+      "type": "evidence",
+      "order": 83,
+      "exploration_parent_id": "n76",
+      "content": "Versioned keys restored 48/48 InterposeMatrix-48 trace matches; fresh-seed EditBench-30 saved 51% rebuild time with 3.6% runtime slowdown."
+    },
+    {
+      "id": "n78",
+      "type": "activity",
+      "order": 84,
+      "exploration_parent_id": "n75",
+      "content": "Combine v0.4 atomic commits with versioned retry keys; stress InterposeMatrix-48 and EditBench-30 for trace equivalence and rebuild savings."
+    },
+    {
+      "id": "n79",
+      "type": "evidence",
+      "order": 85,
+      "exploration_parent_id": "n78",
+      "content": "Combined v0.4 passed 48/48 InterposeMatrix-48 and 150/150 EditBench-30 traces; median rebuild savings reached 53%, runtime slowdown 3.7%."
+    },
+    {
+      "id": "n80",
+      "type": "decision",
+      "order": 86,
+      "exploration_parent_id": "n74",
+      "content": "Adopt versioned retry keys with v0.4 atomic commits: they fix the stale-alias mismatch while delivering 53% savings and 3.7% slowdown."
+    },
+    {
+      "id": "n81",
+      "type": "activity",
+      "order": 87,
+      "exploration_parent_id": "n80",
+      "content": "Gate versioned-key, atomic-commit v0.5 on DependencySweep-64 and InterposeMatrix-48 trace matches, plus fresh-seed EditBench-30 ≥50% savings and <5% slowdown."
+    },
+    {
+      "id": "n82",
+      "type": "artifact",
+      "order": 88,
+      "exploration_parent_id": "n81",
+      "content": "IncrementalLTO v0.5 release candidate includes versioned alias keys, atomic epoch commits, snapshot-validated retry reuse, and correctness/performance gate reports."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n4"
+    },
+    {
+      "source": "n3",
+      "relation": "decompose",
+      "target": "n9"
+    },
+    {
+      "source": "n4",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "produce",
+      "target": "n5"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n5",
+      "relation": "support",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "depend_on",
+      "target": "n6"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n7",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n11",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n15",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n16",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n16",
+      "relation": "produce",
+      "target": "n17"
+    },
+    {
+      "source": "n17",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "refute",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "revise",
+      "target": "n15"
+    },
+    {
+      "source": "n20",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n21",
+      "relation": "evaluate",
+      "target": "n15"
+    },
+    {
+      "source": "n21",
+      "relation": "produce",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "support",
+      "target": "n15"
+    },
+    {
+      "source": "n23",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "refute",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "evaluate",
+      "target": "n20"
+    },
+    {
+      "source": "n25",
+      "relation": "produce",
+      "target": "n26"
+    },
+    {
+      "source": "n26",
+      "relation": "support",
+      "target": "n20"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n27",
+      "relation": "depend_on",
+      "target": "n26"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "revise",
+      "target": "n29"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "evaluate",
+      "target": "n35"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n38",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n39",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n40",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n40",
+      "relation": "produce",
+      "target": "n41"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n42",
+      "relation": "decompose",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "produce",
+      "target": "n44"
+    },
+    {
+      "source": "n46",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n47",
+      "relation": "produce",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n46"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "n44"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "revise",
+      "target": "n51"
+    },
+    {
+      "source": "n58",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n60"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n59",
+      "relation": "decompose",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "evaluate",
+      "target": "n58"
+    },
+    {
+      "source": "n62",
+      "relation": "produce",
+      "target": "n63"
+    },
+    {
+      "source": "n63",
+      "relation": "refute",
+      "target": "n58"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n61"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n63"
+    },
+    {
+      "source": "n65",
+      "relation": "depend_on",
+      "target": "n64"
+    },
+    {
+      "source": "n65",
+      "relation": "address",
+      "target": "n45"
+    },
+    {
+      "source": "n65",
+      "relation": "produce",
+      "target": "n66"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n68",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n70"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n70",
+      "relation": "produce",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "support",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "decompose",
+      "target": "n72"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n68"
+    },
+    {
+      "source": "n72",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n72",
+      "relation": "produce",
+      "target": "n73"
+    },
+    {
+      "source": "n73",
+      "relation": "refute",
+      "target": "n68"
+    },
+    {
+      "source": "n74",
+      "relation": "revise",
+      "target": "n68"
+    },
+    {
+      "source": "n74",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n75",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n76"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "n74"
+    },
+    {
+      "source": "n76",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n76",
+      "relation": "produce",
+      "target": "n77"
+    },
+    {
+      "source": "n77",
+      "relation": "support",
+      "target": "n74"
+    },
+    {
+      "source": "n75",
+      "relation": "decompose",
+      "target": "n78"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n74"
+    },
+    {
+      "source": "n78",
+      "relation": "evaluate",
+      "target": "n66"
+    },
+    {
+      "source": "n78",
+      "relation": "produce",
+      "target": "n79"
+    },
+    {
+      "source": "n79",
+      "relation": "support",
+      "target": "n74"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n71"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n73"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n77"
+    },
+    {
+      "source": "n80",
+      "relation": "depend_on",
+      "target": "n79"
+    },
+    {
+      "source": "n81",
+      "relation": "depend_on",
+      "target": "n80"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "n67"
+    },
+    {
+      "source": "n81",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n81",
+      "relation": "produce",
+      "target": "n82"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design an incremental cross-module optimizer that preserves optimization benefits while maintaining sound cache reuse under symbol interposition.",
+    "requirements": [
+      "Match clean-build semantics under dependency changes, dynamic symbol interposition, and mixed optimized/unoptimized modules.",
+      "For single-module edits, halve full-LTO rebuild time while keeping runtime within 5% of full LTO."
+    ]
+  }
+}

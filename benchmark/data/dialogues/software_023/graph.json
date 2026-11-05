@@ -1,0 +1,989 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a distributed recursive-query engine that incrementally maintains cyclic reachability under concurrent insertions and deletions with snapshot-consistent reads.",
+      "requirements": [
+        "Every committed snapshot matches least-fixed-point recomputation, including deletions that break or preserve cycles.",
+        "Pass 10,000 randomized concurrent update/read histories with worker crashes, without full-query recomputation after individual updates."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use WAL-backed atomic MVCC epochs, distributed dynamic SCCs, and condensation-DAG reachability; repair only affected regions on deletion."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "How can concurrent deletions split SCCs while restricting repair to affected regions and keeping epoch-pinned reads atomic?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "Epoch-serialized conflicting edits, affected-SCC rebuilds, and atomic MVCC publication yield zero snapshot mismatches across 10,000 crash-injected histories."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Serialize conflicting batches into WAL epochs; repair SCC splits/merges and ancestor reachability; atomically publish MVCC; differential-test 10,000 crash-injected histories."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Implement WAL-ordered epoch batching, SCC-local split/merge repair, affected-ancestor DAG reachability refresh, and atomic MVCC publication."
+    },
+    {
+      "id": "n7",
+      "type": "artifact",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "ReachEpoch v0.1 implements WAL-replayed epoch commits, SCC-local repairs, ancestor reachability updates, and atomically published MVCC snapshots."
+    },
+    {
+      "id": "n8",
+      "type": "activity",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Run ReachEpoch v0.1 through 10,000 seeded concurrent crash histories; compare committed snapshots against independent least-fixed-point recomputation."
+    },
+    {
+      "id": "n9",
+      "type": "evidence",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "ReachEpoch v0.1: 10,000 crash-injected histories yielded zero committed-snapshot mismatches; incremental updates invoked zero full-query recomputations."
+    },
+    {
+      "id": "n10",
+      "type": "decision",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "Adopt ReachEpoch v0.1’s incremental SCC repair: 10,000 crash-injected histories showed zero snapshot mismatches and no full-query recomputations."
+    },
+    {
+      "id": "n11",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n5",
+      "content": "Stress ReachEpoch v0.1 on CycleSplit-1M adversarial SCC deletions; measure touched vertices, p99 update latency, and snapshot equivalence."
+    },
+    {
+      "id": "n12",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n11",
+      "content": "CycleSplit-1M critical-edge deletions touched 940,000 vertices (94%), with 4.8-second p99 update latency and zero snapshot mismatches."
+    },
+    {
+      "id": "n13",
+      "type": "hypothesis",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Affected-SCC repair touches under 10% of vertices and keeps p99 updates below 500 ms on CycleSplit-1M critical-edge deletions."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "n13",
+      "content": "What locality and update-latency limits can affected-SCC repair meet on CycleSplit-1M critical-edge deletions?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Use strong-bridge certificates and range-compressed SCC splits to propagate batched reachability deltas before atomic epoch publication."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Build versioned bridge certificates with SCC-rebuild fallback; batch compressed DAG deltas, atomically publish epochs, and oracle-test 10,000 crash histories."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Extend ReachEpoch v0.1 with strong-bridge certificates and compressed splits; compare baseline latency and oracle correctness on CycleSplit-1M and crash histories."
+    },
+    {
+      "id": "n18",
+      "type": "evidence",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "CycleSplit-1M p99 fell from 4.8 s to 0.9 s; 10,000 crash histories showed zero mismatches or full-query update recomputations."
+    },
+    {
+      "id": "n19",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Bridge-certified splits keep CycleSplit-1M critical-edge deletion p99 below 1 s, without requiring a 10%-touch bound."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "Run 30 fresh CycleSplit-1M seeds with critical-edge deletions; measure p99 update latency, touched vertices, and snapshot-oracle mismatches."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Across 30 CycleSplit-1M seeds, worst-seed p99 was 0.94 s; median vertex-touch rate was 91%, with zero snapshot mismatches."
+    },
+    {
+      "id": "n22",
+      "type": "decision",
+      "order": 22,
+      "exploration_parent_id": "n21",
+      "content": "Prefer bridge-certified splits over baseline SCC repair: worst-seed p99 fell below 1 s, despite 91% median vertex touches."
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 23,
+      "exploration_parent_id": "n16",
+      "content": "Implement ReachEpoch v0.2 with selected bridge-certified splits, SCC-rebuild fallback, WAL-persisted compressed deltas, and atomic MVCC epoch publication."
+    },
+    {
+      "id": "n24",
+      "type": "artifact",
+      "order": 24,
+      "exploration_parent_id": "n23",
+      "content": "ReachEpoch v0.2 contains versioned bridge certificates, SCC-rebuild fallback, WAL-replayed compressed reachability deltas, and atomic MVCC epoch publication."
+    },
+    {
+      "id": "n25",
+      "type": "question",
+      "order": 25,
+      "exploration_parent_id": "p2",
+      "content": "How can bridge-certified splits avoid stale certificates when concurrent insertions reconnect an SCC within the same epoch?"
+    },
+    {
+      "id": "n26",
+      "type": "hypothesis",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Validating bridge certificates against each epoch’s final edge set and rebuilding invalidated SCCs yields zero mismatches in 10,000 mixed-update histories."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 27,
+      "exploration_parent_id": "g1",
+      "content": "Use MVCC-epoch differential dataflow with deletion-aware overdelete/rederive, sharded reachability witnesses, and distributed quiescence barriers."
+    },
+    {
+      "id": "n28",
+      "type": "question",
+      "order": 28,
+      "exploration_parent_id": "p3",
+      "content": "How can sharded overdelete/rederive eliminate self-supporting cyclic witnesses while detecting global quiescence before publishing an MVCC epoch?"
+    },
+    {
+      "id": "n29",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n28",
+      "content": "Prototype sharded overdelete/rederive atop ReachEpoch v0.2; test cyclic mixed updates, certificate validation, and quiescence against 10,000 crash-injected oracle histories."
+    },
+    {
+      "id": "n30",
+      "type": "evidence",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "With verified quiescence, final-edge-set certificate validation and invalidated-SCC rebuilds yielded four stale cross-shard snapshots in 10,000 mixed-update histories."
+    },
+    {
+      "id": "n31",
+      "type": "hypothesis",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "Epoch-fenced cross-shard certificate invalidation and quiescence-verified overdelete/rederive eliminate stale snapshots across 10,000 cyclic mixed-update crash histories."
+    },
+    {
+      "id": "n32",
+      "type": "plan",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "Epoch-fence cross-shard invalidations; validate certificates against final edges, rebuild invalidated SCCs, then quiesce and oracle-test 10,000 histories."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Run 10,000 oracle-checked mixed-update crash histories on ReachEpoch v0.2, comparing final-edge validation with/without epoch-fenced invalidations after overdelete/rederive quiescence."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Globally sealed edge-set validation/rebuild: zero mismatches; epoch-fenced invalidation with verified quiescence: two stale snapshots in 10,000 crash histories."
+    },
+    {
+      "id": "n35",
+      "type": "activity",
+      "order": 35,
+      "exploration_parent_id": "n32",
+      "content": "Replay two stale-history seeds on ReachEpoch v0.2 with epoch-fenced invalidations; trace certificate versions, rederive messages, and publication order."
+    },
+    {
+      "id": "n36",
+      "type": "evidence",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Both stale histories reused prior-epoch invalidation acknowledgments, prematurely sealing certificates; rederive quiescence remained correct, implicating incomplete epoch fencing."
+    },
+    {
+      "id": "n37",
+      "type": "decision",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Use globally sealed edge-set validation; reject current epoch-fenced invalidation until acknowledgments are epoch-tagged and retested."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Introduce consensus-sealed edge epochs with epoch-tagged invalidation acknowledgments and post-quiescence affected-SCC certificate validation before atomic MVCC publication."
+    },
+    {
+      "id": "n39",
+      "type": "question",
+      "order": 39,
+      "exploration_parent_id": "p4",
+      "content": "Can epoch-tagged acknowledgments prevent premature certificate sealing without consensus-barrier delays exceeding 1-second p99 on CycleSplit-1M?"
+    },
+    {
+      "id": "n40",
+      "type": "hypothesis",
+      "order": 40,
+      "exploration_parent_id": "n39",
+      "content": "Epoch-tagged acknowledgments eliminate stale snapshots across 10,000 crash histories while keeping CycleSplit-1M p99 updates below 1 s."
+    },
+    {
+      "id": "n41",
+      "type": "plan",
+      "order": 41,
+      "exploration_parent_id": "n40",
+      "content": "Tag invalidation acknowledgments by epoch, gate certification on sealed-edge quiescence, then oracle-test crash histories and benchmark CycleSplit-1M p99."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Patch ReachEpoch v0.2 to reject prior-epoch acknowledgments and validate affected SCCs against sealed edges after distributed rederive quiescence."
+    },
+    {
+      "id": "n43",
+      "type": "artifact",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "ReachEpoch v0.3 adds epoch-tagged invalidation acknowledgments, sealed-edge SCC validation, post-quiescence certification, and atomic MVCC publication."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n41",
+      "content": "Test ReachEpoch v0.3 on 10,000 crash-injected update/read histories against a fixed-point oracle; benchmark CycleSplit-1M p99 update latency."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "ReachEpoch v0.3: zero snapshot mismatches across 10,000 crash histories; CycleSplit-1M p99 updates 0.98 s, without full-query update recomputation."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 46,
+      "exploration_parent_id": "n45",
+      "content": "Adopt ReachEpoch v0.3: epoch-tagged sealing yielded zero mismatches in 10,000 crash histories and 0.98-second CycleSplit-1M p99."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 47,
+      "exploration_parent_id": "g1",
+      "content": "Shard source-rooted reachability forests with WAL-replayed epochs; repair deletion-invalidated branches via surviving alternate edges before atomic MVCC publication."
+    },
+    {
+      "id": "n48",
+      "type": "plan",
+      "order": 48,
+      "exploration_parent_id": "p5",
+      "content": "Implement versioned source-rooted forests; reattach invalidated branches from intact frontiers, seal WAL/MVCC epochs, and oracle-test 10,000 crash histories."
+    },
+    {
+      "id": "n49",
+      "type": "activity",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "Prototype source-rooted forest repair atop ReachEpoch v0.3; compare both on 10,000 crash-history oracle checks and CycleSplit-1M p99."
+    },
+    {
+      "id": "n50",
+      "type": "evidence",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Forest repair missed surviving alternate paths after seven cycle-preserving deletions in 10,000 crash histories; ReachEpoch v0.3 had zero mismatches."
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Epoch-tagged sealing plus sealed-edge alternate-path validation should retain zero mismatches and subsecond CycleSplit-1M p99, unlike forest-only repair."
+    },
+    {
+      "id": "n52",
+      "type": "plan",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Add sealed-edge alternate-path checks to epoch-tagged acknowledgment handling; oracle-test 10,000 crash histories and benchmark CycleSplit-1M p99."
+    },
+    {
+      "id": "n53",
+      "type": "activity",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "Instrument ReachEpoch v0.3 with sealed-edge alternate-path validation; replay failed forest seeds and 10,000 crash histories, then measure CycleSplit-1M p99."
+    },
+    {
+      "id": "n54",
+      "type": "evidence",
+      "order": 54,
+      "exploration_parent_id": "n53",
+      "content": "Across 10,000 histories both variants had zero mismatches; CycleSplit-1M p99 was 0.98 s baseline versus 1.31 s with alternate-path checks."
+    },
+    {
+      "id": "n55",
+      "type": "activity",
+      "order": 55,
+      "exploration_parent_id": "n52",
+      "content": "Trace alternate-path validation overhead on CycleSplit-1M, separating bridge-certificate checks, sealed-edge probes, and MVCC publication."
+    },
+    {
+      "id": "n56",
+      "type": "evidence",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "CycleSplit-1M traces attributed 0.34 s to redundant sealed-edge probes; deduplicated trace replay projected 0.97 s p99."
+    },
+    {
+      "id": "n57",
+      "type": "decision",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Keep ReachEpoch v0.3 unchanged; treat probe deduplication as unverified until live p99 beats 1 s without snapshot mismatches."
+    },
+    {
+      "id": "n58",
+      "type": "decision",
+      "order": 58,
+      "exploration_parent_id": "p5",
+      "content": "Reject forest-only repair after seven missed paths; retain validated ReachEpoch v0.3 rather than unverified alternate-path optimization."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n11"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n7"
+    },
+    {
+      "source": "n8",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "produce",
+      "target": "n9"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n4"
+    },
+    {
+      "source": "n9",
+      "relation": "support",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "depend_on",
+      "target": "n9"
+    },
+    {
+      "source": "n11",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n11",
+      "relation": "produce",
+      "target": "n12"
+    },
+    {
+      "source": "n12",
+      "relation": "refute",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n13",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n23"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n17",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n18",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "revise",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n19"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n19"
+    },
+    {
+      "source": "n21",
+      "relation": "support",
+      "target": "n22"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n12"
+    },
+    {
+      "source": "n22",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n29",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n29",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n29",
+      "relation": "produce",
+      "target": "n30"
+    },
+    {
+      "source": "n30",
+      "relation": "refute",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "revise",
+      "target": "n26"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n31",
+      "relation": "address",
+      "target": "n28"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n25"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n33"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n26"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n26"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n31"
+    },
+    {
+      "source": "n32",
+      "relation": "decompose",
+      "target": "n35"
+    },
+    {
+      "source": "n35",
+      "relation": "evaluate",
+      "target": "n31"
+    },
+    {
+      "source": "n35",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n35",
+      "relation": "produce",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "support",
+      "target": "n31"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n37",
+      "relation": "depend_on",
+      "target": "n36"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n40",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n42"
+    },
+    {
+      "source": "n41",
+      "relation": "decompose",
+      "target": "n44"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n24"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "p4"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n46",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n48",
+      "relation": "decompose",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n49",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n49",
+      "relation": "produce",
+      "target": "n50"
+    },
+    {
+      "source": "n50",
+      "relation": "refute",
+      "target": "p5"
+    },
+    {
+      "source": "n51",
+      "relation": "revise",
+      "target": "n40"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n52",
+      "relation": "address",
+      "target": "n39"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n40"
+    },
+    {
+      "source": "n53",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n53",
+      "relation": "produce",
+      "target": "n54"
+    },
+    {
+      "source": "n54",
+      "relation": "support",
+      "target": "n40"
+    },
+    {
+      "source": "n54",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "decompose",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n55",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n55",
+      "relation": "produce",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n54"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n56"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n58",
+      "relation": "depend_on",
+      "target": "n46"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a distributed recursive-query engine that incrementally maintains cyclic reachability under concurrent insertions and deletions with snapshot-consistent reads.",
+    "requirements": [
+      "Every committed snapshot matches least-fixed-point recomputation, including deletions that break or preserve cycles.",
+      "Pass 10,000 randomized concurrent update/read histories with worker crashes, without full-query recomputation after individual updates."
+    ]
+  }
+}

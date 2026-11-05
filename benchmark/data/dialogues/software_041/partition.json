@@ -1,0 +1,122 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Initial checkpoint-bounded lease design and PartitionSweep-v1 results",
+      "boundary_reason": "The initial simulation supports an adoption decision; the next discussion audits its traces under clock skew."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Clock-skew audit and shorter-lease tradeoff",
+      "boundary_reason": "The 50-second lease test misses the authentication target, prompting a different proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Pre-staged dual-generation tickets and expiry-aligned failures",
+      "boundary_reason": "Expiry-aligned testing exposes an availability shortfall and leads to a question about grace."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Grace-window sweep and indistinguishable partition traces",
+      "boundary_reason": "The grace tradeoff is established; the next work checks other gateway policies."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Alternate-key fallback with principal-scoped revocation checks",
+      "boundary_reason": "Fallback replay supports both targets; the next proposal examines rollback replay of its tickets."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "TPM principal floors and alternate-ticket rollback and restart tests",
+      "boundary_reason": "Restart testing reveals lost pre-staged tickets, motivating persistent ticket storage."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "TPM-floor-sealed restart journals and unrelated-principal invalidation",
+      "boundary_reason": "Unrelated-principal floor updates undermine journal availability, raising a new journal-design question."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Stable-key journals with per-principal TPM revalidation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

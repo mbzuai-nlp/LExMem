@@ -1,0 +1,151 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8"
+      ],
+      "topic": "Old-quorum fencing for shard cutover and initial model-checking results",
+      "boundary_reason": "The model-checking result leads to a provisional fencing requirement; fault injection begins a separate evaluation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Delayed replication replies expose a gap in fenced-quorum cutover",
+      "boundary_reason": "The fault-injection finding leads to a revised replay hypothesis and an open cutover question before an alternative proposal begins."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18",
+        "n19"
+      ],
+      "topic": "Joint-consensus safety and initial throttled-streaming results",
+      "boundary_reason": "Initial safety and throughput tests conclude; a longer throughput sweep starts next."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30"
+      ],
+      "topic": "Sustained-write benchmarks and adaptive migration throttling",
+      "boundary_reason": "The throughput tests lead to a throttling decision; the discussion shifts to learner-based catch-up."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "p3",
+        "n31",
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36",
+        "n37"
+      ],
+      "topic": "Raft learner catch-up and a missing deduplication checkpoint",
+      "boundary_reason": "Crash and partition trials reveal a checkpoint problem, prompting a focused correction."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n38",
+        "n39",
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Atomic key-and-dedup barrier checkpoints for learner promotion",
+      "boundary_reason": "The checkpoint correction reaches a provisional decision; object-storage snapshots are proposed next."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52"
+      ],
+      "topic": "Object-storage snapshot comparison and stale-manifest failures",
+      "boundary_reason": "Fault injection overturns the initial snapshot result and raises a manifest-consistency question."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57",
+        "n58"
+      ],
+      "topic": "Index-bound, hash-verified manifests and block reuse",
+      "boundary_reason": "The manifest correction reaches a decision; the next proposal integrates the protocol components."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n59",
+        "n60",
+        "n61",
+        "n62",
+        "n63",
+        "n64",
+        "n65"
+      ],
+      "topic": "Integrated migration tests and a joint-commit ownership failure",
+      "boundary_reason": "A targeted fault test exposes premature destination acknowledgments, prompting an ownership-gate correction."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n66",
+        "n67",
+        "n68",
+        "n69",
+        "n70",
+        "n71"
+      ],
+      "topic": "Committed-index ownership gates and final validation",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

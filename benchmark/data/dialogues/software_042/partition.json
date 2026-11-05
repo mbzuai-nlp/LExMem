@@ -1,0 +1,129 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "topic": "Version-log design and segment segregation for long-lived snapshots",
+      "boundary_reason": "The cleaner-rewrite comparison supports a decision to adopt segregated segments; the next nodes evaluate broader performance."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Version-log write savings and unresolved p99 read regression",
+      "boundary_reason": "The hot-value cache does not bring the read regression below the target; the next node proposes a different design."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17"
+      ],
+      "topic": "Inline-hot MVCC design and audited write/read benchmark",
+      "boundary_reason": "The performance audit is complete; the next activity tests crash recovery."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n18",
+        "n19"
+      ],
+      "topic": "Power-cut test exposes lost acknowledged inline-hot writes",
+      "boundary_reason": "The failure leads to a focused checkpoint and WAL-truncation question."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n20",
+        "n21",
+        "n22",
+        "n23",
+        "n24",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Generation-tagged checkpoints and initial recovery validation",
+      "boundary_reason": "The initial crash and benchmark checks are complete; the next test challenges checkpoint ordering under reordered fsync schedules."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Reordered-fsync failure and checkpoint durability ordering fix",
+      "boundary_reason": "The revised fsync order passes the reordered-schedule test; the next proposal shifts focus to segment reclamation."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Crash testing reveals unsafe epoch-only cold-segment reclamation",
+      "boundary_reason": "Replays establish the dangling-reference failure; the next proposal changes the reclamation rule."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Checkpoint-gated reclamation and an independent hot-update recovery failure",
+      "boundary_reason": "Independent replays reveal WAL-frontier advancement beyond the checkpoint sequence, prompting a focused correction."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n47",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53",
+        "n54",
+        "n55",
+        "n56",
+        "n57"
+      ],
+      "topic": "Checkpoint-capped WAL truncation, final crash and workload validation, and adoption",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "topic": "Partition-safe gang leases, epoch fencing, and the partial-activation problem",
+      "boundary_reason": "The crash report and resulting question shift the discussion from lease fencing to preventing partial gang activation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "p2",
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Quorum-backed gang activation barriers and initial fairness and recovery tests",
+      "boundary_reason": "The barrier design is adopted; the next discussion focuses on infeasible queue heads."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Skipping placement-infeasible gang heads without charging tenant credits",
+      "boundary_reason": "The comparison is set up, and the discussion turns to reconnect reconciliation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "p3",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Quorum-log reconciliation and recovery with stale leases",
+      "boundary_reason": "Delayed inventories and failover exceed the recovery target, prompting a revised reconciliation approach."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35",
+        "n36"
+      ],
+      "topic": "Sharded reconciliation and its repeated-failover limitation",
+      "boundary_reason": "Repeated failovers still exceed the recovery target, raising a narrower handoff question."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Persisted shard cursors and epoch-fenced handoff",
+      "boundary_reason": "The decision retains the single-failover approach but defers broader rollout; the next discussion diagnoses the remaining delay."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "n42",
+        "n43",
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Identifying inventory revalidation as a repeated-failover bottleneck",
+      "boundary_reason": "The bottleneck is identified and parallel revalidation is prioritized."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n48",
+        "n49",
+        "n50",
+        "n51",
+        "n52",
+        "n53"
+      ],
+      "topic": "Parallel inventory attestations and fenced gang starts",
+      "boundary_reason": "AttestGate is adopted for recovery and safety, while feasible small-gang waits remain unresolved."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "p5",
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Feasible backfill and credit-triggered preemption",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

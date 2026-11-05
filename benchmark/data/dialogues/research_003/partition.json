@@ -1,0 +1,127 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "topic": "Test whether accent-prototype gating remains selective across speakers and microphones",
+      "boundary_reason": "The gate activation test ends with a decision to retain gating for LoRA evaluation."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Evaluate gated LoRA and plan recalibration after existing-accent regressions",
+      "boundary_reason": "The recalibration test is specified; the discussion then shifts to lattice-based reranking."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "topic": "Build accent-specific lattice transducers and confidence-gated reranking",
+      "boundary_reason": "LatticeShift v1 is produced, setting up a distinct transfer evaluation."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n16",
+        "n17",
+        "n18",
+        "n19",
+        "n20"
+      ],
+      "topic": "Test LatticeShift transfer across speakers and microphones",
+      "boundary_reason": "The transfer results support a decision to prefer LatticeShift over prototype-gated LoRA."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n21",
+        "n22"
+      ],
+      "topic": "Compare recalibrated LoRA gating with LatticeShift and frozen decoding",
+      "boundary_reason": "The comparative results are reported; the next question concerns adaptation duration."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "n23",
+        "n24"
+      ],
+      "topic": "Assess how much unlabeled audio LatticeShift needs",
+      "boundary_reason": "The duration-subsampling activity is specified; the next proposal changes adaptation method."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27"
+      ],
+      "topic": "Test anchored phoneme-posterior normalization",
+      "boundary_reason": "Its initial WER result falls short of the unseen-accent target, prompting a narrower anchoring question."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "n28",
+        "n29",
+        "n30",
+        "n31"
+      ],
+      "topic": "Test whether relaxing vowel-merger anchoring improves adaptation",
+      "boundary_reason": "The vowel-merger ablation yields a result; the next question concerns selecting vowels from unlabeled data."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n32",
+        "n33",
+        "n34",
+        "n35"
+      ],
+      "topic": "Select vowels for anchor relaxation using unlabeled lattice statistics",
+      "boundary_reason": "The lattice-selected approach is evaluated and chosen; the next proposal introduces exemplar memory."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "p4",
+        "n36",
+        "n37",
+        "n38"
+      ],
+      "topic": "Build augmentation-invariant phonetic exemplar rescorer",
+      "boundary_reason": "ExemplarRescore v1 is produced, setting up its held-out evaluation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Compare exemplar rescoring with LatticeShift and select the primary approach",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

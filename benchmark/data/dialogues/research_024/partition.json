@@ -1,0 +1,139 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "ScopeBind proposal and initial evaluation of accessibility-filtered recombination",
+      "boundary_reason": "The initial evaluation ends before a separate ablation and audit."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7"
+      ],
+      "topic": "Independent evaluation exposes ScopeBind accessibility errors and subthreshold withheld accuracy",
+      "boundary_reason": "The finding motivates a shift to constrained decoding."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12"
+      ],
+      "topic": "Scope-state binder masking improves accessibility but misses the withheld-accuracy target",
+      "boundary_reason": "The remaining accuracy gap prompts investigation of quantifier ordering."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n13",
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Quantifier-order reranking brings scope-state ScopeBind above both accuracy targets",
+      "boundary_reason": "The approach is adopted before a separate residual-error audit."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n19",
+        "n20"
+      ],
+      "topic": "Residual-100 audit of the adopted ScopeBind parser",
+      "boundary_reason": "The audit artifact is complete; discussion shifts to a CCG alternative."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p2",
+        "n21",
+        "n22",
+        "n23",
+        "n24"
+      ],
+      "topic": "Typed CCG chart coverage and parser accuracy",
+      "boundary_reason": "The CCG evaluation ends before a different parsing proposal."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p3",
+        "n25",
+        "n26",
+        "n27",
+        "n28"
+      ],
+      "topic": "Typed-fragment unification evaluation and rejection as the primary parser",
+      "boundary_reason": "The decision closes this alternative before continuation parsing begins."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p4",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "Initial representation and accuracy tests for typed continuation parsing",
+      "boundary_reason": "Initial results are followed by a separate depth and contrast recheck."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n34",
+        "n35"
+      ],
+      "topic": "Independent recheck finds collapsed scope contrasts in continuations",
+      "boundary_reason": "The failures prompt a revised representation."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n36",
+        "n37",
+        "n38",
+        "n39",
+        "n40",
+        "n41"
+      ],
+      "topic": "Quantifier-order tags resolve continuation scope collisions and are adopted",
+      "boundary_reason": "The revision is adopted before a separate tag ablation."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n42",
+        "n43"
+      ],
+      "topic": "ScopeTag ablation and scope-collision report",
+      "boundary_reason": "The report is complete before the cross-parser audit."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46"
+      ],
+      "topic": "Cross-parser error recovery and final parser selection",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

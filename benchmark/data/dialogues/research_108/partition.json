@@ -1,0 +1,154 @@
+{
+  "sessions": [
+    {
+      "session_id": "S01",
+      "node_ids": [
+        "g1",
+        "p1",
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "topic": "Three-view identifiability and posterior correction",
+      "boundary_reason": "The identifiability proof leads to an adoption decision; the discussion then shifts to implementation and benchmarking."
+    },
+    {
+      "session_id": "S02",
+      "node_ids": [
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "topic": "TriView-CVaR implementation and Waterbirds-25 benchmark",
+      "boundary_reason": "The audit finds that TriView-CVaR misses the worst-group accuracy target, prompting a different proposal."
+    },
+    {
+      "session_id": "S03",
+      "node_ids": [
+        "p2",
+        "n11",
+        "n12",
+        "n13"
+      ],
+      "topic": "Initial TriView-SoftDRO test",
+      "boundary_reason": "The initial overlapping-cluster test misses the target, leading to a revised cluster hypothesis."
+    },
+    {
+      "session_id": "S04",
+      "node_ids": [
+        "n14",
+        "n15",
+        "n16",
+        "n17",
+        "n18"
+      ],
+      "topic": "Gradient-disagreement clusters and SoftDRO tuning",
+      "boundary_reason": "A parameter sweep reaches the target; the next discussion tests whether fixed settings hold on new seeds."
+    },
+    {
+      "session_id": "S05",
+      "node_ids": [
+        "n19",
+        "n20",
+        "n21"
+      ],
+      "topic": "Held-out validation of fixed SoftDRO settings",
+      "boundary_reason": "Held-out validation concludes before a new uncertainty-calibrated proposal begins."
+    },
+    {
+      "session_id": "S06",
+      "node_ids": [
+        "p3",
+        "n22",
+        "n23",
+        "n24",
+        "n25"
+      ],
+      "topic": "Uncertainty-calibrated TriView-CalDRO",
+      "boundary_reason": "The test misses the accuracy target, and the discussion moves to recall-constrained DRO."
+    },
+    {
+      "session_id": "S07",
+      "node_ids": [
+        "p4",
+        "n26",
+        "n27",
+        "n28",
+        "n29",
+        "n30",
+        "n31",
+        "n32",
+        "n33"
+      ],
+      "topic": "RecallDRO implementation and cross-dataset evaluation",
+      "boundary_reason": "The decision defers RecallDRO-v1 after its CelebA-29 shortfall."
+    },
+    {
+      "session_id": "S08",
+      "node_ids": [
+        "p5",
+        "n34",
+        "n35",
+        "n36",
+        "n37",
+        "n38",
+        "n39"
+      ],
+      "topic": "LocalRecallDRO proposal and outlier-weight audit",
+      "boundary_reason": "The audit corrects the reported outlier weights, motivating an immediate capped-weight revision."
+    },
+    {
+      "session_id": "S09",
+      "node_ids": [
+        "n40",
+        "n41",
+        "n42",
+        "n43"
+      ],
+      "topic": "Capped LocalRecallDRO correction and CelebA-29 test",
+      "boundary_reason": "The corrected capped method is adopted for CelebA-29; the next stage audits it on fresh seeds."
+    },
+    {
+      "session_id": "S10",
+      "node_ids": [
+        "n44",
+        "n45",
+        "n46",
+        "n47",
+        "n48",
+        "n49",
+        "n50"
+      ],
+      "topic": "Fresh-seed and bootstrap audits of capped LocalRecallDRO",
+      "boundary_reason": "Bootstrap refits expose breaches of the weight floor, motivating a projection-based revision."
+    },
+    {
+      "session_id": "S11",
+      "node_ids": [
+        "n51",
+        "n52",
+        "n53",
+        "n54"
+      ],
+      "topic": "Simplex projection and bootstrap validation",
+      "boundary_reason": "Projection is adopted after its bootstrap test; the next stage evaluates it on fresh seeds across both datasets."
+    },
+    {
+      "session_id": "S12",
+      "node_ids": [
+        "n55",
+        "n56",
+        "n57",
+        "n58",
+        "n59",
+        "n60"
+      ],
+      "topic": "Fresh-seed audit and adoption of projected LocalRecallDRO-v3",
+      "boundary_reason": "End of graph"
+    }
+  ]
+}

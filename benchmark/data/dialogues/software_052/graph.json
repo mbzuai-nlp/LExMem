@@ -1,0 +1,1058 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Design a multi-region secret broker reconciling emergency credential revocation, partition availability, and rollback-safe rotation.",
+      "requirements": [
+        "Revoked credentials become unusable within 60 seconds, including during network partitions and broker replica rollback.",
+        "Unrevoked workloads maintain 99.9% authentication success during 30-second regional partitions overlapping credential rotation."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Use 55-second quorum-signed leases, refresh every 15 seconds, overlap rotation keys, and enforce HSM epochs; partitioned brokers cannot renew."
+    },
+    {
+      "id": "n3",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "What lease TTL, refresh cadence, and rollback guard allow partitioned authentication without extending revoked-credential validity?"
+    },
+    {
+      "id": "n4",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n3",
+      "content": "HSM epochs and 55-second leases refreshed every 15 seconds, with ≤5-second skew, yield ≥99.9% 30-second-partition availability and ≤60-second revocation."
+    },
+    {
+      "id": "n5",
+      "type": "plan",
+      "order": 5,
+      "exploration_parent_id": "n4",
+      "content": "Simulate worst-timed revocation, 30-second partitioned rotation, and broker rollback; measure revocation latency and workload authentication success."
+    },
+    {
+      "id": "n6",
+      "type": "activity",
+      "order": 6,
+      "exploration_parent_id": "n5",
+      "content": "Run PartitionRotate-60 simulation over 1 million logins, sweeping revocation phase, rotating keys, 30-second partitions, ±5-second skew, and snapshot rollback."
+    },
+    {
+      "id": "n7",
+      "type": "evidence",
+      "order": 7,
+      "exploration_parent_id": "n6",
+      "content": "PartitionRotate-60 recorded 65-second revocation latency with opposing ±5-second clocks; unrevoked authentication success was 99.95%."
+    },
+    {
+      "id": "n8",
+      "type": "hypothesis",
+      "order": 8,
+      "exploration_parent_id": "n7",
+      "content": "Replacing 55-second leases and 15-second refreshes with 50-second leases and 5-second refreshes should achieve ≤60-second revocation and ≥99.9% availability."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n8",
+      "content": "Rerun PartitionRotate-60 with 50-second leases and 5-second refreshes; sweep revocation timing, ±5-second skew, 30-second partitioned rotation, and rollback."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 10,
+      "exploration_parent_id": "n9",
+      "content": "PartitionRotate-60 recorded 60-second maximum revocation latency and 99.94% unrevoked authentication success across ±5-second skew, 30-second partitions, and rollback."
+    },
+    {
+      "id": "n11",
+      "type": "decision",
+      "order": 11,
+      "exploration_parent_id": "n10",
+      "content": "Adopt 50-second leases with 5-second refreshes and HSM epochs; 55-second leases breached revocation, while revised simulation met both targets."
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 12,
+      "exploration_parent_id": "n5",
+      "content": "Simulate adopted leases under correlated refresh failures, 30-second partitioned rotation, and rollback; measure revocation latency and authentication success."
+    },
+    {
+      "id": "n13",
+      "type": "artifact",
+      "order": 13,
+      "exploration_parent_id": "n12",
+      "content": "PartitionRotate-60 resilience report records correlated refresh failures, rollback traces, revocation latency, and authentication success during partitioned rotation."
+    },
+    {
+      "id": "n14",
+      "type": "question",
+      "order": 14,
+      "exploration_parent_id": "p1",
+      "content": "Can correlated refresh failures and broker rollback during partitioned rotation breach 60-second revocation or 99.9% authentication targets?"
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 15,
+      "exploration_parent_id": "g1",
+      "content": "Issue 45-second workload-bound tokens, refresh every 5 seconds, and pre-stage dual rotation keys behind monotonic HSM revocation counters."
+    },
+    {
+      "id": "n16",
+      "type": "plan",
+      "order": 16,
+      "exploration_parent_id": "p2",
+      "content": "Prototype workload-bound 45-second tokens and pre-staged rotation keys; chaos-test partitions and rollback for revocation latency and authentication success."
+    },
+    {
+      "id": "n17",
+      "type": "activity",
+      "order": 17,
+      "exploration_parent_id": "n16",
+      "content": "Replay resilience-report traces with 45-second tokens, 5-second refresh, dual keys, and HSM counters; measure revocation latency and authentication success."
+    },
+    {
+      "id": "n18",
+      "type": "artifact",
+      "order": 18,
+      "exploration_parent_id": "n17",
+      "content": "TokenReplay-45 report contains per-trace revocation latency and unrevoked authentication success for 45-second tokens versus adopted 50-second leases."
+    },
+    {
+      "id": "n19",
+      "type": "activity",
+      "order": 19,
+      "exploration_parent_id": "n18",
+      "content": "Compare TokenReplay-45 and PartitionRotate-60 resilience reports across correlated failures and rollback, checking ≤60-second revocation and ≥99.9% authentication success."
+    },
+    {
+      "id": "n20",
+      "type": "evidence",
+      "order": 20,
+      "exploration_parent_id": "n19",
+      "content": "TokenReplay-45 recorded 55-second maximum revocation latency and 99.96% authentication success during correlated refresh failures, partitioned rotation, and rollback."
+    },
+    {
+      "id": "n21",
+      "type": "decision",
+      "order": 21,
+      "exploration_parent_id": "n20",
+      "content": "Adopt 45-second workload-bound tokens: 55-second revocation versus 60 seconds, and 99.96% authentication success versus 99.94% for leases."
+    },
+    {
+      "id": "n22",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n16",
+      "content": "Run broker-chaos trials comparing both designs under rollback, 30-second partitioned rotation, and ±5-second skew; measure revocation latency and authentication success."
+    },
+    {
+      "id": "n23",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n22",
+      "content": "Live rollback erased p2’s staged key, yielding 99.72% authentication success versus p1’s 99.93%; both revoked within 60 seconds."
+    },
+    {
+      "id": "n24",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p2",
+      "content": "Can workload-bound tokens and HSM-fenced dual keys preserve revocation safety and authentication availability during partitioned rotation and rollback?"
+    },
+    {
+      "id": "n25",
+      "type": "hypothesis",
+      "order": 25,
+      "exploration_parent_id": "n24",
+      "content": "Persisting dual rotation keys in rollback-resistant HSM storage should restore ≥99.9% authentication while retaining ≤60-second revocation during partitions."
+    },
+    {
+      "id": "n26",
+      "type": "activity",
+      "order": 26,
+      "exploration_parent_id": "n25",
+      "content": "Replay staged-key rollback failures with HSM-persisted dual keys during 30-second partitions; measure authentication success and worst-case revocation latency."
+    },
+    {
+      "id": "n27",
+      "type": "evidence",
+      "order": 27,
+      "exploration_parent_id": "n26",
+      "content": "With HSM-persisted dual keys, rollback trials reached 99.95% authentication success, up from 99.72%, while maximum revocation latency stayed 55 seconds."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 28,
+      "exploration_parent_id": "g1",
+      "content": "Use 20-second regionally signed tokens with 30-second partition fencing and HSM-persisted overlapping keys to bound stale issuance."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 29,
+      "exploration_parent_id": "p3",
+      "content": "Can regionally signed tokens maintain ≥99.9% authentication through 30-second partitions without extending revocation latency beyond 60 seconds?"
+    },
+    {
+      "id": "n30",
+      "type": "activity",
+      "order": 30,
+      "exploration_parent_id": "n29",
+      "content": "Replay PartitionRotate-60 resilience traces using 20-second regional tokens, 30-second fencing, and HSM keys; measure revocation latency and authentication success."
+    },
+    {
+      "id": "n31",
+      "type": "evidence",
+      "order": 31,
+      "exploration_parent_id": "n30",
+      "content": "PartitionRotate-60 replay measured 55-second maximum revocation latency and 99.92% unrevoked authentication success during 30-second partitions and rollback."
+    },
+    {
+      "id": "n32",
+      "type": "hypothesis",
+      "order": 32,
+      "exploration_parent_id": "n31",
+      "content": "In live 30-second partitions with ≤5-second clock skew, regional tokens should keep revocation ≤55 seconds and authentication ≥99.9%."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 33,
+      "exploration_parent_id": "n32",
+      "content": "Live-test regional and workload-bound tokens with HSM-persisted keys during 30-second partitioned rotation and rollback; measure revocation latency and authentication success."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 34,
+      "exploration_parent_id": "n33",
+      "content": "Live trials: regional tokens achieved 99.94% authentication and 54-second revocation; workload-bound tokens fell to 99.84% despite HSM keys."
+    },
+    {
+      "id": "n35",
+      "type": "decision",
+      "order": 35,
+      "exploration_parent_id": "n34",
+      "content": "Adopt regional tokens with HSM-persisted overlapping keys: live trials met both targets, and rollback trials validated key persistence."
+    },
+    {
+      "id": "n36",
+      "type": "plan",
+      "order": 36,
+      "exploration_parent_id": "n35",
+      "content": "Implement regional tokens and HSM-backed dual keys; canary 30-second partitioned rotation and rollback, gating on ≤60-second revocation and ≥99.9% authentication."
+    },
+    {
+      "id": "n37",
+      "type": "activity",
+      "order": 37,
+      "exploration_parent_id": "n36",
+      "content": "Implement HSM-backed key overlap and 20-second regional token issuance; canary partitioned rotation and snapshot rollback while tracking both SLOs."
+    },
+    {
+      "id": "n38",
+      "type": "artifact",
+      "order": 38,
+      "exploration_parent_id": "n37",
+      "content": "Broker v0.3 implements 20-second regional tokens, HSM-backed key overlap, partition fencing, and revocation and authentication canary dashboards."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 39,
+      "exploration_parent_id": "n30",
+      "content": "PartitionRotate-60 replay found zero stale-epoch tokens issued across 10,000 broker rollbacks with HSM-persisted rotation keys."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 40,
+      "exploration_parent_id": "g1",
+      "content": "Pre-issue workload-bound 30-second renewal vouchers, enforce HSM monotonic epochs, and halt voucher use 25 seconds after quorum loss."
+    },
+    {
+      "id": "n41",
+      "type": "hypothesis",
+      "order": 41,
+      "exploration_parent_id": "p4",
+      "content": "HSM-fenced 30-second vouchers with 25-second quorum-loss cutoff should sustain ≥99.9% authentication and ≤60-second revocation despite correlated failures and rollback."
+    },
+    {
+      "id": "n42",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n41",
+      "content": "Extend Broker v0.3 with 25-second-fenced vouchers; inject correlated failures, 30-second partitioned rotation, and rollback; measure revocation latency and authentication success."
+    },
+    {
+      "id": "n43",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n42",
+      "content": "Voucher canary reached 99.97% authentication, but worst-case revocation took 64 seconds when quorum vanished immediately before voucher issuance."
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 44,
+      "exploration_parent_id": "n41",
+      "content": "Instrument Broker v0.3’s 25-second voucher canary under ±5-second skew and n43’s pre-issuance quorum loss; measure revocation latency and authentication success."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 45,
+      "exploration_parent_id": "n44",
+      "content": "HSM-timestamped cutoff removed a 9-second detection lag; repeat pre-issuance-loss trials at ±5-second skew measured 59-second revocation and 99.94% authentication."
+    },
+    {
+      "id": "n46",
+      "type": "question",
+      "order": 46,
+      "exploration_parent_id": "p4",
+      "content": "Can HSM-fenced vouchers survive worst-timed quorum loss and rollback without exceeding 60-second revocation or dropping below 99.9% authentication?"
+    },
+    {
+      "id": "n47",
+      "type": "hypothesis",
+      "order": 47,
+      "exploration_parent_id": "n46",
+      "content": "HSM-timestamped 25-second voucher fencing should keep revocation ≤60 seconds and authentication ≥99.9% under worst-timed quorum loss and rollback."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n47",
+      "content": "Replay n43’s worst-timed loss with n45’s HSM cutoff across rollback and 30-second partitions; measure peak revocation latency and authentication success."
+    },
+    {
+      "id": "n49",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n48",
+      "content": "HSM-cutoff replay across 10,000 worst-timed loss and rollback trials peaked at 59-second revocation with 99.94% unrevoked authentication success."
+    },
+    {
+      "id": "n50",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n49",
+      "content": "Retain regional tokens: initial vouchers breached 60 seconds; HSM-corrected vouchers reach 59 seconds without improving 99.94% authentication."
+    },
+    {
+      "id": "n51",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n50",
+      "content": "Shadow-test retained regional tokens against HSM-fenced vouchers under worst-timed quorum loss and rollback; gate ≤60-second revocation and ≥99.9% authentication."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n51",
+      "content": "Run Broker v0.3 shadow canary comparing regional tokens and HSM-fenced vouchers during 30-second partitioned rotation, quorum loss, and replica rollback."
+    },
+    {
+      "id": "n53",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n52",
+      "content": "ShadowCanary-30 report compares regional-token and voucher revocation latency and authentication success across quorum loss, partitioned rotation, and rollback."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 54,
+      "exploration_parent_id": "g1",
+      "content": "Grant regional issuers 35-second HSM-fenced signing capabilities, issue 20-second mTLS certificates, and HSM-stage overlapping trust roots."
+    },
+    {
+      "id": "n55",
+      "type": "plan",
+      "order": 55,
+      "exploration_parent_id": "p5",
+      "content": "Prototype HSM-fenced regional signing and staged roots; chaos-test 30-second partitions, rotation, and rollback for revocation latency and authentication success."
+    },
+    {
+      "id": "n56",
+      "type": "activity",
+      "order": 56,
+      "exploration_parent_id": "n55",
+      "content": "Replay ShadowCanary-30 and TokenReplay-45 traces using 35-second HSM signing capabilities and 20-second certificates; compare revocation and authentication metrics."
+    },
+    {
+      "id": "n57",
+      "type": "evidence",
+      "order": 57,
+      "exploration_parent_id": "n56",
+      "content": "Trace replay measured 55-second maximum revocation latency and 99.97% authentication success with HSM signing capabilities, versus 99.94% for regional tokens."
+    },
+    {
+      "id": "n58",
+      "type": "question",
+      "order": 58,
+      "exploration_parent_id": "p5",
+      "content": "Do HSM-fenced regional signing capabilities preserve ≤60-second revocation and ≥99.9% authentication when trust-root rotation overlaps a partition?"
+    },
+    {
+      "id": "n59",
+      "type": "hypothesis",
+      "order": 59,
+      "exploration_parent_id": "n58",
+      "content": "HSM-staged overlapping roots should maintain ≥99.9% authentication and ≤60-second revocation during 30-second partitioned root rotation and rollback."
+    },
+    {
+      "id": "n60",
+      "type": "activity",
+      "order": 60,
+      "exploration_parent_id": "n59",
+      "content": "Using replay-validated signing capabilities, live-test staged-root rotation during 30-second partitions and rollback; measure revocation latency and authentication success."
+    },
+    {
+      "id": "n61",
+      "type": "evidence",
+      "order": 61,
+      "exploration_parent_id": "n60",
+      "content": "Live partitioned root-rotation trials recorded 57-second maximum revocation latency and 99.93% authentication success despite replica rollback."
+    },
+    {
+      "id": "n62",
+      "type": "decision",
+      "order": 62,
+      "exploration_parent_id": "n61",
+      "content": "Retain regional tokens: signing capabilities fell from 99.97% replay to 99.93% live, below regional tokens’ 99.94%."
+    },
+    {
+      "id": "n63",
+      "type": "plan",
+      "order": 63,
+      "exploration_parent_id": "n62",
+      "content": "Roll out regional tokens with HSM-persisted overlapping keys; test 30-second partitioned rotation and rollback, gating ≤60-second revocation and ≥99.9% authentication."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 64,
+      "exploration_parent_id": "n63",
+      "content": "Using ShadowCanary-30 and TokenReplay-45 baselines, canary regional-token rollout during partitioned rotation and rollback; verify ≤60-second revocation and ≥99.9% authentication."
+    },
+    {
+      "id": "n65",
+      "type": "artifact",
+      "order": 65,
+      "exploration_parent_id": "n64",
+      "content": "RegionalToken-Rollout canary report records partitioned-rotation and rollback revocation latency, authentication success, and SLO gate outcomes against both baselines."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n4",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n6"
+    },
+    {
+      "source": "n5",
+      "relation": "decompose",
+      "target": "n12"
+    },
+    {
+      "source": "n6",
+      "relation": "evaluate",
+      "target": "n4"
+    },
+    {
+      "source": "n6",
+      "relation": "produce",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "refute",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "revise",
+      "target": "n4"
+    },
+    {
+      "source": "n8",
+      "relation": "address",
+      "target": "n3"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n8"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n11"
+    },
+    {
+      "source": "n11",
+      "relation": "depend_on",
+      "target": "n7"
+    },
+    {
+      "source": "n12",
+      "relation": "depend_on",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n16",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n17"
+    },
+    {
+      "source": "n16",
+      "relation": "decompose",
+      "target": "n22"
+    },
+    {
+      "source": "n17",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n17",
+      "relation": "produce",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n19",
+      "relation": "evaluate",
+      "target": "n13"
+    },
+    {
+      "source": "n19",
+      "relation": "produce",
+      "target": "n20"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "p2"
+    },
+    {
+      "source": "n20",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "n21"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n22",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n22",
+      "relation": "produce",
+      "target": "n23"
+    },
+    {
+      "source": "n23",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "n23",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n25",
+      "relation": "address",
+      "target": "n24"
+    },
+    {
+      "source": "n26",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n23"
+    },
+    {
+      "source": "n26",
+      "relation": "produce",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n30",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n31"
+    },
+    {
+      "source": "n31",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "n25"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n32"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "n25"
+    },
+    {
+      "source": "n34",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n27",
+      "relation": "support",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "depend_on",
+      "target": "n35"
+    },
+    {
+      "source": "n36",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n36",
+      "relation": "decompose",
+      "target": "n37"
+    },
+    {
+      "source": "n37",
+      "relation": "produce",
+      "target": "n38"
+    },
+    {
+      "source": "n30",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n14"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n42",
+      "relation": "evaluate",
+      "target": "p4"
+    },
+    {
+      "source": "n42",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n42",
+      "relation": "produce",
+      "target": "n43"
+    },
+    {
+      "source": "n43",
+      "relation": "refute",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "evaluate",
+      "target": "n41"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n41"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "evaluate",
+      "target": "n47"
+    },
+    {
+      "source": "n48",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n43"
+    },
+    {
+      "source": "n48",
+      "relation": "depend_on",
+      "target": "n45"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n47"
+    },
+    {
+      "source": "n49",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n43",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n46"
+    },
+    {
+      "source": "n51",
+      "relation": "decompose",
+      "target": "n52"
+    },
+    {
+      "source": "n52",
+      "relation": "depend_on",
+      "target": "n38"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n55",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n55",
+      "relation": "decompose",
+      "target": "n56"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "evaluate",
+      "target": "n18"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n56",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n56",
+      "relation": "produce",
+      "target": "n57"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n58"
+    },
+    {
+      "source": "n59",
+      "relation": "address",
+      "target": "n58"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "evaluate",
+      "target": "p5"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n57"
+    },
+    {
+      "source": "n60",
+      "relation": "produce",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n59"
+    },
+    {
+      "source": "n61",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n57",
+      "relation": "support",
+      "target": "n62"
+    },
+    {
+      "source": "n62",
+      "relation": "depend_on",
+      "target": "n50"
+    },
+    {
+      "source": "n63",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n63",
+      "relation": "decompose",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n18"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    }
+  ],
+  "task": {
+    "task_type": "software_development",
+    "task_description": "Design a multi-region secret broker reconciling emergency credential revocation, partition availability, and rollback-safe rotation.",
+    "requirements": [
+      "Revoked credentials become unusable within 60 seconds, including during network partitions and broker replica rollback.",
+      "Unrevoked workloads maintain 99.9% authentication success during 30-second regional partitions overlapping credential rotation."
+    ]
+  }
+}

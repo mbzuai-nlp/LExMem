@@ -1,0 +1,1205 @@
+{
+  "nodes": [
+    {
+      "id": "g1",
+      "type": "goal",
+      "order": 1,
+      "exploration_parent_id": null,
+      "content": "Infer directed cell–cell signaling from spatial transcriptomics while distinguishing shared microenvironment effects under incomplete molecular observation.",
+      "requirements": [
+        "Specify identifiability assumptions and flag observationally indistinguishable signaling and environmental explanations.",
+        "On synthetic confounded tissues, achieve ≥80% precision at 50% recall for identifiable directed signaling edges."
+      ]
+    },
+    {
+      "id": "p1",
+      "type": "proposal",
+      "order": 2,
+      "exploration_parent_id": "g1",
+      "content": "Develop SignalSep: a masked ligand–receptor spatial model with latent environmental factors and observational-equivalence checks that abstain on unidentifiable directed edges."
+    },
+    {
+      "id": "n1",
+      "type": "question",
+      "order": 3,
+      "exploration_parent_id": "p1",
+      "content": "When can a neighbor’s partially observed ligand profile distinguish directed signaling from an unmeasured niche factor affecting both cells?"
+    },
+    {
+      "id": "n2",
+      "type": "hypothesis",
+      "order": 4,
+      "exploration_parent_id": "n1",
+      "content": "Niche-independent sender-ligand variation predicts receptor-linked neighbor responses; when ligand and niche fields coincide, their effects are observationally indistinguishable."
+    },
+    {
+      "id": "n3",
+      "type": "activity",
+      "order": 5,
+      "exploration_parent_id": "n2",
+      "content": "Simulate NicheMix-1 tissues with 40% dropout and ligand–niche correlations 0.2 versus 1.0; assess SignalSep edge recovery and abstention."
+    },
+    {
+      "id": "n4",
+      "type": "evidence",
+      "order": 6,
+      "exploration_parent_id": "n3",
+      "content": "On NicheMix-1, SignalSep reached 84% precision at 50% recall (r=0.2) and abstained on 96% of indistinguishable edges (r=1.0)."
+    },
+    {
+      "id": "n5",
+      "type": "decision",
+      "order": 7,
+      "exploration_parent_id": "n4",
+      "content": "Adopt SignalSep with abstention: 84% precision at 50% recall clears the target, while 96% of indistinguishable edges are flagged."
+    },
+    {
+      "id": "n6",
+      "type": "plan",
+      "order": 8,
+      "exploration_parent_id": "n5",
+      "content": "Document SignalSep’s niche-independent ligand variation and receptor-specificity assumptions; validate ambiguity flags and ≥80% precision at 50% recall on NicheMix-2."
+    },
+    {
+      "id": "n7",
+      "type": "activity",
+      "order": 9,
+      "exploration_parent_id": "n6",
+      "content": "Simulate NicheMix-2 with 40% dropout, receptor-negative controls, and ligand–niche collinearity; audit SignalSep assumptions, edge precision, and abstention."
+    },
+    {
+      "id": "n8",
+      "type": "artifact",
+      "order": 10,
+      "exploration_parent_id": "n7",
+      "content": "NicheMix-2 audit report records identifiability assumptions, precision at 50% recall, receptor-negative false positives, and collinearity-driven abstentions."
+    },
+    {
+      "id": "n9",
+      "type": "activity",
+      "order": 11,
+      "exploration_parent_id": "n8",
+      "content": "Independently verify the NicheMix-2 audit report against simulation ground truth, checking precision at 50% recall and collinear-edge abstention."
+    },
+    {
+      "id": "n10",
+      "type": "evidence",
+      "order": 12,
+      "exploration_parent_id": "n9",
+      "content": "NicheMix-2 verification found 82% precision at 50% identifiable-edge recall, 3% receptor-negative false positives, and 93% collinear-edge abstention."
+    },
+    {
+      "id": "n11",
+      "type": "question",
+      "order": 13,
+      "exploration_parent_id": "p1",
+      "content": "Can expression-dependent ligand dropout mimic niche-independent variation and produce falsely identifiable directed edges in SignalSep?"
+    },
+    {
+      "id": "n12",
+      "type": "activity",
+      "order": 14,
+      "exploration_parent_id": "n11",
+      "content": "Simulate NicheMix-MNAR with ligand- and niche-dependent detection plus environmental-only controls; measure SignalSep false-edge calls and abstention."
+    },
+    {
+      "id": "n13",
+      "type": "evidence",
+      "order": 15,
+      "exploration_parent_id": "n12",
+      "content": "On NicheMix-MNAR, SignalSep achieved 81% precision at 50% identifiable-edge recall and abstained on 91% of environmental-only candidates."
+    },
+    {
+      "id": "n14",
+      "type": "activity",
+      "order": 16,
+      "exploration_parent_id": "n11",
+      "content": "Reweight NicheMix-MNAR cells by estimated detection propensity, then test whether SignalSep’s receptor-linked edges persist against matched environmental-only controls."
+    },
+    {
+      "id": "n15",
+      "type": "evidence",
+      "order": 17,
+      "exploration_parent_id": "n14",
+      "content": "After propensity reweighting, NicheMix-MNAR precision fell from 81% to 71% at 50% recall; matched controls exposed detection-driven edges."
+    },
+    {
+      "id": "n16",
+      "type": "question",
+      "order": 18,
+      "exploration_parent_id": "p1",
+      "content": "Under which ligand–niche-dependent dropout regimes do SignalSep’s observational-equivalence checks flag apparent directed edges as ambiguous?"
+    },
+    {
+      "id": "n17",
+      "type": "hypothesis",
+      "order": 19,
+      "exploration_parent_id": "n16",
+      "content": "With ≥2-fold niche-dependent ligand detection, SignalSep underflags environmental mimics despite reweighting, while matched negative controls reveal ambiguity."
+    },
+    {
+      "id": "n18",
+      "type": "activity",
+      "order": 20,
+      "exploration_parent_id": "n17",
+      "content": "Calibrate a ≥2-fold niche-detection sweep against NicheMix-2 truth and MNAR baseline; seed reweighting-exposed false edges and compare ambiguity sensitivity."
+    },
+    {
+      "id": "n19",
+      "type": "evidence",
+      "order": 21,
+      "exploration_parent_id": "n18",
+      "content": "At 2–4-fold niche-dependent detection, reweighted SignalSep flagged 43% of environmental mimics; matched controls raised ambiguity detection to 88%."
+    },
+    {
+      "id": "n20",
+      "type": "activity",
+      "order": 22,
+      "exploration_parent_id": "n17",
+      "content": "Test held-out NicheMix-MNAR tissues at 1.5-, 2-, and 3-fold detection bias; compare reweighted ambiguity flags with matched-control flags."
+    },
+    {
+      "id": "n21",
+      "type": "evidence",
+      "order": 23,
+      "exploration_parent_id": "n20",
+      "content": "On held-out NicheMix-MNAR at 3-fold bias, reweighted SignalSep flagged 91% of environmental mimics versus matched controls’ 87%."
+    },
+    {
+      "id": "n22",
+      "type": "question",
+      "order": 24,
+      "exploration_parent_id": "p1",
+      "content": "When do reciprocal ligand–receptor interactions make edge direction unidentifiable from cross-sectional spatial transcriptomics?"
+    },
+    {
+      "id": "n23",
+      "type": "activity",
+      "order": 25,
+      "exploration_parent_id": "n22",
+      "content": "Calibrate dropout to the observed 43% and 91% mimic-flag rates; simulate reciprocal feedback and reversed-edge twins to test directional abstention."
+    },
+    {
+      "id": "n24",
+      "type": "evidence",
+      "order": 26,
+      "exploration_parent_id": "n23",
+      "content": "In ReciprocalMix, SignalSep abstained on 89% of distribution-matched reversed-edge twins; identifiable asymmetric-feedback edges reached 83% precision at 50% recall."
+    },
+    {
+      "id": "n25",
+      "type": "decision",
+      "order": 27,
+      "exploration_parent_id": "n24",
+      "content": "Retain asymmetric-feedback directional calls, but flag reversed-edge twins as unresolved: ReciprocalMix achieved 83% precision at 50% recall and 89% abstention."
+    },
+    {
+      "id": "n26",
+      "type": "plan",
+      "order": 28,
+      "exploration_parent_id": "n25",
+      "content": "Formalize reversed-edge equivalence criteria, then benchmark abstention across reciprocal-feedback strengths and dropout regimes while retaining identifiable asymmetric calls."
+    },
+    {
+      "id": "n27",
+      "type": "activity",
+      "order": 29,
+      "exploration_parent_id": "n26",
+      "content": "Generate ReciprocalMix-Grid with feedback ratios 1:1–4:1 and 20–60% dropout; compare reversed-edge likelihoods, abstention, and directional precision."
+    },
+    {
+      "id": "n28",
+      "type": "artifact",
+      "order": 30,
+      "exploration_parent_id": "n27",
+      "content": "ReciprocalMix-Grid benchmark package contains simulated tissues, reversed-edge likelihood comparisons, equivalence labels, and dropout-stratified abstention and precision tables."
+    },
+    {
+      "id": "p2",
+      "type": "proposal",
+      "order": 31,
+      "exploration_parent_id": "g1",
+      "content": "Develop NicheMatch: compare receptor-positive and receptor-negative receivers around niche-matched senders, using missingness bounds to flag nonidentifiable directions."
+    },
+    {
+      "id": "n29",
+      "type": "question",
+      "order": 32,
+      "exploration_parent_id": "p2",
+      "content": "Can receptor-negative receivers adequately control for niche effects when ligand and receptor dropout depend on local cell density?"
+    },
+    {
+      "id": "n30",
+      "type": "hypothesis",
+      "order": 33,
+      "exploration_parent_id": "n29",
+      "content": "Density-matched, independently verified receptor-negative controls suppress niche-only edges; transcript-zero controls misclassify receptor dropout and inflate false positives."
+    },
+    {
+      "id": "n31",
+      "type": "activity",
+      "order": 34,
+      "exploration_parent_id": "n30",
+      "content": "On DensityMix, compare verified and transcript-zero receptor-negative controls under density-dependent dropout; measure niche-only false positives and precision at 50% recall."
+    },
+    {
+      "id": "n32",
+      "type": "evidence",
+      "order": 35,
+      "exploration_parent_id": "n31",
+      "content": "DensityMix: verified controls achieved 82% precision at 50% recall and 4% niche-only false positives; transcript-zero controls achieved 68% and 19%."
+    },
+    {
+      "id": "n33",
+      "type": "activity",
+      "order": 36,
+      "exploration_parent_id": "p2",
+      "content": "Benchmark NicheMatch on held-out DensityMix-2 using verified receptor-negative controls; evaluate precision at 50% recall and missingness-bound abstention."
+    },
+    {
+      "id": "n34",
+      "type": "evidence",
+      "order": 37,
+      "exploration_parent_id": "n33",
+      "content": "On held-out DensityMix-2, NicheMatch reached 73% precision at 50% recall; missingness bounds flagged only 54% of niche-equivalent edges."
+    },
+    {
+      "id": "p3",
+      "type": "proposal",
+      "order": 38,
+      "exploration_parent_id": "g1",
+      "content": "Develop PerturbMap: infer directed edges from mosaic ligand knockouts, paired receptor responses, and niche controls; abstain under perturbation spillover."
+    },
+    {
+      "id": "n35",
+      "type": "plan",
+      "order": 39,
+      "exploration_parent_id": "p3",
+      "content": "Simulate randomized mosaic knockouts with niche confounding, dropout, and spillover; document no-spillover assumptions and benchmark ≥80% precision at 50% recall."
+    },
+    {
+      "id": "n36",
+      "type": "activity",
+      "order": 40,
+      "exploration_parent_id": "n35",
+      "content": "Generate KO-Mosaic tissues with randomized sender ligand knockouts, 40% transcript dropout, and graded paracrine spillover; score PerturbMap against known edges."
+    },
+    {
+      "id": "n37",
+      "type": "artifact",
+      "order": 41,
+      "exploration_parent_id": "n36",
+      "content": "KO-Mosaic benchmark contains randomized knockout maps, dropout masks, graded spillover labels, ground-truth directed edges, and PerturbMap scoring scripts."
+    },
+    {
+      "id": "n38",
+      "type": "activity",
+      "order": 42,
+      "exploration_parent_id": "n37",
+      "content": "Audit KO-Mosaic knockout randomization, dropout masks, and spillover labels; independently compute PerturbMap precision at 50% recall by spillover."
+    },
+    {
+      "id": "n39",
+      "type": "evidence",
+      "order": 43,
+      "exploration_parent_id": "n38",
+      "content": "KO-Mosaic audit confirmed knockout randomization; PerturbMap achieved 87% precision at 50% recall without spillover and flagged 92% of high-spillover edges."
+    },
+    {
+      "id": "n40",
+      "type": "question",
+      "order": 44,
+      "exploration_parent_id": "p3",
+      "content": "Can knockout-induced niche remodeling violate PerturbMap’s exclusion assumption even when sender knockouts are randomized?"
+    },
+    {
+      "id": "n41",
+      "type": "activity",
+      "order": 45,
+      "exploration_parent_id": "n40",
+      "content": "Extend KO-Mosaic with knockout-driven hypoxia affecting receptor-negative receivers; measure PerturbMap false edges and abstention under randomized knockouts."
+    },
+    {
+      "id": "n42",
+      "type": "evidence",
+      "order": 46,
+      "exploration_parent_id": "n41",
+      "content": "With knockout-driven hypoxia, PerturbMap precision dropped to 64% at 50% recall; 71% of niche-mediated false edges escaped abstention."
+    },
+    {
+      "id": "n43",
+      "type": "question",
+      "order": 47,
+      "exploration_parent_id": "p3",
+      "content": "Which independently measured hypoxia markers allow PerturbMap to distinguish knockout-induced niche remodeling from receptor-specific signaling?"
+    },
+    {
+      "id": "n44",
+      "type": "activity",
+      "order": 48,
+      "exploration_parent_id": "n43",
+      "content": "Retest PerturbMap on baseline and hypoxia KO-Mosaic using independent pimonidazole staining and oxygen-optode maps; compare precision and abstention."
+    },
+    {
+      "id": "n45",
+      "type": "evidence",
+      "order": 49,
+      "exploration_parent_id": "n44",
+      "content": "On hypoxic KO-Mosaic, combined pimonidazole–optode adjustment restored 82% precision at 50% recall and flagged 86% of niche-mediated edges."
+    },
+    {
+      "id": "n46",
+      "type": "decision",
+      "order": 50,
+      "exploration_parent_id": "n45",
+      "content": "Require both independent hypoxia assays for PerturbMap calls; otherwise abstain, since combined adjustment restored 82% precision at 50% recall."
+    },
+    {
+      "id": "n47",
+      "type": "plan",
+      "order": 51,
+      "exploration_parent_id": "n46",
+      "content": "Validate pimonidazole–optode adjustment on held-out KO-Mosaic; audit assay coverage, exclusion violations, and ≥80% precision at 50% recall."
+    },
+    {
+      "id": "n48",
+      "type": "activity",
+      "order": 52,
+      "exploration_parent_id": "n47",
+      "content": "Run PerturbMap on held-out KO-Mosaic-2 with paired hypoxia assays; mask one assay per replicate and compare edge precision and abstention."
+    },
+    {
+      "id": "n49",
+      "type": "artifact",
+      "order": 53,
+      "exploration_parent_id": "n48",
+      "content": "KO-Mosaic-2 validation report includes paired-assay coverage, assay-masking ablations, directed-edge precision, and exclusion-violation abstention by replicate."
+    },
+    {
+      "id": "p4",
+      "type": "proposal",
+      "order": 54,
+      "exploration_parent_id": "g1",
+      "content": "Develop CrossNiche: infer sender-to-receiver edges from niche-invariant ligand–receptor responses, using environmental sentinels and missingness bounds to flag ambiguities."
+    },
+    {
+      "id": "n50",
+      "type": "question",
+      "order": 55,
+      "exploration_parent_id": "p4",
+      "content": "Can unmeasured environmental factors shared across niches mimic invariant ligand–receptor responses despite environmental sentinels?"
+    },
+    {
+      "id": "n51",
+      "type": "hypothesis",
+      "order": 56,
+      "exploration_parent_id": "n50",
+      "content": "CrossNiche misclassifies invariant shared-factor effects when sentinels omit the factor, but abstains when sentinels track it."
+    },
+    {
+      "id": "n52",
+      "type": "activity",
+      "order": 57,
+      "exploration_parent_id": "n51",
+      "content": "Simulate CrossNiche-Null with invariant hypoxia across four niches; compare environmental-only edge calls using hypoxia-tracking versus unrelated sentinels."
+    },
+    {
+      "id": "n53",
+      "type": "evidence",
+      "order": 58,
+      "exploration_parent_id": "n52",
+      "content": "On CrossNiche-Null, CrossNiche abstained on 90% of environmental-only edges with unrelated sentinels versus 92% with hypoxia-tracking sentinels."
+    },
+    {
+      "id": "n54",
+      "type": "activity",
+      "order": 59,
+      "exploration_parent_id": "n51",
+      "content": "Simulate CrossNiche-Shift with a hidden factor coupled to ligands across niches; vary sentinel correlation and measure environmental false calls."
+    },
+    {
+      "id": "n55",
+      "type": "evidence",
+      "order": 60,
+      "exploration_parent_id": "n54",
+      "content": "On CrossNiche-Shift, unrelated sentinels mislabeled 27% of environmental edges as signaling; factor-tracking sentinels abstained on 91%."
+    },
+    {
+      "id": "n56",
+      "type": "question",
+      "order": 61,
+      "exploration_parent_id": "p4",
+      "content": "When do coordinated sender–receiver composition shifts across niches make CrossNiche’s invariant responses indistinguishable from signaling?"
+    },
+    {
+      "id": "n57",
+      "type": "activity",
+      "order": 62,
+      "exploration_parent_id": "n56",
+      "content": "Extend CrossNiche-Null and CrossNiche-Shift with coordinated sender–receiver abundance gradients; compare signaling false calls and abstention across sentinel types."
+    },
+    {
+      "id": "n58",
+      "type": "evidence",
+      "order": 63,
+      "exploration_parent_id": "n57",
+      "content": "With coordinated composition gradients, unrelated sentinels yielded 32% environmental false calls; factor-tracking sentinels reduced them to 7%."
+    },
+    {
+      "id": "n59",
+      "type": "decision",
+      "order": 64,
+      "exploration_parent_id": "n58",
+      "content": "Require factor-tracking sentinels and composition adjustment for CrossNiche calls; unrelated sentinels produced 32% environmental false calls."
+    },
+    {
+      "id": "n60",
+      "type": "plan",
+      "order": 65,
+      "exploration_parent_id": "n59",
+      "content": "Benchmark composition-adjusted CrossNiche on held-out gradient tissues with factor-tracking sentinels; quantify indistinguishable-edge abstention and precision at 50% recall."
+    },
+    {
+      "id": "n61",
+      "type": "activity",
+      "order": 66,
+      "exploration_parent_id": "n60",
+      "content": "Generate held-out CrossNiche-Gradient tissues with 40% dropout and coupled abundance shifts; test adjusted edge rankings against equivalence labels."
+    },
+    {
+      "id": "n62",
+      "type": "artifact",
+      "order": 67,
+      "exploration_parent_id": "n61",
+      "content": "CrossNiche-Gradient benchmark includes held-out tissues, factor-tracking sentinel maps, composition-adjusted rankings, equivalence labels, and abstention metrics."
+    },
+    {
+      "id": "p5",
+      "type": "proposal",
+      "order": 68,
+      "exploration_parent_id": "g1",
+      "content": "Develop PulseTrace: infer direction from time-resolved spatial ligand pulses and receptor-specific response delays, flagging niche-synchronized alternatives under dropout."
+    },
+    {
+      "id": "n63",
+      "type": "plan",
+      "order": 69,
+      "exploration_parent_id": "p5",
+      "content": "Simulate eight-frame spatial pulse series with 40% dropout; test temporal resolution assumptions, niche-synchronized abstention, and ≥80% precision at 50% recall."
+    },
+    {
+      "id": "n64",
+      "type": "activity",
+      "order": 70,
+      "exploration_parent_id": "n63",
+      "content": "Construct eight-frame PulseTrace simulations using ReciprocalMix-Grid equivalence labels, KO-Mosaic-2 assay-coverage patterns, and CrossNiche-Gradient sentinel maps; score 40%-dropout edge recovery."
+    },
+    {
+      "id": "n65",
+      "type": "artifact",
+      "order": 71,
+      "exploration_parent_id": "n64",
+      "content": "PulseTrace-8 benchmark contains eight-frame tissues, 40% dropout masks, niche-synchronized controls, equivalence labels, and precision-at-50%-recall scoring code."
+    },
+    {
+      "id": "n66",
+      "type": "activity",
+      "order": 72,
+      "exploration_parent_id": "n65",
+      "content": "Audit PulseTrace-8 timing and equivalence labels; independently score directional precision at 50% recall and niche-synchronized abstention."
+    },
+    {
+      "id": "n67",
+      "type": "evidence",
+      "order": 73,
+      "exploration_parent_id": "n66",
+      "content": "PulseTrace-8 audit found 85% directional precision at 50% identifiable-edge recall and 90% abstention on niche-synchronized controls."
+    },
+    {
+      "id": "n68",
+      "type": "question",
+      "order": 74,
+      "exploration_parent_id": "p5",
+      "content": "Can asynchronous niche fluctuations generate ligand-leading response delays that PulseTrace mistakes for directed signaling?"
+    },
+    {
+      "id": "n69",
+      "type": "hypothesis",
+      "order": 75,
+      "exploration_parent_id": "n68",
+      "content": "Niche waves lagging across cell types by one frame create false ligand-leading edges unless independent niche sensors capture propagation."
+    },
+    {
+      "id": "n70",
+      "type": "activity",
+      "order": 76,
+      "exploration_parent_id": "n69",
+      "content": "Using PulseTrace-8 baseline and DensityMix-2 missed niche-equivalent cases, simulate one-frame niche waves; compare false-call rates with versus without independent sensors."
+    },
+    {
+      "id": "n71",
+      "type": "evidence",
+      "order": 77,
+      "exploration_parent_id": "n70",
+      "content": "On one-frame niche waves, PulseTrace falsely called 4% of environmental edges without sensors versus 3% with sensors."
+    },
+    {
+      "id": "n72",
+      "type": "decision",
+      "order": 78,
+      "exploration_parent_id": "n71",
+      "content": "Retain PulseTrace without mandatory niche sensors: one-frame waves yielded 4% environmental false calls; precision reached 85% at 50% recall."
+    },
+    {
+      "id": "n73",
+      "type": "plan",
+      "order": 79,
+      "exploration_parent_id": "n72",
+      "content": "Revise eight-frame validation: make niche sensors optional; test irregular multi-frame waves at 40% dropout, tracking precision and abstention."
+    },
+    {
+      "id": "n74",
+      "type": "activity",
+      "order": 80,
+      "exploration_parent_id": "n73",
+      "content": "Extend PulseTrace-8 with irregular 2–3-frame niche waves at 40% dropout; compare precision and environmental-edge abstention with versus without sensors."
+    },
+    {
+      "id": "n75",
+      "type": "artifact",
+      "order": 81,
+      "exploration_parent_id": "n74",
+      "content": "PulseTrace-8 v2 adds irregular 2–3-frame niche waves, optional-sensor ablations, and dropout-stratified precision and abstention tables."
+    }
+  ],
+  "edges": [
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n2",
+      "relation": "address",
+      "target": "n1"
+    },
+    {
+      "source": "n3",
+      "relation": "evaluate",
+      "target": "n2"
+    },
+    {
+      "source": "n3",
+      "relation": "produce",
+      "target": "n4"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n2"
+    },
+    {
+      "source": "n4",
+      "relation": "support",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "depend_on",
+      "target": "n5"
+    },
+    {
+      "source": "n6",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n6",
+      "relation": "decompose",
+      "target": "n7"
+    },
+    {
+      "source": "n7",
+      "relation": "produce",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "evaluate",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "depend_on",
+      "target": "n8"
+    },
+    {
+      "source": "n9",
+      "relation": "produce",
+      "target": "n10"
+    },
+    {
+      "source": "n10",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n12",
+      "relation": "produce",
+      "target": "n13"
+    },
+    {
+      "source": "n13",
+      "relation": "support",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "address",
+      "target": "n11"
+    },
+    {
+      "source": "n14",
+      "relation": "evaluate",
+      "target": "p1"
+    },
+    {
+      "source": "n14",
+      "relation": "produce",
+      "target": "n15"
+    },
+    {
+      "source": "n15",
+      "relation": "refute",
+      "target": "p1"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n17",
+      "relation": "address",
+      "target": "n16"
+    },
+    {
+      "source": "n18",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n10"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n13"
+    },
+    {
+      "source": "n18",
+      "relation": "depend_on",
+      "target": "n15"
+    },
+    {
+      "source": "n18",
+      "relation": "produce",
+      "target": "n19"
+    },
+    {
+      "source": "n19",
+      "relation": "support",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "evaluate",
+      "target": "n17"
+    },
+    {
+      "source": "n20",
+      "relation": "produce",
+      "target": "n21"
+    },
+    {
+      "source": "n21",
+      "relation": "refute",
+      "target": "n17"
+    },
+    {
+      "source": "p1",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n19"
+    },
+    {
+      "source": "n23",
+      "relation": "depend_on",
+      "target": "n21"
+    },
+    {
+      "source": "n23",
+      "relation": "produce",
+      "target": "n24"
+    },
+    {
+      "source": "n24",
+      "relation": "support",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "depend_on",
+      "target": "n25"
+    },
+    {
+      "source": "n26",
+      "relation": "address",
+      "target": "n22"
+    },
+    {
+      "source": "n26",
+      "relation": "decompose",
+      "target": "n27"
+    },
+    {
+      "source": "n27",
+      "relation": "produce",
+      "target": "n28"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p2"
+    },
+    {
+      "source": "p2",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n30",
+      "relation": "address",
+      "target": "n29"
+    },
+    {
+      "source": "n31",
+      "relation": "evaluate",
+      "target": "n30"
+    },
+    {
+      "source": "n31",
+      "relation": "produce",
+      "target": "n32"
+    },
+    {
+      "source": "n32",
+      "relation": "support",
+      "target": "n30"
+    },
+    {
+      "source": "n33",
+      "relation": "evaluate",
+      "target": "p2"
+    },
+    {
+      "source": "n33",
+      "relation": "depend_on",
+      "target": "n32"
+    },
+    {
+      "source": "n33",
+      "relation": "produce",
+      "target": "n34"
+    },
+    {
+      "source": "n34",
+      "relation": "refute",
+      "target": "p2"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p3"
+    },
+    {
+      "source": "n35",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n35",
+      "relation": "decompose",
+      "target": "n36"
+    },
+    {
+      "source": "n36",
+      "relation": "produce",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "evaluate",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n38",
+      "relation": "produce",
+      "target": "n39"
+    },
+    {
+      "source": "n39",
+      "relation": "support",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "address",
+      "target": "n40"
+    },
+    {
+      "source": "n41",
+      "relation": "evaluate",
+      "target": "p3"
+    },
+    {
+      "source": "n41",
+      "relation": "depend_on",
+      "target": "n37"
+    },
+    {
+      "source": "n41",
+      "relation": "produce",
+      "target": "n42"
+    },
+    {
+      "source": "n42",
+      "relation": "refute",
+      "target": "p3"
+    },
+    {
+      "source": "p3",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n39"
+    },
+    {
+      "source": "n44",
+      "relation": "depend_on",
+      "target": "n42"
+    },
+    {
+      "source": "n44",
+      "relation": "produce",
+      "target": "n45"
+    },
+    {
+      "source": "n45",
+      "relation": "support",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "depend_on",
+      "target": "n46"
+    },
+    {
+      "source": "n47",
+      "relation": "address",
+      "target": "n43"
+    },
+    {
+      "source": "n47",
+      "relation": "decompose",
+      "target": "n48"
+    },
+    {
+      "source": "n48",
+      "relation": "produce",
+      "target": "n49"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p4"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n51",
+      "relation": "address",
+      "target": "n50"
+    },
+    {
+      "source": "n52",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n52",
+      "relation": "produce",
+      "target": "n53"
+    },
+    {
+      "source": "n53",
+      "relation": "refute",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "evaluate",
+      "target": "n51"
+    },
+    {
+      "source": "n54",
+      "relation": "produce",
+      "target": "n55"
+    },
+    {
+      "source": "n55",
+      "relation": "support",
+      "target": "n51"
+    },
+    {
+      "source": "p4",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n53"
+    },
+    {
+      "source": "n57",
+      "relation": "depend_on",
+      "target": "n55"
+    },
+    {
+      "source": "n57",
+      "relation": "produce",
+      "target": "n58"
+    },
+    {
+      "source": "n58",
+      "relation": "support",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "depend_on",
+      "target": "n59"
+    },
+    {
+      "source": "n60",
+      "relation": "address",
+      "target": "n56"
+    },
+    {
+      "source": "n60",
+      "relation": "decompose",
+      "target": "n61"
+    },
+    {
+      "source": "n61",
+      "relation": "produce",
+      "target": "n62"
+    },
+    {
+      "source": "g1",
+      "relation": "decompose",
+      "target": "p5"
+    },
+    {
+      "source": "n63",
+      "relation": "address",
+      "target": "g1"
+    },
+    {
+      "source": "n63",
+      "relation": "decompose",
+      "target": "n64"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n28"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n49"
+    },
+    {
+      "source": "n64",
+      "relation": "depend_on",
+      "target": "n62"
+    },
+    {
+      "source": "n64",
+      "relation": "produce",
+      "target": "n65"
+    },
+    {
+      "source": "n66",
+      "relation": "evaluate",
+      "target": "n65"
+    },
+    {
+      "source": "n66",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n66",
+      "relation": "produce",
+      "target": "n67"
+    },
+    {
+      "source": "n67",
+      "relation": "support",
+      "target": "p5"
+    },
+    {
+      "source": "p5",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n69",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n70",
+      "relation": "evaluate",
+      "target": "n69"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n67"
+    },
+    {
+      "source": "n70",
+      "relation": "depend_on",
+      "target": "n34"
+    },
+    {
+      "source": "n70",
+      "relation": "produce",
+      "target": "n71"
+    },
+    {
+      "source": "n71",
+      "relation": "refute",
+      "target": "n69"
+    },
+    {
+      "source": "n71",
+      "relation": "support",
+      "target": "n72"
+    },
+    {
+      "source": "n67",
+      "relation": "support",
+      "target": "n72"
+    },
+    {
+      "source": "n73",
+      "relation": "depend_on",
+      "target": "n72"
+    },
+    {
+      "source": "n73",
+      "relation": "revise",
+      "target": "n63"
+    },
+    {
+      "source": "n73",
+      "relation": "address",
+      "target": "n68"
+    },
+    {
+      "source": "n73",
+      "relation": "decompose",
+      "target": "n74"
+    },
+    {
+      "source": "n74",
+      "relation": "depend_on",
+      "target": "n65"
+    },
+    {
+      "source": "n74",
+      "relation": "produce",
+      "target": "n75"
+    },
+    {
+      "source": "n75",
+      "relation": "revise",
+      "target": "n65"
+    }
+  ],
+  "task": {
+    "task_type": "research_idea_exploration",
+    "task_description": "Infer directed cell–cell signaling from spatial transcriptomics while distinguishing shared microenvironment effects under incomplete molecular observation.",
+    "requirements": [
+      "Specify identifiability assumptions and flag observationally indistinguishable signaling and environmental explanations.",
+      "On synthetic confounded tissues, achieve ≥80% precision at 50% recall for identifiable directed signaling edges."
+    ]
+  }
+}
