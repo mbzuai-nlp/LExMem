@@ -32,7 +32,7 @@ export EMBEDDING_MODEL=/path/to/gte-Qwen2-1.5B-instruct JUDGE_API_KEY=...
 ```
 
 - `LLM_BASE_URL` can be any OpenAI-compatible endpoint.
-- **Subset.** The `full_dialogue` setting puts each whole dialogue (88K tokens on average) into every answer call. On the full dataset this can be costly and slow, so you may run it on a random subset instead. `sample_subset.py` samples whole dialogues together with all their questions. Pass the resulting file through `QA_FILE` and every run uses the same subset:
+- **Subset.** The `full_dialogue` setting puts each whole dialogue into every answer call. On the full dataset this can be costly and slow, so you may run it on a random subset instead. `sample_subset.py` samples whole dialogues together with all their questions. Pass the resulting file through `QA_FILE` and every run uses the same subset:
 
   ```bash
   python ../benchmark/data/sample_subset.py --output subset_qa.json   # default: 40 dialogues, seed 0
